@@ -21,7 +21,7 @@ const LandingInfo = () => {
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">🧠 Теми та групи</h3>
-          <p className="text-gray-600 text-sm">Об'єднуй слова у теми та групи тем для ефективнішого вивчення.</p>
+          <p className="text-gray-600 text-sm">Об’єднуй слова у теми та групи тем для ефективнішого вивчення.</p>
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">📝 Статті</h3>
@@ -34,7 +34,9 @@ const LandingInfo = () => {
       {/* ✅ 4. CTA: Зареєструйтесь */}
       <section className="text-center py-10 px-6 bg-blue-50">
         <h3 className="text-xl font-semibold mb-4">Готові почати?</h3>
-        <p className="mb-6 text-gray-700">Зареєструйтесь, щоб скачати додаток, створювати свої словники або коментувати пости.</p>
+        <p className="mb-6 text-gray-700">
+          Зареєструйтесь, щоб скачати додаток, створювати свої словники або коментувати пости.
+        </p>
         <button className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
           Створити акаунт
         </button>
