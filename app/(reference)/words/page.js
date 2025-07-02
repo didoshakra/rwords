@@ -357,7 +357,6 @@ export default function WordsPage() {
   }
 
   const startTranslation = async (wordsToTranslate) => {
-    // setTotalWords(wordsToTranslate.length)
     if (wordsToTranslate.length === 0) {
       setTranslate(false)
       return
