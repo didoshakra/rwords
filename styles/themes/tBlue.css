@@ -1,0 +1,13 @@
+html[data-theme="tBlue"] {
+  /* Blue 80-900*/
+  --color-pCol0: #eff6ff;
+  --color-pCol1: #dbeafe;
+  --color-pCol2: #bfdbfe;
+  --color-pCol3: #93c5fd;
+  --color-pCol4: #60a5fa;
+  --color-pCol5: #3b82f6;
+  --color-pCol6: #2563eb;
+  --color-pCol7: #1d4ed8;
+  --color-pCol8: #1e40af;
+  --color-pCol9: #1e3a8a;
+}

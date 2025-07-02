@@ -1,0 +1,13 @@
+html[data-theme="tRed"] {
+ /* Red 80-900*/
+  --color-pCol0:#fef2f2;
+  --color-pCol1: #fee2e2;
+  --color-pCol2: #fecaca;
+  --color-pCol3: #fca5a5;
+  --color-pCol4:#f87171;
+  --color-pCol5:#ef4444;
+  --color-pCol6: #dc2626;
+  --color-pCol7: #b91c1c;
+  --color-pCol8: #991b1b;
+  --color-pCol9: #7f1d1d;
+}

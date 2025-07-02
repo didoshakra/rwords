@@ -1,0 +1,13 @@
+html[data-theme="tRose"] {
+ /* Rose 80-900*/
+  --color-pCol0:#fff1f2;
+  --color-pCol1: #ffe4e6;
+  --color-pCol2: #fecdd3;
+  --color-pCol3: #fda4af;
+  --color-pCol4: #fb7185;
+  --color-pCol5: #f43f5e;
+  --color-pCol6: #e11d48;
+  --color-pCol7: #be123c;
+  --color-pCol8: #9f1239;
+  --color-pCol9: #881337;
+}

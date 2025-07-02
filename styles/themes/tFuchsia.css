@@ -1,0 +1,14 @@
+html[data-theme="tFuchsia"] {
+ /* Fuchsia 80-900*/
+  --color-pCol0: #fdf4ff;
+  --color-pCol1: #fae8ff;
+  --color-pCol2: #f5d0fe;
+  --color-pCol3: #f0abfc;
+  --color-pCol4: #e879f9;
+  --color-pCol5: #d946ef;
+  --color-pCol6: #c026d3;
+  --color-pCol7: #a21caf;
+  --color-pCol8: #86198f;
+  --color-pCol9: #701a75;
+}
+ 

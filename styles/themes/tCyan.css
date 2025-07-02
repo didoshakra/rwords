@@ -1,0 +1,13 @@
+html[data-theme="tCyan"] {
+ /* Cyan 80-900*/
+  --color-pCol0:#ecfeff;
+  --color-pCol1: #cffafe;
+  --color-pCol2: #a5f3fc;
+  --color-pCol3: #67e8f9;
+  --color-pCol4: #22d3ee;
+  --color-pCol5: #06b6d4;
+  --color-pCol6: #0891b2;
+  --color-pCol7: #0e7490;
+  --color-pCol8: #155e75;
+  --color-pCol9: #164e63;
+}

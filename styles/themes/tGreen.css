@@ -1,0 +1,13 @@
+html[data-theme="tGreen"] {
+   /* Green 80-900*/
+  --color-pCol0: #f0fdf4;
+  --color-pCol1: #dcfce7;
+  --color-pCol2: #bbf7d0;
+  --color-pCol3: #86efac;
+  --color-pCol4: #4ade80;
+  --color-pCol5: #22c55e;
+  --color-pCol6: #16a34a;
+  --color-pCol7: #047857;
+  --color-pCol8: #065f46;
+  --color-pCol9: #064e3b;
+}

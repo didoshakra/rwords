@@ -1,0 +1,13 @@
+html[data-theme="tOrange"] {
+ /* Orange 80-900*/
+  --color-pCol0:#fff7ed;
+  --color-pCol1: #ffedd5;
+  --color-pCol2: #fed7aa;
+  --color-pCol3: #fdba74;
+  --color-pCol4: #fb923c;
+  --color-pCol5: #f97316;
+  --color-pCol6: #ea580c;
+  --color-pCol7: #c2410c;
+  --color-pCol8: #9a3412;
+  --color-pCol9: #7c2d12;
+}

@@ -1,0 +1,14 @@
+html[data-theme="tIndigo"] {
+  /* Indigo 80-900*/
+  --color-pCol0: #eef2ff;
+  --color-pCol1: #e0e7ff;
+  --color-pCol2: #c7d2fe;
+  --color-pCol3: #a5b4fc;
+  --color-pCol4: #818cf8;
+  --color-pCol5: #6366f1;
+  --color-pCol6: #4f46e5;
+  --color-pCol7: #4338ca;
+  --color-pCol8: #3730a3;
+  --color-pCol9: #312e81;
+
+}

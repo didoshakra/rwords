@@ -1,0 +1,13 @@
+html[data-theme="tSky"] {
+ /* Sky 80-900*/
+  --color-pCol0:#f0f9ff;
+  --color-pCol1: #e0f2fe;
+  --color-pCol2: #bae6fd;
+  --color-pCol3: #7dd3fc;
+  --color-pCol4: #38bdf8;
+  --color-pCol5: #0ea5e9;
+  --color-pCol6: #0284c7;
+  --color-pCol7: #0369a1;
+  --color-pCol8: #075985;
+  --color-pCol9: #0c4a6e;
+}

@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+} */
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+} */
+
+@layer base {
+  html {
+    /* Slate 80-900*/
+    /* --color-pCol: #ffffff;
+    --color-pCol0: #f8fafc;
+    --color-pCol1: #f1f5f9;
+    --color-pCol2: #e2e8f0;
+    --color-pCol3: #cbd5e1;
+    --color-pCol4: #94a3b8;
+    --color-pCol5: #64748b;
+    --color-pCol6: #475569;
+    --color-pCol7: #334155;
+    --color-pCol8: #1e293b;
+    --color-pCol9: #0f172a; */
+    /* Sky 80-900*/
+    --color-pCol0: #f0f9ff;
+    --color-pCol1: #e0f2fe;
+    --color-pCol2: #bae6fd;
+    --color-pCol3: #7dd3fc;
+    --color-pCol4: #38bdf8;
+    --color-pCol5: #0ea5e9;
+    --color-pCol6: #0284c7;
+    --color-pCol7: #0369a1;
+    --color-pCol8: #075985;
+    --color-pCol9: #0c4a6e;
+  }
+
+  @import "@/styles/themes/tIndigo.css";
+  @import "@/styles/themes/tPink.css";
+  @import "@/styles/themes/tGreen.css";
+  @import "@/styles/themes/tAmber.css";
+  @import "@/styles/themes/tGray.css";
+  @import "@/styles/themes/tLime.css";
+  @import "@/styles/themes/tRed.css";
+  @import "@/styles/themes/tYellow.css";
+  @import "@/styles/themes/tEmerald.css";
+  @import "@/styles/themes/tTeal.css";
+  @import "@/styles/themes/tCyan.css";
+  @import "@/styles/themes/tSky.css";
+  @import "@/styles/themes/tBlue.css";
+  @import "@/styles/themes/tViolet.css";
+  @import "@/styles/themes/tPurple.css";
+  @import "@/styles/themes/tFuchsia.css";
+  @import "@/styles/themes/tRose.css";
+  @import "@/styles/themes/tOrange.css";
+  @import "@/styles/themes/tZinc.css";
+  @import "@/styles/themes/tNeutral.css";
+  @import "@/styles/themes/tStone.css";
+}

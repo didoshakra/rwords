@@ -1,0 +1,13 @@
+html[data-theme="tLime"] {
+  /* Lime-50-900 */
+  --color-pCol0: #f7fee7;
+  --color-pCol1: #ecfccb;
+  --color-pCol2: #d9f99d;
+  --color-pCol3: #bef264;
+  --color-pCol4: #a3e635;
+  --color-pCol5: #84cc16;
+  --color-pCol6: #65a30d;
+  --color-pCol7: #4d7c0f;
+  --color-pCol8: #3f6212;
+  --color-pCol9: #14532d;
+}

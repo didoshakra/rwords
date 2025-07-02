@@ -1,0 +1,13 @@
+html[data-theme="tYellow"] {
+ /* Yellow 80-900*/
+  --color-pCol0:#fefce8;
+  --color-pCol1: #fef9c3;
+  --color-pCol2: #fef08a;
+  --color-pCol3: #fde047;
+  --color-pCol4:#facc15;
+  --color-pCol5:#eab308;
+  --color-pCol6: #ca8a04;
+  --color-pCol7: #a16207;
+  --color-pCol8: #854d0e;
+  --color-pCol9: #713f12;
+}

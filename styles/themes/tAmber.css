@@ -1,0 +1,13 @@
+html[data-theme="tAmber"] {
+  /* Amber 80-900*/
+  --color-pCol0: #fffbeb;
+  --color-pCol1: #fef3c7;
+  --color-pCol2: #fde68a;
+  --color-pCol3: #fcd34d;
+  --color-pCol4: #fbbf24;
+  --color-pCol5: #f59e0b;
+  --color-pCol6: #d97706;
+  --color-pCol7: #b45309;
+  --color-pCol8: #92400e;
+  --color-pCol9: #78350f;
+}

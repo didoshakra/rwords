@@ -1,0 +1,13 @@
+html[data-theme="tStone"] {
+  /* Stone 80-900*/
+  --color-pCol0: #fafaf9;
+  --color-pCol1: #f5f5f4;
+  --color-pCol2: #e7e5e4;
+  --color-pCol3: #d6d3d1;
+  --color-pCol4: #a8a29e;
+  --color-pCol5: #78716c;
+  --color-pCol6: #57534e;
+  --color-pCol7: #44403c;
+  --color-pCol8: #292524;
+  --color-pCol9: #1c1917;
+}

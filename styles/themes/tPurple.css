@@ -1,0 +1,13 @@
+html[data-theme="tPurple"] {
+  /* Purple 80-900*/
+  --color-pCol0: #faf5ff;
+  --color-pCol1: #f3e8ff;
+  --color-pCol2: #e9d5ff;
+  --color-pCol3: #d8b4fe;
+  --color-pCol4: #c084fc;
+  --color-pCol5:#a855f7;
+  --color-pCol6: #9333ea;
+  --color-pCol7: #7e22ce;
+  --color-pCol8: #6b21a8;
+  --color-pCol9: #581c87;
+}

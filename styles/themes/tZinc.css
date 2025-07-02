@@ -1,0 +1,13 @@
+html[data-theme="tZinc"] {
+  /* Zinc 80-900*/
+  --color-pCol0: #fafafa;
+  --color-pCol1: #f4f4f5;
+  --color-pCol2: #e4e4e7;
+  --color-pCol3: #d4d4d8;
+  --color-pCol4: #a1a1aa;
+  /* --color-pCol5: #71717a; */
+  --color-pCol6: #52525b;
+  --color-pCol7: #3f3f46;
+  --color-pCol8: #27272a;
+  --color-pCol9: #18181b;
+}
