@@ -46,6 +46,7 @@ export const menuAdmin = [
         id: 1,
         title: "Робота з БД",
         roles: ["admin"], // ❗️ Доступ тільки для admin
+        skipRoleCheckIfNoUser: true, // 👈 Якщо користувача ще нема (нема БД)
         submenu: [
           {
             id: 1,

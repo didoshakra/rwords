@@ -22,73 +22,7 @@ const colorLevel = {
   5: "text-level5",
 }
 
-// const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
-//   const [open, setOpen] = useState(false)
-//   const ref = useRef()
 
-//   useEffect(() => {
-//     const handler = (e) => {
-//       if (ref.current && !ref.current.contains(e.target)) {
-//         setOpen(false)
-//       }
-//     }
-//     document.addEventListener("mousedown", handler)
-//     return () => document.removeEventListener("mousedown", handler)
-//   }, [])
-
-//   const hasSubmenu = item.submenu && item.submenu.length > 0
-//   const colorStyle = { color: colorLevel[depth] || "#000000" }
-
-//   return (
-//     // paddingLeft: `${depth * 5}px`-відступ у рівнях кратне 5px
-//     <li ref={ref} className="py-1" style={{ paddingLeft: `${depth * 5}px` }}>
-//       {/* <ul className={`${dropdownClass0} ${dropdownClass} ${dropdown ? "block" : "hidden"} ${colorStyle}`}> */}
-
-//       <div
-//         // style={colorStyle}
-//         // className={`flex items-center justify-between cursor-pointer hover:text-blue-600 ${colorStyle}`}
-//         className={`flex items-center justify-between cursor-pointer hover:text-blue-600 ${
-//           colorLevel[depth] || "text-black"
-//         }`}
-//         // className="flex items-center cursor-pointer hover:text-blue-600"
-//         onClick={() => {
-//           if (hasSubmenu) setOpen((prev) => !prev)
-//           else setDrawerOpen?.(false)
-//         }}
-//       >
-//         {item.url ? (
-//           <Link href={item.url} className="no-underline" onClick={() => setDrawerOpen?.(false)}>
-//             {item.title}
-//           </Link>
-//         ) : (
-//           <span>{item.title}</span>
-//         )}
-
-//         {hasSubmenu && (
-        //   <span className="ml-2">
-        //     {open ? (
-        //       <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-        //         <polyline points="6 15 12 9 18 15" />
-        //       </svg>
-        //     ) : (
-        //       <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-        //         <polyline points="6 9 12 15 18 9" />
-        //       </svg>
-        //     )}
-        //   </span>
-//         )}
-//       </div>
-
-//       {hasSubmenu && (
-//         <ul className={`ml-2 transition-all duration-300 ease-in ${open ? "block" : "hidden"}`}>
-//           {item.submenu.map((sub, idx) => (
-//             <MenuItem key={`${depth}-${idx}-${sub.title}`} item={sub} depth={depth + 1} setDrawerOpen={setDrawerOpen} />
-//           ))}
-//         </ul>
-//       )}
-//     </li>
-//   )
-// }
 const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
@@ -104,9 +38,16 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
     return () => document.removeEventListener("mousedown", handler)
   }, [])
 
-  // ❗️Перевірка ролі
-  if (item.roles && (!user || !item.roles.includes(user.role))) {
-    return null // 🔒 приховати, якщо роль не підходить
+  // ❗️Перевірка ролі з умовою
+  if (item.roles) {
+    if (!user) {
+      // Якщо користувача ще нема (нема БД), але пункт не дозволений явно - ховаємо
+      if (!item.skipRoleCheckIfNoUser) {
+        return null
+      }
+    } else if (!item.roles.includes(user.role)) {
+      return null
+    }
   }
 
   const hasSubmenu = item.submenu && item.submenu.length > 0
