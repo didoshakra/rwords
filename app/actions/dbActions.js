@@ -1,7 +1,7 @@
 // app/actions/dbActions.js
-'use server'
+"use server"
 
-import { sql } from '@/lib/dbConfig'
+import { sql } from "@/lib/dbConfig"
 
 export async function initTables() {
   // users
@@ -17,8 +17,16 @@ export async function initTables() {
     email_verified BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
-  );
-  `
+  );`
+  // 👇 Сід для створення адміна
+  const adminEmail = "admin@example.com"
+  const adminPass = "admin123"
+  const hash = await bcrypt.hash(adminPass, 10)
+  await sql`
+    INSERT INTO users (email, password_hash, name, role, is_active, email_verified)
+    VALUES (${adminEmail}, ${hash}, 'Admin', 'admin', true, true)
+    ON CONFLICT (email) DO NOTHING;`
+  console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
 
   // sections
   await sql`
@@ -29,8 +37,14 @@ export async function initTables() {
       img TEXT DEFAULT 'other',
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_user_section FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `
+    );`
+
+  // додати запис "інше" у sections
+  const userId = 1 // для демо, бо ще нема авторизації
+  await sql`
+    INSERT INTO sections (pn, name, img, user_id)
+    VALUES (0, 'інше', 'other', ${userId})
+    ON CONFLICT DO NOTHING;`
 
   // topics
   await sql`
@@ -43,8 +57,13 @@ export async function initTables() {
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_section FOREIGN KEY(section_id) REFERENCES sections(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_topic FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `
+    );`
+  // додати запис "інше" у topics
+  await sql`
+  INSERT INTO topics (pn, name, img, section_id, user_id)
+  VALUES (0, 'інше', 'other', 1, ${userId})
+  ON CONFLICT DO NOTHING;
+`
 
   // words
   await sql`
@@ -59,8 +78,7 @@ export async function initTables() {
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_topic FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_word FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `
+    );`
 
   // posts (блог)
   await sql`
@@ -72,8 +90,7 @@ export async function initTables() {
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP DEFAULT NOW(),
       CONSTRAINT fk_user_post FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `
+    );`
 
   // comments (блог)
   await sql`
@@ -85,8 +102,7 @@ export async function initTables() {
       created_at TIMESTAMP DEFAULT NOW(),
       CONSTRAINT fk_post_comment FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_comment FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `
+    );`
 }
 
 export async function resetTables() {
