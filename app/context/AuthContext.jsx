@@ -10,14 +10,23 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    try {
+      if (storedUser && storedUser !== "undefined") {
+        setUser(JSON.parse(storedUser))
+      }
+    } catch (err) {
+      console.error("Помилка JSON parse user:", err)
+      localStorage.removeItem("user")
     }
   }, [])
 
   const login = (userData) => {
-    setUser(userData)
-    localStorage.setItem("user", JSON.stringify(userData))
+    if (userData) {
+      setUser(userData)
+      localStorage.setItem("user", JSON.stringify(userData))
+    } else {
+      console.warn("login called with undefined userData")
+    }
   }
 
   const logout = () => {
