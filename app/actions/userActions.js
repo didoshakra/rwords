@@ -5,16 +5,16 @@ import { sql } from "@/lib/dbConfig"
 
 export async function getUsers() {
   return await sql`
-      SELECT id, name, email, created_at FROM users ORDER BY id DESC
+      SELECT * FROM users ORDER BY id DESC
     `
 }
-
+//   SELECT id, name, email, created_at FROM users ORDER BY id DESC
 export async function createUser(name, email) {
   // Просто зберігаємо тестовий hash або якийсь "пустий"
   const defaultHash = "hashed_password"
   await sql`
       INSERT INTO users (name, email, password_hash)
-      VALUES (${name}, ${email}, ${defaultHash}) 
+      VALUES (${name}, ${email}, ${defaultHash})
     `
 }
 

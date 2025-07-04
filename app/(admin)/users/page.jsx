@@ -25,7 +25,7 @@ function Modal({ open, onClose, children }) {
 
 export default function UsersPage() {
   const [data, setData] = useState([])
-  const [form, setForm] = useState({ id: null, name: "", email: "", profile: "" })
+  const [form, setForm] = useState({ id: null, name: "", email: "", role: "" })
   const [modalOpen, setModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState("")
@@ -43,7 +43,7 @@ export default function UsersPage() {
     { accessorKey: "id", header: "ID" },
     { accessorKey: "name", header: "Ім’я" },
     { accessorKey: "email", header: "Email" },
-    { accessorKey: "profile", header: "Профіль" },
+    { accessorKey: "role", header: "Роль" },
     { accessorKey: "created_at", header: "Створено" },
     {
       id: "actions",
@@ -80,13 +80,13 @@ export default function UsersPage() {
     startTransition(async () => {
       try {
         if (form.id) {
-          await updateUser(form.id, form.name, form.email, form.profile)
+          await updateUser(form.id, form.name, form.email, form.role)
           setMessage("Користувача оновлено")
         } else {
-          await createUser(form.name, form.email, form.profile)
+          await createUser(form.name, form.email, form.role)
           setMessage("Користувача створено")
         }
-        setForm({ id: null, name: "", email: "", profile: "" })
+        setForm({ id: null, name: "", email: "", role: "" })
         setModalOpen(false)
         await loadUsers()
       } catch (err) {
@@ -117,7 +117,7 @@ export default function UsersPage() {
       <div className="mb-4 flex justify-end">
         <button
           onClick={() => {
-            setForm({ id: null, name: "", email: "", profile: "" })
+            setForm({ id: null, name: "", email: "", role: "" })
             setModalOpen(true)
           }}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -175,9 +175,9 @@ export default function UsersPage() {
           />
           <input
             type="text"
-            placeholder="Профіль"
-            value={form.profile}
-            onChange={(e) => setForm({ ...form, profile: e.target.value })}
+            placeholder="Роль"
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
             className="border p-2 rounded"
           />
           <div className="flex justify-end gap-4">
