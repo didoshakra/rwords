@@ -3,7 +3,7 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
-import { initTables, resetTables } from "@/app/actions/dbActions"
+import { initTables, resetTables, сheckСonnection } from "@/app/actions/dbActions"
 
 export default function AdminPage() {
   const [isPending, startTransition] = useTransition()
@@ -44,6 +44,18 @@ export default function AdminPage() {
           className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
         >
           {isPending ? "⏳ Обробка..." : "Перестворити таблиці"}
+        </button>
+        <button
+          onClick={() =>
+            handleAction(async () => {
+              const res = await сheckСonnection()
+              console.log("Перевірка:", res)
+            }, "✅ Перевірка підключення до БД пройшла успішно!")
+          }
+          disabled={isPending}
+          className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+        >
+          {isPending ? "⏳ Обробка..." : "Перевірка підключення до БД"}
         </button>
       </div>
 

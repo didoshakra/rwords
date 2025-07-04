@@ -100,13 +100,3 @@ export async function resetTables() {
 
   await initTables()
 }
-// Перевірка підключення
-export async function сheckСonnection() {
-  try {
-    const result = await sql`SELECT NOW()`
-    return { time: result[0].now }
-  } catch (err) {
-    console.error("❌ DB Error:", err)
-    throw new Error("Database connection failed: " + err.message)
-  }
-}
