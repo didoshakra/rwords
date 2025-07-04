@@ -55,7 +55,7 @@ export default function AdminPage() {
           disabled={isPending}
           className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
         >
-          {isPending ? "⏳ Обробка..." : "Перевірка підключення до БД"}
+          {isPending ? "⏳ Обробка...." : "Перевірка підключення до БД"}
         </button>
       </div>
 
