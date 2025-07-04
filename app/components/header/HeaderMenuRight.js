@@ -3,7 +3,7 @@
 
 // import ThemeSwitcher from "./ThemeSwitcher"
 import UserSwitcher from './user/UserSwitcher.js';
-import HeaderSetingDroopMenu from './HeaderSetingDroopMenu';
+// import HeaderSetingDroopMenu from './HeaderSetingDroopMenu';
 import HeaderThemesDroopMenu from './theme/HeaderThemesDroopMenu';
 
 
@@ -19,10 +19,10 @@ const HeaderMenuRight = () => {
         {/*Всі теми */}
         <HeaderThemesDroopMenu />
       </div>
-      {/* Випадаюче меню Seting(мобільне) */}
+      {/* Випадаюче меню Seting(мобільне)
       <div className="headerMenuRight__mobile">
         <HeaderSetingDroopMenu />
-      </div>
+      </div> */}
     </div>
   )
 }
