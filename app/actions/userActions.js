@@ -18,7 +18,7 @@ export async function createUser(name, email) {
     `
 }
 
-export async function updateUser(id, name, email,role) {
+export async function updateUser(id, name, email, role) {
   await sql`
       UPDATE users
       SET name = ${name}, email = ${email},role = ${role}, updated_at = NOW()
