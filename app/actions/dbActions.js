@@ -2,6 +2,8 @@
 "use server"
 
 import { sql } from "@/lib/dbConfig"
+import bcrypt from 'bcrypt'  // ⬅⬅⬅ ось це додаємо
+
 
 export async function initTables() {
   // users
