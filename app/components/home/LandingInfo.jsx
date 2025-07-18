@@ -21,9 +21,9 @@ const LandingInfo = () => {
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">🧠 Теми та групи</h3>
-          <div className="text-gray-600 text-sm">
-            <p>{"об'єднуй"}</p> слова у теми та групи тем для ефективнішого вивчення.
-          </div>
+          <p className="text-gray-600 text-sm">
+            об'єднуй слова у теми та групи тем для ефективнішого вивчення.
+          </p>
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">📝 Статті</h3>
