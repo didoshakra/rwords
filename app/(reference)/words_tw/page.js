@@ -8,6 +8,7 @@ import {
   createWord,
   updateWord,
   deleteWord,
+  deleteWords,
   updateWordPn,
   importCSV,
   translateWord,
@@ -15,7 +16,6 @@ import {
 import { getSections } from "@/app/actions/sectionActions"
 import { getTopics } from "@/app/actions/topicActions"
 import { useAuth } from "@/app/context/AuthContext"
-import { deleteWords } from "@/app/actions/wordActions"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 import TableView from "@/app/components/tables/TableView"
 
@@ -120,7 +120,8 @@ export default function WordsPage() {
   const [know, setKnow] = useState(false)
   const [img, setImg] = useState("")
   const [message, setMessage] = useState("")
-  const [isPending, startTransition] = useTransition()
+ // startTransition	Виконати важкі або менш критичні зміни стану без блокування UI
+   const [isPending, startTransition] = useTransition() // isPending	Показати loader / disabled//
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   // Стани для перекладу (useState та useRef)
   const [translate, setTranslate] = useState(false)
@@ -132,7 +133,6 @@ export default function WordsPage() {
   //   Для модалки стрілок переміщення рядків
   const [moveMode, setMoveMode] = useState(false)
   const [moveInfo, setMoveInfo] = useState(null) // { idx, total }
-  const tableContainerRef = useRef(null) //Для скролу при переміщенні****
   const rowRefs = useRef([]) //Для скролу при переміщенні
   //   Для рогкриття груп(секцій)
   const [openSections, setOpenSections] = useState([])
@@ -222,10 +222,11 @@ export default function WordsPage() {
     startTransition(async () => {
       try {
         if (modal?.type === "edit") {
-          await updateWord(id, data, user)
+          //   await updateWord(id, data, user)
+          await updateWord(id, data, user?.id, user?.role)
           setMessage("Слово оновлено")
         } else {
-          await createWord(data, user.id)
+          await createWord(data, user?.id)
           setMessage("Слово створено")
         }
         closeModal()
@@ -240,7 +241,7 @@ export default function WordsPage() {
     if (!confirm("Ви впевнені, що хочете видалити це слово?")) return
     startTransition(async () => {
       try {
-        await deleteWord(w.id, user)
+        await deleteWord(w.id, user?.id, user?.role)
         setMessage("Слово видалено")
         loadWords()
       } catch (err) {
@@ -264,7 +265,7 @@ export default function WordsPage() {
         const w = words[i]
         const newPn = i + 1
         if (w.pn !== newPn) {
-          await updateWordPn(w.id, newPn, user)
+          await updateWordPn(w.id, newPn, user?.id, user?.role)
         }
       }
       setMessage("✅ Порядок збережено адміністратором")
@@ -313,7 +314,7 @@ export default function WordsPage() {
       try {
         const text = await file.text()
         // Виклик серверної action-функції importCSV, яку треба імпортувати
-        const result = await importCSV(text, user)
+        const result = await importCSV(text, user?.id, user?.role)
         setMessage(result)
         loadWords()
       } catch (error) {
@@ -434,7 +435,7 @@ export default function WordsPage() {
     }
 
     try {
-      await deleteWords(ownIds, user)
+      await deleteWords(ownIds, user?.id, user?.role)
       setMessage(`🗑️ Видалено ${ownIds.length} слів`)
       clearSelection()
       loadWords()
@@ -443,55 +444,55 @@ export default function WordsPage() {
     }
   }
 
-  const isSelected = (id) => selectedIds.includes(id)
+  //   const isSelected = (id) => selectedIds.includes(id)
 
-  const toggleSelect = (id) => {
-    setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
-  }
+  //   const toggleSelect = (id) => {
+  //     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+  //   }
 
-  const selectAll = () => {
-    setSelectedIds(words.map((w) => w.id))
-  }
+  //   const selectAll = () => {
+  //     setSelectedIds(words.map((w) => w.id))
+  //   }
 
   const clearSelection = () => {
     setSelectedIds([])
   }
   //   Для модалки стрілок переміщення рядків
-  const startMoveMode = () => {
-    if (selectedIds.length !== 1) return
+  //   const startMoveMode = () => {
+  //     if (selectedIds.length !== 1) return
 
-    const id = selectedIds[0]
-    const idx = words.findIndex((w) => w.id === id)
-    if (idx === -1) return
+  //     const id = selectedIds[0]
+  //     const idx = words.findIndex((w) => w.id === id)
+  //     if (idx === -1) return
 
-    setMoveInfo({ idx, total: words.length })
-    scrollRowIntoView(idx) //Для автоскролу
-    setMoveMode(true)
-  }
+  //     setMoveInfo({ idx, total: words.length })
+  //     scrollRowIntoView(idx) //Для автоскролу
+  //     setMoveMode(true)
+  //   }
   //   Для автоскролу при переміщенні
-  const scrollRowIntoView = (rowIndex) => {
-    const container = document.querySelector(".table-container") // контейнер з overflow-auto, що обгортає таблицю
-    if (!container) return
+  //   const scrollRowIntoView = (rowIndex) => {
+  //     const container = document.querySelector(".table-container") // контейнер з overflow-auto, що обгортає таблицю
+  //     if (!container) return
 
-    const rows = container.querySelectorAll("tbody tr")
-    if (!rows[rowIndex]) return
+  //     const rows = container.querySelectorAll("tbody tr")
+  //     if (!rows[rowIndex]) return
 
-    const row = rows[rowIndex]
+  //     const row = rows[rowIndex]
 
-    const containerTop = container.scrollTop
-    const containerBottom = containerTop + container.clientHeight
+  //     const containerTop = container.scrollTop
+  //     const containerBottom = containerTop + container.clientHeight
 
-    const rowTop = row.offsetTop
-    const rowBottom = rowTop + row.offsetHeight
+  //     const rowTop = row.offsetTop
+  //     const rowBottom = rowTop + row.offsetHeight
 
-    if (rowTop < containerTop) {
-      // рядок вище видимої області, скролимо наверх, щоб побачити його
-      container.scrollTop = rowTop
-    } else if (rowBottom > containerBottom) {
-      // рядок нижче видимої області, скролимо вниз
-      container.scrollTop = rowBottom - container.clientHeight
-    }
-  }
+  //     if (rowTop < containerTop) {
+  //       // рядок вище видимої області, скролимо наверх, щоб побачити його
+  //       container.scrollTop = rowTop
+  //     } else if (rowBottom > containerBottom) {
+  //       // рядок нижче видимої області, скролимо вниз
+  //       container.scrollTop = rowBottom - container.clientHeight
+  //     }
+  //   }
 
   // Функція для переміщення рядка в масиві words в стані:
   const moveSelectedRow = (direction) => {
@@ -539,46 +540,46 @@ export default function WordsPage() {
   }
 
   //   Для розкриття груп
-  const toggleSection = (sectionId) => {
-    setOpenSections((prev) => (prev.includes(sectionId) ? prev.filter((id) => id !== sectionId) : [...prev, sectionId]))
-  }
-  //   Для розкриття груп
-  const toggleTopic = (topicId) => {
-    setOpenTopics((prev) => (prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]))
-  }
-  console.log("words/page/words=", words)
-  console.log("words/page/dataLevel1=", topics)
-  console.log("words/page/dataLevel2=", sections)
+  //   const toggleSection = (sectionId) => {
+  //     setOpenSections((prev) => (prev.includes(sectionId) ? prev.filter((id) => id !== sectionId) : [...prev, sectionId]))
+  //   }
+  //   //   Для розкриття груп
+  //   const toggleTopic = (topicId) => {
+  //     setOpenTopics((prev) => (prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]))
+  //   }
+  // //   console.log("words/page/words=", words)
+  // //   console.log("words/page/dataLevel1=", topics)
+  // //   console.log("words/page/dataLevel2=", sections)
 
   return (
     <main className="p-6 max-w-4xl mx-auto">
       {/* {topics.length > 0 && sections.length > 0 && ( */}
-        <TableView
-          data={words}
-          dataLevel1={topics}
-          dataLevel2={sections}
-          sewords={setWords}
-          // onSavePn={updateWordsPn}
-          columns={columns}
-          title={"Слова"}
-          //   colorsTable={colorsTable}
-          // indexScheme={indexScheme} //колір
-          onAdd={openAddModal}
-          onEdit={() => openEditModal(selectedWord)}
-          onDelete={() => handleDelete(selectedWord)} // передаємо лише id
-          onImport={importCSV}
-          onTranslate={handleTranslate}
-          translate={translate} //Чи перекладено для зміни кнопки
-          level1Head="Тема"
-          level2Head="Секція"
-          // sectionId={"section_id"} //🔒 Прив’язка переміщення до певного значення поля
-          // sectionName={"section_name"} //Назва секції
-          // beforeSectionName={"Тема"} // Назва перед: назвою секції
-          sortField={"pn"} //поле для порядку
-          isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
-        />
+      <TableView
+        data={words}
+        dataLevel1={topics}
+        dataLevel2={sections}
+        sewords={setWords}
+        // onSavePn={updateWordsPn}
+        columns={columns}
+        title={"СловаTW1"}
+        //   colorsTable={colorsTable}
+        // indexScheme={indexScheme} //колір
+        onAdd={openAddModal}
+        onEdit={() => openEditModal(selectedWord)}
+        onDelete={() => handleDelete(selectedWord)} // передаємо лише id
+        onClickCsv={() => document.getElementById("csvInput").click()}
+        onTranslate={handleTranslate}
+        translate={translate} //Чи перекладено для зміни кнопки
+        level1Head="Тема"
+        level2Head="Секція"
+        // sectionId={"section_id"} //🔒 Прив’язка переміщення до певного значення поля
+        // sectionName={"section_name"} //Назва секції
+        // beforeSectionName={"Тема"} // Назва перед: назвою секції
+        sortField={"pn"} //поле для порядку
+        isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
+      />
       {/* )} */}
-
+      <input type="file" id="csvInput" accept=".csv,text/csv" style={{ display: "none" }} onChange={handleFileUpload} />
       <MoveRowModal
         open={moveMode}
         onClose={() => setMoveMode(false)}

@@ -16,7 +16,7 @@ export default function TableView({
   onAdd,
   onEdit,
   onDelete,
-  onImport,
+  onClickCsv,
   onTranslate,
   translate,
 
@@ -268,8 +268,8 @@ export default function TableView({
                 ➕ Додати слово
               </button>
             )}
-            {onImport && (
-              <button onClick={onImport} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
+            {onClickCsv && (
+              <button onClick={onClickCsv} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
                 📂 Імпортувати CSV
               </button>
             )}
@@ -335,7 +335,6 @@ export default function TableView({
         )}
       </div>
       {/* Діалог вибору файлу для csv */}
-      {/* <input type="file" id="csvInput" accept=".csv,text/csv" style={{ display: "none" }} onChange={handleFileUpload} /> */}
       {message && (
         <p className="mb-4 text-green-700 font-medium" role="alert">
           {message}
@@ -449,7 +448,7 @@ export default function TableView({
                                       content = value != null ? Math.floor(Number(value)) : "-"
                                       break
                                     default:
-                                        content = value ?? "" 
+                                      content = value ?? ""
                                   }
                                   return (
                                     <td

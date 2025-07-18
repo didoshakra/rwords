@@ -1,5 +1,5 @@
-// words/page.jsx
-// Групування 2-го рівня /Нема індикатора перекладу
+// words/page_tw.jsx
+//
 "use client"
 
 import React, { useEffect, useState, useTransition, useRef } from "react"
@@ -8,6 +8,7 @@ import {
   createWord,
   updateWord,
   deleteWord,
+  deleteWords,
   updateWordPn,
   importCSV,
   translateWord,
@@ -15,8 +16,8 @@ import {
 import { getSections } from "@/app/actions/sectionActions"
 import { getTopics } from "@/app/actions/topicActions"
 import { useAuth } from "@/app/context/AuthContext"
-import { deleteWords } from "@/app/actions/wordActions"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
+import TableView from "@/app/components/tables/TableView"
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -107,8 +108,9 @@ export default function WordsPage() {
   const showOwnerMark = true
 
   const { user } = useAuth()
-  const [tData, setTData] = useState([])
+  const [words, setWords] = useState([])
   const [topics, setTopics] = useState([])
+  const [sections, setSections] = useState([])
   const [modal, setModal] = useState(null) // null | {type, word}
   const [id, setId] = useState(null)
   const [word, setWord] = useState("")
@@ -118,13 +120,12 @@ export default function WordsPage() {
   const [know, setKnow] = useState(false)
   const [img, setImg] = useState("")
   const [message, setMessage] = useState("")
-  // startTransition	Виконати важкі або менш критичні зміни стану без блокування UI
-  const [isPending, startTransition] = useTransition() // isPending	Показати loader / disabled//
+  const [isPending, startTransition] = useTransition()
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   // Стани для перекладу (useState та useRef)
   const [translate, setTranslate] = useState(false)
-  //   const [translatedCount, setTranslatedCount] = useState(0)
-  //   const [totalWords, setTotalWords] = useState(0)
+  const [translatedCount, setTranslatedCount] = useState(0)
+  const [totalWords, setTotalWords] = useState(0)
   const stopRequested = useRef(false)
   const translatedCountRef = useRef(0)
   const [selectedIds, setSelectedIds] = useState([]) //
@@ -136,15 +137,13 @@ export default function WordsPage() {
   //   Для рогкриття груп(секцій)
   const [openSections, setOpenSections] = useState([])
   const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
-  const [sections, setSections] = useState([])
+
   //  Вхідні змінні які мають передаватись в майбутній TableView
   const level1Head = "Група тем:"
   const level2Head = "Тема:"
 
   const fromLanguage = "uk"
   const toLanguage = "en"
-
-  console.log("words/page/user=", user)
 
   useEffect(() => {
     loadWords()
@@ -154,7 +153,7 @@ export default function WordsPage() {
 
   const loadWords = () => {
     getWords()
-      .then(setTData)
+      .then(setWords)
       .catch((err) => setMessage("Помилка: " + err.message))
   }
 
@@ -223,8 +222,8 @@ export default function WordsPage() {
     startTransition(async () => {
       try {
         if (modal?.type === "edit") {
-          //   await updateWord(id, data, user)
-          await updateWord(id, form, user?.id, user?.role)
+        //   await updateWord(id, data, user)
+          await updateWord(id, data, user?.id, user?.role)
           setMessage("Слово оновлено")
         } else {
           await createWord(data, user?.id)
@@ -262,11 +261,11 @@ export default function WordsPage() {
     }
 
     try {
-      for (let i = 0; i < tData.length; i++) {
-        const w = tData[i]
+      for (let i = 0; i < words.length; i++) {
+        const w = words[i]
         const newPn = i + 1
         if (w.pn !== newPn) {
-          await updateWordPn(w.id, newPn, user)
+          await updateWordPn(w.id, newPn, user?.id, user?.role)
         }
       }
       setMessage("✅ Порядок збережено адміністратором")
@@ -278,16 +277,16 @@ export default function WordsPage() {
     }
   }
 
-  //   const updatePNs = (updatedWords) => {
-  //     const newWords = updatedWords.map((w, i) => ({
-  //       ...w,
-  //       pn: i + 1, // оновлюємо pn
-  //     }))
-  //     setTData(newWords)
-  //     setIsOrderChanged(true) // ⚠️ встановлюємо прапорець змін
-  //   }
+  const updatePNs = (updatedWords) => {
+    const newWords = updatedWords.map((w, i) => ({
+      ...w,
+      pn: i + 1, // оновлюємо pn
+    }))
+    setWords(newWords)
+    setIsOrderChanged(true) // ⚠️ встановлюємо прапорець змін
+  }
 
-  //   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
+  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   //Для попередження про зміни при виході або призакритті вкладки
   useEffect(() => {
@@ -314,8 +313,10 @@ export default function WordsPage() {
     startTransition(async () => {
       try {
         const text = await file.text()
+
         // Виклик серверної action-функції importCSV, яку треба імпортувати
-        const result = await importCSV(text, user)
+        console.log("words/page/User id:", user?.id, "role:", user?.role)
+        const result = await importCSV(text, user?.id, user?.role)
         setMessage(result)
         loadWords()
       } catch (error) {
@@ -329,7 +330,7 @@ export default function WordsPage() {
   const translateAllWords = async () => {
     stopRequested.current = false
     setTranslate(true)
-    // setTranslatedCount(0)
+    setTranslatedCount(0)
     translatedCountRef.current = 0
 
     let allWords
@@ -361,6 +362,7 @@ export default function WordsPage() {
   }
 
   const startTranslation = async (wordsToTranslate) => {
+    setTotalWords(wordsToTranslate.length)
     if (wordsToTranslate.length === 0) {
       setTranslate(false)
       return
@@ -379,7 +381,7 @@ export default function WordsPage() {
 
       try {
         await translateWord(word, fromLanguage, toLanguage) // server action
-        // setTranslatedCount((prev) => prev + 1)
+        setTranslatedCount((prev) => prev + 1)
         translatedCountRef.current++
       } catch (err) {
         console.error("❌ Помилка перекладу:", word, err)
@@ -411,7 +413,7 @@ export default function WordsPage() {
     }
     if (selectedIds.length === 0) return
     // Знаходимо слова за id
-    const selectedWords = tData.filter((w) => selectedIds.includes(w.id))
+    const selectedWords = words.filter((w) => selectedIds.includes(w.id))
 
     // Визначаємо, які слова належать користувачу
     const ownWords = selectedWords.filter((w) => user.role === "admin" || w.user_id === user.id)
@@ -435,7 +437,7 @@ export default function WordsPage() {
     }
 
     try {
-      await deleteWords(ownIds, user)
+      await deleteWords(ownIds, user?.id, user?.role)
       setMessage(`🗑️ Видалено ${ownIds.length} слів`)
       clearSelection()
       loadWords()
@@ -451,7 +453,7 @@ export default function WordsPage() {
   }
 
   const selectAll = () => {
-    setSelectedIds(tData.map((w) => w.id))
+    setSelectedIds(words.map((w) => w.id))
   }
 
   const clearSelection = () => {
@@ -462,10 +464,10 @@ export default function WordsPage() {
     if (selectedIds.length !== 1) return
 
     const id = selectedIds[0]
-    const idx = tData.findIndex((w) => w.id === id)
+    const idx = words.findIndex((w) => w.id === id)
     if (idx === -1) return
 
-    setMoveInfo({ idx, total: tData.length })
+    setMoveInfo({ idx, total: words.length })
     scrollRowIntoView(idx) //Для автоскролу
     setMoveMode(true)
   }
@@ -494,16 +496,16 @@ export default function WordsPage() {
     }
   }
 
-  // Функція для переміщення рядка в масиві tData в стані:
+  // Функція для переміщення рядка в масиві words в стані:
   const moveSelectedRow = (direction) => {
     if (!moveInfo) return
 
     const { idx } = moveInfo
-    const topicId = tData[idx].topic_id
+    const topicId = words[idx].topic_id
 
     // Знаходимо всі елементи цього topic
-    const topicWords = tData.filter((w) => w.topic_id === topicId)
-    const topicIndexes = topicWords.map((w) => tData.findIndex((x) => x.id === w.id))
+    const topicWords = words.filter((w) => w.topic_id === topicId)
+    const topicIndexes = topicWords.map((w) => words.findIndex((x) => x.id === w.id))
     const localIdx = topicIndexes.indexOf(idx)
 
     let newIdx = idx
@@ -518,13 +520,13 @@ export default function WordsPage() {
     if (newIdx === idx) return // нічого не змінилось
 
     // Створюємо копію масиву та міняємо місцями
-    let updatedWords = [...tData]
+    let updatedWords = [...words]
     ;[updatedWords[idx], updatedWords[newIdx]] = [updatedWords[newIdx], updatedWords[idx]]
 
     // Оновлюємо pn
     const newWordsWithPN = updatedWords.map((w, i) => ({ ...w, pn: i + 1 }))
 
-    setTData(newWordsWithPN)
+    setWords(newWordsWithPN)
     setIsOrderChanged(true)
 
     // Найбезпечніше: оновлюємо лише idx, інші поля залишаються
@@ -547,330 +549,40 @@ export default function WordsPage() {
   const toggleTopic = (topicId) => {
     setOpenTopics((prev) => (prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]))
   }
+//   console.log("words/page/words=", words)
+//   console.log("words/page/dataLevel1=", topics)
+//   console.log("words/page/dataLevel2=", sections)
 
   return (
     <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Слова</h1>
-      <div className="flex flex-wrap gap-2 items-center mb-4">
-        {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
-        {user && selectedIds.length === 0 && (
-          <>
-            <button onClick={openAddModal} className="bg-blue-600 text-white px-4 py-2 rounded">
-              ➕ Додати слово
-            </button>
-            <button
-              onClick={() => {
-                console.log("Натиснули кнопку імпорту CSV")
-                document.getElementById("csvInput").click()
-              }}
-              className="bg-purple-600 text-white px-4 py-2 rounded"
-              disabled={isPending}
-            >
-              📂 Імпортувати CSV
-            </button>
-            <button
-              onClick={handleTranslate}
-              className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
-            >
-              {translate ? "⏸ Зупинити переклад" : "▶️ Старт перекладу"}
-            </button>
-          </>
-        )}
+      {/* {topics.length > 0 && sections.length > 0 && ( */}
+      <TableView
+        data={words}
+        dataLevel1={topics}
+        dataLevel2={sections}
+        sewords={setWords}
+        // onSavePn={updateWordsPn}
+        columns={columns}
+        title={"СловаTW1"}
+        //   colorsTable={colorsTable}
+        // indexScheme={indexScheme} //колір
+        onAdd={openAddModal}
+        onEdit={() => openEditModal(selectedWord)}
+        onDelete={() => handleDelete(selectedWord)} // передаємо лише id
+        //   onImport={importCSV}
+        onImport={handleFileUpload}
+        onTranslate={handleTranslate}
+        translate={translate} //Чи перекладено для зміни кнопки
+        level1Head="Тема"
+        level2Head="Секція"
+        // sectionId={"section_id"} //🔒 Прив’язка переміщення до певного значення поля
+        // sectionName={"section_name"} //Назва секції
+        // beforeSectionName={"Тема"} // Назва перед: назвою секції
+        sortField={"pn"} //поле для порядку
+        isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
+      />
+      {/* )} */}
 
-        {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
-        {isOrderChanged && (
-          <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
-            💾 Зберегти порядок
-          </button>
-        )}
-
-        {/* 1 ВИДІЛЕНИЙ РЯДОК */}
-        {selectedIds.length === 1 &&
-          (() => {
-            const selectedWord = tData.find((w) => w.id === selectedIds[0])
-            const isOwner = user && selectedWord && selectedWord.user_id === user.id
-
-            return (
-              <>
-                {isOwner && (
-                  <>
-                    <button
-                      onClick={() => openEditModal(selectedWord)}
-                      className="bg-blue-600 text-white px-4 py-2 rounded"
-                    >
-                      ✏️ Редагувати
-                    </button>
-                    <button
-                      onClick={() => handleDelete(selectedWord)}
-                      className="bg-red-600 text-white px-4 py-2 rounded"
-                    >
-                      🗑️ Видалити
-                    </button>
-                  </>
-                )}
-                <button
-                  onClick={startMoveMode}
-                  //   onClick={() => setModal({ type: "move", word: selectedWord })}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded"
-                >
-                  🔀 Перемістити
-                </button>
-              </>
-            )
-          })()}
-
-        {/* БАГАТО ВИДІЛЕНИХ */}
-        {selectedIds.length > 1 && (
-          <button onClick={deleteSelected} className="bg-red-600 text-white px-4 py-2 rounded">
-            🗑 Видалити вибрані
-          </button>
-        )}
-      </div>
-      <input type="file" id="csvInput" accept=".csv,text/csv" style={{ display: "none" }} onChange={handleFileUpload} />
-      {message && (
-        <p className="mb-4 text-green-700 font-medium" role="alert">
-          {message}
-        </p>
-      )}
-      {/* перший рядок над таблицею */}
-      <div className="flex gap-2 items-center">
-        <span className="text-gray-700">📄Всього зап: {tData.length} </span>
-
-        <button
-          onClick={() => (selectedIds.length === tData.length ? clearSelection() : selectAll())}
-          className="text-sm px-2 py-1 rounded border"
-        >
-          {selectedIds.length === tData.length ? "☑ Зняти всі" : "☐ Виділити всі"}
-          {/* {selectedIds.length === tData.length ? "☑" : "☐"} */}
-        </button>
-        {selectedIds.length > 0 && <span className="text-blue-700">Виділено: {selectedIds.length}</span>}
-      </div>
-      {/*  */}
-      <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-100 sticky top-0 z-10">
-            <tr>
-              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
-              {columns.map((col) => (
-                <th
-                  key={col.accessor}
-                  style={{
-                    width: col.width,
-                    border: "1px solid #ccc",
-                    padding: "4px",
-                  }}
-                >
-                  {col.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {sections.map((section) => {
-              const sectionTopics = topics.filter((t) => t.section_id === section.id)
-              const sectionWords = tData.filter((w) => sectionTopics.some((t) => t.id === w.topic_id))
-              if (sectionWords.length === 0) return null
-
-              return (
-                <React.Fragment key={section.id}>
-                  <tr
-                    onClick={() => toggleSection(section.id)}
-                    className="bg-gray-300 cursor-pointer hover:bg-gray-400"
-                  >
-                    <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
-                      {level1Head}
-                      {section.name} ({sectionWords.length}){openSections.includes(section.id) ? " 🔽" : " ▶️"}
-                    </td>
-                  </tr>
-
-                  {openSections.includes(section.id) &&
-                    sectionTopics.map((topic) => {
-                      const topicWords = tData.filter((w) => w.topic_id === topic.id)
-                      if (topicWords.length === 0) return null
-
-                      return (
-                        <React.Fragment key={topic.id}>
-                          <tr
-                            onClick={() => toggleTopic(topic.id)}
-                            className="bg-gray-200 cursor-pointer hover:bg-gray-300"
-                          >
-                            <td
-                              colSpan={showOwnerMark ? columns.length + 1 : columns.length}
-                              className="p-2 font-semibold"
-                            >
-                              ⮞ {level2Head}
-                              {"  "}
-                              {topic.name} {topicWords.length}
-                              {openTopics.includes(topic.id) ? " 🔽" : " ▶️"}
-                            </td>
-                          </tr>
-
-                          {openTopics.includes(topic.id) &&
-                            topicWords.map((item, index) => (
-                              <tr
-                                key={item.id}
-                                ref={(el) => (rowRefs.current[index] = el)}
-                                onClick={() => toggleSelect(item.id)}
-                                className={`cursor-pointer ${isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}`}
-                              >
-                                {showOwnerMark && (
-                                  <td
-                                    style={{
-                                      width: 30,
-                                      border: "1px solid #ccc",
-                                      padding: "4px",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    {item.user_id === user?.id && "🧑‍💻"}
-                                  </td>
-                                )}
-                                {columns.map((col) => {
-                                  const value = item[col.accessor]
-                                  let content
-
-                                  switch (col.type) {
-                                    case "know":
-                                      content = value ? "👍" : ""
-                                      break
-                                    case "boolean":
-                                      content = value ? "✔" : ""
-                                      break
-                                    case "integer":
-                                      content = value != null ? Math.floor(Number(value)) : "-"
-                                      break
-                                    default:
-                                      content = value
-                                  }
-                                  return (
-                                    <td
-                                      key={col.accessor}
-                                      style={{
-                                        width: col.width,
-                                        border: "1px solid #ccc",
-                                        padding: "4px",
-                                        ...(col.styleCell || {}),
-                                      }}
-                                    >
-                                      <span style={col.styleCellText}>{content}</span>
-                                    </td>
-                                  )
-                                })}
-                              </tr>
-                            ))}
-                        </React.Fragment>
-                      )
-                    })}
-                </React.Fragment>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      <Modal open={!!modal} onClose={closeModal}>
-        <h2 className="text-lg font-semibold mb-4">{modal?.type === "edit" ? "Редагувати слово" : "Додати слово"}</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          {modal?.type === "edit" && (
-            <div>
-              <label htmlFor="id" className="block font-medium mb-1">
-                ID
-              </label>
-              <input
-                id="id"
-                type="text"
-                value={id}
-                readOnly
-                className="border p-2 rounded bg-gray-100 cursor-not-allowed"
-              />
-            </div>
-          )}
-          <div>
-            <label htmlFor="word" className="block font-medium mb-1">
-              Слово
-            </label>
-            <input
-              id="word"
-              type="text"
-              placeholder="Слово"
-              value={word}
-              onChange={(e) => setWord(e.target.value)}
-              className="border p-2 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="translation" className="block font-medium mb-1">
-              Переклад
-            </label>
-            <input
-              id="translation"
-              type="text"
-              placeholder="Переклад"
-              value={translation}
-              onChange={(e) => setTranslation(e.target.value)}
-              className="border p-2 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="pn" className="block font-medium mb-1">
-              Порядок (PN)
-            </label>
-            <input
-              id="pn"
-              type="number"
-              placeholder="Порядок"
-              value={pn}
-              onChange={(e) => setPn(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
-          <div>
-            <label htmlFor="topic_id" className="block font-medium mb-1">
-              Топік
-            </label>
-            <select
-              id="topic_id"
-              value={topic_id}
-              onChange={(e) => setTopicId(e.target.value)}
-              className="border p-2 rounded"
-              required
-            >
-              <option value="">Оберіть топік</option>
-              {topics.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="img" className="block font-medium mb-1">
-              URL зображення
-            </label>
-            <input
-              id="img"
-              type="text"
-              placeholder="URL зображення"
-              value={img}
-              onChange={(e) => setImg(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={know} onChange={(e) => setKnow(e.target.checked)} />
-            Знаю
-          </label>
-          <div className="flex gap-4 mt-2">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {modal?.type === "edit" ? "Оновити" : "Додати"}
-            </button>
-            <button type="button" onClick={closeModal} className="border px-4 py-2 rounded">
-              Відмінити
-            </button>
-          </div>
-        </form>
-      </Modal>
       <MoveRowModal
         open={moveMode}
         onClose={() => setMoveMode(false)}

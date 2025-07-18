@@ -128,3 +128,285 @@ export async function сheckСonnection() {
     throw new Error("Database connection failed: " + err.message)
   }
 }
+// Створення політик доступу / Вмикає RLS для всіх таблиць;
+// Створює політики для кожної операції (SELECT, INSERT, UPDATE, DELETE) відповідно до твоїх правил:
+// Для users — доступ лише адміну;
+// Для інших таблиць:SELECT — всі;INSERT — тільки зареєстровані (перевірка auth.uid() IS NOT NULL);
+// UPDATE, DELETE — тільки власник (user_id = auth.uid()).
+export async function createRLSPolicies() {
+  // Увімкнути RLS на таблицях
+  await sql`ALTER TABLE users ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE sections ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE topics ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE words ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE posts ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE comments ENABLE ROW LEVEL SECURITY;`
+
+  // --- USERS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Admins can select users'
+        ) THEN
+          CREATE POLICY "Admins can select users"
+          ON users FOR SELECT
+          USING (role = 'admin');
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Admins can update users'
+        ) THEN
+          CREATE POLICY "Admins can update users"
+          ON users FOR UPDATE
+          USING (role = 'admin');
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Admins only delete users'
+        ) THEN
+          CREATE POLICY "Admins only delete users"
+          ON users FOR DELETE
+          USING (role = 'admin');
+        END IF;
+      END $$;
+    `
+
+  // --- SECTIONS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select sections'
+        ) THEN
+          CREATE POLICY "All can select sections"
+          ON sections FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert sections'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert sections"
+          ON sections FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update sections'
+        ) THEN
+          CREATE POLICY "Only owner can update sections"
+          ON sections FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete sections'
+        ) THEN
+          CREATE POLICY "Only owner can delete sections"
+          ON sections FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- TOPICS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select topics'
+        ) THEN
+          CREATE POLICY "All can select topics"
+          ON topics FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert topics'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert topics"
+          ON topics FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update topics'
+        ) THEN
+          CREATE POLICY "Only owner can update topics"
+          ON topics FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete topics'
+        ) THEN
+          CREATE POLICY "Only owner can delete topics"
+          ON topics FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- WORDS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select words'
+        ) THEN
+          CREATE POLICY "All can select words"
+          ON words FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert words'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert words"
+          ON words FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update words'
+        ) THEN
+          CREATE POLICY "Only owner can update words"
+          ON words FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete words'
+        ) THEN
+          CREATE POLICY "Only owner can delete words"
+          ON words FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- POSTS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select posts'
+        ) THEN
+          CREATE POLICY "All can select posts"
+          ON posts FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert posts'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert posts"
+          ON posts FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update posts'
+        ) THEN
+          CREATE POLICY "Only owner can update posts"
+          ON posts FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete posts'
+        ) THEN
+          CREATE POLICY "Only owner can delete posts"
+          ON posts FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- COMMENTS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select comments'
+        ) THEN
+          CREATE POLICY "All can select comments"
+          ON comments FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert comments'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert comments"
+          ON comments FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update comments'
+        ) THEN
+          CREATE POLICY "Only owner can update comments"
+          ON comments FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete comments'
+        ) THEN
+          CREATE POLICY "Only owner can delete comments"
+          ON comments FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  console.log("✅ Політики RLS встановлені.")
+}
+
