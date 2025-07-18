@@ -39,13 +39,12 @@ export default function BlogPostPage() {
   const [editModal, setEditModal] = useState(null) // {id, content} | null
   const [editContent, setEditContent] = useState("")
 
-  const loadPost = async () => {
-    const { post, comments } = await getPost(id)
-    setPost(post)
-    setComments(comments)
-  }
-
   useEffect(() => {
+    const loadPost = async () => {
+      const { post, comments } = await getPost(id)
+      setPost(post)
+      setComments(comments)
+    }
     loadPost()
   }, [id])
 
