@@ -4,7 +4,7 @@
 "use client"
 import { useState } from "react"
 
-const DrawerSocialMenuDroop = ({ setDrawerOpen }) => {
+const DrawerSocialMenuDroop = () => {
   const [drawerSocialMenuDroop, setDrawerSocialMenuDroop] = useState(false)
 
   //випадаюче меню Налаштувань
