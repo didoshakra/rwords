@@ -21,16 +21,16 @@ const LandingInfo = () => {
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">🧠 Теми та групи</h3>
-          <p className="text-gray-600 text-sm">
+          <div className="text-gray-600 text-sm">
             <p>{"об'єднуй"}</p> слова у теми та групи тем для ефективнішого вивчення.
-          </p>
+          </div>
         </div>
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">📝 Статті</h3>
           <p className="text-gray-600 text-sm">
             Читай поради, інструкції, історії інших користувачів та ділись своїм досвідом.
           </p>
-        </div> 
+        </div>
       </section>
 
       {/* ✅ 4. CTA: Зареєструйтесь */}
