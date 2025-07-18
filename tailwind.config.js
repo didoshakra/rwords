@@ -14,12 +14,6 @@ module.exports = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        // level0: "var(--color-pCol9)",
-        // level1: "var(--color-pCol8)",
-        // level2: "var(--color-pCol7)",
-        // level3: "var(--color-pCol6)",
-        // level4: "var(--color-pCol5)",
-        // level5: "var(--color-pCol4)",
         level0: "#f64532",
         level1: "#82AE46",
         level2: "#13ff11",
@@ -27,10 +21,11 @@ module.exports = {
         level4: "#fcd34d",
         level5: "#0e6955",
         // closeLevel: "#82AE46",
-        1: "#82AE46",
-        2: "#00f",
-        3: "#13ff11",
-        4: "#ac00ca",
+        // 1: "#82AE46",
+        // 2: "#00f",
+        // 3: "#13ff11",
+        // 4: "#ac00ca",
+
         itemHover: "#f64532",
         mainColor: "red",
 
@@ -162,22 +157,6 @@ module.exports = {
         },
       },
     },
-    //   animation-name: slideHome; //ім'я секції анімації
-    //   animation-duration: 5s; //протяжність анімації
-    //   animation-delay: 5s; //Затримка анімації після протяжність анімації
-    //   animation-timing-function: linear; //рівномірна зміна//??ease-in-out
-    //   animation-iteration-count: infinite; //к-сть повторів/rinfinite нескінченно
-    //   animation-direction: alternate; //Анімація змінює напрямок в кожному циклі
-    // animation: {
-    //   slideHome: "slideHome linear infinite 5s  alternate",
-    //   slideHome1: "slideHome1 5s 5s ease-in-out  infinite alternate",
-    //   drawerDroop: "drawerDroop ease-in-out",
-    // },
-    // backgroundImage: {
-    //   "sort-up": "url('/public/images/table/up_arrow.png')",
-    //   "sort-down": "url('/public/images/table/down_arrow.png')",
-    //   "sort-default": "url('/public/images/table/default.png')",
-    // },
   },
   plugins: [
     function ({ addUtilities }) {

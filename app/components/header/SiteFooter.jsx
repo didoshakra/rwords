@@ -35,7 +35,7 @@ const SiteFooter = () => {
         {/* Соцмережі */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Ми в соцмережах</h3>
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-4 items-center">
             <li>
               <a
                 href="https://www.facebook.com/profile.php?id=100017742340573"
@@ -53,6 +53,45 @@ const SiteFooter = () => {
                   strokeLinejoin="round"
                 >
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              {/* IconInstagram */}
+              <a
+                className="flex items-center justify-start space-x-1 text-sm"
+                href="https://www.instagram.com/didoshakr/"
+                title="Instagram"
+              >
+                <svg
+                  className="h-6 w-6  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {" "}
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />{" "}
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />{" "}
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a
+                className="flex items-center justify-start space-x-1 text-sm"
+                href="https://x.com/RDidosak"
+                title="Х/Twitter"
+              >
+                <svg
+                  className="h-5 w-5 dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 1200 1227"
+                  fill="currentColor"
+                >
+                  <path d="M714.175 541.805 1182.5 0H1074.63L659.345 474.098 328.172 0H0l491.765 704.608L0 1227h107.872l436.93-493.422L888.979 1227H1217.15L714.175 541.805Zm-154.755 174.6-50.686-72.424L147.333 88.27h134.202l275.493 393.501 50.685 72.424 388.598 555.189H861.715L559.42 716.405Z" />
                 </svg>
               </a>
             </li>

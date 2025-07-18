@@ -38,7 +38,7 @@ const HeaderThemesDroopMenu = ({ setSetingMenuOpen }) => {
       <button className="flex items-center" onClick={setSetingThemesMenuToggle} title="Налаштування теми">
         <span className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-hBgHov dark:hover:bg-hBgHovD">
           {resolvedTheme === "dark" ? (
-            <FaSun className="h-7 w-7 text-hTextD hover:text-hTextHov" />
+            <FaSun className="h-7 w-7 text-hTextD hover:text-hTextHov" /> 
           ) : (
             <FaMoon className="h-7 w-7 text-hText dark:text-hTextHovD" />
           )}

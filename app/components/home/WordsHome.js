@@ -14,13 +14,11 @@ const WordsHome = () => {
         items-center justify-center bg-[url('/images/mstan/travel-the-world-monument-concept.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full w-full flex-col items-center justify-center px-3 text-center align-middle">
-          {/* <h1 className="items-center justify-center font-serif text-[30px] font-extrabold leading-normal text-hTextImg md:text-[70px]"> */}
           <h1 className="items-center justify-center font-serif text-[30px] font-extrabold leading-normal text-hTextImg md:text-[70px]">
             Вчіть слова щоб подорожувати
           </h1>
-          {/* <h2 className="inline-block font-sans text-[10px] font-bold uppercase tracking-normal text-hTextImg1 md:text-[25px]"> */}
-          <h2 className="inline-block font-sans text-[10px] font-bold uppercase tracking-normal text-hTextImg1  md:text-[25px]">
-           Подорожуючи вчити легше
+          <h2 className="inline-block font-sans text-[10px] font-bold uppercase tracking-normal text-iconT  md:text-[25px]">
+            Подорожуючи вчити легше
           </h2>
         </div>
       </div>
@@ -32,7 +30,7 @@ const WordsHome = () => {
           <h1 className="h-auto items-center justify-center  font-sans text-[30px] font-extrabold leading-normal text-hTextImg md:text-[70px]">
             Вчіть слова щоб спілкуватись
           </h1>
-          <h2 className="inline-block font-sans text-[10px] font-bold uppercase tracking-normal text-hTextImg1  md:text-[25px]">
+          <h2 className="inline-block font-sans text-[10px] font-bold uppercase tracking-normal text-iconT  md:text-[25px]">
             Разом вчити приємніше
           </h2>
         </div>

@@ -1,5 +1,6 @@
 //HeaderTape.js
 // import IconPhone from "@/components/ui/icons/social/IconPhone";
+// import { FaSun, FaMoon, FaPalette } from "react-icons/fa";
 
 const HeaderTape = () => {
   return (
@@ -48,14 +49,14 @@ const HeaderTape = () => {
       {/* права сторона */}
       <div className="flex justify-between items-center text-center space-x-1 md:justify-end ">
         <div className="flex justify-start space-x-1">
+          {/* Х/Twitter */}
           <a
             className="flex items-center justify-start space-x-1 text-sm"
-            href="https://twitter.com/home?lang=uk"
-            title="Twitter"
+            href="https://x.com/RDidosak"
+            title="Х/Twitter"
           >
-            {/* Twitter */}
-            <svg
-              className="h-4 w-4  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+            {/* <svg
+              className="h-4 w-4 dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -63,16 +64,24 @@ const HeaderTape = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              {" "}
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg> */}
+            <svg
+              className="h-3 w-3 dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1200 1227"
+              fill="currentColor"
+            >
+              <path d="M714.175 541.805 1182.5 0H1074.63L659.345 474.098 328.172 0H0l491.765 704.608L0 1227h107.872l436.93-493.422L888.979 1227H1217.15L714.175 541.805Zm-154.755 174.6-50.686-72.424L147.333 88.27h134.202l275.493 393.501 50.685 72.424 388.598 555.189H861.715L559.42 716.405Z" />
             </svg>
           </a>
+          {/* IconInstagram */}
           <a
             className="flex items-center justify-start space-x-1 text-sm"
-            href="https://www.facebook.com/profile.php?id=100017742340573"
+            href="https://www.instagram.com/didoshakr/"
             title="Instagram"
           >
-            {/* IconInstagram */}
             <svg
               className="h-4 w-4  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
               viewBox="0 0 24 24"
@@ -88,11 +97,11 @@ const HeaderTape = () => {
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
             </svg>
           </a>
+          {/* Facebook */}
           <a
             className="flex items-center justify-start space-x-1 text-sm"
-            href="https://www.facebook.com/profile.php?id=100017742340573"
+            href="https://www.facebook.com/profile.php?id=100004339204236"
           >
-            {/* Facebook */}
             <svg
               className="h-4 w-4 "
               viewBox="0 0 24 24"
