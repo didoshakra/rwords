@@ -37,6 +37,7 @@ const SiteFooter = () => {
           <h3 className="text-lg font-semibold mb-2">Ми в соцмережах</h3>
           <ul className="flex space-x-4 items-center">
             <li>
+              {/* GitHub */}
               <a
                 className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
                 href="https://github.com/didoshakra?tab=repositories"

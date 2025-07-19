@@ -15,7 +15,8 @@ export default function AuthPage() {
     confirmPassword: "",
   })
   const [showPassword, setShowPassword] = useState(false)
-  const [mode, setMode] = useState("register") // or "login"
+//   const [mode, setMode] = useState("register") // or "login"
+  const [mode, setMode] = useState("login") // or "login"
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState("")
 
