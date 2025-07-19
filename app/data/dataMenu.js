@@ -12,30 +12,6 @@ export const headMenu = [
     a: "Про нас",
     link: "/about",
   },
-  {
-    a: "Групи тем",
-    link: "/sections",
-  },
-  {
-    a: "Теми",
-    link: "/topics",
-  },
-  {
-    a: "Слова_TW",
-    link: "/words_tw",
-  },
-  {
-    a: "Слова",
-    link: "/words",
-  },
-  {
-    a: "Слова1",
-    link: "/words1",
-  },
-  {
-    a: "Слова2",
-    link: "/words2",
-  },
 ]
 export const menuAdmin = [
   {
@@ -77,8 +53,23 @@ export const menuAdmin = [
           },
           {
             id: 4,
+            title: "Слова_TW",
+            url: "/words_tw",
+          },
+          {
+            id: 4,
             title: "Слова",
             url: "/words",
+          },
+          {
+            id: 4,
+            title: "Слова1",
+            url: "/words1",
+          },
+          {
+            id: 4,
+            title: "Слова2",
+            url: "/words2",
           },
         ],
       },
