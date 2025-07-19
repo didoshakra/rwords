@@ -120,7 +120,7 @@ const Footer = () => {
               </a>
             </li>
             <li className="flex  flex-row items-center justify-start px-4 text-sm">
-                {/* почна */}
+              {/* почна */}
               <svg
                 className="h-6 w-6 "
                 width="24"
@@ -136,7 +136,9 @@ const Footer = () => {
                 <path stroke="none" d="M0 0h24v24H0z" /> <rect x="3" y="5" width="18" height="14" rx="2" />{" "}
                 <polyline points="3 7 12 13 21 7" />
               </svg>
-              <span type="button" className="px-2">ra@gmail.com</span>
+              <span type="button" className="px-2">
+                ra@gmail.com
+              </span>
             </li>
           </ul>
         </div>
@@ -160,6 +162,7 @@ const Footer = () => {
           <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
         </svg>
       </div>
+      <div className="mt-12 text-sm text-gray-700 italic">🇺🇦 Все буде Україна!</div>
     </section>
   )
 }

@@ -34,11 +34,24 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
     <div className="relative flex items-center h-full" ref={menuRef}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-4 px-2 py-1 hover:bg-hBgHov dark:hover:bg-hBgHovD  font-bold text-base transition-colors"
+        className="w-full flex items-center gap-2  py-2  hover:bg-hBgHov dark:hover:bg-hBgHovDfocus:outline-none"
         title={user ? user.name || user.email : "Гість"}
       >
-        <span>{user ? initials : <FaUserCircle size={24} />}</span>
-        <span className="md:hidden">Логін</span>
+        <div
+          className="flex items-center justify-center focus:outline-none transition-colors bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            //   background: user ? "#1976d2" : "transparent",
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+        >
+          {user ? initials : <FaUserCircle size={32} />}
+        </div>
+        <span className="md:hidden">Акаунт</span>
       </button>
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-sm text-gray-800">

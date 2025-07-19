@@ -387,6 +387,7 @@ export default function TableView({
                   >
                     <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
                       {level2Head}
+                      {": "}
                       {section.name} ({sectionWords.length}){openSections.includes(section.id) ? " 🔽" : " ▶️"}
                     </td>
                   </tr>
@@ -407,7 +408,7 @@ export default function TableView({
                               className="p-2 font-semibold"
                             >
                               ⮞ {level1Head}
-                              {"  "}
+                              {": "}
                               {topic.name} {topicWords.length}
                               {openTopics.includes(topic.id) ? " 🔽" : " ▶️"}
                             </td>

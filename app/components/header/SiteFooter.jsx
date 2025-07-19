@@ -124,7 +124,8 @@ const SiteFooter = () => {
 
       <div className="text-center py-4 border-t border-gray-300 dark:border-gray-600 text-sm">
         © {year} RWords. Усі права захищено.
-        <span className="inline-block px-1">❤️</span>
+        <span className="inline-block px-1">❤️ 🇺🇦 Все буде Україна!</span>
+        {/* <span className="mt-12 text-sm text-gray-700 italic">🇺🇦 Все буде Україна!</span> */}
       </div>
     </footer>
   )
