@@ -1,6 +1,7 @@
 // Layout
 import "./globals.css"
 import ThemeProviders from "./context/ThemeProviders"
+import {DatabaseProvider} from "./context/DatabaseContext"
 import { Inter } from "next/font/google"
 import HeaderTape from "@/app/components/header/HeaderTape"
 import Header from "@/app/components/header/Header"
@@ -23,13 +24,17 @@ export default function RootLayout({ children }) {
       {/* suppressHydrationWarning={true}//https://www.slingacademy.com/article/next-js-warning-extra-attributes-from-the-server/ */}
       <body suppressHydrationWarning={true} className={`inter.className bg-bodyBg dark:bg-bodyBgD`}>
         <ThemeProviders>
-          <HeaderTape />
-          <AuthProvider>
-            <Header />
-            {children}
-          </AuthProvider>
-          {/* <Footer /> */}
-          <SiteFooter />
+          <DatabaseProvider>
+            {" "}
+            {/* Ось сюди */}
+            <AuthProvider>
+              <HeaderTape />
+              <Header />
+              {children}
+              {/* <Footer /> */}
+              <SiteFooter />
+            </AuthProvider>
+          </DatabaseProvider>
         </ThemeProviders>
       </body>
     </html>

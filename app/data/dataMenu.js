@@ -17,12 +17,14 @@ export const menuAdmin = [
   {
     id: 1,
     title: "Адміністрування",
+    roles: ["admin"], // ❗️ Доступ тільки для admin
+    // skipRoleCheckIfNoUser: true, // 👈 Якщо користувача ще нема (нема БД)
     submenu: [
       {
         id: 1,
         title: "Робота з БД",
         roles: ["admin"], // ❗️ Доступ тільки для admin
-        skipRoleCheckIfNoUser: true, // 👈 Якщо користувача ще нема (нема БД)
+        // skipRoleCheckIfNoUser: true, // 👈 Якщо користувача ще нема (нема БД)
         submenu: [
           {
             id: 1,
@@ -42,22 +44,7 @@ export const menuAdmin = [
             url: "/users",
           },
           {
-            id: 2,
-            title: "Групи тем",
-            url: "/sections",
-          },
-          {
             id: 3,
-            title: "Теми",
-            url: "/topics",
-          },
-          {
-            id: 4,
-            title: "Слова_TW",
-            url: "/words_tw",
-          },
-          {
-            id: 4,
             title: "Слова",
             url: "/words",
           },
@@ -67,7 +54,7 @@ export const menuAdmin = [
             url: "/words1",
           },
           {
-            id: 4,
+            id: 5,
             title: "Слова2",
             url: "/words2",
           },
@@ -77,12 +64,22 @@ export const menuAdmin = [
   },
   {
     id: 2,
-    title: "Налаштування",
+    title: "Теми і слова",
     submenu: [
       {
         id: 1,
-        title: "Права доступу",
-        url: "/roles",
+        title: "Групи тем",
+        url: "/sections",
+      },
+      {
+        id: 2,
+        title: "Теми",
+        url: "/topics",
+      },
+      {
+        id: 3,
+        title: "Слова_TW",
+        url: "/words_tw",
       },
     ],
   },

@@ -1,29 +1,14 @@
 //MultiLevelMenu.js
-// Не працюють кольори по рівнях
+// Компонент для відображення багаторівневого меню
+
 "use client"
 import React, { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { useAuth } from "@/app/context/AuthContext"
-
-// const colorLevel = {
-//   0: "#000000",
-//   1: "#0906f7",
-//   2: "#0a5ced",
-//   3: "#0969ae",
-//   4: "#0c6998",
-//   5: "#0e6955",
-// }
-const colorLevel = {
-  0: "text-level0",
-  1: "text-level1",
-  2: "text-level2",
-  3: "text-level3",
-  4: "text-level4",
-  5: "text-level5",
-}
-
+import { useDatabase } from "@/app/context/DatabaseContext"
 
 const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
+    const { isDatabaseReady } = useDatabase()
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const ref = useRef()
@@ -39,13 +24,21 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   }, [])
 
   // ❗️Перевірка ролі з умовою
+  // Якщо у елемента є roles, перевіряємо доступ користувача
+
+//   if (item.roles) {
+//     const hasAccess = user ? item.roles.includes(user.role) : item.skipRoleCheckIfNoUser === true
+
+//     if (!hasAccess) {
+//       console.log(`Ховаємо пункт '${item.title}' — user:`, user, " — roles:", item.roles)
+//       return null
+//     }
+//   }
   if (item.roles) {
-    if (!user) {
-      // Якщо користувача ще нема (нема БД), але пункт не дозволений явно - ховаємо
-      if (!item.skipRoleCheckIfNoUser) {
-        return null
-      }
-    } else if (!item.roles.includes(user.role)) {
+    const hasAccess = user ? item.roles.includes(user.role) : !isDatabaseReady // Якщо користувача нема, то даємо доступ тільки якщо БД не готова
+
+    if (!hasAccess) {
+      console.log(`Ховаємо пункт '${item.title}' — user:`, user, " — roles:", item.roles)
       return null
     }
   }
