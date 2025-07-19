@@ -29,7 +29,7 @@ const LandingInfo = () => {
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">🧠 Теми та групи</h3>
           <p className="text-gray-600 text-sm">
-            Об'єднуй слова за темами й групами для зручнішого та ефективнішого вивчення.
+            об&#39;єднуй слова за темами й групами для зручнішого та ефективнішого вивчення.
           </p>
         </div>
 
@@ -47,7 +47,9 @@ const LandingInfo = () => {
 
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">📥 Завантаження тем</h3>
-          <p className="text-gray-600 text-sm">Завантажуй готові теми для вивчення безпосередньо з застосунку RWords.</p>
+          <p className="text-gray-600 text-sm">
+            Завантажуй готові теми для вивчення безпосередньо з застосунку RWords.
+          </p>
         </div>
 
         <div className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
@@ -59,7 +61,7 @@ const LandingInfo = () => {
       </section>
 
       {/* ✅ 4. CTA: Зареєструйтесь */}
-           <section className="text-center py-10 px-6 bg-blue-50">
+      <section className="text-center py-10 px-6 bg-blue-50">
         {user ? (
           <>
             <h3 className="text-xl font-semibold mb-4">Дякуємо, що з нами!</h3>
@@ -74,8 +76,8 @@ const LandingInfo = () => {
           <>
             <h3 className="text-xl font-semibold mb-4">Готові почати?</h3>
             <p className="mb-6 text-gray-700">
-              Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники для вивчення слів, публікувати
-              дописи та коментувати записи інших користувачів.
+              Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники для вивчення слів,
+              публікувати дописи та коментувати записи інших користувачів.
             </p>
             <Link href="/auth" className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition">
               Увійти або зареєструватись
