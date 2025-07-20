@@ -7,8 +7,8 @@ export default function DownloadPage() {
       <p>Натисніть кнопку нижче, щоб завантажити наш застосунок:</p>
 
       <a
-        href="https://github.com/didoshakra/rwords/releases/download/rwors/app-release.apk"
-        download
+        href="https://github.com/didoshakra/rwords/releases/download/v1.0.1/rwords.apk"
+        // download
         style={{
           marginTop: "20px",
           padding: "12px 24px",
