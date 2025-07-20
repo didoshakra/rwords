@@ -15,13 +15,12 @@ export default function HowItWorks() {
           <strong>Групи тем</strong>. В налаштуваннях також доступний імпорт слів із CSV та автоматичний переклад.
         </p>
       </section>
-
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2 text-center">🧭 Основні екрани</h2>
 
         {/* Home */}
         <div className="mt-8">
-          <h3 className="text-xl font-bold text-center mb-4">🏠 1. Титульний екран “Home”</h3>
+          <h3 className="text-xl font-bold text-center mb-4">🏠 Головна</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/home.jpg"
@@ -36,7 +35,7 @@ export default function HowItWorks() {
 
         {/* Words */}
         <div className="mt-8">
-          <h3 className="text-xl font-bold text-center mb-4">🗣️ 2. Головний екран “Слова”</h3>
+          <h3 className="text-xl font-bold text-center mb-4">🗣️ Слова</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <ul className="list-disc pl-5 text-lg md:order-1">
               <li>Прослуховуйте слова та оцінюйте знання.</li>
@@ -54,7 +53,7 @@ export default function HowItWorks() {
 
         {/* Settings */}
         <div className="mt-8">
-          <h3 className="text-xl font-bold text-center mb-4">🎨 3. Екран “Налаштування”</h3>
+          <h3 className="text-xl font-bold text-center mb-4">🎨Налаштування відтворення</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_settings.jpg"
@@ -67,10 +66,92 @@ export default function HowItWorks() {
             </ul>
           </div>
         </div>
-      </section>
 
-      {/* ********************************************************** */}
-      ✅ Що зроблено: Назва кожного екрану по центру
+        {/* voices_commands */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-center mb-4">🗣️ Налаштування голосових команд</h3>
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <ul className="list-disc pl-5 text-lg md:order-1">
+              <li>Додавайте(змінюйте) голосові команди до команд управління.</li>
+              <li>Додавайте нові коланди голосом: 🎤 голос, 🔁 повтор, ⚙️ інші параметри.</li>
+              <li>Налаштовуйте голосові команди під свій голос.</li>
+            </ul>
+            <img
+              src="/rwords_screens/voices_commands.jpg"
+              alt="Головний екран Слова"
+              //   className="rounded-xl shadow-lg max-w-full md:order-2"
+              className="w-full md:w-1/2 md:order-2 mx-auto my-4 rounded shadow"
+            />
+          </div>
+        </div>
+
+        {/* сolors_settings*/}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-center mb-4">🎨Налаштування колірних схем</h3>
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <img
+              src="/rwords_screens/сolors_settings.jpg"
+              alt="Екран налаштувань"
+              className="w-full md:w-1/2 md:order-1 mx-auto my-4 rounded shadow"
+            />
+            <ul className="list-disc pl-5 text-lg md:order-2">
+              <li>Доступ до довідників: Слова, Теми, Групи тем.</li>
+              <li>🌈 Колірні схеми оформлення.</li>
+            </ul>
+          </div>
+        </div>
+        {/* words_run */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-center mb-4">🗣️ Відтворення слів</h3>
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <ul className="list-disc pl-5 text-lg md:order-1">
+              <li>Прослуховуйте слова та оцінюйте знання.</li>
+              <li>Навігація: голосові команди або кнопки.</li>
+              <li>Налаштування: 🎤 голос, 🔁 повтор, ⚙️ інші параметри.</li>
+            </ul>
+            <img
+              src="/rwords_screens/words_run.jpg"
+              alt="Головний екран Слова"
+              //   className="rounded-xl shadow-lg max-w-full md:order-2"
+              className="w-full md:w-1/2 md:order-2 mx-auto my-4 rounded shadow"
+            />
+          </div>
+        </div>
+
+        {/* words_list */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-center mb-4">🎨 Список слів-переміщення </h3>
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <img
+              src="/rwords_screens/words_list.jpg"
+              alt="Екран налаштувань"
+              className="w-full md:w-1/2 md:order-1 mx-auto my-4 rounded shadow"
+            />
+            <ul className="list-disc pl-5 text-lg md:order-2">
+              <li>Доступ до довідників: Слова, Теми, Групи тем.</li>
+              <li>🌈 Колірні схеми оформлення.</li>
+            </ul>
+          </div>
+        </div>
+        {/* words_list_buttons */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold text-center mb-4">🗣️ Список слів-кнопки</h3>
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <ul className="list-disc pl-5 text-lg md:order-1">
+              <li>Прослуховуйте слова та оцінюйте знання.</li>
+              <li>Навігація: голосові команди або кнопки.</li>
+              <li>Налаштування: 🎤 голос, 🔁 повтор, ⚙️ інші параметри.</li>
+            </ul>
+            <img
+              src="/rwords_screens/words_list_buttons.jpg"
+              alt="Головний екран Слова"
+              //   className="rounded-xl shadow-lg max-w-full md:order-2"
+              className="w-full md:w-1/2 md:order-2 mx-auto my-4 rounded shadow"
+            />
+          </div>
+        </div>
+      </section>
+      {/* ********************************************************** */}✅ Що зроблено: Назва кожного екрану по центру
       (text-center). Нижче —
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">📌 Елементи інтерфейсу</h2>
