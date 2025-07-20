@@ -1,5 +1,6 @@
 // SiteFooter.jsx
 "use client"
+import {img} from "next/image"
 
 const SiteFooter = () => {
   const year = new Date().getFullYear()
@@ -60,7 +61,7 @@ const SiteFooter = () => {
             </li>
             <li>
               <a
-                href="https://www.facebook.com/profile.php?id=100017742340573"
+                href="https://www.facebook.com/profile.php?id=100004339204236"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-hTextHov dark:hover:text-hTextHovD"
@@ -124,7 +125,10 @@ const SiteFooter = () => {
 
       <div className="text-center py-4 border-t border-gray-300 dark:border-gray-600 text-sm">
         © {year} RWords. Усі права захищено.
-        <span className="inline-block px-1">❤️ 🇺🇦 Все буде Україна!</span>
+        <span className="inline-flex items-center gap-1 px-1">
+          <img src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
+          {"  "}Все буде Україна! ❤️
+        </span>
         {/* <span className="mt-12 text-sm text-gray-700 italic">🇺🇦 Все буде Україна!</span> */}
       </div>
     </footer>

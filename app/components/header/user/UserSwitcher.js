@@ -32,18 +32,15 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
 
   return (
     <div className="relative flex items-center h-full" ref={menuRef}>
+      {/* 📱 Мобільна кнопка: вся зона клікабельна */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center gap-2  py-2  hover:bg-hBgHov dark:hover:bg-hBgHovDfocus:outline-none"
+        className="flex items-center gap-2 py-2 hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
         title={user ? user.name || user.email : "Гість"}
       >
         <div
-          className="flex items-center justify-center focus:outline-none transition-colors bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD"
+          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hText"
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            //   background: user ? "#1976d2" : "transparent",
             color: "#fff",
             fontWeight: "bold",
             fontSize: 20,
@@ -51,8 +48,24 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
         >
           {user ? initials : <FaUserCircle size={32} />}
         </div>
-        <span className="md:hidden">Акаунт</span>
+        <span>Акаунт</span>
       </button>
+
+      {/* 🖥️ Десктопна кнопка: тільки аватарка */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
+        title={user ? user.name || user.email : "Гість"}
+        style={{
+          color: "#fff",
+          fontWeight: "bold",
+          fontSize: 20,
+        }}
+      >
+        {user ? initials : <FaUserCircle size={32} />}
+      </button>
+
+      {/* Випадаюче меню */}
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-sm text-gray-800">
           {!user ? (

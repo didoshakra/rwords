@@ -10,7 +10,7 @@ const DrawerSocialMenuDroop = () => {
   //випадаюче меню Налаштувань
   const renderMenu = () => {
     return (
-        <ul className="flex space-x-4 items-center">
+      <ul className="flex space-x-4 items-center">
         <li>
           <a
             className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
@@ -35,10 +35,11 @@ const DrawerSocialMenuDroop = () => {
         <li>
           <a
             className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
-            href="https://www.facebook.com/profile.php?id=100017742340573"
+            href="https://www.facebook.com/profile.php?id=100004339204236"
             target="_blank"
             rel="noopener noreferrer"
-            title="Facebook">
+            title="Facebook"
+          >
             <svg
               className="h-6 w-6  dark:hover:text-hTextHovD"
               viewBox="0 0 24 24"
