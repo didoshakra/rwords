@@ -8,6 +8,7 @@ export default function DownloadPage() {
 
       <a
         href="https://github.com/didoshakra/rwords/releases/download/v1.0.1/rwords.apk"
+        // href="https://cold1.gofile.io/download/web/ab20dd16-bb7d-4d3c-b4b3-81adabea46b8/rwords.apk"
         // download
         style={{
           marginTop: "20px",

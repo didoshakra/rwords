@@ -14,8 +14,8 @@ export default function Header() {
         <DrawerSwitcher />
         <HeaderLogo />
       </div>
+      <HeaderMenu />
       <div className="flex items-center h-full justify-end">
-        <HeaderMenu />
         <HeaderMenuRight />
       </div>
     </header>

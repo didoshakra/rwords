@@ -65,7 +65,7 @@ export const menuAdmin = [
   {
     id: 2,
     title: "Теми і слова",
-    roles: ["admin", "manager","user"], // ❗️ admin і manager
+    roles: ["admin", "manager", "user"], // ❗️ admin і manager
     submenu: [
       {
         id: 1,
@@ -82,9 +82,16 @@ export const menuAdmin = [
         title: "Слова_TW",
         url: "/words_tw",
       },
+    ],
+  },
+  {
+    id: 3,
+    title: "Завантаження",
+    roles: ["admin", "manager", "user"], // ❗️ admin і manager
+    submenu: [
       {
-        id: 4,
-        title: "Скачати застосунок RWords",
+        id: 1,
+        title: "Завантажити застосунок RWords",
         url: "/download",
       },
     ],
