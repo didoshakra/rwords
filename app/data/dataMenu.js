@@ -9,6 +9,10 @@ export const headMenu = [
     link: "/blog",
   },
   {
+    a: "Про RWords",
+    link: "/about_rwords",
+  },
+  {
     a: "Про нас",
     link: "/about",
   },
