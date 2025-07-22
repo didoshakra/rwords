@@ -2,6 +2,15 @@
 export default function HowItWorks() {
   return (
     <main className="px-4 py-8 max-w-4xl mx-auto text-hText dark:text-hTextD">
+      <h1 className="text-3xl font-bold mb-4">📖 Як завантажити застосунок RWords</h1>
+      <section className="mb-6">
+        <h2 className="text-2xl font-semibold mb-2">🧠 Зареєструйтеся, щоб відкрити посилання на завантаження</h2>
+
+        <p>
+          Щоб почати, потрібно створити базу даних у налаштуваннях: <strong>Слова</strong>, <strong>Теми</strong> і{" "}
+          <strong>Групи тем</strong>. В налаштуваннях також доступний імпорт слів із CSV та автоматичний переклад.
+        </p>
+      </section>
       <h1 className="text-3xl font-bold mb-4">📖 Як працює застосунок RWords</h1>
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">🧠 Головна ідея застосунку</h2>
