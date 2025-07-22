@@ -36,7 +36,7 @@
     --color-pCol8: #1e293b;
     --color-pCol9: #0f172a; */
     /* Sky 80-900*/
-    --color-pCol0: #f0f9ff;
+    /* --color-pCol0: #f0f9ff;
     --color-pCol1: #e0f2fe;
     --color-pCol2: #bae6fd;
     --color-pCol3: #7dd3fc;
@@ -45,7 +45,18 @@
     --color-pCol6: #0284c7;
     --color-pCol7: #0369a1;
     --color-pCol8: #075985;
-    --color-pCol9: #0c4a6e;
+    --color-pCol9: #0c4a6e; */
+    /* Emerald 80-900*/
+  --color-pCol0:#ecfdf5;
+  --color-pCol1: #d1fae5;
+  --color-pCol2: #a7f3d0;
+  --color-pCol3: #6ee7b7;
+  --color-pCol4: #34d399;
+  --color-pCol5:#10b981;
+  --color-pCol6: #059669;
+  --color-pCol7: #047857;
+  --color-pCol8: #065f46;
+  --color-pCol9: #064e3b;
   }
 
   @import "@/styles/themes/tIndigo.css";
