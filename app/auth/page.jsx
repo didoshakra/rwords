@@ -96,7 +96,7 @@ export default function AuthPage() {
     {
       name: "google",
       label: "Google",
-      color: "bg-red-700",
+      color: "bg-red-700",//
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 48 48">
           <path
