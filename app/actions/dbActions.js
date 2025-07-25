@@ -27,7 +27,7 @@ export async function initTables() {
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT,
     name TEXT,
     role TEXT NOT NULL DEFAULT 'user',
     avatar TEXT DEFAULT '',

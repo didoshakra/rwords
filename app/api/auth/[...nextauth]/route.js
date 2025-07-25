@@ -12,6 +12,11 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "openid email profile",
+        },
+      },
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -47,6 +52,36 @@ const handler = NextAuth({
   callbacks: {
     //  Якщо email вже є в базі — просто пускаємо.
     // 🔹 Якщо нема — створюємо нового користувача.
+    // async signIn({ user, account, profile }) {
+    //   console.log("signIn callback:", { user, account, profile })
+
+    //   if (!user.email) {
+    //     console.log("signIn failed: no email")
+    //     return false
+    //   }
+
+    //   try {
+    //     const [existingUser] = await sql`
+    //   SELECT * FROM users WHERE email = ${user.email}
+    // `
+
+    //     if (!existingUser) {
+    //       // Створюємо нового користувача
+    //       await sql`
+    //     INSERT INTO users (email, name, avatar, email_verified, provider)
+    //     VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
+    //   `
+    //       console.log(`New user created: ${user.email}`)
+    //     } else {
+    //       console.log(`User exists: ${user.email} (provider doesn't matter)`)
+    //     }
+
+    //     return true
+    //   } catch (error) {
+    //     console.error("Error in signIn callback:", error)
+    //     return false
+    //   }
+    // }
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 
@@ -61,19 +96,18 @@ const handler = NextAuth({
     `
 
         if (!existingUser) {
-          // Створюємо нового користувача
           await sql`
         INSERT INTO users (email, name, avatar, email_verified, provider)
         VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
       `
-          console.log(`New user created: ${user.email}`)
+          console.log(`✅ New user created: ${user.email}`)
         } else {
-          console.log(`User exists: ${user.email} (provider doesn't matter)`)
+          console.log(`✅ Existing user: ${user.email}`)
         }
 
         return true
       } catch (error) {
-        console.error("Error in signIn callback:", error)
+        console.error("❌ DB error in signIn:", error)
         return false
       }
     },
