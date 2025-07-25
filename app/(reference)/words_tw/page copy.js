@@ -15,7 +15,9 @@ import {
 } from "@/app/actions/wordActions"
 import { getSections } from "@/app/actions/sectionActions"
 import { getTopics } from "@/app/actions/topicActions"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
+
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 import TableView from "@/app/components/tables/TableView"
 
@@ -107,7 +109,9 @@ export default function WordsPage() {
   // prors
   const showOwnerMark = true
 
-  const { user } = useAuth()
+//   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [words, setWords] = useState([])
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])

@@ -14,7 +14,8 @@ import {
 } from "@/app/actions/wordActions"
 import { getSections } from "@/app/actions/sectionActions"
 import { getTopics } from "@/app/actions/topicActions"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 import { deleteWords } from "@/app/actions/wordActions"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
@@ -37,7 +38,9 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function WordsPage() {
-  const { user } = useAuth()
+//   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [words, setWords] = useState([])
   const [topics, setTopics] = useState([])
   const [modal, setModal] = useState(null) // null | {type, word}

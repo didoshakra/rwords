@@ -2,28 +2,12 @@
 "use server"
 
 import { sql } from "@/lib/dbConfig"
-import bcrypt from "bcrypt" // ⬅⬅⬅ ось це додаємо
+import bcrypt from 'bcrypt'  // ⬅⬅⬅ ось це додаємо
+
 
 export async function initTables() {
-  // --- НОВА таблиця статистики ---
-  await sql`
-      CREATE TABLE IF NOT EXISTS site_stats (
-        id SERIAL PRIMARY KEY,
-        visits INTEGER DEFAULT 0,
-        app_downloads INTEGER DEFAULT 0,
-        word_downloads INTEGER DEFAULT 0,
-        updated_at TIMESTAMP DEFAULT NOW()
-      );
-    `
-  // Якщо треба, можна вставити початковий рядок із нулями
-  await sql`
-      INSERT INTO site_stats (id, visits, app_downloads, word_downloads)
-      VALUES (1, 0, 0, 0)
-      ON CONFLICT (id) DO NOTHING;
-    `
-
   // users
- await sql`
+  await sql`
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
@@ -31,25 +15,20 @@ export async function initTables() {
     name TEXT,
     role TEXT NOT NULL DEFAULT 'user',
     avatar TEXT DEFAULT '',
-    provider TEXT DEFAULT 'credentials', -- 👈 ДОДАНО provider
     is_active BOOLEAN DEFAULT true,
     email_verified BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
-  );
-`
-
- // 👇 Сід для створення адміна
- const adminEmail = "admin@example.com"
- const adminPass = "admin123"
- const hash = await bcrypt.hash(adminPass, 10)
- await sql`
-  INSERT INTO users (email, password_hash, name, role, provider, is_active, email_verified)
-  VALUES (${adminEmail}, ${hash}, 'Admin', 'admin', 'credentials', true, true)
-  ON CONFLICT (email) DO NOTHING;
-`
-
- console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
+  );`
+  // 👇 Сід для створення адміна
+  const adminEmail = "admin@example.com"
+  const adminPass = "admin123"
+  const hash = await bcrypt.hash(adminPass, 10)
+  await sql`
+    INSERT INTO users (email, password_hash, name, role, is_active, email_verified)
+    VALUES (${adminEmail}, ${hash}, 'Admin', 'admin', true, true)
+    ON CONFLICT (email) DO NOTHING;`
+  console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
 
   // sections
   await sql`
@@ -130,7 +109,6 @@ export async function initTables() {
 
 export async function resetTables() {
   // Потрібно видаляти таблиці у зворотньому порядку через FK залежності
-  await sql`DROP TABLE IF EXISTS site_stats;` // Спочатку нову статистику (якщо є)
   await sql`DROP TABLE IF EXISTS comments;`
   await sql`DROP TABLE IF EXISTS posts;`
   await sql`DROP TABLE IF EXISTS words;`
@@ -431,3 +409,4 @@ export async function createRLSPolicies() {
 
   console.log("✅ Політики RLS встановлені.")
 }
+

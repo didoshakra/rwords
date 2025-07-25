@@ -2,10 +2,13 @@
 //Для Home
 "use client"
 import Link from "next/link"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 
 const LandingInfo = () => {
-  const { user, logout } = useAuth()
+//   const { user, logout } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
 
   return (
     <>

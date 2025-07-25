@@ -4,7 +4,8 @@
 import React, { useEffect, useState, useTransition } from "react"
 import { getTopics, createTopic, updateTopic, deleteTopic } from "@/app/actions/topicActions"
 import { getSections } from "@/app/actions/sectionActions" // Передбачається, що є ця функція для завантаження секцій
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -21,7 +22,9 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function TopicsPage() {
-  const { user } = useAuth()
+//   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])
   const [modal, setModal] = useState(null) // null | {type, topic}

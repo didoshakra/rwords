@@ -1,8 +1,9 @@
 //HeaderTape.js
-// import IconPhone from "@/components/ui/icons/social/IconPhone";
-// import { FaSun, FaMoon, FaPalette } from "react-icons/fa";
+"use client"
+import { getStats } from "@/app/actions/statsActions"
+import { FaEye, FaDownload, FaFileAlt } from "react-icons/fa"
 
-const HeaderTape = () => {
+const HeaderTape = ({ stats }) => {
   return (
     <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
       <div className="flex justify-between space-x-1">
@@ -48,6 +49,19 @@ const HeaderTape = () => {
 
       {/* права сторона */}
       <div className="flex justify-between items-center text-center space-x-1 md:justify-end ">
+        {/* Статистика */}
+        <div className="flex items-center space-x-2 text-xs">
+          <span className="flex items-center space-x-1">
+            <FaEye /> <span>{stats.visits}</span>
+          </span>
+          <span className="flex items-center space-x-1">
+            <FaDownload /> <span>{stats.app_downloads}</span>
+          </span>
+          <span className="flex items-center space-x-1">
+            <FaFileAlt /> <span>{stats.word_downloads}</span>
+          </span>
+        </div>
+        {/* Соціальні мережі */}
         <div className="flex justify-start space-x-1">
           {/* GitHub */}
           <a
@@ -123,7 +137,7 @@ const HeaderTape = () => {
             </svg>
           </a>
         </div>
-        <span className="px-1 text-sm items-center">Next.js15/Tailwindcss/PgSQL</span>
+        {/* <span className="px-1 text-sm items-center">Next.js15/Tailwindcss/PgSQL</span> */}
       </div>
     </div>
   )

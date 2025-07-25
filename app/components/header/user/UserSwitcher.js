@@ -1,12 +1,15 @@
 //CL/userSwitcher.js //
 "use client"
 import { useState, useRef, useEffect } from "react"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { signOut, useSession } from "next-auth/react"
 import { FaUserCircle } from "react-icons/fa"
 import Link from "next/link"
 
 export default function UserSwitcher({ setMobileDroopMenu }) {
-  const { user, logout } = useAuth()
+//   const { user, logout } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
 
@@ -87,7 +90,8 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
               </Link>
               <button
                 onClick={() => {
-                  logout()
+                //   logout()
+                  signOut()
                   setOpen(false)
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"

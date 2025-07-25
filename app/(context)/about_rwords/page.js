@@ -1,10 +1,13 @@
 // about_rwords/page.js
 "use client"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 export default function HowItWorks() {
-  const { user } = useAuth()
+  //   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   return (
     <main className="px-4 py-8 max-w-4xl mx-auto text-hText dark:text-hTextD">
       <h1 className="text-3xl font-bold mb-4">🎯 Що таке застосунок RWords?</h1>

@@ -43,21 +43,23 @@ export default function AdminPage() {
         >
           {isPending ? "⏳ Обробка...." : "Перевірка підключення до БД PG"}
         </button>
+
         {/* Створити таблиці */}
         <button
           onClick={() => handleAction(initTables, "✅ Таблиці створено успішно!")}
           disabled={isPending}
           className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
         >
-          {isPending ? "⏳ Обробка..." : "Створити таблиці"}
+          {isPending ? "⏳ Обробка..." : "Створити таблиці (тільки нестворені)"}
         </button>
+
         {/* Перестворити таблиці */}
         <button
           onClick={() => handleAction(resetTables, "✅ Таблиці перестворено успішно!")}
           disabled={isPending}
           className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
         >
-          {isPending ? "⏳ Обробка..." : "Перестворити таблиці"}
+          {isPending ? "⏳ Обробка..." : "Перестворити таблиці (вилученням всіх таблиць)"}
         </button>
 
         {/* Створення політик доступу */}

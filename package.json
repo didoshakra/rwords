@@ -11,9 +11,11 @@
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
     "next": "^15.2.0",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.2.1",
     "pg": "^8.11.3",
     "postgres": "^3.4.3",

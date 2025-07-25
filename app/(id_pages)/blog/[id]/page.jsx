@@ -5,7 +5,8 @@
 import { useEffect, useState, useTransition } from "react"
 import { useParams } from "next/navigation"
 import { getPost, addComment, updateComment, deleteComment } from "@/app/actions/blogActions"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 
 // Проста модалка для редагування коментаря
 function Modal({ open, onClose, children }) {
@@ -27,7 +28,9 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function BlogPostPage() {
-  const { user } = useAuth()
+//   const { user } = useAuth()
+   const { data: session, status } = useSession()
+   const user = session?.user
   const { id } = useParams()
   const [post, setPost] = useState(null)
   const [comments, setComments] = useState([])

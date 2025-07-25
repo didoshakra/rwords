@@ -2,7 +2,8 @@
 // Моя переробка з words/page.js
 
 import React, { useEffect, useState, useTransition, useRef } from "react"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
 export default function TableView({
@@ -26,7 +27,9 @@ export default function TableView({
   // prors
   const showOwnerMark = true
 
-  const { user } = useAuth()
+//   const { user } = useAuth()
+   const { data: session, status } = useSession()
+   const user = session?.user
   const [tData, setTData] = useState([])
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])

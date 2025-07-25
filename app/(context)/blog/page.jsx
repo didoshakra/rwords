@@ -4,7 +4,8 @@
 import React, { useEffect, useState, useTransition } from "react"
 import { getPosts, createPost, deletePost, updatePost } from "@/app/actions/blogActions"
 import Link from "next/link"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 
 // Проста модалка
 function Modal({ open, onClose, children }) {
@@ -26,7 +27,9 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function BlogPage() {
-  const { user } = useAuth()
+//   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [posts, setPosts] = useState([])
   const [message, setMessage] = useState("")
   const [isPending, startTransition] = useTransition()

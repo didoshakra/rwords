@@ -4,12 +4,15 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 import { useDatabase } from "@/app/context/DatabaseContext"
 
 const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
     const { isDatabaseReady } = useDatabase()
-  const { user } = useAuth()
+//   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [open, setOpen] = useState(false)
   const ref = useRef()
 

@@ -6,7 +6,8 @@
 
 import React, { useEffect, useState, useTransition } from "react"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 
 // Модальне вікно
 function Modal({ open, onClose, children }) {
@@ -24,7 +25,9 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function ReferencePage({ title, fetchFn, createFn, updateFn, deleteFn, initialForm, columnsDef }) {
-  const { user } = useAuth()
+//   const { user } = useAuth()
+   const { data: session, status } = useSession()
+   const user = session?.user
   const [data, setData] = useState([])
   const [form, setForm] = useState(initialForm)
   const [modalOpen, setModalOpen] = useState(false)
