@@ -20,21 +20,21 @@ export default function TableView({
   onClickCsv,
   onTranslate,
   translate,
-
   sortField = "pn",
   isPending, //ДЛя блокування кнопки імпорт покийде імпорт
+  message, //Для повідомлення
+  setMessage,
 }) {
   // prors
   const showOwnerMark = true
-
-//   const { user } = useAuth()
-   const { data: session, status } = useSession()
-   const user = session?.user
+  //   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [tData, setTData] = useState([])
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])
   const [pn, setPn] = useState("")
-  const [message, setMessage] = useState("")
+//   const [message, setMessage] = useState("")
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   const [selectedIds, setSelectedIds] = useState([]) //
   //   Для модалки стрілок переміщення рядків
@@ -44,7 +44,8 @@ export default function TableView({
   const rowRefs = useRef([]) //Для скролу при переміщенні
   //   Для розкриття груп(секцій)
   const [openSections, setOpenSections] = useState([])
-  const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
+//   const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
+  const [openTopics, setOpenTopics] = useState([]) // за замовчуванням всі відкриті
   //   console.log("TableView/data=", data)
   //   console.log("TableView/dataLevel1=", dataLevel1)
   //   console.log("TableView/dataLevel2=", dataLevel2)
@@ -53,7 +54,8 @@ export default function TableView({
     setTData(data || [])
     setTopics(dataLevel1 || [])
     setSections(dataLevel2 || [])
-    setOpenTopics((dataLevel1 || []).map((t) => t.id))
+    // setOpenTopics((dataLevel1 || []).map((t) => t.id))
+    setOpenTopics(dataLevel1 || [])
   }, [data, dataLevel2, dataLevel1])
 
   //   console.log("TableView/tData=", tData)
@@ -259,7 +261,7 @@ export default function TableView({
   }
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
+    <main className="p-1 max-w-4xl mx-auto">
       {/* <h1 className="text-2xl font-bold mb-6">Слова TW</h1> */}
       <h1 className="text-2xl font-bold mb-6">{title}</h1>
       <div className="flex flex-wrap gap-2 items-center mb-4">
@@ -267,13 +269,13 @@ export default function TableView({
         {user && selectedIds.length === 0 && (
           <>
             {onAdd && (
-              <button onClick={onAdd} className="bg-blue-600 text-white px-4 py-2 rounded">
+              <button onClick={onAdd} className="bg-blue-600 text-white px-2 py-2 rounded">
                 ➕ Додати слово
               </button>
             )}
             {onClickCsv && (
               <button onClick={onClickCsv} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
-                📂 Імпортувати CSV
+                📂 Імпорт CSV
               </button>
             )}
             {onTranslate && (
@@ -281,7 +283,7 @@ export default function TableView({
                 onClick={onTranslate}
                 className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
               >
-                {translate ? "⏸ Зупинити переклад" : "▶️ Старт перекладу"}
+                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти"}
               </button>
             )}
           </>
@@ -337,7 +339,7 @@ export default function TableView({
           </button>
         )}
       </div>
-      {/* Діалог вибору файлу для csv */}
+      {/* перший рядок над таблицею/повідомлення */}
       {message && (
         <p className="mb-4 text-green-700 font-medium" role="alert">
           {message}
@@ -352,7 +354,6 @@ export default function TableView({
           className="text-sm px-2 py-1 rounded border"
         >
           {selectedIds.length === tData.length ? "☑ Зняти всі" : "☐ Виділити всі"}
-          {/* {selectedIds.length === tData.length ? "☑" : "☐"} */}
         </button>
         {selectedIds.length > 0 && <span className="text-blue-700">Виділено: {selectedIds.length}</span>}
       </div>
@@ -390,7 +391,7 @@ export default function TableView({
                   >
                     <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
                       {level2Head}
-                      {": "}
+                      {":  "}
                       {section.name} ({sectionWords.length}){openSections.includes(section.id) ? " 🔽" : " ▶️"}
                     </td>
                   </tr>

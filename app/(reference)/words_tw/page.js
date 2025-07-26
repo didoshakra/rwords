@@ -15,7 +15,8 @@ import {
 } from "@/app/actions/wordActions"
 import { getSections } from "@/app/actions/sectionActions"
 import { getTopics } from "@/app/actions/topicActions"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
+import { useSession } from "next-auth/react"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 import TableView from "@/app/components/tables/TableView"
 
@@ -107,7 +108,9 @@ export default function WordsPage() {
   // prors
   const showOwnerMark = true
 
-  const { user } = useAuth()
+  //   const { user } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user
   const [words, setWords] = useState([])
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])
@@ -120,8 +123,8 @@ export default function WordsPage() {
   const [know, setKnow] = useState(false)
   const [img, setImg] = useState("")
   const [message, setMessage] = useState("")
- // startTransition	Виконати важкі або менш критичні зміни стану без блокування UI
-   const [isPending, startTransition] = useTransition() // isPending	Показати loader / disabled//
+  // startTransition	Виконати важкі або менш критичні зміни стану без блокування UI
+  const [isPending, startTransition] = useTransition() // isPending	Показати loader / disabled//
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   // Стани для перекладу (useState та useRef)
   const [translate, setTranslate] = useState(false)
@@ -139,9 +142,6 @@ export default function WordsPage() {
   const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
 
   //  Вхідні змінні які мають передаватись в майбутній TableView
-  const level1Head = "Група тем:"
-  const level2Head = "Тема:"
-
   const fromLanguage = "uk"
   const toLanguage = "en"
 
@@ -306,15 +306,17 @@ export default function WordsPage() {
 
   // Імпорт з csv
   const handleFileUpload = async (event) => {
+    console.log("words/handleFileUpload")
     const file = event.target.files[0]
     if (!file) return
-
-    setMessage("")
+    console.log("words/handleFileUpload/")
+    setMessage("Початок імпорту...")
     startTransition(async () => {
       try {
         const text = await file.text()
         // Виклик серверної action-функції importCSV, яку треба імпортувати
-        const result = await importCSV(text, user?.id, user?.role)
+        // const result = await importCSV(text, user?.id, user?.role)
+        const result = await importCSV(text, user?.id)
         setMessage(result)
         loadWords()
       } catch (error) {
@@ -577,6 +579,8 @@ export default function WordsPage() {
         // beforeSectionName={"Тема"} // Назва перед: назвою секції
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
+        message={message} //Для повідомлення
+        setMessage={setMessage} //Для повідомлення
       />
       {/* )} */}
       <input type="file" id="csvInput" accept=".csv,text/csv" style={{ display: "none" }} onChange={handleFileUpload} />

@@ -319,7 +319,8 @@ export default function WordsPage() {
       try {
         const text = await file.text()
         // Виклик серверної action-функції importCSV, яку треба імпортувати
-        const result = await importCSV(text, user)
+        // const result = await importCSV(text, user)
+        const result = await importCSV(text, user?.id)
         setMessage(result)
         loadWords()
       } catch (error) {
