@@ -35,7 +35,7 @@ export default function TableView({
   const [topics, setTopics] = useState([])
   const [sections, setSections] = useState([])
   const [pn, setPn] = useState("")
-  //   const [message, setMessage] = useState("")
+//   const [message, setMessage] = useState("")
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   const [selectedIds, setSelectedIds] = useState([]) //
   const [selectedTopics, setSelectedTopics] = useState([])
@@ -46,7 +46,7 @@ export default function TableView({
   const rowRefs = useRef([]) //Для скролу при переміщенні
   //   Для розкриття груп(секцій)
   const [openSections, setOpenSections] = useState([])
-  //   const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
+//   const [openTopics, setOpenTopics] = useState(topics.map((t) => t.id)) // за замовчуванням всі відкриті
   const [openTopics, setOpenTopics] = useState([]) // за замовчуванням всі відкриті
   //   console.log("TableView/data=", data)
   //   console.log("TableView/dataLevel1=", dataLevel1)
@@ -64,35 +64,10 @@ export default function TableView({
   //   console.log("TableView/topics=", topics)
   //   console.log("TableView/sections=", sections)
 
-  // для помітки вибраних тем
-  // const toggleSelectTopic = (id) => {
-  //   setSelectedTopics((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
-  // }
-  const toggleSelectTopic = (id) => {
-    setSelectedTopics((prev) => {
-      let newSelectedTopics
-      if (prev.includes(id)) {
-        // Зняти вибір теми
-        newSelectedTopics = prev.filter((x) => x !== id)
-        // Зняти всі слова теми з selectedIds
-        const topicWordIds = tData.filter((w) => w.topic_id === id).map((w) => w.id)
-        setSelectedIds((prevIds) => prevIds.filter((id) => !topicWordIds.includes(id)))
-      } else {
-        // Додати тему до вибраних
-        newSelectedTopics = [...prev, id]
-        // Додати всі слова теми до selectedIds (уникнути дублювань)
-        const topicWordIds = tData.filter((w) => w.topic_id === id).map((w) => w.id)
-        setSelectedIds((prevIds) => {
-          const newIds = [...prevIds]
-          for (const tid of topicWordIds) {
-            if (!newIds.includes(tid)) newIds.push(tid)
-          }
-          return newIds
-        })
-      }
-      return newSelectedTopics
-    })
-  }
+// для помітки вибраних тем
+const toggleSelectTopic = (id) => {
+  setSelectedTopics((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+}
 
   //GPT/ Кнопки переміщення рядків
   const saveOrder = async () => {
@@ -370,7 +345,7 @@ export default function TableView({
           </button>
         )}
       </div>
-      {/* 2ий рядок над таблицею/повідомлення */}
+      {/* перший рядок над таблицею/повідомлення */}
       {message && (
         <p className="mb-4 text-green-700 font-medium" role="alert">
           {message}
@@ -394,7 +369,6 @@ export default function TableView({
         <table className="w-full border-collapse">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
-              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
               {columns.map((col) => (
                 <th
@@ -436,7 +410,20 @@ export default function TableView({
 
                       return (
                         <React.Fragment key={topic.id}>
-                          {/* Рядок теми */}
+                          {/* <tr
+                            onClick={() => toggleTopic(topic.id)}
+                            className="bg-gray-200 cursor-pointer hover:bg-gray-300"
+                          >
+                            <td
+                              colSpan={showOwnerMark ? columns.length + 1 : columns.length}
+                              className="p-2 font-semibold"
+                            >
+                              ⮞ {level1Head}
+                              {": "}
+                              {topic.name} {topicWords.length}
+                              {openTopics.includes(topic.id) ? " 🔽" : " ▶️"}
+                            </td>
+                          </tr> */}
                           <tr
                             onClick={() => toggleTopic(topic.id)}
                             className="bg-gray-200 cursor-pointer hover:bg-gray-300"
@@ -445,45 +432,20 @@ export default function TableView({
                               colSpan={showOwnerMark ? columns.length + 1 : columns.length}
                               className="p-2 font-semibold"
                             >
-                              <div
-                                className="flex items-center gap-2"
-                                style={{ userSelect: "none", cursor: "pointer" }}
-                              >
-                                <span
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    toggleSelectTopic(topic.id)
-                                  }}
-                                >
-                                  {(() => {
-                                    const topicWordIds = tData.filter((w) => w.topic_id === topic.id).map((w) => w.id)
-                                    const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
-
-                                    let emoji = ""
-                                    if (selectedCount === topicWordIds.length && selectedCount > 0) {
-                                      //   emoji = "✔️" // всі вибрані
-                                      emoji = "☑️" // всі вибрані
-                                    } else if (selectedCount > 0) {
-                                      emoji = "➖" // частково вибрані
-                                      //   emoji = " [–]" // частково вибрані
-                                      //   emoji = "⊟" // частково вибрані
-                                    } else {
-                                      emoji = "🔲" // нічого не вибрано
-                                    }
-
-                                    return `${emoji} (${selectedCount})`
-                                  })()}
-                                </span>
-
-                                <span>
-                                  ⮞ {level1Head}: {topic.name}
-                                </span>
-
-                                <span>{openTopics.includes(topic.id) ? " 🔽" : " ▶️"}</span>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedTopics.includes(topic.id)}
+                                  onClick={(e) => e.stopPropagation()} // щоб не розкривало
+                                  onChange={() => toggleSelectTopic(topic.id)}
+                                />
+                                ⮞ {level1Head}
+                                {": "}
+                                {topic.name} ({topicWords.length}){openTopics.includes(topic.id) ? " 🔽" : " ▶️"}
                               </div>
                             </td>
                           </tr>
-                          {/* // Рядки слів теми */}
+
                           {openTopics.includes(topic.id) &&
                             topicWords.map((item, index) => (
                               //

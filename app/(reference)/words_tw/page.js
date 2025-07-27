@@ -459,42 +459,6 @@ export default function WordsPage() {
   const clearSelection = () => {
     setSelectedIds([])
   }
-  //   Для модалки стрілок переміщення рядків
-  //   const startMoveMode = () => {
-  //     if (selectedIds.length !== 1) return
-
-  //     const id = selectedIds[0]
-  //     const idx = words.findIndex((w) => w.id === id)
-  //     if (idx === -1) return
-
-  //     setMoveInfo({ idx, total: words.length })
-  //     scrollRowIntoView(idx) //Для автоскролу
-  //     setMoveMode(true)
-  //   }
-  //   Для автоскролу при переміщенні
-  //   const scrollRowIntoView = (rowIndex) => {
-  //     const container = document.querySelector(".table-container") // контейнер з overflow-auto, що обгортає таблицю
-  //     if (!container) return
-
-  //     const rows = container.querySelectorAll("tbody tr")
-  //     if (!rows[rowIndex]) return
-
-  //     const row = rows[rowIndex]
-
-  //     const containerTop = container.scrollTop
-  //     const containerBottom = containerTop + container.clientHeight
-
-  //     const rowTop = row.offsetTop
-  //     const rowBottom = rowTop + row.offsetHeight
-
-  //     if (rowTop < containerTop) {
-  //       // рядок вище видимої області, скролимо наверх, щоб побачити його
-  //       container.scrollTop = rowTop
-  //     } else if (rowBottom > containerBottom) {
-  //       // рядок нижче видимої області, скролимо вниз
-  //       container.scrollTop = rowBottom - container.clientHeight
-  //     }
-  //   }
 
   // Функція для переміщення рядка в масиві words в стані:
   const moveSelectedRow = (direction) => {
@@ -541,20 +505,8 @@ export default function WordsPage() {
     }
   }
 
-  //   Для розкриття груп
-  //   const toggleSection = (sectionId) => {
-  //     setOpenSections((prev) => (prev.includes(sectionId) ? prev.filter((id) => id !== sectionId) : [...prev, sectionId]))
-  //   }
-  //   //   Для розкриття груп
-  //   const toggleTopic = (topicId) => {
-  //     setOpenTopics((prev) => (prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]))
-  //   }
-  // //   console.log("words/page/words=", words)
-  // //   console.log("words/page/dataLevel1=", topics)
-  // //   console.log("words/page/dataLevel2=", sections)
-
   return (
-    <main className="p-6 max-w-4xl mx-auto">
+    <main className="p-1 max-w-4xl mx-auto">
       {/* {topics.length > 0 && sections.length > 0 && ( */}
       <TableView
         data={words}
@@ -573,7 +525,7 @@ export default function WordsPage() {
         onTranslate={handleTranslate}
         translate={translate} //Чи перекладено для зміни кнопки
         level1Head="Тема"
-        level2Head="Секція"
+        level2Head="Група тем"
         // sectionId={"section_id"} //🔒 Прив’язка переміщення до певного значення поля
         // sectionName={"section_name"} //Назва секції
         // beforeSectionName={"Тема"} // Назва перед: назвою секції
