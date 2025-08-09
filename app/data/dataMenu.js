@@ -54,8 +54,13 @@ export const menuAdmin = [
           },
           {
             id: 3,
-            title: "Слова",
-            url: "/words",
+            title: "Відтворення слів(тест)",
+            url: "/words_player",
+          },
+          {
+            id: 3,
+            title: "Слова_doTW",
+            url: "/words_doTW",
           },
           {
             id: 4,
@@ -88,8 +93,8 @@ export const menuAdmin = [
       },
       {
         id: 3,
-        title: "Слова_TW",
-        url: "/words_tw",
+        title: "Слова",
+        url: "/words",
       },
     ],
   },

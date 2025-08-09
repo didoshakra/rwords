@@ -8,7 +8,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
+  useEffect(() => { 
     const storedUser = localStorage.getItem("user")
     try {
       if (storedUser && storedUser !== "undefined") {

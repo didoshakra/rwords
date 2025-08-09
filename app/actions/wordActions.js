@@ -1,3 +1,4 @@
+// wordActions.jswordActions.js
 "use server"
 
 import { sql } from "@/lib/dbConfig"
@@ -60,6 +61,7 @@ export async function deleteWord(id, userId, role) {
 }
 
 export async function deleteWords(ids, userId, role) {
+  console.log("wordActions/deleteWords/ids=", ids)
   if (!userId) throw new Error("Користувач не авторизований")
   if (!Array.isArray(ids) || ids.length === 0) return
 
@@ -90,11 +92,135 @@ export async function updateWordPn(id, pn, userId, role) {
 }
 
 // export async function importCSV(fileContent, userId, role) {
+// export async function importCSV(fileContent, userId) {
+//   if (!userId) throw new Error("Користувач не авторизований")
+//   try {
+//     if (!userId) throw new Error("Користувач не авторизований")
+
+//     const lines = fileContent
+//       .split("\n")
+//       .map((line) => line.trim())
+//       .filter(Boolean)
+
+//     if (lines.length < 2) throw new Error("Файл має містити мінімум секцію і тему!")
+
+//     const [sectionLine, ...restLines] = lines
+//     const [sectionName, sectionImg = "other"] = sectionLine.split(";").map((s) => s.trim())
+
+//     let topics = []
+//     let currentTopic = null
+//     let idx = 0
+//     let skippedTopicsCount = 0
+//     let skippedWordsCount = 0
+
+//     if (restLines[0] && !restLines[0].startsWith("*")) {
+//       const [topicName, topicImg = "other"] = restLines[0].split(";").map((s) => s.trim())
+//       currentTopic = { name: topicName, img: topicImg, words: [] }
+//       idx = 1
+//     }
+
+//     for (; idx < restLines.length; idx++) {
+//       const line = restLines[idx]
+//       if (!line) continue
+//       if (line.startsWith("*")) {
+//         const [topicName, topicImg = "other"] = line
+//           .substring(1)
+//           .trim()
+//           .split(";")
+//           .map((s) => s.trim())
+//         if (currentTopic) topics.push(currentTopic)
+//         currentTopic = { name: topicName, img: topicImg, words: [] }
+//       } else {
+//         const [word, img = "word"] = line.split(";").map((s) => s.trim())
+//         if (!word) continue
+//         if (currentTopic) currentTopic.words.push({ word, img })
+//       }
+//     }
+//     if (currentTopic) topics.push(currentTopic)
+
+//     if (topics.length === 0) throw new Error("Не знайдено жодної теми для імпорту!")
+
+//     let importedWordsCount = 0
+
+//     const sectionRes = await sql`SELECT id FROM sections WHERE name = ${sectionName}`
+
+//     let sectionId
+//     if (sectionRes.length > 0) {
+//       sectionId = sectionRes[0].id
+//     } else {
+//       const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
+//       const maxPn = maxPnRes[0].maxPn || 0
+//       const insertSectionRes = await sql`
+//       INSERT INTO sections (name, img, pn, user_id)
+//       VALUES (${sectionName}, ${sectionImg}, ${maxPn + 1}, ${userId})
+//       RETURNING id
+//     `
+//       sectionId = insertSectionRes[0].id
+//     }
+
+//     for (const topic of topics) {
+//       const topicRes = await sql`
+//       SELECT id FROM topics WHERE name = ${topic.name} AND section_id = ${sectionId}
+//     `
+//       let topicId
+//       if (topicRes.length > 0) {
+//         topicId = topicRes[0].id
+//         skippedTopicsCount++
+//       } else {
+//         const maxPnTopicRes = await sql`
+//         SELECT MAX(pn) AS maxPn FROM topics WHERE section_id = ${sectionId}
+//       `
+//         const maxPnTopic = maxPnTopicRes[0].maxPn || 0
+//         const insertTopicRes = await sql`
+//         INSERT INTO topics (name, img, section_id, pn, user_id)
+//         VALUES (${topic.name}, ${topic.img}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
+//         RETURNING id
+//       `
+//         topicId = insertTopicRes[0].id
+//       }
+
+//       const maxPnWordRes = await sql`
+//       SELECT MAX(pn) AS maxPn FROM words WHERE topic_id = ${topicId}
+//     `
+//       let pn = maxPnWordRes[0].maxPn || 0
+
+//       for (const { word, img } of topic.words) {
+//         const wordExistRes = await sql`
+//         SELECT id FROM words WHERE word = ${word} AND topic_id = ${topicId}
+//       `
+//         if (wordExistRes.length === 0) {
+//           pn++
+//           await sql`
+//           INSERT INTO words (word, img, topic_id, pn, user_id)
+//           VALUES (${word}, ${img}, ${topicId}, ${pn}, ${userId})
+//         `
+//           importedWordsCount++
+//         } else {
+//           skippedWordsCount++
+//         }
+//       }
+//     }
+//     if (importedWordsCount === 0) {
+//       return `Імпортовано 0 слів. Причини: ${skippedTopicsCount} тем уже існували, ${skippedWordsCount} слів уже були в базі.`
+//     }
+
+//     return `Імпортовано ${importedWordsCount} слів. Пропущено ${skippedTopicsCount} тем і ${skippedWordsCount} слів через дублікати.`
+
+//     // return `Імпортовано ${importedWordsCount} слів`
+//   } catch (error) {
+//     console.error("Помилка в importCSV:", error)
+//     throw new Error("Серверна помилка імпорту: " + error.message)
+//   }
+// }
+
+//
 export async function importCSV(fileContent, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
-  try {
-    if (!userId) throw new Error("Користувач не авторизований")
 
+  // Допоміжна функція для перевірки URL
+  const isUrl = (img) => img.startsWith("http://") || img.startsWith("https://")
+
+  try {
     const lines = fileContent
       .split("\n")
       .map((line) => line.trim())
@@ -103,7 +229,8 @@ export async function importCSV(fileContent, userId) {
     if (lines.length < 2) throw new Error("Файл має містити мінімум секцію і тему!")
 
     const [sectionLine, ...restLines] = lines
-    const [sectionName, sectionImg = "other"] = sectionLine.split(";").map((s) => s.trim())
+    let [sectionName, sectionImgRaw = "other"] = sectionLine.split(";").map((s) => s.trim())
+    const sectionImg = isUrl(sectionImgRaw) ? null : sectionImgRaw
 
     let topics = []
     let currentTopic = null
@@ -112,7 +239,8 @@ export async function importCSV(fileContent, userId) {
     let skippedWordsCount = 0
 
     if (restLines[0] && !restLines[0].startsWith("*")) {
-      const [topicName, topicImg = "other"] = restLines[0].split(";").map((s) => s.trim())
+      let [topicName, topicImgRaw = "other"] = restLines[0].split(";").map((s) => s.trim())
+      const topicImg = isUrl(topicImgRaw) ? null : topicImgRaw
       currentTopic = { name: topicName, img: topicImg, words: [] }
       idx = 1
     }
@@ -120,12 +248,14 @@ export async function importCSV(fileContent, userId) {
     for (; idx < restLines.length; idx++) {
       const line = restLines[idx]
       if (!line) continue
+
       if (line.startsWith("*")) {
-        const [topicName, topicImg = "other"] = line
+        const [topicName, topicImgRaw = "other"] = line
           .substring(1)
           .trim()
           .split(";")
           .map((s) => s.trim())
+        const topicImg = isUrl(topicImgRaw) ? null : topicImgRaw
         if (currentTopic) topics.push(currentTopic)
         currentTopic = { name: topicName, img: topicImg, words: [] }
       } else {
@@ -141,75 +271,76 @@ export async function importCSV(fileContent, userId) {
     let importedWordsCount = 0
 
     const sectionRes = await sql`SELECT id FROM sections WHERE name = ${sectionName}`
-
     let sectionId
+
     if (sectionRes.length > 0) {
       sectionId = sectionRes[0].id
     } else {
       const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
       const maxPn = maxPnRes[0].maxPn || 0
       const insertSectionRes = await sql`
-      INSERT INTO sections (name, img, pn, user_id)
-      VALUES (${sectionName}, ${sectionImg}, ${maxPn + 1}, ${userId})
-      RETURNING id
-    `
+        INSERT INTO sections (name, img, pn, user_id)
+        VALUES (${sectionName}, ${sectionImg || "other"}, ${maxPn + 1}, ${userId})
+        RETURNING id
+      `
       sectionId = insertSectionRes[0].id
     }
 
     for (const topic of topics) {
       const topicRes = await sql`
-      SELECT id FROM topics WHERE name = ${topic.name} AND section_id = ${sectionId}
-    `
+        SELECT id FROM topics WHERE name = ${topic.name} AND section_id = ${sectionId}
+      `
       let topicId
+
       if (topicRes.length > 0) {
         topicId = topicRes[0].id
         skippedTopicsCount++
       } else {
         const maxPnTopicRes = await sql`
-        SELECT MAX(pn) AS maxPn FROM topics WHERE section_id = ${sectionId}
-      `
+          SELECT MAX(pn) AS maxPn FROM topics WHERE section_id = ${sectionId}
+        `
         const maxPnTopic = maxPnTopicRes[0].maxPn || 0
         const insertTopicRes = await sql`
-        INSERT INTO topics (name, img, section_id, pn, user_id)
-        VALUES (${topic.name}, ${topic.img}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
-        RETURNING id
-      `
+          INSERT INTO topics (name, img, section_id, pn, user_id)
+          VALUES (${topic.name}, ${topic.img || "other"}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
+          RETURNING id
+        `
         topicId = insertTopicRes[0].id
       }
 
       const maxPnWordRes = await sql`
-      SELECT MAX(pn) AS maxPn FROM words WHERE topic_id = ${topicId}
-    `
+        SELECT MAX(pn) AS maxPn FROM words WHERE topic_id = ${topicId}
+      `
       let pn = maxPnWordRes[0].maxPn || 0
 
       for (const { word, img } of topic.words) {
         const wordExistRes = await sql`
-        SELECT id FROM words WHERE word = ${word} AND topic_id = ${topicId}
-      `
+          SELECT id FROM words WHERE word = ${word} AND topic_id = ${topicId}
+        `
         if (wordExistRes.length === 0) {
           pn++
           await sql`
-          INSERT INTO words (word, img, topic_id, pn, user_id)
-          VALUES (${word}, ${img}, ${topicId}, ${pn}, ${userId})
-        `
+            INSERT INTO words (word, img, topic_id, pn, user_id)
+            VALUES (${word}, ${img}, ${topicId}, ${pn}, ${userId})
+          `
           importedWordsCount++
         } else {
           skippedWordsCount++
         }
       }
     }
+
     if (importedWordsCount === 0) {
       return `Імпортовано 0 слів. Причини: ${skippedTopicsCount} тем уже існували, ${skippedWordsCount} слів уже були в базі.`
     }
 
     return `Імпортовано ${importedWordsCount} слів. Пропущено ${skippedTopicsCount} тем і ${skippedWordsCount} слів через дублікати.`
-
-    // return `Імпортовано ${importedWordsCount} слів`
   } catch (error) {
     console.error("Помилка в importCSV:", error)
     throw new Error("Серверна помилка імпорту: " + error.message)
   }
 }
+
 
 export async function translateWord(word, fromLanguage, toLanguage) {
   const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(

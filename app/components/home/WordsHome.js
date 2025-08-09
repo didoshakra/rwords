@@ -1,5 +1,4 @@
-//HomePage.js / Muiv4.5.1
-
+//HomePage.js
 const WordsHome = () => {
   const disabled = false //Для buton
   //   const { state } = useContext(ComponentContext)

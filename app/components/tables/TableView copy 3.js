@@ -1,6 +1,6 @@
 // components/TableView.js
-// Працює для з різними рівнями
-// Ще не оптимізовано
+// Працює для 1,2,3 і 1,2 рівнів а тільки для 1 не працює
+// Оптимізовано
 
 import React, { useEffect, useState, useTransition, useRef } from "react"
 // import { useAuth } from "@/app/context/AuthContext"
@@ -243,6 +243,208 @@ export default function TableView({
     setOpenLevel1((prev) => (prev.includes(topicId) ? prev.filter((id) => id !== topicId) : [...prev, topicId]))
   }
 
+  // Допоміжні функції
+//   const renderTopicWords = (topicWords, topicId) => {
+//     return topicWords.map((item) => (
+//       <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
+//         <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+//           <input
+//             type="checkbox"
+//             checked={isSelected(item.id)}
+//             onClick={(e) => e.stopPropagation()}
+//             onChange={() => toggleSelect(item.id)}
+//           />
+//         </td>
+
+//         {showOwnerMark && (
+//           <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+//             {item.user_id === user?.id && "🧑‍💻"}
+//           </td>
+//         )}
+
+//         {columns.map((col) => {
+//           const value = item[col.accessor]
+//           let content
+
+//           switch (col.type) {
+//             case "know":
+//               content = value ? "👍" : ""
+//               break
+//             case "boolean":
+//               content = value ? "✔" : ""
+//               break
+//             case "integer":
+//               content = value != null ? Math.floor(Number(value)) : "-"
+//               break
+//             default:
+//               content = value ?? ""
+//           }
+
+//           return (
+//             <td
+//               key={col.accessor}
+//               style={{
+//                 width: col.width,
+//                 border: "1px solid #ccc",
+//                 padding: "4px",
+//                 ...(col.styleCell || {}),
+//               }}
+//             >
+//               <span style={col.styleCellText}>{content}</span>
+//             </td>
+//           )
+//         })}
+//       </tr>
+//     ))
+//   }
+
+
+
+  const renderTopic = (topic, topicWords) => {
+    if (topicWords.length === 0) return null
+
+    const topicWordIds = topicWords.map((w) => w.id)
+    const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
+    let checkbox = "🔲"
+    if (selectedCount === topicWords.length && selectedCount > 0) checkbox = `☑️`
+    else if (selectedCount > 0) checkbox = `➖`
+
+    return (
+      <React.Fragment key={topic.id}>
+        <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:bg-gray-300">
+          <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-semibold">
+            <div className="flex items-center gap-2" style={{ userSelect: "none", cursor: "pointer" }}>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation()
+                  toggleSelectTopic(topic.id)
+                }}
+              >
+                {checkbox} ({selectedCount})
+              </span>
+              <span>
+                ⮞ {level1Head}: {topic.name}
+              </span>
+              <span>{openLevel1.includes(topic.id) ? " 🔽" : " ▶️"}</span>
+            </div>
+          </td>
+        </tr>
+
+        {openLevel1.includes(topic.id) && renderTopicWords(topicWords, topic.id)}
+      </React.Fragment>
+    )
+  }
+//   const renderFlatRow = (item) => (
+//     <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
+//       <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+//         <input
+//           type="checkbox"
+//           checked={isSelected(item.id)}
+//           onClick={(e) => e.stopPropagation()}
+//           onChange={() => toggleSelect(item.id)}
+//         />
+//       </td>
+
+//       {showOwnerMark && (
+//         <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+//           {item.user_id === user?.id && "🧑‍💻"}
+//         </td>
+//       )}
+
+//       {columns.map((col) => {
+//         const value = item[col.accessor]
+//         let content
+
+//         switch (col.type) {
+//           case "know":
+//             content = value ? "👍" : ""
+//             break
+//           case "boolean":
+//             content = value ? "✔" : ""
+//             break
+//           case "integer":
+//             content = value != null ? Math.floor(Number(value)) : "-"
+//             break
+//           default:
+//             content = value ?? ""
+//         }
+
+//         return (
+//           <td
+//             key={col.accessor}
+//             style={{
+//               width: col.width,
+//               border: "1px solid #ccc",
+//               padding: "4px",
+//               ...(col.styleCell || {}),
+//             }}
+//           >
+//             <span style={col.styleCellText}>{content}</span>
+//           </td>
+//         )
+//       })}
+//     </tr>
+//   )
+
+// Нові функції для рендерингу рядків
+ const renderTopicWords = (topicWords) => {
+   return topicWords.map((item) => renderItemRow(item))
+ }
+//  Ф-ція для рендерингу рядка теми
+  const renderFlatRow = (item) => renderItemRow(item)
+//
+  const renderItemRow = (item) => (
+    <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
+      <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+        <input
+          type="checkbox"
+          checked={isSelected(item.id)}
+          onClick={(e) => e.stopPropagation()}
+          onChange={() => toggleSelect(item.id)}
+        />
+      </td>
+
+      {showOwnerMark && (
+        <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+          {item.user_id === user?.id && "🧑‍💻"}
+        </td>
+      )}
+
+      {columns.map((col) => {
+        const value = item[col.accessor]
+        let content
+
+        switch (col.type) {
+          case "know":
+            content = value ? "👍" : ""
+            break
+          case "boolean":
+            content = value ? "✔" : ""
+            break
+          case "integer":
+            content = value != null ? Math.floor(Number(value)) : "-"
+            break
+          default:
+            content = value ?? ""
+        }
+
+        return (
+          <td
+            key={col.accessor}
+            style={{
+              width: col.width,
+              border: "1px solid #ccc",
+              padding: "4px",
+              ...(col.styleCell || {}),
+            }}
+          >
+            <span style={col.styleCellText}>{content}</span>
+          </td>
+        )
+      })}
+    </tr>
+  )
+
   return (
     <main className="p-1 max-w-4xl mx-auto">
       {/* <h1 className="text-2xl font-bold mb-6">Слова TW</h1> */}
@@ -377,7 +579,9 @@ export default function TableView({
               ))}
             </tr>
           </thead>
-          <tbody>
+
+          {/* Основне тіло (<tbody>) */}
+          {/* <tbody>
             {level2?.length > 0 &&
               level2.map((section) => {
                 const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
@@ -399,110 +603,7 @@ export default function TableView({
                     {openLevel2.includes(section.id) &&
                       sectionLevel1.map((topic) => {
                         const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                        if (topicWords.length === 0) return null
-
-                        return (
-                          <React.Fragment key={topic.id}>
-                            <tr
-                              onClick={() => toggleLevel1(topic.id)}
-                              className="bg-gray-200 cursor-pointer hover:bg-gray-300"
-                            >
-                              <td
-                                colSpan={showOwnerMark ? columns.length + 1 : columns.length}
-                                className="p-2 font-semibold"
-                              >
-                                <div
-                                  className="flex items-center gap-2"
-                                  style={{ userSelect: "none", cursor: "pointer" }}
-                                >
-                                  <span
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      toggleSelectTopic(topic.id)
-                                    }}
-                                  >
-                                    {(() => {
-                                      const topicWordIds = topicWords.map((w) => w.id)
-                                      const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
-
-                                      if (selectedCount === topicWordIds.length && selectedCount > 0)
-                                        return `☑️ (${selectedCount})`
-                                      if (selectedCount > 0) return `➖ (${selectedCount})`
-                                      return `🔲 (${selectedCount})`
-                                    })()}
-                                  </span>
-
-                                  <span>
-                                    ⮞ {level1Head}: {topic.name}
-                                  </span>
-                                  <span>{openLevel1.includes(topic.id) ? " 🔽" : " ▶️"}</span>
-                                </div>
-                              </td>
-                            </tr>
-
-                            {openLevel1.includes(topic.id) &&
-                              topicWords.map((item) => (
-                                <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-                                  <td
-                                    style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={isSelected(item.id)}
-                                      onClick={(e) => e.stopPropagation()}
-                                      onChange={() => toggleSelect(item.id)}
-                                    />
-                                  </td>
-
-                                  {showOwnerMark && (
-                                    <td
-                                      style={{
-                                        width: 30,
-                                        border: "1px solid #ccc",
-                                        padding: "4px",
-                                        textAlign: "center",
-                                      }}
-                                    >
-                                      {item.user_id === user?.id && "🧑‍💻"}
-                                    </td>
-                                  )}
-
-                                  {columns.map((col) => {
-                                    const value = item[col.accessor]
-                                    let content
-
-                                    switch (col.type) {
-                                      case "know":
-                                        content = value ? "👍" : ""
-                                        break
-                                      case "boolean":
-                                        content = value ? "✔" : ""
-                                        break
-                                      case "integer":
-                                        content = value != null ? Math.floor(Number(value)) : "-"
-                                        break
-                                      default:
-                                        content = value ?? ""
-                                    }
-
-                                    return (
-                                      <td
-                                        key={col.accessor}
-                                        style={{
-                                          width: col.width,
-                                          border: "1px solid #ccc",
-                                          padding: "4px",
-                                          ...(col.styleCell || {}),
-                                        }}
-                                      >
-                                        <span style={col.styleCellText}>{content}</span>
-                                      </td>
-                                    )
-                                  })}
-                                </tr>
-                              ))}
-                          </React.Fragment>
-                        )
+                        return renderTopic(topic, topicWords)
                       })}
                   </React.Fragment>
                 )
@@ -511,93 +612,89 @@ export default function TableView({
             {(!level2 || level2.length === 0) &&
               level1?.map((topic) => {
                 const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                if (topicWords.length === 0) return null
+                return renderTopic(topic, topicWords)
+              })}
+          </tbody> */}
+          {/* <tbody>
+            {level2?.length > 0 &&
+              level2.map((section) => {
+                const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
+                const sectionData = data?.filter((w) => sectionLevel1.some((t) => w[level1Id] === t.id)) || []
+                if (sectionData.length === 0) return null
 
                 return (
-                  <React.Fragment key={topic.id}>
-                    <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:bg-gray-300">
-                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-semibold">
-                        <div className="flex items-center gap-2">
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              toggleSelectTopic(topic.id)
-                            }}
-                          >
-                            {(() => {
-                              const topicWordIds = topicWords.map((w) => w.id)
-                              const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
-
-                              if (selectedCount === topicWordIds.length && selectedCount > 0)
-                                return `☑️ (${selectedCount})`
-                              if (selectedCount > 0) return `➖ (${selectedCount})`
-                              return `🔲 (${selectedCount})`
-                            })()}
-                          </span>
-
-                          <span>
-                            ⮞ {level1Head}: {topic.name}
-                          </span>
-                          <span>{openLevel1.includes(topic.id) ? " 🔽" : " ▶️"}</span>
-                        </div>
+                  <React.Fragment key={section.id}>
+                    <tr
+                      onClick={() => toggleLevel2(section.id)}
+                      className="bg-gray-300 cursor-pointer hover:bg-gray-400"
+                    >
+                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
+                        {level2Head}: {section.name} ({sectionData.length})
+                        {openLevel2.includes(section.id) ? " 🔽" : " ▶️"}
                       </td>
                     </tr>
 
-                    {openLevel1.includes(topic.id) &&
-                      topicWords.map((item) => (
-                        <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-                          <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-                            <input
-                              type="checkbox"
-                              checked={isSelected(item.id)}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={() => toggleSelect(item.id)}
-                            />
-                          </td>
-
-                          {showOwnerMark && (
-                            <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-                              {item.user_id === user?.id && "🧑‍💻"}
-                            </td>
-                          )}
-
-                          {columns.map((col) => {
-                            const value = item[col.accessor]
-                            let content
-
-                            switch (col.type) {
-                              case "know":
-                                content = value ? "👍" : ""
-                                break
-                              case "boolean":
-                                content = value ? "✔" : ""
-                                break
-                              case "integer":
-                                content = value != null ? Math.floor(Number(value)) : "-"
-                                break
-                              default:
-                                content = value ?? ""
-                            }
-
-                            return (
-                              <td
-                                key={col.accessor}
-                                style={{
-                                  width: col.width,
-                                  border: "1px solid #ccc",
-                                  padding: "4px",
-                                  ...(col.styleCell || {}),
-                                }}
-                              >
-                                <span style={col.styleCellText}>{content}</span>
-                              </td>
-                            )
-                          })}
-                        </tr>
-                      ))}
+                    {openLevel2.includes(section.id) &&
+                      sectionLevel1.map((topic) => {
+                        const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
+                        return renderTopic(topic, topicWords)
+                      })}
                   </React.Fragment>
                 )
               })}
+
+            {(!level2 || level2.length === 0) &&
+              level1?.map((topic) => {
+                const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
+                return renderTopic(topic, topicWords)
+              })}
+
+            {(!level2 || level2.length === 0) &&
+              (!level1 || level1.length === 0) &&
+              data?.length > 0 &&
+              renderTopic({ id: "no-topic", name: "Без теми" }, data)}
+          </tbody> */}
+          <tbody>
+            {/* Коли є level2 */}
+            {level2?.length > 0 &&
+              level2.map((section) => {
+                const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
+                const sectionData = data?.filter((w) => sectionLevel1.some((t) => w[level1Id] === t.id)) || []
+                if (sectionData.length === 0) return null
+
+                return (
+                  <React.Fragment key={section.id}>
+                    <tr
+                      onClick={() => toggleLevel2(section.id)}
+                      className="bg-gray-300 cursor-pointer hover:bg-gray-400"
+                    >
+                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
+                        {level2Head}: {section.name} ({sectionData.length})
+                        {openLevel2.includes(section.id) ? " 🔽" : " ▶️"}
+                      </td>
+                    </tr>
+
+                    {openLevel2.includes(section.id) &&
+                      sectionLevel1.map((topic) => {
+                        const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
+                        return renderTopic(topic, topicWords)
+                      })}
+                  </React.Fragment>
+                )
+              })}
+
+            {/* Коли є тільки level1 */}
+            {(!level2 || level2.length === 0) &&
+              level1?.length > 0 &&
+              level1.map((topic) => {
+                const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
+                return renderTopic(topic, topicWords)
+              })}
+
+            {/* Коли немає ні level1, ні level2 — плоска таблиця */}
+            {(!level2 || level2.length === 0) &&
+              (!level1 || level1.length === 0) &&
+              data.map((item) => renderFlatRow(item))}
           </tbody>
         </table>
       </div>

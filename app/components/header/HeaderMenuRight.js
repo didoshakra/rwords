@@ -4,7 +4,7 @@
 // import ThemeSwitcher from "./ThemeSwitcher"
 import UserSwitcher from './user/UserSwitcher.js';
 import HeaderSetingDroopMenu from './HeaderMobileDroopMenu.js';
-import HeaderThemesDroopMenu from './theme/HeaderThemesDroopMenu';
+import HeaderThemesDroopMenu from './theme/HeaderThemesMenuButton.js';
 
 
 const HeaderMenuRight = () => {

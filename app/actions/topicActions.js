@@ -60,3 +60,31 @@ export async function deleteTopic(id, user) {
   await sql`DELETE FROM topics WHERE id = ${id}`
 }
 
+export async function deleteTopics(ids, userId, role) {
+    console.log("topicActions/deleteTopics/ids", ids)
+  if (!userId) throw new Error("Користувач не авторизований")
+  if (!Array.isArray(ids) || ids.length === 0) return
+
+  if (role !== "admin") {
+    // Видаляємо лише ті топіки, які належать користувачу
+    await sql`
+      DELETE FROM topics
+      WHERE id = ANY(${ids}) AND user_id = ${userId}
+    `
+  } else {
+    // Адмін може видаляти всі топіки незалежно від власника
+    await sql`
+      DELETE FROM topics
+      WHERE id = ANY(${ids})
+    `
+  }
+}
+export async function checkTopicRelations(ids) {
+  const result = await sql`
+    SELECT DISTINCT topic_id
+    FROM words
+    WHERE topic_id = ANY(${ids})
+  `
+  return result.map((r) => r.topic_id) // список id, які мають зв’язки
+}
+

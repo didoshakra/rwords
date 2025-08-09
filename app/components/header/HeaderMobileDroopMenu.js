@@ -7,11 +7,10 @@
 
 "use client"
 import { useState, useRef, useEffect } from "react"
-import UserSwitcher from './user/UserSwitcher'
-import HeaderThemesDroopMenu from "./HeaderThemesDroopMenu"
+import UserSwitcher from "./user/UserSwitcher"
+import HeaderThemesDroopMenu from "./theme/HeaderThemesDroopMenu"
 
 const HeaderMobileDroopMenu = () => {
-
   const [mobileDroopMenu, setMobileDroopMenu] = useState(false)
   //*************Для клацання поза обєктом
   const ref_HeaderMobileDroopMenu = useRef(null)
