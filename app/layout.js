@@ -24,7 +24,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const headersList = headers()
   const userAgent = headersList.get("user-agent") || ""
-  const isFromApp = userAgent.includes("MyAppName") // твій унікальний підпис
+  const isFromApp = userAgent.includes("RWords/1.0.0 (ReactNative)") // твій унікальний підпис
 
   return (
     <html lang="en" className="light">
