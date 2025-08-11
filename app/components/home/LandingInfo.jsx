@@ -101,13 +101,9 @@ const LandingInfo = () => {
       <section className="px-6 py-10 text-center max-w-3xl mx-auto">
         <h2 className="flex gap-2 justify-center items-center space-x-2 text-2xl font-bold mb-4">
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-          Що таке застосунок px-6?
+          Що таке застосунок RWords?
         </h2>
-        {/* <li className="flex items-center space-x-2">
-          <span>📱 Завантажити мобільний застосунок RWords</span>
-          <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-          <span>для Android</span>
-        </li> */}
+
         <p className="text-gray-700 text-lg">
           <strong>RWords</strong> — це мобільний застосунок для android для вивчення іноземних слів та виразів за
           допомогою голосових і кнопкових команд. Ви самі оцінюєте свої знання, формуєте списки вивчення та слухаєте
