@@ -23,10 +23,6 @@ export default function HowItWorks() {
           кнопкових команд. Ви самі оцінюєте свої знання, формуєте списки вивчення та слухаєте слова у циклічному
           режимі.
         </h2>
-        {/* <h2 className="flex gap-2 justify-center items-center space-x-2 text-2xl font-bold mb-4">
-          <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-          Що таке застосунок px-6?
-        </h2> */}
       </section>
       {/* ✅ 4. CTA: Зареєструйтесь */}
       <section className="mb-6 bg-yellow-100 text-center py-10 px-6 bg-blue-50">
