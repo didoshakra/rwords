@@ -1,8 +1,8 @@
 // Layout
 //новий стейт fromApp для збереження прапорця з сервера.
 // Layout
+// app/layout.jsx
 import "./globals.css"
-
 import { Inter } from "next/font/google"
 import { Providers } from "./providers"
 import HeaderTapeWrapper from "./components/header/HeaderTapeWrapper"
@@ -20,14 +20,16 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
-  // Server Component: визначаємо user-agent
-  const userAgent = headers().get("user-agent") || ""
-  const isFromApp = userAgent.includes("MyAppName") //Поміняти на MyAppName з RN
+// Робимо layout async
+export default async function RootLayout({ children }) {
+  const headersList = headers()
+  const userAgent = headersList.get("user-agent") || ""
+  const isFromApp = userAgent.includes("MyAppName") // твій унікальний підпис
 
   return (
     <html lang="en" className="light">
-      <body suppressHydrationWarning={true} className={`${inter.className} bg-bodyBg dark:bg-bodyBgD`}>
+      <body suppressHydrationWarning className={`${inter.className} bg-bodyBg dark:bg-bodyBgD`}>
+        {/* Передаємо прапорець isFromApp у Providers */}
         <Providers isFromApp={isFromApp}>
           <HeaderTapeWrapper />
           <Header />
@@ -38,4 +40,3 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
-
