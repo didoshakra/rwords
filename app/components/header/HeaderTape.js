@@ -6,10 +6,9 @@ import { useAuth } from "@/app/context/AuthContext"
 const HeaderTape = ({ stats }) => {
     const { isFromApp } = useAuth()
   return (
-    <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1  text-xs text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
-      {/* <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 "> */}
+    <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
       <div className="flex justify-between space-x-1">
-        <a className="flex items-center justify-start space-x-1 " href="tel:+380508580704">
+        <a className="flex items-center justify-start space-x-1  text-xs" href="tel:+380508580704">
           {/* <IconPhone width={iconSize} height={iconSize} colorFill="white" /> */}
           {/* phone */}
           <svg
@@ -29,7 +28,7 @@ const HeaderTape = ({ stats }) => {
           </svg>
           +38(050-0000000)
         </a>
-        <a className="flex items-center justify-start space-x-1 text-sm" href="tel:+380687832306">
+        <a className="flex items-center justify-start space-x-1 text-xs" href="tel:+38068-0000000">
           <svg
             className="h-4 w-4 text-hTapeText dark:text-hTapeText"
             width="24"
