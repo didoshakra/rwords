@@ -14,7 +14,7 @@ export default function HowItWorks() {
       <h1 className="flex gap-2 justify-center items-center text-3xl font-bold mb-4">
         {" "}
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-        Що таке застосунок RWords?
+        Що таке застосунок RWords1?
       </h1>
 
       <section className="mb-6">
