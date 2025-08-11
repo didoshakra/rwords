@@ -8,7 +8,7 @@ const HeaderTape = ({ stats }) => {
   return (
     <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
       <div className="flex justify-between space-x-1">
-        <a className="flex items-center justify-start space-x-1  text-xs" href="tel:+380508580704">
+        <a className="flex items-center justify-start space-x-1  text-xs" href="tel:+380503739048">
           {/* <IconPhone width={iconSize} height={iconSize} colorFill="white" /> */}
           {/* phone */}
           <svg
@@ -25,8 +25,8 @@ const HeaderTape = ({ stats }) => {
             {" "}
             <path stroke="none" d="M0 0h24v24H0z" />{" "}
             <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
-          </svg>
-          +38(050-0000000)
+          </svg>``
+          +38(050-3739048)
         </a>
         <a className="flex items-center justify-start space-x-1 text-xs" href="tel:+38068-0000000">
           <svg
