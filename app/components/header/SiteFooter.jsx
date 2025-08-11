@@ -126,9 +126,10 @@ const SiteFooter = () => {
       <div className="text-center py-4 border-t border-gray-300 dark:border-gray-600 text-sm">
         © {year} RWords. Усі права захищено.
         <span className="inline-flex items-center gap-1 px-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 417" width="20" height="33" fill="#005BBB">
+          {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 417" width="20" height="33" fill="#005BBB">
             <path d="M127.88 0l-9.1 43.17-37.32 14.42v30.87L70 88l-14 11-7.4 39 14 12 20-20 19-1-4 24-12 16-35 20-7 16 15 13 40-25 39 25 15-13-7-16-36-20-12-16-4-24 19 1 20 20 14-12-7-39-14-11 17-7 8-7v-30l-38-15z" />
-          </svg>
+          </svg> */}
+          <img src="/images/home/trident.png" alt="Тризуб" width={12} height={12} priority={true} />
           <img src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
           {"  "}Все буде Україна! ❤️
         </span>
