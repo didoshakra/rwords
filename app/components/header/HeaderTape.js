@@ -1,9 +1,10 @@
 //HeaderTape.js
 "use client"
-import { getStats } from "@/app/actions/statsActions"
-import { FaEye, FaDownload, FaFileAlt } from "react-icons/fa"
+import { FaEye, FaDownload, FaFileAlt,FaMobileAlt } from "react-icons/fa"
+import { useAuth } from "@/app/context/AuthContext"
 
 const HeaderTape = ({ stats }) => {
+    const { isFromApp } = useAuth()
   return (
     <div className="h-18 mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
       <div className="flex justify-between space-x-1">
@@ -52,7 +53,8 @@ const HeaderTape = ({ stats }) => {
         {/* Статистика */}
         <div className="flex items-center space-x-2 text-xs">
           <span className="flex items-center space-x-1">
-            <FaEye /> <span>{stats.visits}</span>
+            {/* {isFromApp ? <FaEye />:<FaMobileAlt />} <span>{stats.visits}</span> */}
+            {isFromApp ? <FaMobileAlt /> : <FaEye />} <span>{stats.visits}</span>
           </span>
           <span className="flex items-center space-x-1">
             <FaDownload /> <span>{stats.app_downloads}</span>

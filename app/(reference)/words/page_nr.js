@@ -215,8 +215,22 @@ export default function WordsPage() {
     })
   }
 
+  //   const handleDelete = (words) => {
+  //     setDialogConfig({
+  //       type: "delete",
+  //       title: "Підтвердження видалення",
+  //       message: `Ви впевнені, що хочете видалити ${words.length} слів?`,
+  //       buttons: [
+  //         { label: "Видалити", className: "bg-red-600 text-white" },
+  //         { label: "Відмінити", className: "bg-gray-200" },
+  //       ],
+  //       wordsToDelete: words, // додатково, якщо треба передати дані
+  //     })
+  //     setDialogOpen(true)
+  //   }
+  // Оновлюємо handleDelete
   const handleDelete = (words) => {
-    setDialogConfig({
+    openDialog({
       type: "delete",
       title: "Підтвердження видалення",
       message: `Ви впевнені, що хочете видалити ${words.length} слів?`,
@@ -224,22 +238,32 @@ export default function WordsPage() {
         { label: "Видалити", className: "bg-red-600 text-white" },
         { label: "Відмінити", className: "bg-gray-200" },
       ],
-      wordsToDelete: words, // додатково, якщо треба передати дані
+      wordsToDelete: words,
     })
-    setDialogOpen(true)
   }
 
-  const updatePNs = (updatedWords) => {
-    const newWords = updatedWords.map((w, i) => ({
-      ...w,
-      pn: i + 1, // оновлюємо pn
-    }))
-    setWords(newWords)
-    setIsOrderChanged(true) // ⚠️ встановлюємо прапорець змін
+  const openDialog = (config) => {
+    setDialogConfig(config)
+    setDialogOpen(true)
   }
 
   //   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
+  //Для попередження про зміни при виході або призакритті вкладки
+  //   useEffect(() => {
+  //     const handleBeforeUnload = (e) => {
+  //       if (isOrderChanged) {
+  //         e.preventDefault()
+  //         e.returnValue = "" // Потрібно для деяких браузерів
+  //       }
+  //     }
+
+  //     window.addEventListener("beforeunload", handleBeforeUnload)
+
+  //     return () => {
+  //       window.removeEventListener("beforeunload", handleBeforeUnload)
+  //     }
+  //   }, [isOrderChanged])
 
   // Імпорт з csv
   const handleFileUpload = async (event) => {
@@ -266,9 +290,121 @@ export default function WordsPage() {
     })
   }
 
+  //   translateAllWords з confirm
+  //   const translateAllWords = async () => {
+  //     stopRequested.current = false
+  //     setTranslate(true)
+  //     // setTranslatedCount(0)
+  //     translatedCountRef.current = 0
 
+  //     let allWords
+  //     try {
+  //       allWords = await getWords()
+  //     } catch (err) {
+  //       alert("❌ Не вдалося завантажити слова з БД.")
+  //       setTranslate(false)
+  //       return
+  //     }
+
+  //     const untranslatedWords = allWords.filter((w) => !w.translation?.trim())
+
+  //     if (allWords.length === 0) {
+  //       setTranslate(false)
+  //       alert("⚠️ У таблиці немає жодного слова.")
+  //       return
+  //     }
+
+  //     const ask = confirm(
+  //       untranslatedWords.length < allWords.length
+  //         ? "Деякі слова вже перекладено. Перекладати всі?=Ok/Тільки не перекладені?=Скасувати"
+  //         : "Тільки не перекладені?"
+  //     )
+
+  //     const wordsToTranslate = untranslatedWords.length < allWords.length && !ask ? untranslatedWords : allWords
+
+  //     startTranslation(wordsToTranslate)
+  //   }
+
+  //   translateAllWords з <CustomDialog
+  const translateAllWords = async () => {
+    stopRequested.current = false
+    setTranslate(true)
+    translatedCountRef.current = 0
+
+    let allWords
+    try {
+      allWords = await getWords()
+    } catch (err) {
+      alert("❌ Не вдалося завантажити слова з БД.")
+      setTranslate(false)
+      return
+    }
+
+    const untranslatedWords = allWords.filter((w) => !w.translation?.trim())
+
+    if (allWords.length === 0) {
+      setTranslate(false)
+      alert("⚠️ У таблиці немає жодного слова.")
+      return
+    }
+
+    if (untranslatedWords.length < allWords.length) {
+      setDialogConfig({
+        type: "translate",
+        title: "Що перекладати?",
+        message: "Деякі слова вже перекладено. Оберіть дію:",
+        buttons: [{ label: "Перекласти всі" }, { label: "Лише неперекладені" }, { label: "Відмінити" }],
+        allWords,
+        untranslatedWords,
+      })
+      setDialogOpen(true)
+      setTranslate(false)
+      return
+    }
+
+    startTranslation(allWords)
+  }
+  // Оновлюємо translateAllWords
+  //   const translateAllWords = async () => {
+  //     stopRequested.current = false
+  //     setTranslate(true)
+  //     translatedCountRef.current = 0
+
+  //     let allWords
+  //     try {
+  //       allWords = await getWords()
+  //     } catch (err) {
+  //       alert("❌ Не вдалося завантажити слова з БД.")
+  //       setTranslate(false)
+  //       return
+  //     }
+
+  //     const untranslatedWords = allWords.filter((w) => !w.translation?.trim())
+
+  //     if (allWords.length === 0) {
+  //       setTranslate(false)
+  //       alert("⚠️ У таблиці немає жодного слова.")
+  //       return
+  //     }
+
+  //     if (untranslatedWords.length < allWords.length) {
+  //       openDialog({
+  //         type: "translate",
+  //         title: "Що перекладати?",
+  //         message: "Деякі слова вже перекладено. Оберіть дію:",
+  //         buttons: [{ label: "Перекласти всі" }, { label: "Лише неперекладені" }, { label: "Відмінити" }],
+  //         allWords,
+  //         untranslatedWords,
+  //       })
+  //       setTranslate(false)
+  //       return
+  //     }
+
+  //     startTranslation(allWords)
+  //   }
 
   const startTranslation = async (wordsToTranslate) => {
+    // setTotalWords(wordsToTranslate.length)
     if (wordsToTranslate.length === 0) {
       setTranslate(false)
       return
@@ -287,11 +423,10 @@ export default function WordsPage() {
 
       try {
         await translateWord(word, fromLanguage, toLanguage) // server action
+        // setTranslatedCount((prev) => prev + 1)
         translatedCountRef.current++
-        setMessage(`Перекладено ${translatedCountRef.current} з ${wordsToTranslate.length}`)
       } catch (err) {
         console.error("❌ Помилка перекладу:", word, err)
-        setMessage(`Помилка перекладу слова "${word}" (${translatedCountRef.current} з ${wordsToTranslate.length})`)
       }
 
       await new Promise((res) => setTimeout(res, 400)) // пауза
@@ -299,125 +434,35 @@ export default function WordsPage() {
 
     alert(`✅ Переклад завершено: ${translatedCountRef.current} із ${wordsToTranslate.length}`)
     setTranslate(false)
-    setMessage(`✅ Переклад завершено: ${translatedCountRef.current} із ${wordsToTranslate.length}`)
     loadWords?.()
   }
+  const translateSelectedWords = async (selectedWords) => {
+    console.log("words / translateSelectedWords / selectedWords", selectedWords)
+    stopRequested.current = false
+    setTranslate(true)
+    translatedCountRef.current = 0
 
-  //   const translateSelectedWords = async (selectedWords) => {
+    if (!selectedWords || selectedWords.length === 0) {
+      setTranslate(false)
+      alert("⚠️ Не вибрано жодного слова.")
+      return
+    }
 
+    const untranslatedWords = selectedWords.filter((w) => !w.translation?.trim())
+    if (untranslatedWords.length === 0) {
+      setTranslate(false)
+      alert("Усі вибрані слова вже перекладено.")
+      return
+    }
 
-  // Одна універсальна функція для перекладу
-const translateWords = async (words) => {
-  // Якщо натиснули "Зупинити переклад"
-  if (words === "stop") {
-    stopRequested.current = true
-    setTranslate(false)
-    return
+    startTranslation(untranslatedWords)
   }
-
-  // Перевірка, що words — масив
-  if (!Array.isArray(words)) {
-    setTranslate(false)
-    alert("⚠️ Не вибрано жодного слова.")
-    return
-  }
-
-  stopRequested.current = false
-  translatedCountRef.current = 0
-
-  if (words.length === 0) {
-    setTranslate(false)
-    alert("⚠️ Не вибрано жодного слова.")
-    return
-  }
-
-  const untranslatedWords = words.filter((w) => !w.translation?.trim())
-
-  if (untranslatedWords.length === 0) {
-    setDialogConfig({
-      type: "translate",
-      title: "Усі слова вже перекладено",
-      message: "Усі вибрані слова вже мають переклад. Перекласти ще раз?",
-      buttons: [{ label: "Перекласти всі" }, { label: "Відмінити" }],
-      allWords: words,
-      untranslatedWords: [],
-    })
-    setDialogOpen(true)
-    setTranslate(false)
-    return
-  }
-
-  if (untranslatedWords.length < words.length) {
-    setDialogConfig({
-      type: "translate",
-      title: "Що перекладати?",
-      message: "Деякі слова вже перекладено. Оберіть дію:",
-      buttons: [{ label: "Перекласти всі" }, { label: "Лише неперекладені" }, { label: "Відмінити" }],
-      allWords: words,
-      untranslatedWords,
-    })
-    setDialogOpen(true)
-    setTranslate(false)
-    return
-  }
-
-  setTranslate(true)
-  startTranslation(untranslatedWords)
-}
-
-// const translateWords = async (words) => {
-//   stopRequested.current = false
-//   translatedCountRef.current = 0
-
-//   if (!words || words.length === 0) {
-//     setTranslate(false)
-//     alert("⚠️ Не вибрано жодного слова.")
-//     return
-//   }
-
-//   const untranslatedWords = words.filter((w) => !w.translation?.trim())
-
-//   if (untranslatedWords.length === 0) {
-//     setDialogConfig({
-//       type: "translate",
-//       title: "Усі слова вже перекладено",
-//       message: "Усі вибрані слова вже мають переклад. Перекласти ще раз?",
-//       buttons: [{ label: "Перекласти всі" }, { label: "Відмінити" }],
-//       allWords: words,
-//       untranslatedWords: [],
-//     })
-//     setDialogOpen(true)
-//     setTranslate(false) // тут залишаємо false
-//     return
-//   }
-
-//   if (untranslatedWords.length < words.length) {
-//     setDialogConfig({
-//       type: "translate",
-//       title: "Що перекладати?",
-//       message: "Деякі слова вже перекладено. Оберіть дію:",
-//       buttons: [
-//         { label: "Перекласти всі" },
-//         { label: "Лише неперекладені" },
-//         { label: "Відмінити" }
-//       ],
-//       allWords: words,
-//       untranslatedWords,
-//     })
-//     setDialogOpen(true)
-//     setTranslate(false) // тут залишаємо false
-//     return
-//   }
-
-//   setTranslate(true) // тільки тут!
-//   startTranslation(untranslatedWords)
-// }
   //   -------------------------------------------
 
   // Кнопка старт/стоп перекладу
   const handleTranslate = () => {
     if (!translate) {
-      translateWords()
+      translateAllWords()
     } else {
       stopRequested.current = true
       setTranslate(false)
@@ -425,80 +470,111 @@ const translateWords = async (words) => {
   }
 
   //   const deleteSelected = async () => {
+//   const deleteSelected = async (selectedWords) => {
+//     // console.log("words/deleteSelected0/selectedWords=", selectedWords)
+//     console.log("words/deleteSelected0/selectedWords=", JSON.stringify(selectedWords, null, 2))
+//     if (!user) {
+//       alert("Потрібна авторизація, щоб видаляти слова")
+//       return
+//     }
+//     console.log("words/deleteSelected1")
+
+//     // Визначаємо, які слова належать користувачу
+//     const ownWords = selectedWords.filter((w) => user.role === "admin" || w.user_id === user.id)
+//     const ownIds = ownWords.map((w) => w.id)
+//     const othersCount = selectedWords.length - ownWords.length
+//     console.log("words/deleteSelected2")
+//     if (ownIds.length === 0) {
+//       // Нема своїх слів для видалення
+//       alert("Усі вибрані записи належать іншим користувачам. Видаляти нічого.")
+//       return
+//     }
+//     console.log("words/deleteSelected2")
+
+//     if (othersCount > 0) {
+//       const confirmed = confirm(
+//         `У виборі є ${othersCount} чужих слів. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
+//       )
+//       if (!confirmed) return
+//     } else {
+//       const confirmed = confirm(`Видалити ${ownIds.length} слів?`)
+//       if (!confirmed) return
+//     }
+//     console.log("words/deleteSelected2")
+//     try {
+//       console.log("words/deleteSelected3/deleteWords")
+//       await deleteWords(ownIds, user?.id, user?.role)
+//       setMessage(`🗑️ Видалено ${ownIds.length} слів`)
+//       //   clearSelection()
+//       setActionsOk(true)
+//       loadWords()
+//     } catch (err) {
+//       setMessage("Помилка при видаленні: " + err.message)
+//     }
+//   }
   const deleteSelected = async (selectedWords) => {
-    // console.log("words/deleteSelected0/selectedWords=", selectedWords)
     console.log("words/deleteSelected0/selectedWords=", JSON.stringify(selectedWords, null, 2))
+
     if (!user) {
       alert("Потрібна авторизація, щоб видаляти слова")
       return
     }
-    console.log("words/deleteSelected1")
 
     // Визначаємо, які слова належать користувачу
     const ownWords = selectedWords.filter((w) => user.role === "admin" || w.user_id === user.id)
     const ownIds = ownWords.map((w) => w.id)
     const othersCount = selectedWords.length - ownWords.length
-    console.log("words/deleteSelected2")
+
     if (ownIds.length === 0) {
-      // Нема своїх слів для видалення
       alert("Усі вибрані записи належать іншим користувачам. Видаляти нічого.")
       return
     }
-    console.log("words/deleteSelected2")
 
+    // Формуємо текст повідомлення для діалогу
+    let message
     if (othersCount > 0) {
-      const confirmed = confirm(
-        `У виборі є ${othersCount} чужих слів. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
-      )
-      if (!confirmed) return
+      message = `У виборі є ${othersCount} чужих слів. Видалити лише ваші (${ownIds.length})?`
+    } else {
+      message = `Видалити ${ownIds.length} слів?`
     }
-    // else {
-    //   const confirmed = confirm(`Видалити ${ownIds.length} слів?`)
-    //   if (!confirmed) return
-    // }
-    console.log("words/deleteSelected2")
-    try {
-      console.log("words/deleteSelected3/deleteWords")
-      await deleteWords(ownIds, user?.id, user?.role)
-      setMessage(`🗑️ Видалено ${ownIds.length} слів`)
-      //   clearSelection()
-      setActionsOk(true)
-      loadWords()
-    } catch (err) {
-      setMessage("Помилка при видаленні: " + err.message)
-    }
+
+    // Використовуємо єдиний діалог замість дублювання confirm()
+    openDialog({
+      type: "delete",
+      title: "Підтвердження видалення",
+      message,
+      buttons: [
+        {
+          label: "Видалити",
+          className: "bg-red-600 text-white",
+          onClick: async () => {
+            try {
+              await deleteWords(ownIds, user.id, user.role)
+              setMessage(`🗑️ Видалено ${ownIds.length} слів`)
+              setActionsOk(true)
+              loadWords()
+            } catch (err) {
+              setMessage("Помилка при видаленні: " + err.message)
+            }
+          },
+        },
+        { label: "Відмінити", className: "bg-gray-200" },
+      ],
+    })
   }
+
 
   const handleDialogResult = (index) => {
     setDialogOpen(false)
     if (dialogConfig.type === "translate") {
-      if (dialogConfig.untranslatedWords.length === 0) {
-        // Всі слова вже перекладено
-        if (index === 0) {
-          setTranslate(true)
-          stopRequested.current = false
-          startTranslation(dialogConfig.allWords)
-        } else {
-          // index === 1 — Відмінити
-          setTranslate(false)
-          stopRequested.current = true
-        }
-      } else {
-        // Є неперекладені
-        if (index === 0) {
-          setTranslate(true)
-          stopRequested.current = false
-          startTranslation(dialogConfig.allWords)
-        } else if (index === 1) {
-          setTranslate(true)
-          stopRequested.current = false
-          startTranslation(dialogConfig.untranslatedWords)
-        } else {
-          // index === 2 — Відмінити
-          setTranslate(false)
-          stopRequested.current = true
-        }
+      if (index === 0) {
+        setTranslate(true)
+        startTranslation(dialogConfig.allWords)
+      } else if (index === 1) {
+        setTranslate(true)
+        startTranslation(dialogConfig.untranslatedWords)
       }
+      // index === 2 — Відмінити
     } else if (dialogConfig.type === "delete") {
       if (index === 0) {
         // Видалити
@@ -531,8 +607,8 @@ const translateWords = async (words) => {
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
         onClickCsv={() => document.getElementById("csvInput").click()}
-        onTranslate={translateWords}
-        // onTranslateSelected={handleTranslate}
+        onTranslate={handleTranslate}
+        onTranslateSelected={translateSelectedWords}
         translate={translate} //Чи перекладено для зміни кнопки
         level0Head="Слова"
         level1Head="Тема"

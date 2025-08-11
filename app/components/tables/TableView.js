@@ -23,6 +23,7 @@ export default function TableView({
   onDelete,
   onClickCsv,
   onTranslate,
+//   onTranslateSelected,
   translate,
   //   sortField = "pn",
   isPending, //ДЛя блокування кнопки імпорт покийде імпорт
@@ -37,9 +38,6 @@ export default function TableView({
   const { data: session, status } = useSession()
   const user = session?.user
   //
-  //   const [tData, setTData] = useState([])
-  //   const [level1, setLevel1] = useState([])
-  //   const [level2, setLevel2] = useState([])
   const [tData, setTData] = useState(data || [])
   const [level1, setLevel1] = useState(dataLevel1 || [])
   const [level2, setLevel2] = useState(dataLevel2 || [])
@@ -381,30 +379,37 @@ export default function TableView({
                 📂 Імпорт CSV
               </button>
             )}
-            {onTranslate && (
+            {/* {onTranslate && (
               <button
-                onClick={onTranslate}
+                onClick={onTranslate(tData)}
                 className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
               >
-                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти"}
+                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти всі"}
               </button>
-            )}
+            )} */}
+            {/* {onTranslate && (
+              <button
+                onClick={() => onTranslate(tData)}
+                className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
+              >
+                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти всі"}
+              </button>
+            )} */}
           </>
         )}
-
         {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
         {isOrderChanged && (
           <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
             💾 Зберегти порядок
           </button>
         )}
-
         {/* 1 ВИДІЛЕНИЙ РЯДОК */}
         {selectedIds.length === 1 &&
           (() => {
             const selectedWord = tData.find((w) => w.id === selectedIds[0])
             // console.log("TableView/selectedWord=", selectedWord)
-            const isOwner = user && selectedWord && selectedWord.user_id === user.id
+            // const isOwner = user && selectedWord && selectedWord.user_id === user.id
+            const isOwner = user && selectedWord && (selectedWord.user_id === user.id || user.role === "admin")
 
             return (
               <>
@@ -444,7 +449,6 @@ export default function TableView({
               </>
             )
           })()}
-
         {/* БАГАТО ВИДІЛЕНИХ */}
         {onDelete && selectedIds.length > 1 && (
           <button
@@ -454,6 +458,27 @@ export default function TableView({
             }}
           >
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+          </button>
+        )}
+        {/* Перекласти всі/виділені */}
+        {onTranslate && (
+          <button
+            onClick={() => {
+              if (translate) {
+                // Зупинити переклад
+                onTranslate("stop")
+              } else if (selectedIds.length > 0) {
+                // Перекласти виділені
+                const selectedWords = tData.filter((w) => selectedIds.includes(w.id))
+                onTranslate(selectedWords)
+              } else {
+                // Перекласти всі
+                onTranslate(tData)
+              }
+            }}
+            className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
+          >
+            {translate ? "⏸ Зупинити переклад" : selectedIds.length > 0 ? "Перекласти виділені" : "▶️Перекласти всі"}
           </button>
         )}
       </div>

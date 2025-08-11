@@ -1,14 +1,14 @@
 // Layout
+//новий стейт fromApp для збереження прапорця з сервера.
+// Layout
 import "./globals.css"
-import ThemeProviders from "./context/ThemeProviders"
-import { DatabaseProvider } from "./context/DatabaseContext"
+
 import { Inter } from "next/font/google"
 import { Providers } from "./providers"
 import HeaderTapeWrapper from "./components/header/HeaderTapeWrapper"
-// import HeaderTape from "@/app/components/header/HeaderTape"
 import Header from "@/app/components/header/Header"
 import SiteFooter from "./components/header/SiteFooter"
-import { AuthProvider } from "./context/AuthContext"
+import { headers } from "next/headers"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,16 +21,21 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  // Server Component: визначаємо user-agent
+  const userAgent = headers().get("user-agent") || ""
+  const isFromApp = userAgent.includes("MyAppName") //Поміняти на MyAppName з RN
+
   return (
     <html lang="en" className="light">
-      {/* suppressHydrationWarning={true}//https://www.slingacademy.com/article/next-js-warning-extra-attributes-from-the-server/ */}
-      <body suppressHydrationWarning={true} className={`inter.className bg-bodyBg dark:bg-bodyBgD`}>
-        <Providers>
+      <body suppressHydrationWarning={true} className={`${inter.className} bg-bodyBg dark:bg-bodyBgD`}>
+        <Providers isFromApp={isFromApp}>
           <HeaderTapeWrapper />
           <Header />
           {children}
+          <SiteFooter />
         </Providers>
       </body>
     </html>
   )
 }
+

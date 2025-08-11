@@ -63,3 +63,23 @@ export async function deleteSection(id, user) {
 
   await sql`DELETE FROM sections WHERE id = ${id}`
 }
+// Видалити кілька секцій (масив id, тільки власник або адмін)
+export async function deleteSections(ids, userId, role) {
+  console.log("sectionActions/deleteSections/ids", ids)
+  if (!userId) throw new Error("Користувач не авторизований")
+  if (!Array.isArray(ids) || ids.length === 0) return
+
+  if (role !== "admin") {
+    // Видаляємо лише ті секції, які належать користувачу
+    await sql`
+      DELETE FROM sections
+      WHERE id = ANY(${ids}) AND user_id = ${userId}
+    `
+  } else {
+    // Адмін може видаляти всі секції незалежно від власника
+    await sql`
+      DELETE FROM sections
+      WHERE id = ANY(${ids})
+    `
+  }
+}

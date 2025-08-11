@@ -2,11 +2,10 @@
 "use client"
 
 import React, { useEffect, useState, useTransition } from "react"
-import { getSections, createSection, updateSection, deleteSection } from "@/app/actions/sectionActions"
+import { getSections, createSection, updateSection, deleteSection, deleteSections } from "@/app/actions/sectionActions"
 import { useAuth } from "@/app/context/AuthContext"
 import TableView from "@/app/components/tables/TableView"
 import { useSession } from "next-auth/react"
-
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -32,6 +31,7 @@ export default function SectionsPage() {
   const [img, setImg] = useState("")
   const [pn, setPn] = useState(0)
   const [isPending, startTransition] = useTransition()
+  const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
 
   useEffect(() => {
     loadSections()
@@ -88,12 +88,29 @@ export default function SectionsPage() {
     })
   }
 
-  const handleDelete = (section) => {
-    if (!confirm("Ви впевнені, що хочете видалити цю секцію?")) return
+//   const handleDelete = (section) => {
+//     if (!confirm("Ви впевнені, що хочете видалити цю секцію?")) return
+//     startTransition(async () => {
+//       try {
+//         await deleteSection(section.id, user)
+//         setMessage("Секцію видалено")
+//         setActionsOk(true)
+//         loadSections()
+//       } catch (err) {
+//         setMessage("Помилка: " + err.message)
+//       }
+//     })
+//   }
+  const handleDelete = (t) => {
+    console.log("topics/handleDelete/t=", t)
+    if (!confirm(`Ви впевнені, що хочете видалити ${t.length} секцій?`)) return
+
     startTransition(async () => {
       try {
-        await deleteSection(section.id, user)
-        setMessage("Секцію видалено")
+        // t — це масив секцій, треба передати масив id
+        const ids = t.map((s) => s.id)
+        await deleteSections(ids, user.id, user.role)
+        setMessage("Видалено")
         loadSections()
       } catch (err) {
         setMessage("Помилка: " + err.message)
@@ -129,13 +146,16 @@ export default function SectionsPage() {
         data={sections}
         columns={columns}
         title={"Групи тем"}
+        level0Head="Групи тем"
         onAdd={openAddModal}
         onEdit={openEditModal}
-        onDelete={handleDelete} // передаємо лише id
+        onDelete={handleDelete} // передаємо обєкти
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення
         setMessage={setMessage} //Для повідомлення
+        actionsOk={actionsOk} //
+        setActionsOk={setActionsOk}
       />
 
       <Modal open={!!modal} onClose={closeModal}>

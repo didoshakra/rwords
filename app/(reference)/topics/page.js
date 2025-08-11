@@ -63,6 +63,7 @@ export default function TopicsPage() {
   const [pn, setPn] = useState("")
   const [message, setMessage] = useState("")
   const [isPending, startTransition] = useTransition()
+  const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
 
   useEffect(() => {
     loadTopics()
@@ -156,44 +157,43 @@ export default function TopicsPage() {
     })
   }
 
-//   const deleteSelectedTopics = async (selectedTopics) => {
-//     console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
-//     if (!user) {
-//       alert("Потрібна авторизація, щоб видаляти топіки")
-//       return
-//     }
+  //   const deleteSelectedTopics = async (selectedTopics) => {
+  //     console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
+  //     if (!user) {
+  //       alert("Потрібна авторизація, щоб видаляти топіки")
+  //       return
+  //     }
 
-//     // Визначаємо, які топіки належать користувачу або якщо він адмін — всі
-//     const ownTopics = selectedTopics.filter((t) => user.role === "admin" || t.user_id === user.id)
-//     const ownIds = ownTopics.map((t) => t.id)
-//     const othersCount = selectedTopics.length - ownTopics.length
+  //     // Визначаємо, які топіки належать користувачу або якщо він адмін — всі
+  //     const ownTopics = selectedTopics.filter((t) => user.role === "admin" || t.user_id === user.id)
+  //     const ownIds = ownTopics.map((t) => t.id)
+  //     const othersCount = selectedTopics.length - ownTopics.length
 
-//     if (ownIds.length === 0) {
-//       alert("Усі вибрані топіки належать іншим користувачам. Видаляти нічого.")
-//       return
-//     }
+  //     if (ownIds.length === 0) {
+  //       alert("Усі вибрані топіки належать іншим користувачам. Видаляти нічого.")
+  //       return
+  //     }
 
-//     if (othersCount > 0) {
-//       const confirmed = confirm(
-//         `У виборі є ${othersCount} чужих топіків. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
-//       )
-//       if (!confirmed) return
-//     } else {
-//       const confirmed = confirm(`Видалити ${ownIds.length} топіків?`)
-//       if (!confirmed) return
-//     }
+  //     if (othersCount > 0) {
+  //       const confirmed = confirm(
+  //         `У виборі є ${othersCount} чужих топіків. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
+  //       )
+  //       if (!confirmed) return
+  //     } else {
+  //       const confirmed = confirm(`Видалити ${ownIds.length} топіків?`)
+  //       if (!confirmed) return
+  //     }
 
-//     try {
-//       await deleteTopics(ownIds, user.id, user.role)
-//       setMessage(`🗑️ Видалено ${ownIds.length} топіків`)
-//       // clearSelection() — якщо потрібна очистка виділення
-//       setActionsOk(true)
-//       loadTopics() // Функція для перезавантаження списку топіків
-//     } catch (err) {
-//       setMessage("Помилка при видаленні: " + err.message)
-//     }
-//   }
-
+  //     try {
+  //       await deleteTopics(ownIds, user.id, user.role)
+  //       setMessage(`🗑️ Видалено ${ownIds.length} топіків`)
+  //       // clearSelection() — якщо потрібна очистка виділення
+  //       setActionsOk(true)
+  //       loadTopics() // Функція для перезавантаження списку топіків
+  //     } catch (err) {
+  //       setMessage("Помилка при видаленні: " + err.message)
+  //     }
+  //   }
 
   const deleteSelectedTopics = async (selectedTopics) => {
     console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
@@ -258,8 +258,7 @@ export default function TopicsPage() {
     }
   }
 
-
-//   const isOwnerOrAdmin = (row) => user && (user.role === "admin" || user.id === row.user_id)
+  //   const isOwnerOrAdmin = (row) => user && (user.role === "admin" || user.id === row.user_id)
 
   return (
     <main className="p-6 max-w-4xl mx-auto">
@@ -269,15 +268,17 @@ export default function TopicsPage() {
         level1Id="section_id"
         columns={columns}
         title={"Теми"}
+        level0Head="Тема"
+        level1Head="Група тем"
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        level0Head="Тема"
-        level1Head="Група тем"
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення
         setMessage={setMessage} //Для повідомлення
+        actionsOk={actionsOk} //
+        setActionsOk={setActionsOk}
       />
 
       <Modal open={!!modal} onClose={closeModal}>

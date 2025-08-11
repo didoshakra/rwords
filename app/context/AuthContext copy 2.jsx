@@ -1,14 +1,13 @@
 //CL/context/AuthContext.jsx
-//  новий стейт fromApp для збереження прапорця з сервера.
+// до новий стейт fromApp для збереження прапорця з сервера.
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from "react"
 
 const AuthContext = createContext(null)
 
-export function AuthProvider({ children, isFromApp }) {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [fromApp, setFromApp] = useState(isFromApp ?? false)
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user")
@@ -36,11 +35,7 @@ export function AuthProvider({ children, isFromApp }) {
     localStorage.removeItem("user")
   }
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout, isFromApp: fromApp }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

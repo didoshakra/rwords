@@ -1,16 +1,14 @@
 // Layout
+//новий стейт fromApp для збереження прапорця з сервера.
+// Layout
 import "./globals.css"
-import ThemeProviders from "./context/ThemeProviders"
-import {DatabaseProvider} from "./context/DatabaseContext"
-import { Inter } from "next/font/google"
-// import Script from "next/script"//Google Analytics
-import { SessionProvider } from "next-auth/react"
 
-import HeaderTapeWrapper from './components/header/HeaderTapeWrapper'
-// import HeaderTape from "@/app/components/header/HeaderTape"
+import { Inter } from "next/font/google"
+import { Providers } from "./providers"
+import HeaderTapeWrapper from "./components/header/HeaderTapeWrapper"
 import Header from "@/app/components/header/Header"
-import SiteFooter from './components/header/SiteFooter'
-import { AuthProvider } from "./context/AuthContext"
+import SiteFooter from "./components/header/SiteFooter"
+import { headers } from "next/headers"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,23 +21,19 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  // Server Component: визначаємо user-agent
+  const userAgent = headers().get("user-agent") || ""
+  const isFromApp = userAgent.includes("MyAppName")
+
   return (
     <html lang="en" className="light">
-      {/* suppressHydrationWarning={true}//https://www.slingacademy.com/article/next-js-warning-extra-attributes-from-the-server/ */}
-      <body suppressHydrationWarning={true} className={`inter.className bg-bodyBg dark:bg-bodyBgD`}>
-        <ThemeProviders>
-          <DatabaseProvider>
-            {/* <SessionProvider> */}
-              <AuthProvider>
-                <HeaderTapeWrapper />
-                <Header />
-                {children}
-                {/* <Footer /> */}
-                <SiteFooter />
-              </AuthProvider>
-            {/* </SessionProvider> */}
-          </DatabaseProvider>
-        </ThemeProviders>
+      <body suppressHydrationWarning={true} className={`${inter.className} bg-bodyBg dark:bg-bodyBgD`}>
+        <Providers isFromApp={isFromApp}>
+          <HeaderTapeWrapper />
+          <Header />
+          {children}
+          <SiteFooter />
+        </Providers>
       </body>
     </html>
   )
