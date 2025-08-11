@@ -15,7 +15,7 @@ const LandingInfo = () => {
     <>
       <main className="px-4 py-8 max-w-3xl mx-auto text-hText dark:text-hTextD">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          👋 Вітаємо1 на RWords — спільноті для вивчення іноземних слів
+          👋 Вітаємо на RWords — спільноті для вивчення іноземних слів
         </h1>
 
         <p className="text-lg mb-6">
