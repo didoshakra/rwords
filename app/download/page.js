@@ -7,7 +7,7 @@ export default function DownloadButton() {
     e.preventDefault()
 
     // Спочатку запускаємо завантаження файлу
-    window.location.href = "https://github.com/didoshakra/rwords/releases/download/v1.0.1/rwords.apk"
+    window.location.href = "https://github.com/didoshakra/rwords/releases/download/v1.0.2/rwords.apk"
     incrementAppDownloads().catch(() => {
       // Можна тут логувати помилку, але це необов'язково
     })
@@ -19,7 +19,7 @@ export default function DownloadButton() {
       <h1>Завантажити застосунок RWords</h1>
 
     <a
-      href="https://github.com/didoshakra/rwords/releases/download/v1.0.1/rwords.apk"
+      href="https://github.com/didoshakra/rwords/releases/download/v1.0.2/rwords.apk"
       onClick={handleClick}
       className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
       style={{

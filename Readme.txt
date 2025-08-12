@@ -1,6 +1,16 @@
 //Запуск на порт 3002 yarn  dev -p 3002
+//===============================================
+Застосунок RWords.apk href="https://github.com/didoshakra/rwords/releases/download/v1.0.1/rwords.apk"
+Як подивитися список релізів і файлів на GitHub: https://github.com/didoshakra/rwords/releases
+
+
+
+
+
+
+//=======================================================
 //20230723-ra-rozet
-//Проба зробити шпблон свйту https://rozetka.com.ua/ua/
+//Проба зробити шаблон свйту https://rozetka.com.ua/ua/
 ==================================================================
 Для того щоб працювала допомога по tailwindcss треба:
     - у VSCode: Tailwind CSS IntelliSense - підказки по командах
