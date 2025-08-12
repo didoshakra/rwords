@@ -13,7 +13,7 @@ const HeaderMenuRight = () => {
   useEffect(() => {
     function checkScreen() {
       const isMobileAgent = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-      const isWideScreen = window.innerWidth >= 768 // брейкпоінт md у Tailwind
+      const isWideScreen = window.innerWidth >= 768
       setShowDesktopMenu(!isMobileAgent && isWideScreen)
     }
 
@@ -24,12 +24,12 @@ const HeaderMenuRight = () => {
 
   return (
     <div className="flex items-center justify-end h-full">
-      {showDesktopMenu && (
-        <div className="flex h-full">
+      {showDesktopMenu ? (
+        <div className="flex h-full space-x-2">
           <UserSwitcher />
           <HeaderThemesDroopMenu />
         </div>
-      )}
+      ) : null}
       <div className="headerMenuRight__mobile">
         <HeaderSetingDroopMenu />
       </div>
@@ -38,4 +38,5 @@ const HeaderMenuRight = () => {
 }
 
 export default HeaderMenuRight
+
 
