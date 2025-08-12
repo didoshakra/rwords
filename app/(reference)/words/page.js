@@ -365,53 +365,6 @@ const translateWords = async (words) => {
   startTranslation(untranslatedWords)
 }
 
-// const translateWords = async (words) => {
-//   stopRequested.current = false
-//   translatedCountRef.current = 0
-
-//   if (!words || words.length === 0) {
-//     setTranslate(false)
-//     alert("⚠️ Не вибрано жодного слова.")
-//     return
-//   }
-
-//   const untranslatedWords = words.filter((w) => !w.translation?.trim())
-
-//   if (untranslatedWords.length === 0) {
-//     setDialogConfig({
-//       type: "translate",
-//       title: "Усі слова вже перекладено",
-//       message: "Усі вибрані слова вже мають переклад. Перекласти ще раз?",
-//       buttons: [{ label: "Перекласти всі" }, { label: "Відмінити" }],
-//       allWords: words,
-//       untranslatedWords: [],
-//     })
-//     setDialogOpen(true)
-//     setTranslate(false) // тут залишаємо false
-//     return
-//   }
-
-//   if (untranslatedWords.length < words.length) {
-//     setDialogConfig({
-//       type: "translate",
-//       title: "Що перекладати?",
-//       message: "Деякі слова вже перекладено. Оберіть дію:",
-//       buttons: [
-//         { label: "Перекласти всі" },
-//         { label: "Лише неперекладені" },
-//         { label: "Відмінити" }
-//       ],
-//       allWords: words,
-//       untranslatedWords,
-//     })
-//     setDialogOpen(true)
-//     setTranslate(false) // тут залишаємо false
-//     return
-//   }
-
-//   setTranslate(true) // тільки тут!
-//   startTranslation(untranslatedWords)
-// }
   //   -------------------------------------------
 
   // Кнопка старт/стоп перекладу
@@ -452,10 +405,7 @@ const translateWords = async (words) => {
       )
       if (!confirmed) return
     }
-    // else {
-    //   const confirmed = confirm(`Видалити ${ownIds.length} слів?`)
-    //   if (!confirmed) return
-    // }
+   
     console.log("words/deleteSelected2")
     try {
       console.log("words/deleteSelected3/deleteWords")

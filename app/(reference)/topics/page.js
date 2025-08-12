@@ -11,7 +11,7 @@ import {
   checkTopicRelations,
 } from "@/app/actions/topicActions"
 import { getSections } from "@/app/actions/sectionActions" // Передбачається, що є ця функція для завантаження секцій
-// import { useAuth } from "@/app/context/AuthContext"
+import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 
@@ -52,6 +52,7 @@ const columns = [
 ]
 
 export default function TopicsPage() {
+  const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [topics, setTopics] = useState([])
@@ -156,44 +157,21 @@ export default function TopicsPage() {
       }
     })
   }
+  const handleThemeDownload = (t) => {
+    console.log("topics/handleDelete/t=", t)
+    if (!confirm(`Ви впевнені, що хочете завантажити ${t.length} тем?`)) return
 
-  //   const deleteSelectedTopics = async (selectedTopics) => {
-  //     console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
-  //     if (!user) {
-  //       alert("Потрібна авторизація, щоб видаляти топіки")
-  //       return
-  //     }
-
-  //     // Визначаємо, які топіки належать користувачу або якщо він адмін — всі
-  //     const ownTopics = selectedTopics.filter((t) => user.role === "admin" || t.user_id === user.id)
-  //     const ownIds = ownTopics.map((t) => t.id)
-  //     const othersCount = selectedTopics.length - ownTopics.length
-
-  //     if (ownIds.length === 0) {
-  //       alert("Усі вибрані топіки належать іншим користувачам. Видаляти нічого.")
-  //       return
-  //     }
-
-  //     if (othersCount > 0) {
-  //       const confirmed = confirm(
-  //         `У виборі є ${othersCount} чужих топіків. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
-  //       )
-  //       if (!confirmed) return
-  //     } else {
-  //       const confirmed = confirm(`Видалити ${ownIds.length} топіків?`)
-  //       if (!confirmed) return
-  //     }
-
-  //     try {
-  //       await deleteTopics(ownIds, user.id, user.role)
-  //       setMessage(`🗑️ Видалено ${ownIds.length} топіків`)
-  //       // clearSelection() — якщо потрібна очистка виділення
-  //       setActionsOk(true)
-  //       loadTopics() // Функція для перезавантаження списку топіків
-  //     } catch (err) {
-  //       setMessage("Помилка при видаленні: " + err.message)
-  //     }
-  //   }
+    // startTransition(async () => {
+    //   try {
+    //     // await deleteTopic(t.id, user)
+    //     await deleteSelectedTopics(t) // ✅ вже масив
+    //     setMessage("Видалено")
+    //     loadTopics()
+    //   } catch (err) {
+    //     setMessage("Помилка: " + err.message)
+    //   }
+    // })
+  }
 
   const deleteSelectedTopics = async (selectedTopics) => {
     console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
@@ -273,6 +251,7 @@ export default function TopicsPage() {
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
+        onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення

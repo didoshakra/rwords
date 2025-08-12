@@ -23,7 +23,8 @@ export default function TableView({
   onDelete,
   onClickCsv,
   onTranslate,
-//   onTranslateSelected,
+  onThemeDownload,
+  //   onTranslateSelected,
   translate,
   //   sortField = "pn",
   isPending, //ДЛя блокування кнопки імпорт покийде імпорт
@@ -379,30 +380,14 @@ export default function TableView({
                 📂 Імпорт CSV
               </button>
             )}
-            {/* {onTranslate && (
-              <button
-                onClick={onTranslate(tData)}
-                className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
-              >
-                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти всі"}
-              </button>
-            )} */}
-            {/* {onTranslate && (
-              <button
-                onClick={() => onTranslate(tData)}
-                className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
-              >
-                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти всі"}
-              </button>
-            )} */}
           </>
         )}
         {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
-        {isOrderChanged && (
+        {/* {isOrderChanged && (
           <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
             💾 Зберегти порядок
           </button>
-        )}
+        )} */}
         {/* 1 ВИДІЛЕНИЙ РЯДОК */}
         {selectedIds.length === 1 &&
           (() => {
@@ -458,6 +443,16 @@ export default function TableView({
             }}
           >
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+          </button>
+        )}
+        {onThemeDownload && selectedIds.length > 1 && (
+          <button
+            onClick={() => {
+              const words = tData.filter((w) => selectedIds.includes(w.id))
+              if (words.length > 0) onThemeDownload(words) // ✅ передаємо масив об'єктів
+            }}
+          >
+            <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Заватажити</span>
           </button>
         )}
         {/* Перекласти всі/виділені */}

@@ -22,7 +22,7 @@ export const metadata = {
 
 // Робимо layout async
 export default async function RootLayout({ children }) {
-  const headersList = headers()
+  const headersList = await headers()
   const userAgent = headersList.get("user-agent") || ""
   const isFromApp = userAgent.includes("RWords/1.0.0 (ReactNative)") // твій унікальний підпис
 
