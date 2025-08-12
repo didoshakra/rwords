@@ -1,25 +1,33 @@
-//HeaderMenuRight.js  /Верхнє меню
+//HeaderMenuRight.js  /Верхнє меню праве.
+//щоб він не вмикав “десктопне” меню, коли мобільний телефон у горизонтальному режимі.
+
 "use client"
 
-// import ThemeSwitcher from "./ThemeSwitcher"
-import UserSwitcher from './user/UserSwitcher.js';
-import HeaderSetingDroopMenu from './HeaderMobileDroopMenu.js';
-import HeaderThemesDroopMenu from './theme/HeaderThemesMenuButton.js';
-
+import { useState, useEffect } from "react"
+import UserSwitcher from "./user/UserSwitcher.js"
+import HeaderSetingDroopMenu from "./HeaderMobileDroopMenu.js"
+import HeaderThemesDroopMenu from "./theme/HeaderThemesMenuButton.js"
 
 const HeaderMenuRight = () => {
+  const [isMobileDevice, setIsMobileDevice] = useState(false)
+
+  useEffect(() => {
+    // Визначаємо мобільний пристрій по UserAgent
+    const mobileCheck = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+    setIsMobileDevice(mobileCheck)
+  }, [])
 
   return (
-    // <div className=" flex h-16 items-center justify-between">
-    <div className=" flex items-center justify-end  h-full">
-      {/* Іконки головного меню Seting */}
-      <div className="hidden md:flex  h-full">
-        {/* User */}
-        <UserSwitcher />
-        {/*Всі теми */}
-        <HeaderThemesDroopMenu />
-      </div>
-      {/* Випадаюче меню Seting(мобільне) */}
+    <div className="flex items-center justify-end h-full">
+      {/* Десктопне меню — показуємо тільки якщо не мобільний пристрій */}
+      {!isMobileDevice && (
+        <div className="flex h-full">
+          <UserSwitcher />
+          <HeaderThemesDroopMenu />
+        </div>
+      )}
+
+      {/* Мобільне меню — завжди */}
       <div className="headerMenuRight__mobile">
         <HeaderSetingDroopMenu />
       </div>
@@ -28,3 +36,4 @@ const HeaderMenuRight = () => {
 }
 
 export default HeaderMenuRight
+
