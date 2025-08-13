@@ -32,7 +32,6 @@ const LandingInfo = () => {
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base sm:text-lg">
           {/* <p className="text-base sm:text-lg md:text-xl mb-6 leading-relaxed"> */}
           <li className="leading-relaxed">
-            {/* 📱 Завантажити мобільний застосунок <strong>RWords</strong>{" "} */}
             📱 Завантажити мобільний застосунок {" "}
             <Link
               href="/about_rwords"
