@@ -30,7 +30,21 @@ const LandingInfo = () => {
 
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-2">🧠 Тут ви можете:</h2>
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base sm:text-lg">
-          <li className="flex items-start gap-2">
+          <li className="inline-flex justify-center items-center gap-2">
+            <span>
+              📱 Завантажити мобільний застосунок <strong>RWords</strong>
+            </span>
+            <Image
+              src="/images/home/RW_know_64.png"
+              alt="RWords"
+              width={24}
+              height={24}
+              className="shrink-0 mt-1"
+              priority={true}
+            />
+            <span>для Android</span>
+          </li>
+          {/* <li className="flex items-start gap-2">
             <span className="flex-1 leading-snug">
               📱 Завантажити мобільний застосунок <strong>RWords</strong>
             </span>
@@ -43,7 +57,7 @@ const LandingInfo = () => {
               priority={true}
             />
             <span className="flex-1 leading-snug">для Android</span>
-          </li>
+          </li> */}
           <li>📋 Знайти готові списки слів, створювати власні та обмінюватись ними з іншими користувачами</li>
           <li>📝 Ділитись досвідом вивчення слів у блозі</li>
           <li>💡 Давати пропозиції по розвитку сайту та застосунку</li>
