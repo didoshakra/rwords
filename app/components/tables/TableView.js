@@ -435,7 +435,7 @@ export default function TableView({
             )
           })()}
         {/* БАГАТО ВИДІЛЕНИХ */}
-        {onDelete && selectedIds.length > 1 && (
+        {onDelete && selectedIds.length > 0 && (
           <button
             onClick={() => {
               const words = tData.filter((w) => selectedIds.includes(w.id))
@@ -445,11 +445,11 @@ export default function TableView({
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
           </button>
         )}
-        {onThemeDownload && selectedIds.length > 1 && (
+        {onThemeDownload && selectedIds.length > 0 && (
           <button
             onClick={() => {
               const words = tData.filter((w) => selectedIds.includes(w.id))
-              if (words.length > 0) onThemeDownload(words) // ✅ передаємо масив об'єктів
+              onThemeDownload(words) // ✅ передаємо масив id
             }}
           >
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Заватажити</span>

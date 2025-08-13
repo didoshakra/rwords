@@ -11,7 +11,7 @@ import {
   checkTopicRelations,
 } from "@/app/actions/topicActions"
 import { getSections } from "@/app/actions/sectionActions" // Передбачається, що є ця функція для завантаження секцій
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 
@@ -52,7 +52,7 @@ const columns = [
 ]
 
 export default function TopicsPage() {
-  const { isFromApp } = useAuth()
+//   const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [topics, setTopics] = useState([])
@@ -251,7 +251,7 @@ export default function TopicsPage() {
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        onThemeDownload={isFromApp ? handleThemeDownload : undefined}
+        // onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення

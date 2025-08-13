@@ -9,6 +9,7 @@ import { getTopics } from "@/app/actions/topicActions"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
+import { useAuth } from "@/app/context/AuthContext"//Чи вхід з додатку
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -94,8 +95,7 @@ const columns = [
 
 export default function WordsPage() {
   // prors
-  const showOwnerMark = true
-
+  const { isFromApp } = useAuth()//Чи вхід з додатку
   const { data: session, status } = useSession()
   const user = session?.user
   const [words, setWords] = useState([])
@@ -405,7 +405,7 @@ const translateWords = async (words) => {
       )
       if (!confirmed) return
     }
-   
+
     console.log("words/deleteSelected2")
     try {
       console.log("words/deleteSelected3/deleteWords")
@@ -482,6 +482,7 @@ const translateWords = async (words) => {
         onDelete={handleDelete} // передаємо лише id
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
+        onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         // onTranslateSelected={handleTranslate}
         translate={translate} //Чи перекладено для зміни кнопки
         level0Head="Слова"
