@@ -509,7 +509,7 @@ export default function WordsPage() {
         onDelete={handleDelete} // передаємо лише id
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
-        // onThemeDownload={isFromApp ? handleThemeDownload : undefined}
+        onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         translate={translate} //Чи перекладено для зміни кнопки
         level0Head="Слова"
         level1Head="Тема"
