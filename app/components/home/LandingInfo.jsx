@@ -19,7 +19,7 @@ const LandingInfo = () => {
           Сайт <strong>RWords</strong> — це платформа для людей, які вивчають мови за допомогою мобільного застосунку{" "}
           <Link
             href="/about_rwords"
-            className="inline-flex items-center gap-2 italic font-semibold text-blue-900 hover:underline align-middle"
+            className="inline-flex justify-center items-center gap-2 italic font-semibold text-blue-900 hover:underline align-middle"
           >
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
             RWords.
@@ -30,7 +30,7 @@ const LandingInfo = () => {
 
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-2">🧠 Тут ви можете:</h2>
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base sm:text-lg">
-          <li className="flex items-center space-x-2">
+          <li className="flex justify-center items-center space-x-2">
             <span>📱 Завантажити мобільний застосунок RWords</span>
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
             <span>для Android</span>
