@@ -452,7 +452,7 @@ export default function TableView({
               onThemeDownload(words) // ✅ передаємо масив id
             }}
           >
-            <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Заватажити</span>
+            <span className="bg-green-600 text-white px-4 py-2 rounded"> ⬇️ Заватажити</span>
           </button>
         )}
         {/* Перекласти всі/виділені */}
