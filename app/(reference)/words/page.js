@@ -9,7 +9,7 @@ import { getTopics } from "@/app/actions/topicActions"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
-import { useAuth } from "@/app/context/AuthContext"//Чи вхід з додатку
+import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -95,7 +95,7 @@ const columns = [
 
 export default function WordsPage() {
   // prors
-  const { isFromApp } = useAuth()//Чи вхід з додатку
+  const { isFromApp } = useAuth() //Чи вхід з додатку
   const { data: session, status } = useSession()
   const user = session?.user
   const [words, setWords] = useState([])
@@ -240,7 +240,6 @@ export default function WordsPage() {
 
   //   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
-
   // Імпорт з csv
   const handleFileUpload = async (event) => {
     console.log("words/handleFileUpload")
@@ -265,8 +264,6 @@ export default function WordsPage() {
       event.target.value = null
     })
   }
-
-
 
   const startTranslation = async (wordsToTranslate) => {
     if (wordsToTranslate.length === 0) {
@@ -305,79 +302,132 @@ export default function WordsPage() {
 
   //   const translateSelectedWords = async (selectedWords) => {
 
-
   // Одна універсальна функція для перекладу
-const translateWords = async (words) => {
-  // Якщо натиснули "Зупинити переклад"
-  if (words === "stop") {
-    stopRequested.current = true
-    setTranslate(false)
-    return
+  const translateWords = async (words) => {
+    // Якщо натиснули "Зупинити переклад"
+    if (words === "stop") {
+      stopRequested.current = true
+      setTranslate(false)
+      return
+    }
+
+    // Перевірка, що words — масив
+    if (!Array.isArray(words)) {
+      setTranslate(false)
+      alert("⚠️ Не вибрано жодного слова.")
+      return
+    }
+
+    stopRequested.current = false
+    translatedCountRef.current = 0
+
+    if (words.length === 0) {
+      setTranslate(false)
+      alert("⚠️ Не вибрано жодного слова.")
+      return
+    }
+
+    const untranslatedWords = words.filter((w) => !w.translation?.trim())
+
+    if (untranslatedWords.length === 0) {
+      setDialogConfig({
+        type: "translate",
+        title: "Усі слова вже перекладено",
+        message: "Усі вибрані слова вже мають переклад. Перекласти ще раз?",
+        buttons: [{ label: "Перекласти всі" }, { label: "Відмінити" }],
+        allWords: words,
+        untranslatedWords: [],
+      })
+      setDialogOpen(true)
+      setTranslate(false)
+      return
+    }
+
+    if (untranslatedWords.length < words.length) {
+      setDialogConfig({
+        type: "translate",
+        title: "Що перекладати?",
+        message: "Деякі слова вже перекладено. Оберіть дію:",
+        buttons: [{ label: "Перекласти всі" }, { label: "Лише неперекладені" }, { label: "Відмінити" }],
+        allWords: words,
+        untranslatedWords,
+      })
+      setDialogOpen(true)
+      setTranslate(false)
+      return
+    }
+
+    setTranslate(true)
+    startTranslation(untranslatedWords)
   }
-
-  // Перевірка, що words — масив
-  if (!Array.isArray(words)) {
-    setTranslate(false)
-    alert("⚠️ Не вибрано жодного слова.")
-    return
-  }
-
-  stopRequested.current = false
-  translatedCountRef.current = 0
-
-  if (words.length === 0) {
-    setTranslate(false)
-    alert("⚠️ Не вибрано жодного слова.")
-    return
-  }
-
-  const untranslatedWords = words.filter((w) => !w.translation?.trim())
-
-  if (untranslatedWords.length === 0) {
-    setDialogConfig({
-      type: "translate",
-      title: "Усі слова вже перекладено",
-      message: "Усі вибрані слова вже мають переклад. Перекласти ще раз?",
-      buttons: [{ label: "Перекласти всі" }, { label: "Відмінити" }],
-      allWords: words,
-      untranslatedWords: [],
-    })
-    setDialogOpen(true)
-    setTranslate(false)
-    return
-  }
-
-  if (untranslatedWords.length < words.length) {
-    setDialogConfig({
-      type: "translate",
-      title: "Що перекладати?",
-      message: "Деякі слова вже перекладено. Оберіть дію:",
-      buttons: [{ label: "Перекласти всі" }, { label: "Лише неперекладені" }, { label: "Відмінити" }],
-      allWords: words,
-      untranslatedWords,
-    })
-    setDialogOpen(true)
-    setTranslate(false)
-    return
-  }
-
-  setTranslate(true)
-  startTranslation(untranslatedWords)
-}
 
   //   -------------------------------------------
 
   // Кнопка старт/стоп перекладу
-  const handleTranslate = () => {
-    if (!translate) {
-      translateWords()
-    } else {
-      stopRequested.current = true
-      setTranslate(false)
+//   const handleTranslate = () => {
+//     if (!translate) {
+//       translateWords()
+//     } else {
+//       stopRequested.current = true
+//       setTranslate(false)
+//     }
+//   }
+
+  // Кнопка завантаження тем
+  const handleThemeDownload = async (selectedWords) => {
+    try {
+      if (!selectedWords || !selectedWords.length) {
+        setMessage("Нічого не вибрано (потрібно відмітити слова).")
+        return
+      }
+
+      // Унікальні topic_id для запиту до API
+      const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
+
+      if (!topicIds.length) {
+        setMessage("Нічого не вибрано для завантаження.")
+        return
+      }
+
+      setMessage("Завантаження...")
+
+      // Робимо запит на API
+      const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
+      if (!res.ok) throw new Error(await res.text())
+
+      const payload = await res.json()
+
+      // Фільтруємо слова по відмічених id
+      const selectedWordIds = new Set(selectedWords.map((w) => w.id))
+      payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
+
+      // Якщо відкрито у додатку — відправляємо у WebView
+      if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+        setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+        return
+      }
+
+      // Якщо відкрито у браузері — завантажуємо JSON файл
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `rwords_export_${new Date().toISOString().slice(0, 10)}.json`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+
+      setMessage(`Файл JSON завантажено: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+    } catch (err) {
+      console.error(err)
+      setMessage("Помилка експорту: " + (err?.message || "невідома"))
     }
   }
 
-  //   const deleteSelected = async () => {
+
+  //функція для видалення вибраних слів
   const deleteSelected = async (selectedWords) => {
     // console.log("words/deleteSelected0/selectedWords=", selectedWords)
     console.log("words/deleteSelected0/selectedWords=", JSON.stringify(selectedWords, null, 2))
@@ -419,6 +469,7 @@ const translateWords = async (words) => {
     }
   }
 
+  //функція для обробки результату діалогу
   const handleDialogResult = (index) => {
     setDialogOpen(false)
     if (dialogConfig.type === "translate") {
