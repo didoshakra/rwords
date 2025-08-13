@@ -373,58 +373,58 @@ export default function WordsPage() {
 //     }
 //   }
 
-  // Кнопка завантаження тем
-  const handleThemeDownload = async (selectedWords) => {
-    try {
-      if (!selectedWords || !selectedWords.length) {
-        setMessage("Нічого не вибрано (потрібно відмітити слова).")
-        return
-      }
+//   // Кнопка завантаження тем
+//   const handleThemeDownload = async (selectedWords) => {
+//     try {
+//       if (!selectedWords || !selectedWords.length) {
+//         setMessage("Нічого не вибрано (потрібно відмітити слова).")
+//         return
+//       }
 
-      // Унікальні topic_id для запиту до API
-      const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
+//       // Унікальні topic_id для запиту до API
+//       const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
 
-      if (!topicIds.length) {
-        setMessage("Нічого не вибрано для завантаження.")
-        return
-      }
+//       if (!topicIds.length) {
+//         setMessage("Нічого не вибрано для завантаження.")
+//         return
+//       }
 
-      setMessage("Завантаження...")
+//       setMessage("Завантаження...")
 
-      // Робимо запит на API
-      const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
-      if (!res.ok) throw new Error(await res.text())
+//       // Робимо запит на API
+//       const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
+//       if (!res.ok) throw new Error(await res.text())
 
-      const payload = await res.json()
+//       const payload = await res.json()
 
-      // Фільтруємо слова по відмічених id
-      const selectedWordIds = new Set(selectedWords.map((w) => w.id))
-      payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
+//       // Фільтруємо слова по відмічених id
+//       const selectedWordIds = new Set(selectedWords.map((w) => w.id))
+//       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
-      // Якщо відкрито у додатку — відправляємо у WebView
-      if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
-        setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
-        return
-      }
+//       // Якщо відкрито у додатку — відправляємо у WebView
+//       if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
+//         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+//         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+//         return
+//       }
 
-      // Якщо відкрито у браузері — завантажуємо JSON файл
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `rwords_export_${new Date().toISOString().slice(0, 10)}.json`
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
-      URL.revokeObjectURL(url)
+//       // Якщо відкрито у браузері — завантажуємо JSON файл
+//       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" })
+//       const url = URL.createObjectURL(blob)
+//       const a = document.createElement("a")
+//       a.href = url
+//       a.download = `rwords_export_${new Date().toISOString().slice(0, 10)}.json`
+//       document.body.appendChild(a)
+//       a.click()
+//       a.remove()
+//       URL.revokeObjectURL(url)
 
-      setMessage(`Файл JSON завантажено: тем ${payload.topics.length}, слів ${payload.words.length}.`)
-    } catch (err) {
-      console.error(err)
-      setMessage("Помилка експорту: " + (err?.message || "невідома"))
-    }
-  }
+//       setMessage(`Файл JSON завантажено: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+//     } catch (err) {
+//       console.error(err)
+//       setMessage("Помилка експорту: " + (err?.message || "невідома"))
+//     }
+//   }
 
 
   //функція для видалення вибраних слів
@@ -533,8 +533,7 @@ export default function WordsPage() {
         onDelete={handleDelete} // передаємо лише id
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
-        onThemeDownload={isFromApp ? handleThemeDownload : undefined}
-        // onTranslateSelected={handleTranslate}
+        // onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         translate={translate} //Чи перекладено для зміни кнопки
         level0Head="Слова"
         level1Head="Тема"
