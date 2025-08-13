@@ -445,7 +445,7 @@ export default function TableView({
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
           </button>
         )}
-        {/* {onThemeDownload && selectedIds.length > 0 && (
+        {onThemeDownload && selectedIds.length > 0 && (
           <button
             onClick={() => {
               const words = tData.filter((w) => selectedIds.includes(w.id))
@@ -454,7 +454,7 @@ export default function TableView({
           >
             <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Заватажити</span>
           </button>
-        )} */}
+        )}
         {/* Перекласти всі/виділені */}
         {onTranslate && (
           <button
