@@ -6,7 +6,7 @@ import { headMenu } from "../../data/dataMenu"
 
 const HeaderMenu = () => {
   // console.log("HeaderMenu/headMenu= ", headMenu);
-  const renderMenu = () => {
+  const renderMenu = () => { 
     return headMenu.map((item, index) => {
       return (
         <li
