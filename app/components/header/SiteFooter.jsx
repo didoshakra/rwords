@@ -7,7 +7,8 @@ const SiteFooter = () => {
 
   return (
     <footer className="bg-bodyBg dark:bg-bodyBgD text-hText dark:text-hTextD border-t border-gray-200 dark:border-gray-700 mt-10">
-      <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col md:flex-row justify-between gap-8">
+      {/* <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col md:flex-row justify-between gap-8"> */}
+      <div className="max-w-6xl px-4 py-10 flex flex-col md:flex-row justify-between gap-8">
         {/* Logo / Brand */}
         <div>
           <h2 className="text-2xl font-bold text-hText dark:text-hTextD mb-2">RWords</h2>
