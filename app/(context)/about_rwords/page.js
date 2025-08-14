@@ -18,7 +18,7 @@ export default function HowItWorks() {
       </h1>
 
       <section className="mb-6">
-        <h2 className=" text-2xl font-semibold mb-2">
+        <h2 className=" text-xl md:text-2xl font-semibold mb-2">
           RWords — це мобільний застосунок для android для вивчення іноземних слів та виразів за допомогою голосових і
           кнопкових команд. Ви самі оцінюєте свої знання, формуєте списки вивчення та слухаєте слова у циклічному
           режимі.
@@ -28,10 +28,6 @@ export default function HowItWorks() {
       <section className="mb-6 bg-yellow-100 text-center py-10 px-6 bg-blue-50">
         {user ? (
           <>
-            {/* <h3 className="text-xl font-semibold mb-4">Дякуємо, що з нами!</h3>
-            <p className="mb-6 text-gray-700">
-              Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
-            </p> */}
             <Link href="/download" className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition">
               ⬇️Завантажити застосунок RWords
             </Link>
@@ -51,7 +47,7 @@ export default function HowItWorks() {
       </section>
       <h1 className="text-3xl font-bold mb-4">📖 Як працює застосунок RWords</h1>
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">🧠 Головна ідея застосунку</h2>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">🧠 Головна ідея застосунку</h2>
         <p className="mb-2">
           <strong>RWords</strong> дозволяє під час прослуховування слів чи фраз оцінювати свої знання за допомогою
           голосових або кнопкових команд <strong>Знаю / Не знаю</strong>. Так ви формуєте персоналізовані списки для
@@ -64,8 +60,8 @@ export default function HowItWorks() {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">🧩 Елементи інтерфейсу</h2>
-        <h3 className="text-xl font-bold mt-2">🔝 Верхня панель</h3>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2">🧩 Елементи інтерфейсу</h2>
+        <h3 className="text-lg md:text-xl font-bold mt-2">🔝 Верхня панель</h3>
         <ul className="list-disc pl-5">
           <li>🔙 Стрілка — назад</li>
           {/* <li>🌞 Перемикач теми</li> */}
@@ -74,15 +70,14 @@ export default function HowItWorks() {
           <li>📋 Доступ до довідників: додавання, редагування, CSV-імпорт</li>
         </ul>
 
-        <h3 className="text-xl font-bold mt-2">🔻 Нижня панель</h3>
+        <h3 className="text-lg md:text-xl font-bold mt-2">🔻 Нижня панель</h3>
         <p>Основні іконки навігації в додатку.</p>
       </section>
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2 text-center">🧭 Основні екрани</h2>
+        <h2 className="text-xl md:text-2xl font-semibold mb-2 text-center">🧭 Основні екрани</h2>
 
         {/* Home */}
         <div className="mt-8">
-          <h3 className="text-xl font-bold text-center">🏠 Головна</h3>
           <h4 className="text-nowrap font-semibold text-center mb-1">Початковий екран застосунку</h4>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img

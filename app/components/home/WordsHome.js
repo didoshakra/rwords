@@ -3,7 +3,7 @@ const WordsHome = () => {
   const disabled = false //Для buton
   //   const { state } = useContext(ComponentContext)
   //   const theme = state.theme
-
+ 
   return (
     // <section className="home-slider-section">
     <section className="relative h-[300px] md:h-[500px]">

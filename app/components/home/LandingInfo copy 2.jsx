@@ -28,9 +28,9 @@ const LandingInfo = () => {
           завантажувати безпосередньо з застосунку. Ми прагнемо зробити вивчення мов більш доступним і цікавим для всіх!
         </p>
 
-        <h2 className="text-xl md:text-2xl  font-semibold mb-2">🧠 Тут ви можете:</h2>
+        <h2 className="text-xl  md:text-2xl font-semibold mb-2">🧠 Тут ви можете:</h2>
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base md:text-lg">
-          {/* <p className="text-base md:text-lg md:text-xl mb-6 leading-relaxed"> */}
+          {/* <p className="text-base sm:text-lg md:text-xl mb-6 leading-relaxed"> */}
           <li className="leading-relaxed">
             📱 Завантажити мобільний застосунок {" "}
             <Link
@@ -42,7 +42,7 @@ const LandingInfo = () => {
             </Link>{" "}
             для Android
           </li>
-
+          
           <li>📋 Знайти готові списки слів, створювати власні та обмінюватись ними з іншими користувачами</li>
           <li>📝 Ділитись досвідом вивчення слів у блозі</li>
           <li>💡 Давати пропозиції по розвитку сайту та застосунку</li>
@@ -52,7 +52,7 @@ const LandingInfo = () => {
           <li>🔁 Слухати слова → переклад → оцінка (в розробці)</li>
         </ul>
 
-        <h2 className="text-xl md:text-2xl  font-semibold mb-2">🎯 Навіщо цей сайт?</h2>
+        <h2 className="text-xl  md:text-2xl font-semibold mb-2">🎯 Навіщо цей сайт?</h2>
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base md:text-lg">
           <li>
             Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
@@ -64,7 +64,7 @@ const LandingInfo = () => {
         <section className="bg-blue-50 text-center py-10 px-6 rounded-md">
           {user ? (
             <>
-              <h3 className="text-lg md:text-xl  font-semibold mb-4">Дякуємо, що з нами!</h3>
+              <h3 className="text-lg  md:text-xl font-semibold mb-4">Дякуємо, що з нами!</h3>
               <p className="mb-6 text-gray-700 text-base md:text-lg">
                 Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
               </p>
@@ -99,11 +99,11 @@ const LandingInfo = () => {
       </main>
 
       <section className="px-6 py-10 text-center max-w-3xl mx-auto">
-        <h2 className="flex gap-2 justify-center items-center text-xl md:text-2xl md:text-3xl font-bold mb-4">
+        <h2 className="flex gap-2 justify-center items-center text-xl  md:text-2xl font-bold mb-4">
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
           Що таке застосунок RWords?
         </h2>
-        <p className="text-gray-700 text-base md:text-lg  leading-relaxed">
+        <p className="text-gray-700 text-base md:text-lg md:text-xl leading-relaxed">
           <strong>RWords</strong> — мобільний застосунок для Android для вивчення іноземних слів та виразів. Ви оцінюєте
           знання, формуєте списки та слухаєте слова у циклічному режимі.
         </p>
@@ -131,7 +131,7 @@ const LandingInfo = () => {
           },
         ].map((item, i) => (
           <div key={i} className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
-            <h3 className="text-lg md:text-xl  font-semibold mb-2">{item.title}</h3>
+            <h3 className="text-lg  md:text-xl font-semibold mb-2">{item.title}</h3>
             <p className="text-gray-600 text-sm md:text-base">{item.desc}</p>
           </div>
         ))}

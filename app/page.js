@@ -7,8 +7,10 @@ export default function Home() {
   return (
     <>
       <SetVisitCookie />
-      <main className="mx-auto min-h-screen w-screen px-1">
+       <div className="relative w-screen left-1/2 -translate-x-1/2">
         <WordsHome />
+      </div>
+      <main className="mx-auto min-h-screen px-1">
         <LandingInfo />
       </main>
     </>
