@@ -10,7 +10,7 @@ const HeaderMenu = () => {
     return headMenu.map((item, index) => {
       return (
         <li
-          className="dark:text-hTextD hover:bg-hBgHov items-center whitespace-nowrap pr-1 font-sans text-xl sm:text-base lg:text-xl font-bold text-hText hover:text-hTextHov hover:underline dark:bg-hBgD dark:hover:bg-hBgHovD  dark:hover:text-hTextHovD"
+          className="dark:text-hTextD hover:bg-hBgHov items-center whitespace-nowrap pr-1 font-sans text--basesm:text-base lg:text-xl font-bold text-hText hover:text-hTextHov hover:underline dark:bg-hBgD dark:hover:bg-hBgHovD  dark:hover:text-hTextHovD"
           key={index}
         >
           <Link href={item.link}>{item.a}</Link>
