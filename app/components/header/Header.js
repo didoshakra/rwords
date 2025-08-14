@@ -13,10 +13,11 @@ export default function Header() {
     //   className="mx-auto my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText  md:flex-row md:justify-between md:px-2 "
     >
       {/* Ліве випадаюче меню */}
-      <div className="flex items-center h-full justify-start">
+      {/* <div className="flex items-center h-full justify-start"> */}
+         <div className="flex items-center h-full justify-start gap-2">
         <DrawerSwitcher />
         <HeaderLogo />
-      </div> 
+      </div>
       <HeaderMenu />
       <div className="flex items-center h-full justify-end">
         <HeaderMenuRight />

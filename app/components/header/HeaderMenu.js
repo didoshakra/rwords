@@ -6,11 +6,11 @@ import { headMenu } from "../../data/dataMenu"
 
 const HeaderMenu = () => {
   // console.log("HeaderMenu/headMenu= ", headMenu);
-  const renderMenu = () => { 
+  const renderMenu = () => {
     return headMenu.map((item, index) => {
       return (
         <li
-          className="dark:text-hTextD hover:bg-hBgHov items-center whitespace-nowrap pr-1 font-sans text-lg font-bold text-hText hover:text-hTextHov hover:underline dark:bg-hBgD dark:hover:bg-hBgHovD  dark:hover:text-hTextHovD"
+          className="dark:text-hTextD hover:bg-hBgHov items-center whitespace-nowrap pr-1 font-sans text-base font-bold text-hText hover:text-hTextHov hover:underline dark:bg-hBgD dark:hover:bg-hBgHovD  dark:hover:text-hTextHovD"
           key={index}
         >
           <Link href={item.link}>{item.a}</Link>
@@ -20,9 +20,11 @@ const HeaderMenu = () => {
   }
 
   return (
-    <div className=" hidden md:mx-1 md:flex md:justify-end   ">
+    // <div className=" hidden md:mx-1 md:flex md:justify-end   ">
+    <div className="flex-1 min-w-0 justify-center hidden md:flex">
       {/* Меню для десктопа */}
-      <ul className=" flex justify-end gap-3">{renderMenu()}</ul>
+      {/* <ul className=" flex justify-end gap-3"> */}
+      <ul className="flex justify-center gap-3 overflow-hidden text-ellipsis whitespace-nowrap">{renderMenu()}</ul>
     </div>
   )
 }
