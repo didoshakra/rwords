@@ -9,7 +9,7 @@ export const headMenu = [
     link: "/blog",
   },
   {
-    a: "Про RWords",
+    a: "RWords",
     link: "/about_rwords",
   },
   {
