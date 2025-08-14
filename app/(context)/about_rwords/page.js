@@ -11,10 +11,12 @@ export default function HowItWorks() {
   const user = session?.user
   return (
     <main className="px-4 py-8 max-w-4xl mx-auto text-hText dark:text-hTextD">
-      <h1 className="flex gap-2 justify-center items-center text-3xl font-bold mb-4">
+      {/* <h1 className="flex gap-2 justify-center items-center text-3xl sm:text-3xl lg:text-4xl font-bold mb-4"> */}
+      <h1 className="inline-flex  gap-2 justify-center items-center text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+
         {" "}
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-        Що таке застосунок RWords1?
+        Що таке RWords?
       </h1>
 
       <section className="mb-6">
