@@ -49,7 +49,7 @@ const columns = [
 //     styleCellText: { color: "red" },
 //   },
   {
-    label: "Слова / вирази",
+    label: "Слова",
     accessor: "word",
     type: "text",
     width: 250,
