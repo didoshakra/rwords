@@ -14,7 +14,7 @@ import { useAuth } from "@/app/context/AuthContext" //Чи вхід з дода�
 function Modal({ open, onClose, children }) {
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex ite             ms-center justify-center bg-black/50">
       <div className="bg-white rounded-xl p-6 min-w-[320px] relative shadow-xl">
         <button
           onClick={onClose}

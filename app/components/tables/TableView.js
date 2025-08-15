@@ -280,7 +280,7 @@ export default function TableView({
     return (
       <React.Fragment key={topic.id}>
         <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:bg-gray-300">
-          <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
+          <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-semibold">
             <div className="flex items-center gap-2" style={{ userSelect: "none", cursor: "pointer" }}>
               <span
                 onClick={(e) => {
@@ -312,8 +312,7 @@ export default function TableView({
   //  Ф-ція для рендерингу рядка теми
   const renderItemRow = (item) => (
     <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-      {/* <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}> */}
-      <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+      <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
         <input
           type="checkbox"
           checked={isSelected(item.id)}
@@ -323,7 +322,7 @@ export default function TableView({
       </td>
 
       {showOwnerMark && (
-        <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+        <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
           {item.user_id === user?.id && "🧑‍💻"}
         </td>
       )}
@@ -351,7 +350,7 @@ export default function TableView({
             key={col.accessor}
             style={{
               width: col.width,
-              borderBottom: "1px solid #ccc",
+              border: "1px solid #ccc",
               padding: "4px",
               ...(col.styleCell || {}),
             }}
@@ -365,29 +364,30 @@ export default function TableView({
 
   return (
     <main className="p-1 max-w-4xl mx-auto">
-      {/*Центрування- Тут mx-auto робить автоматичні зовнішні відступи, а w-fit змушує заголовок займати рівно стільки місця, скільки потрібно для тексту. */}
-      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 mx-auto w-fit">{title}</h1>
-      <div className="flex flex-wrap gap-2 items-center text-sm sm:text-base lg:text-base mb-4">
+      {/* <h1 className="text-2xl font-bold mb-6">Слова TW</h1> */}
+      <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <div className="flex flex-wrap gap-2 items-center mb-4">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
           <>
             {onAdd && (
-              <button onClick={onAdd} className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full">
+              <button onClick={onAdd} className="bg-blue-600 text-white px-2 py-2 rounded">
                 ➕ Додати
               </button>
             )}
             {onClickCsv && (
-              <button
-                disabled={isPending}
-                onClick={onClickCsv}
-                className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
-              >
+              <button onClick={onClickCsv} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
                 📂 Імпорт CSV
               </button>
             )}
           </>
         )}
-
+        {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
+        {/* {isOrderChanged && (
+          <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
+            💾 Зберегти порядок
+          </button>
+        )} */}
         {/* 1 ВИДІЛЕНИЙ РЯДОК */}
         {selectedIds.length === 1 &&
           (() => {
@@ -401,12 +401,13 @@ export default function TableView({
                 {isOwner && (
                   <>
                     {onEdit && (
+                      //   <button onClick={() => onEdit(selectedWord)} className="bg-blue-600 text-white px-4 py-2 rounded">
                       <button
                         onClick={() => {
                           const word = tData.find((w) => w.id === selectedIds[0])
                           if (word) onEdit(word) // <-- передається весь об'єкт
                         }}
-                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
+                        className="bg-blue-600 text-white px-4 py-2 rounded"
                       >
                         ✏️ Редагувати
                       </button>
@@ -417,14 +418,17 @@ export default function TableView({
                           const words = tData.filter((w) => selectedIds.includes(w.id))
                           if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
                         }}
-                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
                       >
-                        🗑️ Видалити
+                        <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
                       </button>
                     )}
                   </>
                 )}
-                <button onClick={startMoveMode} className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full">
+                <button
+                  onClick={startMoveMode}
+                  //   onClick={() => setModal({ type: "move", word: selectedWord })}
+                  className="bg-yellow-600 text-white px-4 py-2 rounded"
+                >
                   🔀 Перемістити
                 </button>
               </>
@@ -437,9 +441,8 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
             }}
-            className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full"
           >
-            🗑️ Видалити
+            <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
           </button>
         )}
         {onThemeDownload && selectedIds.length > 0 && (
@@ -448,9 +451,8 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               onThemeDownload(words) // ✅ передаємо масив id
             }}
-            className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full"
           >
-            ⬇️ Завантажити
+            <span className="bg-green-600 text-white px-4 py-2 rounded"> ⬇️ Заватажити</span>
           </button>
         )}
         {/* Перекласти всі/виділені */}
@@ -469,16 +471,9 @@ export default function TableView({
                 onTranslate(tData)
               }
             }}
-            // className={`px-2 py-1 rounded-full text-white ${translate ? "bg-btBg hover:bg-btBgHov" : "bg-indigo-600"}`}
-            className={`px-2 py-1 rounded-full text-white ${
-              translate ? "bg-btBg hover:bg-btBgHov" : "bg-btBg hover:bg-btBgHov"
-            }`}
+            className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
           >
-            {translate
-              ? "⛔ Зупинити переклад"
-              : selectedIds.length > 0
-              ? "🌐Перекласти виділені✔️"
-              : "🌐Перекласти всі"}
+            {translate ? "⏸ Зупинити переклад" : selectedIds.length > 0 ? "Перекласти виділені" : "▶️Перекласти всі"}
           </button>
         )}
       </div>
@@ -513,10 +508,9 @@ export default function TableView({
       {/*  */}
       <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
         <table className="w-full border-collapse">
-          {/* <table className="w-full "> */}
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
-              <th className="border border-gray-300 p-1 w-[30px]">✔️</th>
+              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
               {columns.map((col) => (
                 <th
@@ -548,8 +542,10 @@ export default function TableView({
                       onClick={() => toggleLevel2(section.id)}
                       className="bg-gray-300 cursor-pointer hover:bg-gray-400"
                     >
-                      <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-bold">
+                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
                         {level2Head}: {section.name} ({sectionLevel1.length})
+                        {/* {openLevel2.includes(section.id) ? " 🔽" : " ▶️"} */}
+                        {/* {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : " ▶️"} */}
                         {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : ""}
                       </td>
                     </tr>
