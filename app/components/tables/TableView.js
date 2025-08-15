@@ -526,7 +526,8 @@ export default function TableView({
       {/*  */}
       <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
         {/* <table className="w-full border-collapse"> */}
-        <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body">
+        {/* <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body"> */}
+        <table className="border-collapse text-xs sm:text-sm lg:text-sm font-body">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
