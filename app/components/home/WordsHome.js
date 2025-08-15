@@ -14,9 +14,10 @@ const WordsHome = () => {
       >
         <div className="flex h-full w-full flex-col items-center justify-center px-3 text-center align-middle">
           <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ]">
-            Вчіть слова щоб подорожувати
+            {/* Вчіть слова щоб подорожувати */}
+            Вчіть слова подорожуючи
           </h1>
-          <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg  ">
+          <h2 className="inline-block font-sans text-base text-iconT sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg  ">
             Подорожуючи вчити легше
           </h2>
         </div>
@@ -29,7 +30,7 @@ const WordsHome = () => {
           <h1 className="h-auto items-center justify-center  font-sans text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ">
             Вчіть слова щоб спілкуватись
           </h1>
-          <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg ">
+          <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl  text-iconT font-bold uppercase tracking-normal text-hTextImg ">
             Разом вчити приємніше
           </h2>
         </div>
