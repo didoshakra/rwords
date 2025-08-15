@@ -13,7 +13,7 @@ const WordsHome = () => {
         items-center justify-center bg-[url('/images/home/travel-the-world-monument-concept.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full w-full flex-col items-center justify-center px-3 text-center align-middle">
-          <h1 className="items-center justify-center font-serif text-2xl sm:text-3xl  lg:text-4xl font-extrabold leading-normal text-hTextImg ]">
+          <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ]">
             Вчіть слова щоб подорожувати
           </h1>
           <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg  ">
@@ -26,7 +26,7 @@ const WordsHome = () => {
         justify-center bg-[url('/images/home/young-diverse-couple-hikers-checking.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full flex-col items-center justify-center px-3 align-middle ">
-          <h1 className="h-auto items-center justify-center  font-sans text-2xl sm:text-3xl  lg:text-4xl font-extrabold leading-normal text-hTextImg ">
+          <h1 className="h-auto items-center justify-center  font-sans text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ">
             Вчіть слова щоб спілкуватись
           </h1>
           <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg ">
