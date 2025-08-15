@@ -364,7 +364,7 @@ export default function TableView({
   )
 
   return (
-    <main className="p-2 max-w-4xl mx-auto">
+    <main className="p-0 max-w-4xl mx-auto">
       {/* Заголовок */}
       <h1 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
 
