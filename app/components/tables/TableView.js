@@ -364,30 +364,29 @@ export default function TableView({
 
   return (
     <main className="p-1 max-w-4xl mx-auto">
-      {/* <h1 className="text-2xl font-bold mb-6">Слова TW</h1> */}
-      <h1 className="text-2xl font-bold mb-6">{title}</h1>
-      <div className="flex flex-wrap gap-2 items-center mb-4">
+      {/*Центрування- Тут mx-auto робить автоматичні зовнішні відступи, а w-fit змушує заголовок займати рівно стільки місця, скільки потрібно для тексту. */}
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 mx-auto w-fit">{title}</h1>
+      <div className="flex flex-wrap gap-2 items-center text-sm sm:text-base lg:text-base mb-4">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
           <>
             {onAdd && (
-              <button onClick={onAdd} className="bg-blue-600 text-white px-2 py-2 rounded">
+              <button onClick={onAdd} className="bg-blue-600 text-white px-2 py-1  rounded-full">
                 ➕ Додати
               </button>
             )}
             {onClickCsv && (
-              <button onClick={onClickCsv} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
+              <button
+                disabled={isPending}
+                onClick={onClickCsv}
+                className="bg-purple-600 text-white px-2 py-1  rounded-full"
+              >
                 📂 Імпорт CSV
               </button>
             )}
           </>
         )}
-        {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
-        {/* {isOrderChanged && (
-          <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
-            💾 Зберегти порядок
-          </button>
-        )} */}
+
         {/* 1 ВИДІЛЕНИЙ РЯДОК */}
         {selectedIds.length === 1 &&
           (() => {
@@ -401,13 +400,12 @@ export default function TableView({
                 {isOwner && (
                   <>
                     {onEdit && (
-                      //   <button onClick={() => onEdit(selectedWord)} className="bg-blue-600 text-white px-4 py-2 rounded">
                       <button
                         onClick={() => {
                           const word = tData.find((w) => w.id === selectedIds[0])
                           if (word) onEdit(word) // <-- передається весь об'єкт
                         }}
-                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                        className="bg-blue-600 text-white px-2 py-1  rounded-full"
                       >
                         ✏️ Редагувати
                       </button>
@@ -418,17 +416,14 @@ export default function TableView({
                           const words = tData.filter((w) => selectedIds.includes(w.id))
                           if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
                         }}
+                        className="bg-red-600 text-white px-2 py-1  rounded-full"
                       >
-                        <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+                        🗑️ Видалити
                       </button>
                     )}
                   </>
                 )}
-                <button
-                  onClick={startMoveMode}
-                  //   onClick={() => setModal({ type: "move", word: selectedWord })}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded"
-                >
+                <button onClick={startMoveMode} className="bg-yellow-600 text-white px-2 py-1 rounded-full">
                   🔀 Перемістити
                 </button>
               </>
@@ -441,8 +436,9 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
             }}
+            className="bg-red-600 text-white px-2 py-1 rounded-full"
           >
-            <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+            🗑️ Видалити
           </button>
         )}
         {onThemeDownload && selectedIds.length > 0 && (
@@ -451,8 +447,9 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               onThemeDownload(words) // ✅ передаємо масив id
             }}
+            className="bg-green-600 text-white px-2 py-1 rounded-full"
           >
-            <span className="bg-green-600 text-white px-4 py-2 rounded"> ⬇️ Заватажити</span>
+             ⬇️ Завантажити
           </button>
         )}
         {/* Перекласти всі/виділені */}
@@ -471,7 +468,7 @@ export default function TableView({
                 onTranslate(tData)
               }
             }}
-            className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
+            className={`px-2 py-1 rounded-full text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
           >
             {translate ? "⏸ Зупинити переклад" : selectedIds.length > 0 ? "Перекласти виділені" : "▶️Перекласти всі"}
           </button>

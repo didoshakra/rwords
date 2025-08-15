@@ -13,7 +13,6 @@ export default function HowItWorks() {
     <main className="px-4 py-8 max-w-4xl mx-auto text-hText dark:text-hTextD">
       {/* <h1 className="flex gap-2 justify-center items-center text-3xl sm:text-3xl lg:text-4xl font-bold mb-4"> */}
       <h1 className="inline-flex  gap-2 justify-center items-center text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-
         {" "}
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
         Що таке RWords?
@@ -30,8 +29,12 @@ export default function HowItWorks() {
       <section className="mb-6 bg-yellow-100 text-center py-10 px-6 bg-blue-50">
         {user ? (
           <>
-            <Link href="/download" className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition">
-              ⬇️Завантажити застосунок RWords
+            <Link
+              href="/download"
+              className="flex gap-2 justify-center items-center bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition text-base md:text-lg"
+            >
+              <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
+              До завантаження застосунку ⬇️
             </Link>
           </>
         ) : (

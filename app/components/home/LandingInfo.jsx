@@ -11,11 +11,11 @@ const LandingInfo = () => {
   return (
     <>
       <main className="px-4 py-8 max-w-3xl mx-auto text-gray-900 dark:text-gray-100 font-sans">
-        <h1 className="text-2xl md:text-3xl  font-bold mb-4">
+        <h1 className="text-2xl sm:text-3xl  lg:text-4xl font-bold mb-4">
           👋 Вітаємо на RWords — спільноті для вивчення іноземних слів
         </h1>
 
-        <p className="text-base md:text-lg  mb-6 leading-relaxed">
+        <p className="text-base sm:text-lg lg:text-xl  mb-6 leading-relaxed">
           Сайт <strong>RWords</strong> — це платформа для людей, які вивчають мови за допомогою мобільного застосунку{" "}
           <Link
             href="/about_rwords"
@@ -28,9 +28,8 @@ const LandingInfo = () => {
           завантажувати безпосередньо з застосунку. Ми прагнемо зробити вивчення мов більш доступним і цікавим для всіх!
         </p>
 
-        <h2 className="text-xl md:text-2xl  font-semibold mb-2">🧠 Тут ви можете:</h2>
+        <h2 className="text-xl sm:text-2xl lg:text-3xl  font-semibold mb-2">🧠 Тут ви можете:</h2>
         <ul className="list-disc pl-6 mb-6 space-y-1 text-base sm:text-lg lg:text-xl">
-          {/* <p className="text-base md:text-lg md:text-xl mb-6 leading-relaxed"> */}
           <li className="leading-relaxed">
             📱 Завантажити мобільний застосунок{"   "}
             <Link
@@ -52,8 +51,8 @@ const LandingInfo = () => {
           <li>🔁 Слухати слова → переклад → оцінка (в розробці)</li>
         </ul>
 
-        <h2 className="text-xl md:text-2xl  font-semibold mb-2">🎯 Навіщо цей сайт?</h2>
-        <ul className="list-disc pl-6 mb-6 space-y-1 text-base md:text-lg">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl  font-semibold mb-2">🎯 Навіщо цей сайт?</h2>
+        <ul className="list-disc pl-6 mb-6 space-y-1 text-base sm:text-lg lg:text-xl">
           <li>
             Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
           </li>
@@ -64,28 +63,28 @@ const LandingInfo = () => {
         <section className="bg-blue-50 text-center py-10 px-6 rounded-md">
           {user ? (
             <>
-              <h3 className="text-lg md:text-xl  font-semibold mb-4">Дякуємо, що з нами!</h3>
-              <p className="mb-6 text-gray-700 text-base md:text-lg">
+              <h3 className="text-lg sm:text-xl lg:text-2xl  font-semibold mb-4">Дякуємо, що з нами!</h3>
+              <p className="mb-6 text-gray-700 text-base sm:text-lg lg:text-xl">
                 Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
               </p>
               <Link
                 href="/download"
-                className="flex gap-2 justify-center items-center bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition text-base md:text-lg"
+                className="flex gap-2 justify-center items-center bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition  text-base sm:text-lg lg:text-xl"
               >
                 <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
-                До завантаження застосунку  ⬇️
+                До завантаження застосунку ⬇️
               </Link>
             </>
           ) : (
             <>
-              <h3 className="text-lg md:text-xl  font-semibold mb-4">Готові почати?</h3>
-              <p className="mb-6 text-gray-700 text-base md:text-lg">
+              <h3 className="text-lg sm:text-xl lg:text-2xl  font-semibold mb-4">Готові почати?</h3>
+              <p className="mb-6 text-gray-700 text-base sm:text-lg lg:text-xl">
                 Зареєструйтесь, щоб завантажити застосунок RWords, створювати словники, публікувати дописи та
                 коментувати записи.
               </p>
               <Link
                 href="/auth"
-                className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition text-base md:text-lg"
+                className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition text-base sm:text-lg lg:text-xl"
               >
                 Увійти або зареєструватись
               </Link>
@@ -93,7 +92,7 @@ const LandingInfo = () => {
           )}
         </section>
 
-        <blockquote className="mt-8 italic border-l-4 border-gray-300 pl-4 text-gray-700 dark:text-gray-400 text-base md:text-lg">
+        <blockquote className="mt-8 italic border-l-4 border-gray-300 pl-4 text-gray-700 dark:text-gray-400 text-base sm:text-lg lg:text-xl">
           Сайт RWords — це про навчання разом. Ми вивчаємо. Ми ділимось. Ми ростемо.
         </blockquote>
       </main>
@@ -103,11 +102,14 @@ const LandingInfo = () => {
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority={true} />
           Що таке RWords?
         </h2>
-        <p className="text-gray-700 text-base md:text-lg  leading-relaxed">
+        <p className="text-gray-700 text-base sm:text-lg lg:text-xl  leading-relaxed">
           <strong>RWords</strong> — мобільний застосунок для Android для вивчення іноземних слів та виразів. Ви оцінюєте
           знання, формуєте списки та слухаєте слова у циклічному режимі.
         </p>
-        <Link href="/about_rwords" className="italic font-semibold text-blue-900 hover:underline text-base md:text-lg">
+        <Link
+          href="/about_rwords"
+          className="italic font-semibold text-blue-900 hover:underline text-base sm:text-lg lg:text-xl"
+        >
           Більше про RWords.
         </Link>
       </section>
@@ -131,8 +133,8 @@ const LandingInfo = () => {
           },
         ].map((item, i) => (
           <div key={i} className="bg-white shadow-md p-5 rounded-md border hover:shadow-lg transition">
-            <h3 className="text-lg md:text-xl  font-semibold mb-2">{item.title}</h3>
-            <p className="text-gray-600 text-sm md:text-base">{item.desc}</p>
+            <h3 className="text-base sm:text-lg lg:text-xl  font-semibold mb-2">{item.title}</h3>
+            <p className="text-gray-600 text-sm sm:text-base lg:text-lg">{item.desc}</p>
           </div>
         ))}
       </section>
