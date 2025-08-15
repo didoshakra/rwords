@@ -512,8 +512,8 @@ export default function TableView({
       </div>
       {/*  */}
       <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
-        {/* <table className="w-full border-collapse"> */}
-        <table className="w-full ">
+        <table className="w-full border-collapse">
+        {/* <table className="w-full "> */}
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               <th className="border border-gray-300 p-1 w-[30px]">✔️</th>
