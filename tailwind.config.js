@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-//   screens: {'sm':'640px','md': '768px','lg': '1024px',xl': '1280px',2xl': '1536px',}
+  //   screens: {'sm':'640px','md': '768px','lg': '1024px',xl': '1280px',2xl': '1536px',}
   darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -53,7 +53,6 @@ module.exports = {
         //1-- form (Bg-для 2-х форм)-------
         fBg: "var(--color-pCol)",
         fBgD: "#1e293b", //--color-pCol8: #1e293b;
-        // fBg1: "var(--color-pCol0)",
         fBg1: "var(--color-pCol1)",
         fBg1D: "#334155", //--color-pCol7: #334155;
         fBorder: "var(--color-pCol4)",
@@ -81,6 +80,13 @@ module.exports = {
         hTextImg: "var(--color-pCol6)",
         hTextImg1: "var(--color-pCol5)",
 
+        // bottom:
+        btText: "var(--color-pCol0)",
+        btTextD: "var(--color-pCol0)",
+        btTextHov: "var(--color-pCol0)",
+        btTextHovD: "var(--color-pCol0)",
+        btBg: "var(--color-pCol6)",
+        btBgHov: "var(--color-pCol7)",
         //3--Випадаючоге меню
         drawDropMenuBg: "var(--color-pCol1)",
         drawDropMenuBgD: "#1e293b", //--color-pCol8: #1e293b;

@@ -1,6 +1,6 @@
 // components/TableView.js
-// Працює для 1,2,3 і 1,2 рівнів а тільки для 1 не працює
 // Оптимізовано
+// Працює для всіх рівнів
 
 import React, { useEffect, useState, useTransition, useRef } from "react"
 // import { useAuth } from "@/app/context/AuthContext"
@@ -13,8 +13,9 @@ export default function TableView({
   dataLevel2,
   level1Id,
   level2Id,
+  level0Head = "Слова",
   level1Head = "Тема",
-  level2Head = "Секція",
+  level2Head = "Група тем",
   columns,
   title,
   onAdd,
@@ -22,11 +23,15 @@ export default function TableView({
   onDelete,
   onClickCsv,
   onTranslate,
+  onThemeDownload,
+  //   onTranslateSelected,
   translate,
   //   sortField = "pn",
   isPending, //ДЛя блокування кнопки імпорт покийде імпорт
   message, //Для повідомлення
   setMessage,
+  actionsOk, //Успіх акцій (delete)
+  setActionsOk, //Успіх акцій (delete)
 }) {
   // prors
   const showOwnerMark = true
@@ -34,9 +39,9 @@ export default function TableView({
   const { data: session, status } = useSession()
   const user = session?.user
   //
-  const [tData, setTData] = useState([])
-  const [level1, setLevel1] = useState([])
-  const [level2, setLevel2] = useState([])
+  const [tData, setTData] = useState(data || [])
+  const [level1, setLevel1] = useState(dataLevel1 || [])
+  const [level2, setLevel2] = useState(dataLevel2 || [])
   //   const [pn, setPn] = useState("")
   const [isOrderChanged, setIsOrderChanged] = useState(false) //Для порередження про зміну порядку
   const [selectedIds, setSelectedIds] = useState([]) //
@@ -55,10 +60,26 @@ export default function TableView({
     setLevel1(dataLevel1 || [])
     setLevel2(dataLevel2 || [])
     setOpenLevel1(dataLevel1 || [])
-    console.log("TableView/TData=", tData)
-    console.log("TableView/level1=", level1)
-    console.log("TableView/level2=", level2)
   }, [data, dataLevel2, dataLevel1])
+
+  useEffect(() => {
+    if (actionsOk) {
+      clearSelection() // прибрати всі відмітки
+      setActionsOk(false) // готуємо до наступної події
+    }
+  }, [actionsOk])
+
+  //   Коли ставиш message, запускай таймер, який через 3-4 секунди обнуляє його:
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(""), 4000)
+      return () => clearTimeout(timer) // очищає таймер при розмонтуванні або зміні message
+    }
+  }, [message])
+
+  //   console.log("TableView/TData=", tData)
+  //   console.log("TableView/level1=", level1)
+  //   console.log("TableView/level2=", level2)
 
   const toggleSelectTopic = (id) => {
     setSelectedLevel1((prev) => {
@@ -67,13 +88,13 @@ export default function TableView({
         // Зняти вибір теми
         selectedLevel1 = prev.filter((x) => x !== id)
         // Зняти всі слова теми з selectedIds
-        const topicWordIds = tData.filter((w) => w.topic_id === id).map((w) => w.id)
-        setSelectedIds((prevIds) => prevIds.filter((id) => !topicWordIds.includes(id)))
+        const topicWordIds = tData.filter((w) => w[level1Id] === id).map((w) => w.id)
+        setSelectedIds((prevIds) => prevIds.filter((wid) => !topicWordIds.includes(wid)))
       } else {
         // Додати тему до вибраних
         selectedLevel1 = [...prev, id]
         // Додати всі слова теми до selectedIds (уникнути дублювань)
-        const topicWordIds = tData.filter((w) => w.topic_id === id).map((w) => w.id)
+        const topicWordIds = tData.filter((w) => w[level1Id] === id).map((w) => w.id)
         setSelectedIds((prevIds) => {
           const newIds = [...prevIds]
           for (const tid of topicWordIds) {
@@ -147,10 +168,12 @@ export default function TableView({
 
   const selectAll = () => {
     setSelectedIds(tData.map((w) => w.id))
+    setSelectedLevel1(level1.map((w) => w.id))
   }
 
   const clearSelection = () => {
     setSelectedIds([])
+    setSelectedLevel1([])
   }
   //   Для модалки стрілок переміщення рядків
   const startMoveMode = () => {
@@ -244,75 +267,20 @@ export default function TableView({
   }
 
   // Допоміжні функції
-//   const renderTopicWords = (topicWords, topicId) => {
-//     return topicWords.map((item) => (
-//       <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-//         <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-//           <input
-//             type="checkbox"
-//             checked={isSelected(item.id)}
-//             onClick={(e) => e.stopPropagation()}
-//             onChange={() => toggleSelect(item.id)}
-//           />
-//         </td>
-
-//         {showOwnerMark && (
-//           <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-//             {item.user_id === user?.id && "🧑‍💻"}
-//           </td>
-//         )}
-
-//         {columns.map((col) => {
-//           const value = item[col.accessor]
-//           let content
-
-//           switch (col.type) {
-//             case "know":
-//               content = value ? "👍" : ""
-//               break
-//             case "boolean":
-//               content = value ? "✔" : ""
-//               break
-//             case "integer":
-//               content = value != null ? Math.floor(Number(value)) : "-"
-//               break
-//             default:
-//               content = value ?? ""
-//           }
-
-//           return (
-//             <td
-//               key={col.accessor}
-//               style={{
-//                 width: col.width,
-//                 border: "1px solid #ccc",
-//                 padding: "4px",
-//                 ...(col.styleCell || {}),
-//               }}
-//             >
-//               <span style={col.styleCellText}>{content}</span>
-//             </td>
-//           )
-//         })}
-//       </tr>
-//     ))
-//   }
-
-
-
+  //=== Нові функції для рендерингу рядків
   const renderTopic = (topic, topicWords) => {
-    if (topicWords.length === 0) return null
-
     const topicWordIds = topicWords.map((w) => w.id)
     const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
+
     let checkbox = "🔲"
     if (selectedCount === topicWords.length && selectedCount > 0) checkbox = `☑️`
     else if (selectedCount > 0) checkbox = `➖`
+    if (topicWords.length < 1) checkbox = "  "
 
     return (
       <React.Fragment key={topic.id}>
         <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:bg-gray-300">
-          <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-semibold">
+          <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
             <div className="flex items-center gap-2" style={{ userSelect: "none", cursor: "pointer" }}>
               <span
                 onClick={(e) => {
@@ -320,82 +288,32 @@ export default function TableView({
                   toggleSelectTopic(topic.id)
                 }}
               >
-                {checkbox} ({selectedCount})
+                {topicWords.length > 1 ? (
+                  <>
+                    {checkbox} [{selectedCount}]
+                  </>
+                ) : (
+                  "  "
+                )}
               </span>
+
               <span>
-                ⮞ {level1Head}: {topic.name}
+                ({topicWords.length})⮞ {level1Head}: {topic.name}
               </span>
-              <span>{openLevel1.includes(topic.id) ? " 🔽" : " ▶️"}</span>
+              <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
             </div>
           </td>
         </tr>
-
-        {openLevel1.includes(topic.id) && renderTopicWords(topicWords, topic.id)}
+        {openLevel1.includes(topic.id) && topicWords.length > 0 && topicWords.map((item) => renderItemRow(item))}
       </React.Fragment>
     )
   }
-//   const renderFlatRow = (item) => (
-//     <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-//       <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-//         <input
-//           type="checkbox"
-//           checked={isSelected(item.id)}
-//           onClick={(e) => e.stopPropagation()}
-//           onChange={() => toggleSelect(item.id)}
-//         />
-//       </td>
 
-//       {showOwnerMark && (
-//         <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-//           {item.user_id === user?.id && "🧑‍💻"}
-//         </td>
-//       )}
-
-//       {columns.map((col) => {
-//         const value = item[col.accessor]
-//         let content
-
-//         switch (col.type) {
-//           case "know":
-//             content = value ? "👍" : ""
-//             break
-//           case "boolean":
-//             content = value ? "✔" : ""
-//             break
-//           case "integer":
-//             content = value != null ? Math.floor(Number(value)) : "-"
-//             break
-//           default:
-//             content = value ?? ""
-//         }
-
-//         return (
-//           <td
-//             key={col.accessor}
-//             style={{
-//               width: col.width,
-//               border: "1px solid #ccc",
-//               padding: "4px",
-//               ...(col.styleCell || {}),
-//             }}
-//           >
-//             <span style={col.styleCellText}>{content}</span>
-//           </td>
-//         )
-//       })}
-//     </tr>
-//   )
-
-// Нові функції для рендерингу рядків
- const renderTopicWords = (topicWords) => {
-   return topicWords.map((item) => renderItemRow(item))
- }
-//  Ф-ція для рендерингу рядка теми
-  const renderFlatRow = (item) => renderItemRow(item)
-//
+  //  Ф-ція для рендерингу рядка теми
   const renderItemRow = (item) => (
     <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
-      <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+      {/* <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}> */}
+      <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
         <input
           type="checkbox"
           checked={isSelected(item.id)}
@@ -405,7 +323,7 @@ export default function TableView({
       </td>
 
       {showOwnerMark && (
-        <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+        <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
           {item.user_id === user?.id && "🧑‍💻"}
         </td>
       )}
@@ -433,7 +351,7 @@ export default function TableView({
             key={col.accessor}
             style={{
               width: col.width,
-              border: "1px solid #ccc",
+              borderBottom: "1px solid #ccc",
               padding: "4px",
               ...(col.styleCell || {}),
             }}
@@ -447,38 +365,27 @@ export default function TableView({
 
   return (
     <main className="p-1 max-w-4xl mx-auto">
-      {/* <h1 className="text-2xl font-bold mb-6">Слова TW</h1> */}
-      <h1 className="text-2xl font-bold mb-6">{title}</h1>
-      <div className="flex flex-wrap gap-2 items-center mb-4">
+      {/*Центрування- Тут mx-auto робить автоматичні зовнішні відступи, а w-fit змушує заголовок займати рівно стільки місця, скільки потрібно для тексту. */}
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 mx-auto w-fit">{title}</h1>
+      <div className="flex flex-wrap gap-2 items-center text-sm sm:text-base lg:text-base mb-4">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
           <>
             {onAdd && (
-              <button onClick={onAdd} className="bg-blue-600 text-white px-2 py-2 rounded">
-                ➕ Додати слово
+              <button onClick={onAdd} className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full">
+                ➕ Додати
               </button>
             )}
             {onClickCsv && (
-              <button onClick={onClickCsv} className="bg-purple-600 text-white px-4 py-2 rounded" disabled={isPending}>
+              <button
+                disabled={isPending}
+                onClick={onClickCsv}
+                className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
+              >
                 📂 Імпорт CSV
               </button>
             )}
-            {onTranslate && (
-              <button
-                onClick={onTranslate}
-                className={`px-4 py-2 rounded text-white ${translate ? "bg-red-600" : "bg-indigo-600"}`}
-              >
-                {translate ? "⏸ Зупинити переклад" : "▶️Перекласти"}
-              </button>
-            )}
           </>
-        )}
-
-        {/* ЗБЕРЕГТИ ПОРЯДОК – тільки якщо були зміни */}
-        {isOrderChanged && (
-          <button onClick={saveOrder} className="bg-green-600 text-white px-4 py-2 rounded">
-            💾 Зберегти порядок
-          </button>
         )}
 
         {/* 1 ВИДІЛЕНИЙ РЯДОК */}
@@ -486,20 +393,20 @@ export default function TableView({
           (() => {
             const selectedWord = tData.find((w) => w.id === selectedIds[0])
             // console.log("TableView/selectedWord=", selectedWord)
-            const isOwner = user && selectedWord && selectedWord.user_id === user.id
+            // const isOwner = user && selectedWord && selectedWord.user_id === user.id
+            const isOwner = user && selectedWord && (selectedWord.user_id === user.id || user.role === "admin")
 
             return (
               <>
                 {isOwner && (
                   <>
                     {onEdit && (
-                      //   <button onClick={() => onEdit(selectedWord)} className="bg-blue-600 text-white px-4 py-2 rounded">
                       <button
                         onClick={() => {
                           const word = tData.find((w) => w.id === selectedIds[0])
                           if (word) onEdit(word) // <-- передається весь об'єкт
                         }}
-                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
                       >
                         ✏️ Редагувати
                       </button>
@@ -510,32 +417,68 @@ export default function TableView({
                           const words = tData.filter((w) => selectedIds.includes(w.id))
                           if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
                         }}
+                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-1  rounded-full"
                       >
-                        <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+                        🗑️ Видалити
                       </button>
                     )}
                   </>
                 )}
-                <button
-                  onClick={startMoveMode}
-                  //   onClick={() => setModal({ type: "move", word: selectedWord })}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded"
-                >
+                <button onClick={startMoveMode} className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full">
                   🔀 Перемістити
                 </button>
               </>
             )
           })()}
-
         {/* БАГАТО ВИДІЛЕНИХ */}
-        {onDelete && selectedIds.length > 1 && (
+        {onDelete && selectedIds.length > 0 && (
           <button
             onClick={() => {
               const words = tData.filter((w) => selectedIds.includes(w.id))
               if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
             }}
+            className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full"
           >
-            <span className="bg-red-600 text-white px-4 py-2 rounded"> 🗑️ Видалити</span>
+            🗑️ Видалити
+          </button>
+        )}
+        {onThemeDownload && selectedIds.length > 0 && (
+          <button
+            onClick={() => {
+              const words = tData.filter((w) => selectedIds.includes(w.id))
+              onThemeDownload(words) // ✅ передаємо масив id
+            }}
+            className="bg-btBg hover:bg-btBgHov text-white px-2 py-1 rounded-full"
+          >
+            ⬇️ Завантажити
+          </button>
+        )}
+        {/* Перекласти всі/виділені */}
+        {onTranslate && (
+          <button
+            onClick={() => {
+              if (translate) {
+                // Зупинити переклад
+                onTranslate("stop")
+              } else if (selectedIds.length > 0) {
+                // Перекласти виділені
+                const selectedWords = tData.filter((w) => selectedIds.includes(w.id))
+                onTranslate(selectedWords)
+              } else {
+                // Перекласти всі
+                onTranslate(tData)
+              }
+            }}
+            // className={`px-2 py-1 rounded-full text-white ${translate ? "bg-btBg hover:bg-btBgHov" : "bg-indigo-600"}`}
+            className={`px-2 py-1 rounded-full text-white ${
+              translate ? "bg-btBg hover:bg-btBgHov" : "bg-btBg hover:bg-btBgHov"
+            }`}
+          >
+            {translate
+              ? "⛔ Зупинити переклад"
+              : selectedIds.length > 0
+              ? "🌐Перекласти виділені✔️"
+              : "🌐Перекласти всі"}
           </button>
         )}
       </div>
@@ -555,15 +498,25 @@ export default function TableView({
         >
           {selectedIds.length === tData.length ? "☑ Зняти всі" : "☐ Виділити всі"}
         </button>
-        {selectedIds.length > 0 && <span className="text-blue-700">Виділено: {selectedIds.length}</span>}
-        {selectedLevel1.length > 0 && <span className="text-green-700">Виділено тем: {selectedLevel1.length}</span>}
+        {selectedIds.length > 0 && (
+          <span className="text-blue-700">
+            Виділено: {level0Head} {selectedIds.length}
+          </span>
+        )}
+        {selectedLevel1.length > 0 && (
+          // <span className="text-green-700">Виділено {level1Head} : {selectedLevel1.length}</span>
+          <span className="text-green-700">
+            {level1Head} : {selectedLevel1.length}
+          </span>
+        )}
       </div>
       {/*  */}
       <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
-        <table className="w-full border-collapse">
+        {/* <table className="w-full border-collapse"> */}
+        <table className="w-full ">
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
-              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
+              <th className="border border-gray-300 p-1 w-[30px]">✔️</th>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
               {columns.map((col) => (
                 <th
@@ -581,108 +534,34 @@ export default function TableView({
           </thead>
 
           {/* Основне тіло (<tbody>) */}
-          {/* <tbody>
-            {level2?.length > 0 &&
-              level2.map((section) => {
-                const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
-                const sectionData = data?.filter((w) => sectionLevel1.some((t) => w[level1Id] === t.id)) || []
-                if (sectionData.length === 0) return null
 
-                return (
-                  <React.Fragment key={section.id}>
-                    <tr
-                      onClick={() => toggleLevel2(section.id)}
-                      className="bg-gray-300 cursor-pointer hover:bg-gray-400"
-                    >
-                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
-                        {level2Head}: {section.name} ({sectionData.length})
-                        {openLevel2.includes(section.id) ? " 🔽" : " ▶️"}
-                      </td>
-                    </tr>
-
-                    {openLevel2.includes(section.id) &&
-                      sectionLevel1.map((topic) => {
-                        const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                        return renderTopic(topic, topicWords)
-                      })}
-                  </React.Fragment>
-                )
-              })}
-
-            {(!level2 || level2.length === 0) &&
-              level1?.map((topic) => {
-                const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                return renderTopic(topic, topicWords)
-              })}
-          </tbody> */}
-          {/* <tbody>
-            {level2?.length > 0 &&
-              level2.map((section) => {
-                const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
-                const sectionData = data?.filter((w) => sectionLevel1.some((t) => w[level1Id] === t.id)) || []
-                if (sectionData.length === 0) return null
-
-                return (
-                  <React.Fragment key={section.id}>
-                    <tr
-                      onClick={() => toggleLevel2(section.id)}
-                      className="bg-gray-300 cursor-pointer hover:bg-gray-400"
-                    >
-                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
-                        {level2Head}: {section.name} ({sectionData.length})
-                        {openLevel2.includes(section.id) ? " 🔽" : " ▶️"}
-                      </td>
-                    </tr>
-
-                    {openLevel2.includes(section.id) &&
-                      sectionLevel1.map((topic) => {
-                        const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                        return renderTopic(topic, topicWords)
-                      })}
-                  </React.Fragment>
-                )
-              })}
-
-            {(!level2 || level2.length === 0) &&
-              level1?.map((topic) => {
-                const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
-                return renderTopic(topic, topicWords)
-              })}
-
-            {(!level2 || level2.length === 0) &&
-              (!level1 || level1.length === 0) &&
-              data?.length > 0 &&
-              renderTopic({ id: "no-topic", name: "Без теми" }, data)}
-          </tbody> */}
           <tbody>
             {/* Коли є level2 */}
             {level2?.length > 0 &&
               level2.map((section) => {
                 const sectionLevel1 = level1?.filter((t) => t[level2Id] === section.id) || []
-                const sectionData = data?.filter((w) => sectionLevel1.some((t) => w[level1Id] === t.id)) || []
-                if (sectionData.length === 0) return null
 
                 return (
+                  //
                   <React.Fragment key={section.id}>
                     <tr
                       onClick={() => toggleLevel2(section.id)}
                       className="bg-gray-300 cursor-pointer hover:bg-gray-400"
                     >
-                      <td colSpan={showOwnerMark ? columns.length + 1 : columns.length} className="p-2 font-bold">
-                        {level2Head}: {section.name} ({sectionData.length})
-                        {openLevel2.includes(section.id) ? " 🔽" : " ▶️"}
+                      <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-bold">
+                        {level2Head}: {section.name} ({sectionLevel1.length})
+                        {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : ""}
                       </td>
                     </tr>
 
                     {openLevel2.includes(section.id) &&
                       sectionLevel1.map((topic) => {
-                        const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
+                        const topicWords = tData.filter((w) => w[level1Id] === topic.id)
                         return renderTopic(topic, topicWords)
                       })}
                   </React.Fragment>
                 )
               })}
-
             {/* Коли є тільки level1 */}
             {(!level2 || level2.length === 0) &&
               level1?.length > 0 &&
@@ -690,11 +569,11 @@ export default function TableView({
                 const topicWords = tData?.filter((w) => w[level1Id] === topic.id) || []
                 return renderTopic(topic, topicWords)
               })}
-
             {/* Коли немає ні level1, ні level2 — плоска таблиця */}
             {(!level2 || level2.length === 0) &&
               (!level1 || level1.length === 0) &&
-              data.map((item) => renderFlatRow(item))}
+              //   data.map((item) => renderFlatRow(item))}
+              data.map((item) => renderItemRow(item))}
           </tbody>
         </table>
       </div>
