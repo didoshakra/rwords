@@ -52,7 +52,7 @@ const columns = [
     label: "Слова",
     accessor: "word",
     type: "text",
-    width: 250,
+    width: 500,
     // styleCellText: { fontWeight: 600 },
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
