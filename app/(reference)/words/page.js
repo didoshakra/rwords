@@ -52,10 +52,10 @@ const columns = [
     label: "Слова",
     accessor: "word",
     type: "text",
-    width: 500,
+    width: 800,
     // styleCellText: { fontWeight: 600 },
   },
-  { label: "Переклад", accessor: "translation", type: "text", width: 500 },
+  { label: "Переклад", accessor: "translation", type: "text", width: 1500 },
 
 //   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
 //   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
