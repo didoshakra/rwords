@@ -527,7 +527,7 @@ export default function TableView({
       {/*  */}
       <div
         ref={tableContainerRef}
-        className="overflow-x-automax-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm"
+        className="overflow-x-auto max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm"
       >
         {/* <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body"> */}
         <table className="table-fixed border-collapse text-xs sm:text-sm lg:text-sm font-body">
