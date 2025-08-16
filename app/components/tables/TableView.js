@@ -363,7 +363,7 @@ export default function TableView({
       })}
     </tr>
   )
-
+const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
   return (
     <main className="p-1 max-w-4xl mx-auto">
       <h1 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
@@ -530,7 +530,10 @@ export default function TableView({
         className="overflow-x-auto max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm"
       >
         {/* <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body"> */}
-        <table className="table-fixed border-collapse text-xs sm:text-sm lg:text-sm font-body">
+        <table
+          style={{ minWidth: totalWidth }}
+          className="table-fixed border-collapse text-xs sm:text-sm lg:text-sm font-body"
+        >
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
