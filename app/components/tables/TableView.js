@@ -354,6 +354,7 @@ export default function TableView({
               borderBottom: "1px solid #ccc",
               padding: "4px",
               ...(col.styleCell || {}),
+              overflowWrap: "break-word", // перенос тільки при переповненні
             }}
           >
             <span style={col.styleCellText}>{content}</span>
@@ -524,7 +525,10 @@ export default function TableView({
         )}
       </div>
       {/*  */}
-      <div ref={tableContainerRef} className="max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm">
+      <div
+        ref={tableContainerRef}
+        className="overflow-x-automax-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm"
+      >
         {/* <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body"> */}
         <table className="table-fixed border-collapse text-xs sm:text-sm lg:text-sm font-body">
           <thead className="bg-gray-100 sticky top-0 z-10">
@@ -538,6 +542,7 @@ export default function TableView({
                     width: col.width,
                     border: "1px solid #ccc",
                     padding: "4px",
+                    overflowWrap: "break-word", // перенос тільки при переповненні
                   }}
                 >
                   {col.label}
