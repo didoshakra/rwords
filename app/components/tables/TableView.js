@@ -363,12 +363,10 @@ export default function TableView({
       })}
     </tr>
   )
-const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
+  const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
   return (
     <main className="p-1 max-w-4xl mx-auto">
       <h1 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
-
-      {/* <div className="flex flex-wrap gap-2 items-center mb-4"> */}
       <div className="flex flex-wrap gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-sm mb-3 font-body">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
@@ -498,12 +496,12 @@ const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
       </div>
       {/* 2ий рядок над таблицею/повідомлення */}
       {message && (
-        <p className="mb-4 text-green-700 font-medium" role="alert">
+        <p className="mb-3 text-green-700 font-medium text-xs sm:text-sm" role="alert">
           {message}
         </p>
       )}
       {/* перший рядок над таблицею */}
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-sm mb-2 font-body">
         <span className="text-gray-700">📄Всього зап: {tData.length} </span>
 
         <button
