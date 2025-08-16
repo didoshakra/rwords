@@ -9,6 +9,16 @@ export const headMenu = [
     link: "/blog",
   },
   {
+    a: "Слова",
+    link: "/words",
+    roles: ["admin", "manager", "user"], // ❗️ admin і manager
+  },
+
+  //   {
+  //     a: "Слухати",
+  //     link: "/words_player"
+  //   },
+  {
     a: "RWords",
     link: "/about_rwords",
   },
@@ -56,21 +66,6 @@ export const menuAdmin = [
             id: 3,
             title: "Відтворення слів(тест)",
             url: "/words_player",
-          },
-          {
-            id: 3,
-            title: "Слова_doTW",
-            url: "/words_doTW",
-          },
-          {
-            id: 4,
-            title: "Слова1",
-            url: "/words1",
-          },
-          {
-            id: 5,
-            title: "Слова2",
-            url: "/words2",
           },
         ],
       },

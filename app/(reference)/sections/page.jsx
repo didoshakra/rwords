@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState, useTransition } from "react"
 import { getSections, createSection, updateSection, deleteSection, deleteSections } from "@/app/actions/sectionActions"
-import { useAuth } from "@/app/context/AuthContext"
+// import { useAuth } from "@/app/context/AuthContext"
 import TableView from "@/app/components/tables/TableView"
 import { useSession } from "next-auth/react"
 
