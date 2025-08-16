@@ -57,40 +57,40 @@ const columns = [
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
 
-//   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
-//   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
+  { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
+  { label: "Секція", accessor: "section_name", type: "text", width: 250 },
 
-//   { label: "Файл img", accessor: "img", type: "text", width: 150 },
-//   {
-//     label: "№s",
-//     accessor: "section_pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//   },
-//   {
-//     label: "№t",
-//     accessor: "topic_pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//   },
+  { label: "Файл img", accessor: "img", type: "text", width: 150 },
+  {
+    label: "№s",
+    accessor: "section_pn",
+    type: "integer",
+    width: 50,
+    styleCell: { alignItems: "center" },
+  },
+  {
+    label: "№t",
+    accessor: "topic_pn",
+    type: "integer",
+    width: 50,
+    styleCell: { alignItems: "center" },
+  },
 
-//   {
-//     label: "id",
-//     accessor: "id",
-//     type: "integer",
-//     width: 60,
-//     styleCell: { alignItems: "center" },
-//     //   styleCellText: {color: 'green'},
-//   },
-//   {
-//     label: "Tid",
-//     accessor: "topic_id",
-//     type: "integer",
-//     width: 40,
-//     styleCell: { alignItems: "center" },
-//   },
+  {
+    label: "id",
+    accessor: "id",
+    type: "integer",
+    width: 60,
+    styleCell: { alignItems: "center" },
+    //   styleCellText: {color: 'green'},
+  },
+  {
+    label: "Tid",
+    accessor: "topic_id",
+    type: "integer",
+    width: 40,
+    styleCell: { alignItems: "center" },
+  },
 ]
 
 export default function WordsPage() {
