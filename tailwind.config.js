@@ -67,18 +67,42 @@ module.exports = {
         fBgHovD: "var(--color-pCol1)",
 
         //2-- head --------------------------------------------
+        // Bg
         hBg: "var(--color-pCol2)",
         hBgD: "#1e293b", //--color-pCol8: #1e293b;
         hBgHov: "var(--color-pCol3)",
         hBgHovD: "var(--color-pCol6)",
         hBorder: "var(--color-pCol3)",
         hBorderD: "#64748b", //--color-pCol5:#64748b;
+        // Text
         hText: "var(--color-pCol6)",
         hTextD: "var(--color-pCol3)",
         hTextHov: "var(--color-pCol8)",
         hTextHovD: "var(--color-pCol3)",
         hTextImg: "var(--color-pCol6)",
-        hTextImg1: "var(--color-pCol5)",
+        //
+        h1Text: "var(--color-pCol8)",
+        h1TextD: "var(--color-pCol3)",
+        //
+        h2Text: "var(--color-pCol7)",
+        h2TextD: "var(--color-pCol3)",
+
+
+        //-- page --------------------------------------------
+        // Bg
+        pBg: "var(--color-pCol2)",
+        pBgD: "#1e293b", //--color-pCol8: #1e293b;
+        pBgHov: "var(--color-pCol3)",
+        pBgHovD: "var(--color-pCol6)",
+        pBorder: "var(--color-pCol3)",
+        pBorderD: "#64748b", //--color-pCol5:#64748b;
+        // Text
+        pText: "var(--color-pCol6)",
+        pTextD: "var(--color-pCol3)",
+        pTextHov: "var(--color-pCol8)",
+        pTextHovD: "var(--color-pCol3)",
+        pTextImg: "var(--color-pCol6)",
+
 
         // bottom:
         btText: "var(--color-pCol0)",
@@ -86,7 +110,9 @@ module.exports = {
         btTextHov: "var(--color-pCol0)",
         btTextHovD: "var(--color-pCol0)",
         btBg: "var(--color-pCol6)",
+        btBgD: "var(--color-pCol6)",
         btBgHov: "var(--color-pCol7)",
+
         //3--Випадаючоге меню
         drawDropMenuBg: "var(--color-pCol1)",
         drawDropMenuBgD: "#1e293b", //--color-pCol8: #1e293b;
