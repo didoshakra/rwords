@@ -13,7 +13,7 @@ const SiteFooter = () => {
         <div>
           <h2 className="text-2xl font-bold text-hText dark:text-hTextD mb-2">RWords</h2>
           <p className="text-sm max-w-xs">
-            Додаток для вивчення слів з голосовим керуванням і персональними словниками.
+            Застосунокк для вивчення слів з голосовим керуванням, персональними словниками і оцінкою знань.
           </p>
         </div>
 
