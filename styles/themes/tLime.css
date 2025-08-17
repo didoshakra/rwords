@@ -10,4 +10,7 @@ html[data-theme="tLime"] {
   --color-pCol7: #4d7c0f;
   --color-pCol8: #3f6212;
   --color-pCol9: #14532d;
+  --color-pCol10: #9333ea; /* purple-600 */
+  --color-pCol11: #db2777; /* pink-600 */
+  --color-pCol12: #f7fee7; /* yellow-50 — легкий споріднений фон */
 }

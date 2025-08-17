@@ -1,6 +1,6 @@
 html[data-theme="tRose"] {
- /* Rose 80-900*/
-  --color-pCol0:#fff1f2;
+  /* Rose 80-900*/
+  --color-pCol0: #fff1f2;
   --color-pCol1: #ffe4e6;
   --color-pCol2: #fecdd3;
   --color-pCol3: #fda4af;
@@ -10,4 +10,7 @@ html[data-theme="tRose"] {
   --color-pCol7: #be123c;
   --color-pCol8: #9f1239;
   --color-pCol9: #881337;
+  --color-pCol10: #0ea5e9; /* sky-500 */
+  --color-pCol11: #22c55e; /* green-500 */
+  --color-pCol12: #fff1f2; /* pink-50 — легкий споріднений фон */
 }

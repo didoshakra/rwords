@@ -1,13 +1,16 @@
 html[data-theme="tViolet"] {
- /* Violet 80-900*/
+  /* Violet 80-900*/
   --color-pCol0: #f5f3ff;
-  --color-pCol1:#ede9fe;
+  --color-pCol1: #ede9fe;
   --color-pCol2: #ddd6fe;
-  --color-pCol3:#c4b5fd;
+  --color-pCol3: #c4b5fd;
   --color-pCol4: #a78bfa;
   --color-pCol5: #8b5cf6;
   --color-pCol6: #7c3aed;
   --color-pCol7: #6d28d9;
   --color-pCol8: #5b21b6;
   --color-pCol9: #4c1d95;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #14b8a6; /* teal-500 */
+  --color-pCol12: #f5f3ff; /* purple-50 — легкий споріднений фон */
 }

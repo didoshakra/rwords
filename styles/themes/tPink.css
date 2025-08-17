@@ -10,4 +10,7 @@ html[data-theme="tPink"] {
   --color-pCol7: #be185d;
   --color-pCol8: #9d174d;
   --color-pCol9: #831843;
+  --color-pCol10: #0ea5e9; /* sky-500 */
+  --color-pCol11: #10b981; /* emerald-500 */
+  --color-pCol12: #fdf2f8; /* rose-50 — легкий споріднений фон */
 }

@@ -1,5 +1,5 @@
 html[data-theme="tGreen"] {
-   /* Green 80-900*/
+  /* Green 80-900*/
   --color-pCol0: #f0fdf4;
   --color-pCol1: #dcfce7;
   --color-pCol2: #bbf7d0;
@@ -10,4 +10,7 @@ html[data-theme="tGreen"] {
   --color-pCol7: #047857;
   --color-pCol8: #065f46;
   --color-pCol9: #064e3b;
+  --color-pCol10: #dc2626; /* red-600 */
+  --color-pCol11: #9333ea; /* purple-600 */
+  --color-pCol12: #f0fdf4; /* emerald-50 — легкий споріднений фон */
 }

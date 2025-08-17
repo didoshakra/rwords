@@ -1,5 +1,5 @@
 html[data-theme="tFuchsia"] {
- /* Fuchsia 80-900*/
+  /* Fuchsia 80-900*/
   --color-pCol0: #fdf4ff;
   --color-pCol1: #fae8ff;
   --color-pCol2: #f5d0fe;
@@ -10,5 +10,7 @@ html[data-theme="tFuchsia"] {
   --color-pCol7: #a21caf;
   --color-pCol8: #86198f;
   --color-pCol9: #701a75;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #22c55e; /* green-500 */
+  --color-pCol12: #fdf4ff; /* purple-50 — легкий споріднений фон */
 }
- 

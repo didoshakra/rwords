@@ -10,4 +10,7 @@ html[data-theme="tCyan"] {
   --color-pCol7: #0e7490;
   --color-pCol8: #155e75;
   --color-pCol9: #164e63;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #e11d48; /* rose-600 */
+  --color-pCol12: #ecfeff;       /* teal-50 — легкий споріднений фон */
 }

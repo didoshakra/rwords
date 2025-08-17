@@ -5,9 +5,12 @@ html[data-theme="tZinc"] {
   --color-pCol2: #e4e4e7;
   --color-pCol3: #d4d4d8;
   --color-pCol4: #a1a1aa;
-  /* --color-pCol5: #71717a; */
+  --color-pCol5: #71717a;
   --color-pCol6: #52525b;
   --color-pCol7: #3f3f46;
   --color-pCol8: #27272a;
   --color-pCol9: #18181b;
+  --color-pCol10: #2563eb; /* blue-600 */
+  --color-pCol11: #d97706; /* amber-600 */
+  --color-pCol12: #f9fafb; /* gray-50 — легкий споріднений фон */
 }

@@ -10,4 +10,7 @@ html[data-theme="tNeutral"] {
   --color-pCol7: #404040;
   --color-pCol8: #262626;
   --color-pCol9: #171717;
+  --color-pCol10: #2563eb; /* blue-600 */
+  --color-pCol11: #d97706; /* amber-600 */
+  --color-pCol12: #f9fafb; /* gray-50 — легкий споріднений фон */
 }

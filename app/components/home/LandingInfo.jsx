@@ -10,13 +10,12 @@ const LandingInfo = () => {
 
   return (
     <>
-      <main className="px-4 py-6 max-w-3xl mx-auto text-gray-900 dark:text-gray-100 font-body">
-        <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">
-          👋 Вітаємо на RWords — спільноті для вивчення іноземних слів
-        </h1>
+      <main className="text-pText px-4 py-6 max-w-3xl mx-auto text-gray-900 dark:text-gray-100 font-body">
+        <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">👋 Вітаємо на RWords</h1>
 
         <p className="text-sm sm:text-base lg:text-lg mb-5 leading-relaxed">
-          Сайт <strong>RWords</strong> — це платформа для людей, які вивчають мови за допомогою мобільного застосунку{" "}
+          Сайт <strong>RWords</strong> — це спроба створити платформу для людей, які вивчають мови за допомогою
+          мобільного застосунку{" "}
           <Link
             href="/about_rwords"
             className="inline-flex justify-center items-center gap-2 italic font-semibold text-blue-900 hover:underline align-middle"
@@ -24,11 +23,21 @@ const LandingInfo = () => {
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
             RWords.
           </Link>{" "}
-          Вона створена для того, щоб мати можливість самостійно готувати контент, групувати його по темах і
-          завантажувати безпосередньо з застосунку. Ми прагнемо зробити вивчення мов більш доступним і цікавим для всіх!
+          Вона створена для того, щоб мати можливість самостійно готувати контент(списки слів, виразів, речень),
+          групувати його по темах і завантажувати безпосередньо з застосунку. Ми прагнемо зробити вивчення мов більш
+          доступним і цікавим для всіх!
         </p>
 
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2">🧠 Тут ви можете:</h2>
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-h2Text">🎯 Навіщо цей сайт?</h2>
+        <ul className="list-disc pl-5 mb-5 space-y-1 text-sm sm:text-base lg:text-lg">
+          <li>
+            Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
+          </li>
+          <li>Знаходити та завантажувати готові списки для свого рівня і мови</li>
+          <li>Обговорювати все у блозі, залишати коментарі</li>
+        </ul>
+
+        <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-h2Text">🧠 Тут ви можете:</h2>
         <ul className="list-disc pl-5 mb-5 space-y-1 text-sm sm:text-base lg:text-lg">
           <li className="leading-relaxed">
             📱 Завантажити мобільний застосунок{" "}
@@ -45,18 +54,9 @@ const LandingInfo = () => {
           <li>📝 Ділитись досвідом вивчення слів у блозі</li>
           <li>💡 Давати пропозиції по розвитку сайту та застосунку</li>
           <li>💬 Коментувати записи в блозі</li>
-          <li>🗂 Імпортувати слова зі списків на сайті</li>
+          <li>🗂 Додавати свої словат та вирази, прямо додаючи їх в довіднаки, а також імпортувати з файлів .csv</li>
           <li>🌐 Зробити автоматичний переклад на будь-яку мову</li>
           <li>🔁 Слухати слова → переклад → оцінка (в розробці)</li>
-        </ul>
-
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2">🎯 Навіщо цей сайт?</h2>
-        <ul className="list-disc pl-5 mb-5 space-y-1 text-sm sm:text-base lg:text-lg">
-          <li>
-            Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
-          </li>
-          <li>Знаходити та завантажувати готові списки для свого рівня і мови</li>
-          <li>Обговорювати все у блозі, залишати коментарі</li>
         </ul>
 
         <section className="bg-blue-50 text-center py-6 px-4 rounded-md">
@@ -97,7 +97,7 @@ const LandingInfo = () => {
       </main>
 
       <section className="px-4 py-8 text-center max-w-3xl mx-auto">
-        <h2 className="flex gap-2 justify-center items-center text-lg sm:text-xl lg:text-2xl font-heading font-bold mb-3">
+        <h2 className="text-h2Text flex gap-2 justify-center items-center text-lg sm:text-xl lg:text-2xl font-heading font-bold mb-3">
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
           Що таке RWords?
         </h2>
@@ -132,8 +132,8 @@ const LandingInfo = () => {
           },
         ].map((item, i) => (
           <div key={i} className="bg-white shadow-md p-4 rounded-md border hover:shadow-lg transition">
-            <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-1">{item.title}</h3>
-            <p className="text-gray-600 text-xs sm:text-sm lg:text-base">{item.desc}</p>
+            <h3 className="text-h3Text text-sm sm:text-base lg:text-lg font-semibold mb-1">{item.title}</h3>
+            <p className="text-pText text-xs sm:text-sm lg:text-base">{item.desc}</p>
           </div>
         ))}
       </section>

@@ -1,6 +1,6 @@
 html[data-theme="tSky"] {
- /* Sky 80-900*/
-  --color-pCol0:#f0f9ff;
+  /* Sky 80-900*/
+  --color-pCol0: #f0f9ff;
   --color-pCol1: #e0f2fe;
   --color-pCol2: #bae6fd;
   --color-pCol3: #7dd3fc;
@@ -10,4 +10,7 @@ html[data-theme="tSky"] {
   --color-pCol7: #0369a1;
   --color-pCol8: #075985;
   --color-pCol9: #0c4a6e;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #db2777; /* pink-600 */
+  --color-pCol12: #f0f9ff; /* cyan-50 — легкий споріднений фон */
 }

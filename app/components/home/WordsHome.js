@@ -13,11 +13,11 @@ const WordsHome = () => {
         items-center justify-center bg-[url('/images/home/travel-the-world-monument-concept.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full w-full flex-col items-center justify-center px-3 text-center align-middle">
-          <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ]">
+          <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-h1Text">
             {/* Вчіть слова щоб подорожувати */}
             Вчіть слова подорожуючи
           </h1>
-          <h2 className="inline-block font-sans text-base  text-red-600 sm:text-lg lg:text-xl font-bold uppercase tracking-normal text-hTextImg  ">
+          <h2 className="inline-block font-sans text-base  text-h2Text sm:text-lg lg:text-xl font-bold uppercase tracking-normal ">
             Подорожуючи вчити легше
           </h2>
         </div>
@@ -27,10 +27,10 @@ const WordsHome = () => {
         justify-center bg-[url('/images/home/young-diverse-couple-hikers-checking.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full flex-col items-center justify-center px-3 align-middle ">
-          <h1 className="h-auto items-center justify-center  font-sans text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-hTextImg ">
+          <h1 className="h-auto items-center justify-center  font-sans text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-h1Text">
             Вчіть слова щоб спілкуватись
           </h1>
-          <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl  text-red-600 font-bold uppercase tracking-normal text-hTextImg ">
+          <h2 className="inline-block font-sans text-base sm:text-lg lg:text-xl   font-bold uppercase tracking-normal text-h2Text">
             Разом вчити приємніше
           </h2>
         </div>

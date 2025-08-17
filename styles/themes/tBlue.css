@@ -10,4 +10,7 @@ html[data-theme="tBlue"] {
   --color-pCol7: #1d4ed8;
   --color-pCol8: #1e40af;
   --color-pCol9: #1e3a8a;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #e11d48; /* rose-600 */
+  --color-pCol12: #eff6ff; /* sky-50 — легкий споріднений фон */
 }

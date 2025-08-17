@@ -1,8 +1,8 @@
 html[data-theme="tTeal"] {
- /* Teal 80-900*/
-  --color-pCol0:#f0fdfa;
+  /* Teal 80-900*/
+  --color-pCol0: #f0fdfa;
   --color-pCol1: #ccfbf1;
-  --color-pCol2:#99f6e4;
+  --color-pCol2: #99f6e4;
   --color-pCol3: #5eead4;
   --color-pCol4: #2dd4bf;
   --color-pCol5: #0d9488;
@@ -10,4 +10,7 @@ html[data-theme="tTeal"] {
   --color-pCol7: #0f766e;
   --color-pCol8: #115e59;
   --color-pCol9: #134e4a;
+  --color-pCol10: #d97706; /* amber-600 */
+  --color-pCol11: #dc2626; /* red-600 */
+  --color-pCol12: #f0fdfa; /* cyan-50 — легкий споріднений фон */
 }

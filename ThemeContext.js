@@ -14,7 +14,7 @@ const ThemeProvider = ({ children }) => {
   }
 
   // ******************
-  const [colTheme, setColTheme] = useState("Teal")
+  const [colTheme, setColTheme] = useState("Pink")
   //   *** materialui scheme //https://materialui.co/colors*/
   const allPaths = {
     Red: require("../styles/themes/mui/red_mui"),

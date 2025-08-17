@@ -57,6 +57,9 @@
   --color-pCol7: #047857;
   --color-pCol8: #065f46;
   --color-pCol9: #064e3b;
+  --color-pCol10: #c026d3; /* fuchsia-600 */
+  --color-pCol11: #e11d48; /* rose-600 */
+  --color-pCol12: #ecfdf5; /* green-50 — легкий споріднений фон */
   }
 
   @import "@/styles/themes/tIndigo.css";

@@ -5,9 +5,12 @@ html[data-theme="tPurple"] {
   --color-pCol2: #e9d5ff;
   --color-pCol3: #d8b4fe;
   --color-pCol4: #c084fc;
-  --color-pCol5:#a855f7;
+  --color-pCol5: #a855f7;
   --color-pCol6: #9333ea;
   --color-pCol7: #7e22ce;
   --color-pCol8: #6b21a8;
   --color-pCol9: #581c87;
+  --color-pCol10: #f59e0b; /* amber-500 */
+  --color-pCol11: #0ea5e9; /* sky-500 */
+  --color-pCol12: #faf5ff; /* violet-50 — легкий споріднений фон */
 }

@@ -45,8 +45,8 @@ const ThemesMenuDroop = ({
   }
 
   const themes = [
-    { title: "", name: "Slate", bg: "#cbd5e1" },
     { title: "tGray", name: "Gray", bg: "#d1d5db" },
+    { title: "tSlate", name: "Slate", bg: "#cbd5e1" },
     { title: "tZinc", name: "Zinc", bg: "#d4d4d8" },
     { title: "tNeutral", name: "Neutral", bg: "#d4d4d4" },
     { title: "tStone", name: "Stone", bg: "#d6d3d1" },

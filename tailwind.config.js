@@ -75,23 +75,28 @@ module.exports = {
         hBorder: "var(--color-pCol3)",
         hBorderD: "#64748b", //--color-pCol5:#64748b;
         // Text
-        hText: "var(--color-pCol6)",
+        hText: "var(--color-pCol8)",
         hTextD: "var(--color-pCol3)",
-        hTextHov: "var(--color-pCol8)",
-        hTextHovD: "var(--color-pCol3)",
+        hTextHov: "var(--color-pCol9)",
+        hTextHovD: "var(--color-pCol4)",
         hTextImg: "var(--color-pCol6)",
         //
-        h1Text: "var(--color-pCol8)",
-        h1TextD: "var(--color-pCol3)",
+        h1Text: "var(--color-pCol11)",
+        h1TextD: "var(--color-pCol11)",
         //
-        h2Text: "var(--color-pCol7)",
-        h2TextD: "var(--color-pCol3)",
+        h2Text: "var(--color-pCol10)",
+        h2TextD: "var(--color---color-pCol10)",
+        //
+        h3Text: "var(--color-pCol8)",
+        h3TextD: "var(--color---color-pCol8)",
 
 
         //-- page --------------------------------------------
         // Bg
         pBg: "var(--color-pCol2)",
         pBgD: "#1e293b", //--color-pCol8: #1e293b;
+        pBg1: "var(--color-pCol12)",
+        pBg1D: "#1e293b", //--color-pCol8: #1e293b;
         pBgHov: "var(--color-pCol3)",
         pBgHovD: "var(--color-pCol6)",
         pBorder: "var(--color-pCol3)",
@@ -102,7 +107,6 @@ module.exports = {
         pTextHov: "var(--color-pCol8)",
         pTextHovD: "var(--color-pCol3)",
         pTextImg: "var(--color-pCol6)",
-
 
         // bottom:
         btText: "var(--color-pCol0)",

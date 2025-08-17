@@ -1,6 +1,6 @@
 html[data-theme="tOrange"] {
- /* Orange 80-900*/
-  --color-pCol0:#fff7ed;
+  /* Orange 80-900*/
+  --color-pCol0: #fff7ed;
   --color-pCol1: #ffedd5;
   --color-pCol2: #fed7aa;
   --color-pCol3: #fdba74;
@@ -10,4 +10,7 @@ html[data-theme="tOrange"] {
   --color-pCol7: #c2410c;
   --color-pCol8: #9a3412;
   --color-pCol9: #7c2d12;
+  --color-pCol10: #3b82f6; /* blue-500 */
+  --color-pCol11: #7c3aed; /* violet-600 */
+  --color-pCol12: #fff7ed; /* amber-50 — легкий споріднений фон */
 }
