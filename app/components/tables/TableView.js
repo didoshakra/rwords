@@ -279,7 +279,7 @@ export default function TableView({
 
     return (
       <React.Fragment key={topic.id}>
-        <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:bg-gray-300">
+        <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:opacity-70">
           <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
             <div className="flex items-center gap-2" style={{ userSelect: "none", cursor: "pointer" }}>
               <span
@@ -311,7 +311,7 @@ export default function TableView({
 
   //  Ф-ція для рендерингу рядка теми
   const renderItemRow = (item) => (
-    <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-gray-50"}>
+    <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-blue-200"}>
       {/* <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}> */}
       <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
         <input
@@ -374,7 +374,7 @@ export default function TableView({
             {onAdd && (
               <button
                 onClick={onAdd}
-                className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+                className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
               >
                 ➕Додати
               </button>
@@ -382,7 +382,7 @@ export default function TableView({
             {onClickCsv && (
               <button
                 onClick={onClickCsv}
-                className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+                className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
                 disabled={isPending}
               >
                 📂 Імпорт CSV
@@ -415,7 +415,7 @@ export default function TableView({
                           const word = tData.find((w) => w.id === selectedIds[0])
                           if (word) onEdit(word) // <-- передається весь об'єкт
                         }}
-                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+                        className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
                       >
                         ✏️ Редагувати
                       </button>
@@ -426,7 +426,7 @@ export default function TableView({
                           const words = tData.filter((w) => selectedIds.includes(w.id))
                           if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
                         }}
-                        className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+                        className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
                       >
                         🗑️ Видалити
                       </button>
@@ -436,7 +436,7 @@ export default function TableView({
                 <button
                   onClick={startMoveMode}
                   //   onClick={() => setModal({ type: "move", word: selectedWord })}
-                  className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+                  className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
                 >
                   🔀 Перемістити
                 </button>
@@ -450,7 +450,7 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               if (words.length > 0) onDelete(words) // ✅ передаємо масив об'єктів
             }}
-            className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+            className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
           >
             🗑️ Видалити
           </button>
@@ -461,7 +461,7 @@ export default function TableView({
               const words = tData.filter((w) => selectedIds.includes(w.id))
               onThemeDownload(words) // ✅ передаємо масив id
             }}
-            className="bg-btBg hover:bg-btBgHov text-white px-2 py-0.5 rounded-full font-medium"
+            className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
           >
             ⬇️ Заватажити
           </button>
@@ -483,7 +483,7 @@ export default function TableView({
               }
             }}
             className={`px-2 py-0.5 rounded-full text-white font-medium ${
-              translate ? "bg-btBg hover:bg-btBgHov" : "bg-btBg hover:bg-btBgHov"
+              translate ? "bg-btBg hover:opacity-70" : "bg-btBg hover:opacity-70"
             }`}
           >
             {translate
@@ -565,7 +565,7 @@ export default function TableView({
                   <React.Fragment key={section.id}>
                     <tr
                       onClick={() => toggleLevel2(section.id)}
-                      className="bg-gray-300 cursor-pointer hover:bg-gray-400"
+                      className="bg-gray-300 cursor-pointer hover:opacity-70"
                     >
                       <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-bold">
                         {level2Head}: {section.name} ({sectionLevel1.length})
