@@ -11,11 +11,11 @@ import { useSession } from "next-auth/react"
 function Modal({ open, onClose, children }) {
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded shadow-lg p-6 min-w-[320px] relative max-w-md w-full">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg1 dark:bg-bg1D">
+      <div className="bg-bg1 dark:bg-bg1D rounded shadow-lg p-6 min-w-[320px] relative max-w-md w-full">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl"
+          className="absolute top-2 right-2 text-gray-400 hover:opacity-70 text-xl"
           aria-label="Закрити"
         >
           ×
@@ -112,15 +112,15 @@ export default function BlogPage() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Блог</h1>
+    <main className="text-pText dark:text-pTextD max-w-3xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-h1Text text-2xl sm:text-3xl lg:text-4xl font-bold mb-6">Блог</h1>
 
       <div className="mb-6 flex justify-between items-center">
         <span className="font-semibold text-lg">Пости:</span>
         {user && (
           <button
             onClick={openAddModal}
-            className="bg-blue-600 hover:bg-blue-700 transition-colors duration-200 text-white px-4 py-2 rounded"
+            className="bg-btBg dark:btBgD text-btText dark:text-btTextD hover:opacity-70 transition-colors duration-200 text-white px-4 py-2 rounded-full"
           >
             Додати пост
           </button>
@@ -165,7 +165,9 @@ export default function BlogPage() {
 
       {/* Модалка для додавання/редагування */}
       <Modal open={modal === "add" || (modal && modal.type === "edit")} onClose={closeModal}>
-        <h2 className="text-xl font-bold mb-4">{modal && modal.type === "edit" ? "Редагувати пост" : "Додати пост"}</h2>
+        <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
+          {modal && modal.type === "edit" ? "Редагувати пост" : "Додати пост"}
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
             type="text"
@@ -187,7 +189,7 @@ export default function BlogPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="bg-blue-600 hover:bg-blue-700 transition-colors duration-200 text-white px-4 py-2 rounded"
+              className="bg-btBg dark:btBgD text-btText dark:text-btTextD hover:opacity-70 transition-colors duration-200 px-4 py-2 rounded-full"
             >
               {isPending
                 ? modal && modal.type === "edit"
@@ -200,7 +202,7 @@ export default function BlogPage() {
             <button
               type="button"
               onClick={closeModal}
-              className="px-4 py-2 rounded border border-gray-400 hover:bg-gray-100 transition-colors duration-150"
+              className="px-4 py-2 rounded-full border bg-bt1Bg dark:bt1BgD text-bt1Text dark:text-bt1TextD hover:opacity-70  transition-colors duration-150"
             >
               Відмінити
             </button>

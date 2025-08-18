@@ -110,11 +110,17 @@ module.exports = {
         // bottom:
         btText: "var(--color-pCol0)",
         btTextD: "var(--color-pCol0)",
-        btTextHov: "var(--color-pCol0)",
-        btTextHovD: "var(--color-pCol0)",
+        // btTextHov: "var(--color-pCol0)",
+        // btTextHovD: "var(--color-pCol0)",
         btBg: "var(--color-pCol6)",
         btBgD: "var(--color-pCol6)",
-        btBgHov: "var(--color-pCol7)",
+        btBgHov: "var(--color-pCol8)",
+        //
+        bt1Text: "var(--color-pCol0)",
+        bt1TextD: "var(--color-pCol0)",
+        bt1Bg: "var(--color-pCol10)",
+        bt1BgD: "var(--color-pCol6)",
+        bt1BgHov: "var(--color-pCol4)",
 
         //3--Випадаючоге меню
         drawDropMenuBg: "var(--color-pCol1)",

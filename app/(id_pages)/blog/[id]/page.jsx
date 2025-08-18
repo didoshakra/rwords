@@ -117,20 +117,20 @@ export default function BlogPostPage() {
   if (!post) return <p>Завантаження...</p>
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
-      <p className="mb-4 text-gray-600">Автор: {post.user_name || "Невідомо"}</p>
-      <article className="mb-8 whitespace-pre-wrap">{post.content}</article>
+    <main className="max-w-3xl mx-auto p-6 text-pText dark:text-pTextD">
+      <h1 className="text-h1Text text-xl sm:text-2xl lg:text-3xl  font-bold mb-2">{post.title}</h1>
+      <p className="mb-4 text-h2Text">Автор: {post.user_name || "Невідомо"}</p>
+      <article className=" mb-8 whitespace-pre-wrap">{post.content}</article>
 
       <section>
-        <h2 className="text-xl font-semibold mb-2">Коментарі</h2>
+        <h2 className="text-h1Text text-base sm:text-lg lg:text-xl font-semibold mb-2">Коментарі</h2>
         <ul className="mb-4 space-y-2">
           {comments.map((comment) => {
             const canEdit = user && (user.id === comment.user_id || user.role === "admin")
             return (
               <li key={comment.id} className="border p-3 rounded">
-                <p className="text-gray-800">{comment.content}</p>
-                <p className="text-sm text-gray-500">
+                <p className=" text-pTextHov italic">{comment.content}</p>
+                <p className="text-sm text-h2Text ">
                   {comment.user_name || "Гість"} — {new Date(comment.created_at).toLocaleString("uk-UA")}
                 </p>
                 {canEdit && (
@@ -157,7 +157,7 @@ export default function BlogPostPage() {
             rows={3}
             disabled={!user}
           />
-          <button disabled={isPending || !user} className="bg-blue-600 text-white px-4 py-2 rounded self-start">
+          <button disabled={isPending || !user} className="bg-btBg dark:bg-btBgD text-btText dark:text-btTextD px-4 py-2 rounded-full self-start">
             {isPending ? "Надсилання..." : "Додати коментар"}
           </button>
         </form>
