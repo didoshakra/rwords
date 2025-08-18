@@ -12,5 +12,5 @@ html[data-theme="tStone"] {
   --color-pCol9: #1c1917;
   --color-pCol10: #2563eb; /* blue-600 */
   --color-pCol11: #d97706; /* amber-600 */
-  --color-pCol12: #f9fafb; /* gray-50 — легкий споріднений фон */
+  --color-pCol12: #fafafa; /* neutral-100 — легкий споріднений фон */
 }

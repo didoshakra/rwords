@@ -39,6 +39,7 @@ module.exports = {
         //0-- Загальні
         bodyBg: "var(--color-pCol0)",
         bodyBgD: "#334155", // --color-pCol7: #334155;
+        //
         infoMsg: "#8c92f8",
         infoMsgD: "#8c92f8",
         errorMsg: "#f21e08",
