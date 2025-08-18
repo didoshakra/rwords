@@ -44,7 +44,7 @@ module.exports = {
         errorMsg: "#f21e08",
         errorMsgD: "#f21e08",
         eclipseBg: "rgba(36, 12, 12, 0.3)", //Затемнення екрану
-
+        linkText: "#00f",
         //6-- headTape --------------------------------------------
         hTapeText: "var(--color-pCol0)",
         hTapeBg: "var(--color-pCol6)",
@@ -89,7 +89,6 @@ module.exports = {
         //
         h3Text: "var(--color-pCol8)",
         h3TextD: "var(--color---color-pCol8)",
-
 
         //-- page --------------------------------------------
         // Bg

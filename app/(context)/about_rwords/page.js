@@ -11,13 +11,13 @@ export default function HowItWorks() {
   return (
     <main className="px-4 py-8 max-w-4xl mx-auto text-hText dark:text-hTextD">
       {/* Головний заголовок */}
-      <h1 className="inline-flex items-center justify-center gap-2 text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+      <h1 className="inline-flex items-center justify-center gap-2 text-h1Text text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
         Що таке RWords?
       </h1>
 
       {/* Опис застосунку */}
-      <section className="mb-6">
+      <section className="mb-6 text-pText dark:text-pTextD  ">
         <p className="text-base sm:text-lg lg:text-xl font-semibold mb-2">
           {`RWords — мобільний застосунок на Android для вивчення іноземних слів та фраз. В ньому ви маєте можливість
           прослуховувати слова, фрази, речення з перекладом на вибрану вами мову із списків слів, які уже є в
@@ -56,11 +56,13 @@ export default function HowItWorks() {
       </section>
 
       {/* Підзаголовок "Як працює" */}
-      <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">📖 Як працює застосунок RWords</h2>
+      <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">
+        📖 Як працює застосунок RWords
+      </h2>
 
       {/* Головна ідея */}
       <section className="mb-6">
-        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">🧠 Головна ідея застосунку</h3>
+        <h3 className="text-h3Text text-lg sm:text-xl lg:text-2xl font-bold mb-2">🧠 Головна ідея застосунку</h3>
         <p className="mb-2 text-base sm:text-lg lg:text-xl">
           <strong>RWords</strong> дозволяє оцінювати знання голосом або кнопками <strong>Знаю / Не знаю</strong>,
           формуючи персоналізовані списки.
@@ -73,7 +75,7 @@ export default function HowItWorks() {
 
       {/* Елементи інтерфейсу */}
       <section className="mb-6">
-        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">🧩 Елементи інтерфейсу</h3>
+        <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold mb-2">🧩 Елементи інтерфейсу</h3>
 
         <h4 className="text-base sm:text-lg font-semibold mt-2">🔝 Верхня панель</h4>
         <ul className="list-disc pl-5 text-base sm:text-lg">
@@ -89,15 +91,19 @@ export default function HowItWorks() {
 
       {/* Основні екрани */}
       <section className="mb-6">
-        <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4 text-center">🧭 Основні екрани</h3>
+        <h2 className="text-h2Text text text-xl sm:text-2xl lg:text-3xl font-semibold mb-4 text-center">
+          🧭 Основні екрани
+        </h2>
 
         {/* Початковий екран */}
         <div className="mt-8">
-          <h4 className="text-base sm:text-lg font-semibold text-center mb-2">Початковий екран застосунку</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            Початковий екран застосунку
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img src="/rwords_screens/home.jpg" alt="Home" className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />
             <div className="text-base sm:text-lg lg:text-xl">
-              <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
+              <h4 className="font-semibold mb-1">🔝 Верхня панель</h4>
               <ul className="list-disc pl-10 mb-4">
                 <li>🌙 Перемикач теми</li>
                 <li>❓ Загальний опис додатку</li>
@@ -114,7 +120,7 @@ export default function HowItWorks() {
 
         {/* Слова */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">🗣️ Слова</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🗣️ Слова</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <div className="text-base sm:text-lg lg:text-xl">
               <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
@@ -143,7 +149,7 @@ export default function HowItWorks() {
 
         {/* Налаштування відтворення */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">⚙️ Налаштування прослуховування</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">⚙️ Налаштування прослуховування</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_settings.jpg"
@@ -165,7 +171,7 @@ export default function HowItWorks() {
 
         {/* Голосові команди */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">🎙️ Налаштування голосових команд</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🎙️ Налаштування голосових команд</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/voices_commands.jpg"
@@ -184,7 +190,7 @@ export default function HowItWorks() {
 
         {/* Список слів-кнопки */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">📋 Список слів-кнопки</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">📋 Список слів-кнопки</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_list_buttons.jpg"
@@ -207,7 +213,7 @@ export default function HowItWorks() {
 
         {/* Список слів-переміщення */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">📋🔀 Список слів-переміщення</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">📋🔀 Список слів-переміщення</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_list.jpg"
@@ -224,7 +230,7 @@ export default function HowItWorks() {
 
         {/* Колірні схеми */}
         <div className="mt-8">
-          <h4 className="text-xl sm:text-2xl font-bold text-center mb-2">🎨 Налаштування колірних схем</h4>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🎨 Налаштування колірних схем</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/сolors_settings.jpg"

@@ -10,8 +10,10 @@ const LandingInfo = () => {
 
   return (
     <>
-      <main className="text-pText px-4 py-6 max-w-3xl mx-auto text-gray-900 dark:text-gray-100 font-body">
-        <h1 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">👋 Вітаємо на RWords</h1>
+      <main className="px-4 py-6 max-w-3xl mx-auto text-pText dark:text-pTextD font-body">
+        <h1 className="text-h1Text font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">
+          👋 Вітаємо на RWords
+        </h1>
 
         <p className="text-sm sm:text-base lg:text-lg mb-5 leading-relaxed">
           Сайт <strong>RWords</strong> — це спроба створити платформу для людей, які вивчають мови за допомогою
@@ -63,7 +65,7 @@ const LandingInfo = () => {
           {user ? (
             <>
               <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3">Дякуємо, що з нами!</h3>
-              <p className="mb-5 text-gray-700 text-sm sm:text-base lg:text-lg">
+              <p className="mb-5text-sm sm:text-base lg:text-lg">
                 Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
               </p>
               <Link
@@ -76,8 +78,8 @@ const LandingInfo = () => {
             </>
           ) : (
             <>
-              <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3">Готові почати?</h3>
-              <p className="mb-5 text-gray-700 text-sm sm:text-base lg:text-lg">
+              <h3 className="text-h3Text text-base sm:text-lg lg:text-xl font-semibold mb-3">Готові почати?</h3>
+              <p className="mb-5text-sm sm:text-base lg:text-lg">
                 Зареєструйтесь, щоб завантажити застосунок RWords, створювати словники, публікувати дописи та
                 коментувати записи.
               </p>
@@ -91,23 +93,23 @@ const LandingInfo = () => {
           )}
         </section>
 
-        <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 text-gray-700 dark:text-gray-400 text-sm sm:text-base lg:text-lg">
+        <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 text-sm sm:text-base lg:text-lg">
           Сайт RWords — це про навчання разом. Ми вивчаємо. Ми ділимось. Ми ростемо.
         </blockquote>
       </main>
 
-      <section className="px-4 py-8 text-center max-w-3xl mx-auto">
+      <section className=" px-4 py-8 text-pText dark:text-pTextD text-center max-w-3xl mx-auto">
         <h2 className="text-h2Text flex gap-2 justify-center items-center text-lg sm:text-xl lg:text-2xl font-heading font-bold mb-3">
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
           Що таке RWords?
         </h2>
-        <p className="text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">
+        <p className=" text-sm sm:text-base lg:text-lg leading-relaxed">
           <strong>RWords</strong> — мобільний застосунок для Android для вивчення іноземних слів та виразів. Ви оцінюєте
           знання, формуєте списки та слухаєте слова у циклічному режимі.
         </p>
         <Link
           href="/about_rwords"
-          className="italic font-semibold text-blue-900 hover:underline text-sm sm:text-base lg:text-lg"
+          className="italic font-semibold text-linkText hover:underline text-sm sm:text-base lg:text-lg"
         >
           Більше про RWords.
         </Link>
