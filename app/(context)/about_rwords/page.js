@@ -30,7 +30,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Секція кнопок */}
-      <section className="bg-pBg1 text-base sm:text-lg lg:text-xl mb-6 text-center py-10 px-6 bg-blue-50 rounded">
+      <section className="bg-pBg1 text-base sm:text-lg lg:text-xl mb-6 text-center py-10 px-6 rounded">
         {user ? (
           <Link
             href="/download"
