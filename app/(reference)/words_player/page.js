@@ -25,6 +25,12 @@ export default function WordsPage() {
   const [voiceTranslation1, setVoiceTranslation1] = useState(null)
   const [voiceTranslation2, setVoiceTranslation2] = useState(null)
 
+  const cOutputBg = "bg-gray-100"
+  const cOutputBorder = "border-gray-400"
+  const cPageOn = "text-black"
+  const cKnownText = "text-green-600"
+  const cLoadText = "text-gray-500"
+
   useEffect(() => {
     loadWords()
     return () => {
@@ -178,16 +184,89 @@ export default function WordsPage() {
     { command: "next", label: "Далі", visible: isStarted },
   ]
 
-  return (
+//   return (
+//     <>
+//       <Script src="https://code.responsivevoice.org/responsivevoice.js?key=" strategy="afterInteractive" />
+
+//       <div className="flex flex-col items-center p-4">
+//         <div className="flex flex-col sm:flex-row w-full max-w-2xl bg-gray-100 border border-gray-400 rounded-lg p-4 mb-4">
+//           {isStarted && words.length > 0 ? (
+//             <>
+//               {showImg && (
+//                 <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
+//                   <img
+//                     src={
+//                       words[wordIndex]?.img?.startsWith("http")
+//                         ? words[wordIndex].img
+//                         : `/images/words/${words[wordIndex]?.img || "WordOnClauds.jpg"}`
+//                     }
+//                     alt={words[wordIndex]?.word || "Word image"}
+//                     className="max-h-48 object-contain"
+//                     onError={(e) => (e.currentTarget.src = "/images/words/WordOnClauds.jpg")}
+//                   />
+//                 </div>
+//               )}
+
+//               <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
+//                 <p
+//                   className={`text-2xl font-semibold ${words[wordIndex]?.know === 1 ? "text-green-600" : "text-black"}`}
+//                 >
+//                   {words[wordIndex]?.word}
+//                 </p>
+//               </div>
+
+//               <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
+//                 {showTranslation ? (
+//                   <p className="text-xl">{words[wordIndex]?.translation}</p>
+//                 ) : (
+//                   <p className="text-xl">?</p>
+//                 )}
+//               </div>
+//             </>
+//           ) : (
+//             <div className="flex flex-col items-center justify-center w-full">
+//               <p className="text-gray-500">🎯 Завантажено слів: {words.length}</p>
+//               <p className="text-gray-500 mt-2">{`Натисніть "Почати"`}</p>
+//             </div>
+//           )}
+//         </div>
+
+//         {message && <p className="text-red-500 mb-2">{message}</p>}
+
+//         <div className="flex flex-wrap gap-2 justify-center">
+//           {buttonList
+//             .filter((btn) => btn.visible)
+//             .map((btn) => (
+//               <button
+//                 key={btn.command}
+//                 onClick={() => handleCommand(btn.command)}
+//                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+//               >
+//                 {btn.label}
+//               </button>
+//             ))}
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+return (
     <>
-      <Script src="https://code.responsivevoice.org/responsivevoice.js?key=" strategy="afterInteractive" />
+      <Script
+        src="https://code.responsivevoice.org/responsivevoice.js?key="
+        strategy="afterInteractive"
+        onLoad={() => console.log("ResponsiveVoice завантажено")}
+      />
 
       <div className="flex flex-col items-center p-4">
-        <div className="flex flex-col sm:flex-row w-full max-w-2xl bg-gray-100 border border-gray-400 rounded-lg p-4 mb-4">
-          {isStarted && words.length > 0 ? (
+        {/* Контейнер слів */}
+        <div
+          className={`flex flex-col sm:flex-row w-full max-w-2xl ${cOutputBg} border ${cOutputBorder} rounded-lg p-4 mb-4`}
+        >
+          {isStarted ? (
             <>
               {showImg && (
-                <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
+                <div className={`flex-1 flex items-center justify-center border ${cOutputBorder} ${cOutputBg} p-2`}>
                   <img
                     src={
                       words[wordIndex]?.img?.startsWith("http")
@@ -201,17 +280,15 @@ export default function WordsPage() {
                 </div>
               )}
 
-              <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
-                <p
-                  className={`text-2xl font-semibold ${words[wordIndex]?.know === 1 ? "text-green-600" : "text-black"}`}
-                >
-                  {words[wordIndex]?.word}
+              <div className={`flex-1 flex items-center justify-center border ${cOutputBorder} ${cOutputBg} p-2`}>
+                <p className={`text-2xl font-semibold ${words[wordIndex].know === 1 ? cKnownText : cPageOn}`}>
+                  {words[wordIndex].word}
                 </p>
               </div>
 
-              <div className="flex-1 flex items-center justify-center border border-gray-400 p-2">
+              <div className={`flex-1 flex items-center justify-center border ${cOutputBorder} ${cOutputBg} p-2`}>
                 {showTranslation ? (
-                  <p className="text-xl">{words[wordIndex]?.translation}</p>
+                  <p className="text-xl">{words[wordIndex].translation}</p>
                 ) : (
                   <p className="text-xl">?</p>
                 )}
@@ -219,8 +296,10 @@ export default function WordsPage() {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center w-full">
-              <p className="text-gray-500">🎯 Завантажено слів: {words.length}</p>
-              <p className="text-gray-500 mt-2">{`Натисніть "Почати"`}</p>
+              <p className={`${cLoadText}`}>🎯 Вибрано слів: {words.length}</p>
+              <p className={`${cLoadText}`}>🎯 Вибрані теми: Усі</p>
+              <p className={`${cLoadText}`}>🎯 Вибрані знання: Всі</p>
+              <p className="text-lg mt-2">{`Натисніть "Почати"`}</p>
             </div>
           )}
         </div>
