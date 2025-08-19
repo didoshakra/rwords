@@ -225,12 +225,13 @@ export default function HowItWorks() {
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_list.jpg"
+              //   src="/rwords_screens/words_list.jpg"
               alt="Words List Move"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
             />
             <div className="text-sm sm:text-base lg:text-lg sm:order-1">
               <ul className="list-disc pl-10">
-                <li>{`✅ Відмітити слово а потім натиснути кнопку "Перемістити" і вже стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
+                <li>{` Щоб перемістити рядок потріьно: Відмітити слово ✅. а потім натиснути кнопку "Перемістити", яка появиться при відмітці тільки одного рядка-> внизу воявиться віконце для переміщення рядка. І вже тоді стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
               </ul>
             </div>
           </div>
