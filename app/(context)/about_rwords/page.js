@@ -30,18 +30,18 @@ export default function HowItWorks() {
       </section>
 
       {/* Секція кнопок */}
-      <section className="text-base sm:text-lg lg:text-xl mb-6 text-center py-10 px-6 bg-blue-50 rounded">
+      <section className="bg-pBg1 text-base sm:text-lg lg:text-xl mb-6 text-center py-10 px-6 bg-blue-50 rounded">
         {user ? (
           <Link
             href="/download"
-            className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition text-base md:text-lg"
+            className="flex items-center justify-center gap-2 bg-green-600text-pText dark:text-pTextD` px-6 py-3 rounded hover:bg-green-700 transition "
           >
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
             До завантаження застосунку ⬇️
           </Link>
         ) : (
           <>
-            <p className="mb-6 text-gray-700 text-base md:text-lg">
+            <p className="mb-6  text-pText  dark:text-pTextD">
               Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
               коментувати записи.
             </p>
@@ -149,7 +149,9 @@ export default function HowItWorks() {
 
         {/* Налаштування відтворення */}
         <div className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">⚙️ Налаштування прослуховування</h3>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            ⚙️ Налаштування прослуховування
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_settings.jpg"
@@ -171,7 +173,9 @@ export default function HowItWorks() {
 
         {/* Голосові команди */}
         <div className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🎙️ Налаштування голосових команд</h3>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            🎙️ Налаштування голосових команд
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/voices_commands.jpg"
@@ -190,7 +194,9 @@ export default function HowItWorks() {
 
         {/* Список слів-кнопки */}
         <div className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">📋 Список слів-кнопки</h3>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            📋 Список слів-кнопки
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_list_buttons.jpg"
@@ -213,7 +219,9 @@ export default function HowItWorks() {
 
         {/* Список слів-переміщення */}
         <div className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">📋🔀 Список слів-переміщення</h3>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            📋🔀 Список слів-переміщення
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/words_list.jpg"
@@ -230,7 +238,9 @@ export default function HowItWorks() {
 
         {/* Колірні схеми */}
         <div className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🎨 Налаштування колірних схем</h3>
+          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
+            🎨 Налаштування колірних схем
+          </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
               src="/rwords_screens/сolors_settings.jpg"
