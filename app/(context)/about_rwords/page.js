@@ -228,9 +228,9 @@ export default function HowItWorks() {
               alt="Words List Move"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
             />
-            <div className="text-base sm:text-lg lg:text-xl sm:order-1">
+            <div className="text-sm sm:text-lg lg:text-xl sm:order-1">
               <ul className="list-disc pl-10">
-                <li>{`✅ Відмітити слово а потім натиснути кнопку "Перемістити" і вже стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершкнню переміщення вийти назад натиснувшо кнопку "Готово"`}</li>
+                <li>{`✅ Відмітити слово а потім натиснути кнопку "Перемістити" і вже стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
               </ul>
             </div>
           </div>
