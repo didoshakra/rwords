@@ -23,29 +23,6 @@
 
 @layer base {
   html {
-    /* Slate 80-900*/
-    /* --color-pCol: #ffffff;
-    --color-pCol0: #f8fafc;
-    --color-pCol1: #f1f5f9;
-    --color-pCol2: #e2e8f0;
-    --color-pCol3: #cbd5e1;
-    --color-pCol4: #94a3b8;
-    --color-pCol5: #64748b;
-    --color-pCol6: #475569;
-    --color-pCol7: #334155;
-    --color-pCol8: #1e293b;
-    --color-pCol9: #0f172a; */
-    /* Sky 80-900*/
-    /* --color-pCol0: #f0f9ff;
-    --color-pCol1: #e0f2fe;
-    --color-pCol2: #bae6fd;
-    --color-pCol3: #7dd3fc;
-    --color-pCol4: #38bdf8;
-    --color-pCol5: #0ea5e9;
-    --color-pCol6: #0284c7;
-    --color-pCol7: #0369a1;
-    --color-pCol8: #075985;
-    --color-pCol9: #0c4a6e; */
     /* Emerald 80-900*/
   --color-pCol0:#ecfdf5;
   --color-pCol1: #d1fae5;
@@ -59,7 +36,7 @@
   --color-pCol9: #064e3b;
   --color-pCol10: #c026d3; /* fuchsia-600 */
   --color-pCol11: #e11d48; /* rose-600 */
-  --color-pCol12: #ecfdf5; /* green-50 — легкий споріднений фон */
+  --color-pCol12: #ccfbf1; /* teal-100 — легкий споріднений фон */
   }
 
   @import "@/styles/themes/tIndigo.css";
