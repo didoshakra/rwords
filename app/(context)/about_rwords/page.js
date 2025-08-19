@@ -102,7 +102,7 @@ export default function HowItWorks() {
           </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img src="/rwords_screens/home.jpg" alt="Home" className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />
-            <div className="text-base sm:text-lg lg:text-xl">
+            <div className="text-sm sm:text-base lg:text-lg">
               <h4 className="font-semibold mb-1">🔝 Верхня панель</h4>
               <ul className="list-disc pl-10 mb-4">
                 <li>🌙 Перемикач теми</li>
@@ -122,7 +122,7 @@ export default function HowItWorks() {
         <div className="mt-8">
           <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">🗣️ Слова</h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
-            <div className="text-base sm:text-lg lg:text-xl">
+            <div className="text-sm sm:text-base lg:text-lg">
               <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
               <ul className="list-disc pl-10 mb-4">
                 <li>🔙 Вихід на попередній екран</li>
@@ -158,7 +158,7 @@ export default function HowItWorks() {
               alt="Settings"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
             />
-            <div className="text-base sm:text-lg lg:text-xl">
+            <div className="text-sm sm:text-base lg:text-lg">
               <ul className="list-disc pl-10 mb-4">
                 <li>⏱️ Затримка голосу для правильного відображення команд</li>
                 <li>🔊 Вираз для озвучки кінця списку</li>
@@ -182,7 +182,7 @@ export default function HowItWorks() {
               alt="Voice Commands"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
             />
-            <div className="text-base sm:text-lg lg:text-xl sm:order-1">
+            <div className="text-sm sm:text-base lg:text-lg sm:order-1">
               <ul className="list-disc pl-10 mb-4">
                 <li>🗣️ Додавання/видалення голосових команд для кнопок</li>
                 <li>🗣️ Можна додавати команди голосом</li>
@@ -203,7 +203,7 @@ export default function HowItWorks() {
               alt="Words List Buttons"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
             />
-            <div className="text-base sm:text-lg lg:text-xl">
+            <div className="text-sm sm:text-base lg:text-lg">
               <ul className="list-disc pl-10 mb-4">
                 <li>1-й рядок — група тем</li>
                 <li>2-й рядок — тема</li>
@@ -228,7 +228,7 @@ export default function HowItWorks() {
               alt="Words List Move"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
             />
-            <div className="text-sm sm:text-lg lg:text-xl sm:order-1">
+            <div className="text-sm sm:text-base lg:text-lg sm:order-1">
               <ul className="list-disc pl-10">
                 <li>{`✅ Відмітити слово а потім натиснути кнопку "Перемістити" і вже стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
               </ul>
@@ -247,7 +247,7 @@ export default function HowItWorks() {
               alt="Colors Settings"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
             />
-            <div className="text-base sm:text-lg lg:text-xl">
+            <div className="text-sm sm:text-base lg:text-lg">
               <ul className="list-disc pl-10">
                 <li>🌈 Вибір колірної схеми</li>
               </ul>
