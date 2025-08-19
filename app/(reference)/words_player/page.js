@@ -220,7 +220,7 @@ export default function WordsPage() {
           ) : (
             <div className="flex flex-col items-center justify-center w-full">
               <p className="text-gray-500">🎯 Завантажено слів: {words.length}</p>
-              <p className="text-gray-500 mt-2">Натисніть "Почати"</p>
+              <p className="text-gray-500 mt-2">{`Натисніть "Почати"`}</p>
             </div>
           )}
         </div>
