@@ -116,7 +116,7 @@ export default function WordsPage() {
               <p className={`${cLoadText}`}>🎯 Вибрано слів: {wordData.length}</p>
               <p className={`${cLoadText}`}>🎯 Вибрані теми: Усі</p>
               <p className={`${cLoadText}`}>🎯 Вибрані знання: Всі</p>
-              <p className="text-lg mt-2">Натисніть "Почати"</p>
+              <p className="text-lg mt-2">{`Натисніть "Почати"`}</p>
             </div>
           )}
         </div>
