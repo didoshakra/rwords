@@ -1,4 +1,3 @@
-// app/api/auth/[...nextauth]/route.js
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
@@ -7,19 +6,12 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcryptjs from "bcryptjs"
 import { sql } from "@/lib/dbConfig"
 
-// --------------------
-// Налаштування авторизації
-// --------------------
 export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "openid email profile",
-        },
-      },
+      authorization: { params: { scope: "openid email profile" } },
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -42,34 +34,11 @@ export const authOptions = {
         if (!user) throw new Error("No user")
         const valid = await bcryptjs.compare(password, user.password_hash)
         if (!valid) throw new Error("Invalid password")
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        }
+        return { id: user.id, name: user.name, email: user.email, role: user.role }
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (!user.email) return false
-
-      try {
-        const [existingUser] = await sql`SELECT * FROM users WHERE email = ${user.email}`
-        if (!existingUser) {
-          await sql`
-            INSERT INTO users (email, name, avatar, email_verified, provider)
-            VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
-          `
-        }
-        return true
-      } catch (error) {
-        console.error("DB error in signIn:", error)
-        return false
-      }
-    },
     async session({ session }) {
       try {
         const [dbUser] = await sql`SELECT id, role FROM users WHERE email = ${session.user.email}`
@@ -77,19 +46,14 @@ export const authOptions = {
           session.user.id = dbUser.id
           session.user.role = dbUser.role
         }
-      } catch (error) {
-        console.error("Error in session callback:", error)
+      } catch (err) {
+        console.error("Error enriching session:", err)
       }
       return session
     },
   },
-  pages: {
-    signIn: "/auth",
-  },
+  pages: { signIn: "/auth" },
 }
 
-// --------------------
-// NextAuth handler
-// --------------------
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
