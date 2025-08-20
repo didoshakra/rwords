@@ -75,7 +75,6 @@ export async function incrementWordDownloads(userId) {
 
 // ----------------------------
 // Отримання статистики (для адміна)
-// ----------------------------
 export async function getStats() {
   const siteStats = await sql`
     SELECT visits, app_downloads, word_downloads
@@ -96,6 +95,40 @@ export async function getStats() {
 
   return {
     site: siteStats[0] || { visits: 0, app_downloads: 0, word_downloads: 0 },
-    users: usersStats,
+    users: usersStats || [],
   }
 }
+// export async function getStats() {
+//   const siteStats = await sql`
+//     SELECT visits, app_downloads, word_downloads
+//     FROM site_stats
+//     WHERE id = 1
+//     LIMIT 1
+//   `
+
+//   return siteStats[0] || { visits: 0, app_downloads: 0, word_downloads: 0 }
+// }
+// ----------------------------
+// export async function getStats() {
+//   const siteStats = await sql`
+//     SELECT visits, app_downloads, word_downloads
+//     FROM site_stats
+//     WHERE id = 1
+//     LIMIT 1
+//   `
+
+//   const usersStats = await sql`
+//     SELECT u.id, u.email, u.name,
+//            COALESCE(us.visits,0) AS visits,
+//            COALESCE(us.app_downloads,0) AS app_downloads,
+//            COALESCE(us.word_downloads,0) AS word_downloads
+//     FROM users u
+//     LEFT JOIN user_stats us ON u.id = us.user_id
+//     ORDER BY u.id
+//   `
+
+//   return {
+//     site: siteStats[0] || { visits: 0, app_downloads: 0, word_downloads: 0 },
+//     users: usersStats,
+//   }
+// }
