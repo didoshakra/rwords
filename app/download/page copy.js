@@ -1,30 +1,26 @@
 // app/download/page.js
 "use client"
-
-import { incrementAppDownloads } from "@/app/actions/statsActions"
-import { useSession } from "next-auth/react"
+import { incrementAppDownloads} from "@/app/actions/statsActions"
 import Image from "next/image"
 
 export default function DownloadButton() {
-  const { data: session } = useSession()
-  const userId = session?.user?.id
-
   const handleClick = (e) => {
     e.preventDefault()
 
     // Спочатку запускаємо завантаження файлу
     window.location.href = "https://github.com/didoshakra/rwords/releases/download/v1.0.2/rwords.apk"
-
-    // Передаємо userId в server action
-    incrementAppDownloads(userId).catch((err) => {
-      console.error("Помилка при збільшенні статистики:", err)
+    incrementAppDownloads().catch(() => {
+      // Можна тут логувати помилку, але це необов'язково
     })
+
   }
 
   return (
     <main className="flex flex-col text-pText dark:text-pTextD max-w-3xl items-center mx-auto p-6 bg-bodyBg dark:bg-bodyBgD min-h-screen">
+      {/* <main style={{ display: "flex", flexDirec: "column", alignItems: "center", padding: "50px" }}> */}
       <h1 className="flex flex-col items-center text-lg sm:text-2xl lg:text-3xl font-bold mb-4 gap-2">
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={64} height={64} priority={true} />
+        {/* Завантаження RWords */}
       </h1>
 
       <a
@@ -44,7 +40,6 @@ export default function DownloadButton() {
       >
         ⬇️ Завантажити RWords.apk
       </a>
-
       <div className="mt-4 p-4 bg-pBg1 text-pText dark:text-pTextD bg-yellow-50 border-l-4 border-yellow-400 rounded text-sm sm:text-base text-gray-800 dark:text-gray-200">
         <p className="text-h1Text font-semibold">📥 Після завантаження APK:</p>
         <ol className="list-decimal list-inside mt-2 space-y-1">

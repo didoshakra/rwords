@@ -6,7 +6,7 @@ import { getStats } from "@/app/actions/statsActions" // імпортуємо ac
 
 export default function AdminStatsPanel() {
   const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) 
 
   useEffect(() => {
     async function loadStats() {

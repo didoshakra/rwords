@@ -7,7 +7,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcryptjs from "bcryptjs"
 import { sql } from "@/lib/dbConfig"
 
-export const authOptions = {
+const handler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -50,6 +50,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 
@@ -101,6 +102,6 @@ export const authOptions = {
   pages: {
     signIn: "/auth",
   },
-}
+})
 
 export { handler as GET, handler as POST }

@@ -23,7 +23,7 @@ export async function initTables() {
     `
 
   // users
- await sql`
+  await sql`
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
@@ -36,20 +36,28 @@ export async function initTables() {
     email_verified BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
-  );
-`
+  );`
 
- // 👇 Сід для створення адміна
- const adminEmail = "admin@example.com"
- const adminPass = "admin123"
- const hash = await bcrypt.hash(adminPass, 10)
- await sql`
+  // user_stats
+  await sql`
+  CREATE TABLE IF NOT EXISTS user_stats (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  visits INTEGER DEFAULT 0,
+  app_downloads INTEGER DEFAULT 0,
+  word_downloads INTEGER DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT NOW()
+);`
+
+  // 👇 Сід для створення адміна
+  const adminEmail = "admin@example.com"
+  const adminPass = "admin123"
+  const hash = await bcrypt.hash(adminPass, 10)
+  await sql`
   INSERT INTO users (email, password_hash, name, role, provider, is_active, email_verified)
   VALUES (${adminEmail}, ${hash}, 'Admin', 'admin', 'credentials', true, true)
-  ON CONFLICT (email) DO NOTHING;
-`
+  ON CONFLICT (email) DO NOTHING;`
 
- console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
+  console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
 
   // sections
   await sql`
