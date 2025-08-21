@@ -32,23 +32,23 @@ function Modal({ open, onClose, children }) {
 
 //Для TableView
 const columns = [
-//   {
-//     label: "№п",
-//     accessor: "pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//     markIfOwner: true, // 🚀 нове поле
-//   },
-//   {
-//     label: "Зн",
-//     accessor: "know",
-//     type: "boolean",
-//     type: "know",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//     styleCellText: { color: "red" },
-//   },
+  //   {
+  //     label: "№п",
+  //     accessor: "pn",
+  //     type: "integer",
+  //     width: 50,
+  //     styleCell: { alignItems: "center" },
+  //     markIfOwner: true, // 🚀 нове поле
+  //   },
+  //   {
+  //     label: "Зн",
+  //     accessor: "know",
+  //     type: "boolean",
+  //     type: "know",
+  //     width: 50,
+  //     styleCell: { alignItems: "center" },
+  //     styleCellText: { color: "red" },
+  //   },
   {
     label: "Слова",
     accessor: "word",
@@ -58,40 +58,40 @@ const columns = [
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
 
-//   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
-//   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
+  //   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
+  //   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
 
-//   { label: "Файл img", accessor: "img", type: "text", width: 150 },
-//   {
-//     label: "№s",
-//     accessor: "section_pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//   },
-//   {
-//     label: "№t",
-//     accessor: "topic_pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//   },
+  //   { label: "Файл img", accessor: "img", type: "text", width: 150 },
+  //   {
+  //     label: "№s",
+  //     accessor: "section_pn",
+  //     type: "integer",
+  //     width: 50,
+  //     styleCell: { alignItems: "center" },
+  //   },
+  //   {
+  //     label: "№t",
+  //     accessor: "topic_pn",
+  //     type: "integer",
+  //     width: 50,
+  //     styleCell: { alignItems: "center" },
+  //   },
 
-//   {
-//     label: "id",
-//     accessor: "id",
-//     type: "integer",
-//     width: 60,
-//     styleCell: { alignItems: "center" },
-//     //   styleCellText: {color: 'green'},
-//   },
-//   {
-//     label: "Tid",
-//     accessor: "topic_id",
-//     type: "integer",
-//     width: 40,
-//     styleCell: { alignItems: "center" },
-//   },
+  //   {
+  //     label: "id",
+  //     accessor: "id",
+  //     type: "integer",
+  //     width: 60,
+  //     styleCell: { alignItems: "center" },
+  //     //   styleCellText: {color: 'green'},
+  //   },
+  //   {
+  //     label: "Tid",
+  //     accessor: "topic_id",
+  //     type: "integer",
+  //     width: 40,
+  //     styleCell: { alignItems: "center" },
+  //   },
 ]
 
 export default function WordsPage() {
@@ -365,6 +365,46 @@ export default function WordsPage() {
   //   -------------------------------------------
 
   // Кнопка завантаження тем
+  //   const handleThemeDownload = async (selectedWords) => {
+  //     if (!selectedWords || !selectedWords.length) {
+  //       setMessage("Нічого не вибрано (потрібно відмітити слова).")
+  //       return
+  //     }
+
+  //     const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
+  //     if (!topicIds.length) {
+  //       setMessage("Нічого не вибрано для завантаження.")
+  //       return
+  //     }
+
+  //     setMessage("Завантаження...")
+
+  //     try {
+  //       const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
+  //       if (!res.ok) throw new Error(await res.text())
+
+  //       const payload = await res.json()
+
+  //       // Фільтруємо слова по відмічених id
+  //       const selectedWordIds = new Set(selectedWords.map((w) => w.id))
+  //       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
+
+  //       // Відправка у додаток лише якщо ми дійсно в RN WebView
+  //     //   if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
+  //       if (isFromApp) {
+  //         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+  //         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+  //         return
+  //       }
+
+  //       // Якщо не у додатку — пропускаємо JSON (не робимо імпорт у браузері)
+  //       setMessage("Завантаження JSON можливе лише у додатку.")
+  //     } catch (err) {
+  //       console.error(err)
+  //       setMessage("Помилка експорту: " + (err?.message || "невідома"))
+  //     }
+  //   }
+
 //   const handleThemeDownload = async (selectedWords) => {
 //     if (!selectedWords || !selectedWords.length) {
 //       setMessage("Нічого не вибрано (потрібно відмітити слова).")
@@ -390,9 +430,18 @@ export default function WordsPage() {
 //       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
 //       // Відправка у додаток лише якщо ми дійсно в RN WebView
-//     //   if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
-//       if (isFromApp) {
+
+//       // if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
+//       if (isFromApp && window?.ReactNativeWebView?.postMessage) {
 //         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+
+//         // ✅ Оновлюємо статистику завантажень слів
+//         try {
+//           await incrementWordDownloads(session?.user?.id)
+//         } catch (err) {
+//           console.error("Не вдалося оновити статистику:", err)
+//         }
+
 //         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
 //         return
 //       }
@@ -404,60 +453,56 @@ export default function WordsPage() {
 //       setMessage("Помилка експорту: " + (err?.message || "невідома"))
 //     }
 //   }
+  const handleThemeDownload = async (selectedWords) => {
+    if (!selectedWords || !selectedWords.length) {
+      setMessage("Нічого не вибрано (потрібно відмітити слова).")
+      return
+    }
 
+    const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
+    if (!topicIds.length) {
+      setMessage("Нічого не вибрано для завантаження.")
+      return
+    }
 
-const handleThemeDownload = async (selectedWords) => {
-  if (!selectedWords || !selectedWords.length) {
-    setMessage("Нічого не вибрано (потрібно відмітити слова).")
-    return
-  }
+    setMessage("Завантаження...")
 
-  const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
-  if (!topicIds.length) {
-    setMessage("Нічого не вибрано для завантаження.")
-    return
-  }
+    try {
+      const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
+      if (!res.ok) throw new Error(await res.text())
 
-  setMessage("Завантаження...")
+      const payload = await res.json()
 
-  try {
-    const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
-    if (!res.ok) throw new Error(await res.text())
+      // Фільтруємо слова по відмічених id
+      const selectedWordIds = new Set(selectedWords.map((w) => w.id))
+      payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
-    const payload = await res.json()
-
-    // Фільтруємо слова по відмічених id
-    const selectedWordIds = new Set(selectedWords.map((w) => w.id))
-    payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
-
-    // Відправка у додаток лише якщо ми дійсно в RN WebView
-
-    // if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
-    if (isFromApp) {
-      if (typeof window !== "undefined" && window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
-      } else {
-        console.warn("⚠ isFromApp=true, але window.ReactNativeWebView немає")
-      }
-
-      // ✅ Оновлюємо статистику завантажень слів
+      // ✅ Оновлюємо статистику завжди
       try {
         await incrementWordDownloads(session?.user?.id)
       } catch (err) {
         console.error("Не вдалося оновити статистику:", err)
       }
 
-      setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
-      return
-    }
+      // Відправка у додаток лише якщо ми дійсно в RN WebView
+      if (isFromApp) {
+        if (window?.ReactNativeWebView?.postMessage) {
+          window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+        } else {
+          console.warn("⚠ isFromApp=true, але window.ReactNativeWebView відсутній")
+        }
 
-    // Якщо не у додатку — пропускаємо JSON (не робимо імпорт у браузері)
-    setMessage("Завантаження JSON можливе лише у додатку.")
-  } catch (err) {
-    console.error(err)
-    setMessage("Помилка експорту: " + (err?.message || "невідома"))
+        setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+        return
+      }
+
+      // Якщо не у додатку — пропускаємо JSON (не робимо імпорт у браузері)
+      setMessage("Завантаження JSON можливе лише у додатку.")
+    } catch (err) {
+      console.error(err)
+      setMessage("Помилка експорту: " + (err?.message || "невідома"))
+    }
   }
-}
 
 
   //функція для видалення вибраних слів
