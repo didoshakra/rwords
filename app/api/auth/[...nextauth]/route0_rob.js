@@ -1,4 +1,6 @@
 // app/api/auth/[...nextauth]/route.js
+//початковий робочий варіант
+
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
@@ -50,7 +52,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    
+
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 

@@ -51,9 +51,8 @@ const HeaderTape = ({ stats }) => {
       {/* права сторона */}
       <div className="flex justify-between items-center text-center space-x-1 md:justify-end ">
         {/* Статистика */}
-        <div className="flex items-center space-x-2 text-xs">
+        {/* <div className="flex items-center space-x-2 text-xs">
           <span className="flex items-center space-x-1">
-            {/* {isFromApp ? <FaEye />:<FaMobileAlt />} <span>{stats.visits}</span> */}
             {isFromApp ? <FaMobileAlt /> : <FaEye />} <span>{stats.visits}</span>
           </span>
           <span className="flex items-center space-x-1">
@@ -61,6 +60,18 @@ const HeaderTape = ({ stats }) => {
           </span>
           <span className="flex items-center space-x-1">
             <FaFileAlt /> <span>{stats.word_downloads}</span>
+          </span>
+        </div> */}
+        {/* Статистика */}
+        <div className="flex items-center space-x-2 text-xs">
+          <span className="flex items-center space-x-1">
+            {isFromApp ? <FaMobileAlt /> : <FaEye />} <span>{stats.site.visits}</span>
+          </span>
+          <span className="flex items-center space-x-1">
+            <FaDownload /> <span>{stats.site.app_downloads}</span>
+          </span>
+          <span className="flex items-center space-x-1">
+            <FaFileAlt /> <span>{stats.site.word_downloads}</span>
           </span>
         </div>
         {/* Соціальні мережі */}
