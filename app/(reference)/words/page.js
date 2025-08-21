@@ -364,8 +364,9 @@ export default function WordsPage() {
 
   //   -------------------------------------------
 
-  // Кнопка завантаження темg
+  // Кнопка завантаження тем
   const handleThemeDownload = async (selectedWords) => {
+    alert("window.ReactNativeWebView = " + (window.ReactNativeWebView ? "YES" : "NO"))//Для перевірки
     if (!selectedWords || !selectedWords.length) {
       setMessage("Нічого не вибрано (потрібно відмітити слова).")
       return
