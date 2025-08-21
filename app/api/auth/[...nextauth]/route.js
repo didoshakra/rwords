@@ -51,7 +51,6 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 
