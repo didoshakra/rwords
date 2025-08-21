@@ -7,7 +7,6 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcryptjs from "bcryptjs"
 import { sql } from "@/lib/dbConfig"
 
-// Основні налаштування NextAuth
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -36,6 +35,8 @@ export const authOptions = {
         if (!user) throw new Error("No user")
         const valid = await bcryptjs.compare(password, user.password_hash)
         if (!valid) throw new Error("Invalid password")
+
+        // повертаємо всі потрібні поля, включаючи role
         return {
           id: user.id,
           name: user.name,
@@ -46,41 +47,33 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // Викликається після логіну
     async signIn({ user, account, profile }) {
-      console.log("signIn callback:", { user, account, profile })
-
       if (!user.email) return false
-
       try {
         const [existingUser] = await sql`SELECT * FROM users WHERE email = ${user.email}`
         if (!existingUser) {
-          // Створюємо нового користувача
           await sql`
             INSERT INTO users (email, name, avatar, email_verified, provider)
             VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
           `
-          console.log(`✅ New user created: ${user.email}`)
-        } else {
-          console.log(`✅ Existing user: ${user.email}`)
         }
         return true
-      } catch (error) {
-        console.error("❌ DB error in signIn:", error)
+      } catch (err) {
+        console.error("DB error in signIn:", err)
         return false
       }
     },
-
-    // Викликається при кожному отриманні сесії
-    async session({ session, token }) {
+    async session({ session }) {
       try {
-        const [dbUser] = await sql`SELECT id, role FROM users WHERE email = ${session.user.email}`
+        const [dbUser] = await sql`
+          SELECT id, role FROM users WHERE email = ${session.user.email}
+        `
         if (dbUser) {
-          session.user.id = dbUser.id // додаємо id
-          session.user.role = dbUser.role // додаємо роль
+          session.user.id = dbUser.id
+          session.user.role = dbUser.role
         }
-      } catch (error) {
-        console.error("Error in session callback:", error)
+      } catch (err) {
+        console.error("Error enriching session:", err)
       }
       return session
     },
