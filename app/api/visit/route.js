@@ -1,4 +1,4 @@
-// app/api/visit/route.js
+// app/api/с/route.js
 // user
 import { incrementVisits } from "@/app/actions/statsActions"
 import { getServerSession } from "next-auth/next"

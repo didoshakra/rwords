@@ -1,5 +1,4 @@
 // app/api/auth/[...nextauth]/route.js
-//old
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
@@ -8,16 +7,13 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcryptjs from "bcryptjs"
 import { sql } from "@/lib/dbConfig"
 
-const handler = NextAuth({
+// Основні налаштування NextAuth
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "openid email profile",
-        },
-      },
+      authorization: { params: { scope: "openid email profile" } },
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -40,7 +36,6 @@ const handler = NextAuth({
         if (!user) throw new Error("No user")
         const valid = await bcryptjs.compare(password, user.password_hash)
         if (!valid) throw new Error("Invalid password")
-
         return {
           id: user.id,
           name: user.name,
@@ -51,57 +46,49 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    // Викликається після логіну
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 
-      if (!user.email) {
-        console.log("signIn failed: no email")
-        return false
-      }
+      if (!user.email) return false
 
       try {
-        const [existingUser] = await sql`
-      SELECT * FROM users WHERE email = ${user.email}
-    `
-
+        const [existingUser] = await sql`SELECT * FROM users WHERE email = ${user.email}`
         if (!existingUser) {
+          // Створюємо нового користувача
           await sql`
-        INSERT INTO users (email, name, avatar, email_verified, provider)
-        VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
-      `
+            INSERT INTO users (email, name, avatar, email_verified, provider)
+            VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
+          `
           console.log(`✅ New user created: ${user.email}`)
         } else {
           console.log(`✅ Existing user: ${user.email}`)
         }
-
         return true
       } catch (error) {
         console.error("❌ DB error in signIn:", error)
         return false
       }
     },
-    async session({ session, token }) {
-      console.log("session callback:", { session, token })
 
+    // Викликається при кожному отриманні сесії
+    async session({ session, token }) {
       try {
-        const [dbUser] = await sql`
-        SELECT id, role FROM users WHERE email = ${session.user.email}
-      `
+        const [dbUser] = await sql`SELECT id, role FROM users WHERE email = ${session.user.email}`
         if (dbUser) {
-          session.user.id = dbUser.id
-          session.user.role = dbUser.role
-          console.log(`Session enriched for user ${session.user.email}`)
+          session.user.id = dbUser.id // додаємо id
+          session.user.role = dbUser.role // додаємо роль
         }
       } catch (error) {
         console.error("Error in session callback:", error)
       }
-
       return session
     },
   },
   pages: {
     signIn: "/auth",
   },
-})
+}
 
+const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
