@@ -1,4 +1,5 @@
 // auth\[...nextayth]\route
+// Працює статистика але не грузить слова в додаток(не визначає що це вхід з додатку)
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
