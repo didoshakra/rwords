@@ -50,7 +50,38 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    
+    //  Якщо email вже є в базі — просто пускаємо.
+    // 🔹 Якщо нема — створюємо нового користувача.
+    // async signIn({ user, account, profile }) {
+    //   console.log("signIn callback:", { user, account, profile })
+
+    //   if (!user.email) {
+    //     console.log("signIn failed: no email")
+    //     return false
+    //   }
+
+    //   try {
+    //     const [existingUser] = await sql`
+    //   SELECT * FROM users WHERE email = ${user.email}
+    // `
+
+    //     if (!existingUser) {
+    //       // Створюємо нового користувача
+    //       await sql`
+    //     INSERT INTO users (email, name, avatar, email_verified, provider)
+    //     VALUES (${user.email}, ${user.name}, ${user.image}, true, ${account.provider})
+    //   `
+    //       console.log(`New user created: ${user.email}`)
+    //     } else {
+    //       console.log(`User exists: ${user.email} (provider doesn't matter)`)
+    //     }
+
+    //     return true
+    //   } catch (error) {
+    //     console.error("Error in signIn callback:", error)
+    //     return false
+    //   }
+    // }
     async signIn({ user, account, profile }) {
       console.log("signIn callback:", { user, account, profile })
 

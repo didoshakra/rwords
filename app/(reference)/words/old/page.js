@@ -1,4 +1,4 @@
-// words/page.js
+    // words/page.js
 //
 "use client"
 
@@ -10,12 +10,11 @@ import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
-import { incrementWordDownloads } from "@/app/actions/statsActions"
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex ite             ms-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl p-6 min-w-[320px] relative shadow-xl">
         <button
           onClick={onClose}
@@ -32,66 +31,66 @@ function Modal({ open, onClose, children }) {
 
 //Для TableView
 const columns = [
-  //   {
-  //     label: "№п",
-  //     accessor: "pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //     markIfOwner: true, // 🚀 нове поле
-  //   },
-  //   {
-  //     label: "Зн",
-  //     accessor: "know",
-  //     type: "boolean",
-  //     type: "know",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //     styleCellText: { color: "red" },
-  //   },
   {
-    label: "Слова",
+    label: "№п",
+    accessor: "pn",
+    type: "integer",
+    width: 50,
+    styleCell: { alignItems: "center" },
+    markIfOwner: true, // 🚀 нове поле
+  },
+  {
+    label: "Зн",
+    accessor: "know",
+    type: "boolean",
+    type: "know",
+    width: 50,
+    styleCell: { alignItems: "center" },
+    styleCellText: { color: "red" },
+  },
+  {
+    label: "Слова / вирази",
     accessor: "word",
     type: "text",
     width: 250,
-    // styleCellText: { fontWeight: 600 },
+    styleCellText: { fontWeight: 600 },
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
 
-  //   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
-  //   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
+  { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
+  { label: "Секція", accessor: "section_name", type: "text", width: 250 },
 
-  //   { label: "Файл img", accessor: "img", type: "text", width: 150 },
-  //   {
-  //     label: "№s",
-  //     accessor: "section_pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //   },
-  //   {
-  //     label: "№t",
-  //     accessor: "topic_pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //   },
+  { label: "Файл img", accessor: "img", type: "text", width: 150 },
+  {
+    label: "№s",
+    accessor: "section_pn",
+    type: "integer",
+    width: 50,
+    styleCell: { alignItems: "center" },
+  },
+  {
+    label: "№t",
+    accessor: "topic_pn",
+    type: "integer",
+    width: 50,
+    styleCell: { alignItems: "center" },
+  },
 
-  //   {
-  //     label: "id",
-  //     accessor: "id",
-  //     type: "integer",
-  //     width: 60,
-  //     styleCell: { alignItems: "center" },
-  //     //   styleCellText: {color: 'green'},
-  //   },
-  //   {
-  //     label: "Tid",
-  //     accessor: "topic_id",
-  //     type: "integer",
-  //     width: 40,
-  //     styleCell: { alignItems: "center" },
-  //   },
+  {
+    label: "id",
+    accessor: "id",
+    type: "integer",
+    width: 60,
+    styleCell: { alignItems: "center" },
+    //   styleCellText: {color: 'green'},
+  },
+  {
+    label: "Tid",
+    accessor: "topic_id",
+    type: "integer",
+    width: 40,
+    styleCell: { alignItems: "center" },
+  },
 ]
 
 export default function WordsPage() {
@@ -390,8 +389,7 @@ export default function WordsPage() {
       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
       // Відправка у додаток лише якщо ми дійсно в RN WebView
-    //   if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
-      if (isFromApp) {
+      if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
         return
@@ -404,56 +402,6 @@ export default function WordsPage() {
       setMessage("Помилка експорту: " + (err?.message || "невідома"))
     }
   }
-
-//   const handleThemeDownload = async (selectedWords) => {
-//     if (!selectedWords || !selectedWords.length) {
-//       setMessage("Нічого не вибрано (потрібно відмітити слова).")
-//       return
-//     }
-
-//     const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
-//     if (!topicIds.length) {
-//       setMessage("Нічого не вибрано для завантаження.")
-//       return
-//     } 
-
-//     setMessage("Завантаження...")
-
-//     try {
-//       const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
-//       if (!res.ok) throw new Error(await res.text())
-
-//       const payload = await res.json()
-//       const selectedWordIds = new Set(selectedWords.map((w) => w.id))
-//       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
-
-//       // ✅ Завжди оновлюємо статистику
-//       try {
-//         await incrementWordDownloads(session?.user?.id)
-//       } catch (err) {
-//         console.error("Не вдалося оновити статистику:", err)
-//       }
-
-//       if (isFromApp) {
-//         const sendToApp = () => {
-//           if (window?.ReactNativeWebView?.postMessage) {
-//             window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
-//             setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
-//           } else {
-//             // якщо ще не готовий WebView — повторюємо через 200мс
-//             setTimeout(sendToApp, 200)
-//           }
-//         }
-//         sendToApp()
-//         return
-//       }
-
-//       setMessage("Завантаження JSON можливе лише у додатку.")
-//     } catch (err) {
-//       console.error(err)
-//       setMessage("Помилка експорту: " + (err?.message || "невідома"))
-//     }
-//   }
 
   //функція для видалення вибраних слів
   const deleteSelected = async (selectedWords) => {
