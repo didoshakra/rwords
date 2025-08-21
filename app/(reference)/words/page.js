@@ -364,7 +364,7 @@ export default function WordsPage() {
 
   //   -------------------------------------------
 
-  // Кнопка завантаження тем
+  // Кнопка завантаження темg
   const handleThemeDownload = async (selectedWords) => {
     if (!selectedWords || !selectedWords.length) {
       setMessage("Нічого не вибрано (потрібно відмітити слова).")
@@ -403,7 +403,7 @@ export default function WordsPage() {
       setMessage("Помилка експорту: " + (err?.message || "невідома"))
     }
   }
-  
+
   // const handleThemeDownload = async (selectedWords) => {
   //   if (!selectedWords || !selectedWords.length) {
   //     setMessage("Нічого не вибрано (потрібно відмітити слова).")
