@@ -366,7 +366,8 @@ export default function WordsPage() {
 
   // Кнопка завантаження тем
   const handleThemeDownload = async (selectedWords) => {
-    alert("window.ReactNativeWebView = " + (window.ReactNativeWebView ? "YES" : "NO"))//Для перевірки
+    // alert("window.ReactNativeWebView = " + (window.ReactNativeWebView ? "YES" : "NO"))//Для перевірки
+    //   alert("isFromApp=" + isFromApp + " window.ReactNativeWebView=" + !!window.ReactNativeWebView)
     if (!selectedWords || !selectedWords.length) {
       setMessage("Нічого не вибрано (потрібно відмітити слова).")
       return
@@ -391,9 +392,6 @@ export default function WordsPage() {
       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
       // Відправка у додаток лише якщо ми дійсно в RN WebView
-      alert("isFromApp=" + isFromApp + " window.ReactNativeWebView=" + !!window.ReactNativeWebView)
-    //   console.log("isFromApp =", isFromApp)
-    //   console.log("window.ReactNativeWebView =", window.ReactNativeWebView)
       if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
