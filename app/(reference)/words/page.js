@@ -394,6 +394,14 @@ export default function WordsPage() {
       // Відправка у додаток лише якщо ми дійсно в RN WebView
       if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+
+        // ✅ Оновлюємо статистику після успішної відправки
+        try {
+          await incrementWordDownloads(session?.user?.id)
+        } catch (err) {
+          console.error("Не вдалося оновити статистику:", err)
+        }
+
         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
         return
       }
