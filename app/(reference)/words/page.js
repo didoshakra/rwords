@@ -365,6 +365,45 @@ export default function WordsPage() {
   //   -------------------------------------------
 
   // Кнопка завантаження тем
+    // const handleThemeDownload = async (selectedWords) => {
+    //   if (!selectedWords || !selectedWords.length) {
+    //     setMessage("Нічого не вибрано (потрібно відмітити слова).")
+    //     return
+    //   }
+
+    //   const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
+    //   if (!topicIds.length) {
+    //     setMessage("Нічого не вибрано для завантаження.")
+    //     return
+    //   }
+
+    //   setMessage("Завантаження...")
+
+    //   try {
+    //     const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
+    //     if (!res.ok) throw new Error(await res.text())
+
+    //     const payload = await res.json()
+
+    //     // Фільтруємо слова по відмічених id
+    //     const selectedWordIds = new Set(selectedWords.map((w) => w.id))
+    //     payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
+
+    //     // Відправка у додаток лише якщо ми дійсно в RN WebView
+    //     if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
+    //   //   if (isFromApp) {
+    //       window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
+    //       setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+    //       return
+    //     }
+
+    //     // Якщо не у додатку — пропускаємо JSON (не робимо імпорт у браузері)
+    //     setMessage("Завантаження JSON можливе лише у додатку.")
+    //   } catch (err) {
+    //     console.error(err)
+    //     setMessage("Помилка експорту: " + (err?.message || "невідома"))
+    //   }
+    // }
     const handleThemeDownload = async (selectedWords) => {
       if (!selectedWords || !selectedWords.length) {
         setMessage("Нічого не вибрано (потрібно відмітити слова).")
@@ -384,26 +423,30 @@ export default function WordsPage() {
         if (!res.ok) throw new Error(await res.text())
 
         const payload = await res.json()
-
-        // Фільтруємо слова по відмічених id
         const selectedWordIds = new Set(selectedWords.map((w) => w.id))
         payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
-        // Відправка у додаток лише якщо ми дійсно в RN WebView
-        if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
-      //   if (isFromApp) {
-          window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
-          setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
+        // ✅ Завжди оновлюємо статистику
+        try {
+          await incrementWordDownloads(session?.user?.id)
+        } catch (err) {
+          console.error("Не вдалося оновити статистику:", err)
+        }
+
+        // ✅ Відправка у WebView з повтором
+        if (isFromApp) {
+          sendToApp(payload)
+          setMessage(`Відправка у додаток...`)
           return
         }
 
-        // Якщо не у додатку — пропускаємо JSON (не робимо імпорт у браузері)
         setMessage("Завантаження JSON можливе лише у додатку.")
       } catch (err) {
         console.error(err)
         setMessage("Помилка експорту: " + (err?.message || "невідома"))
       }
     }
+
 
     // const handleThemeDownload = async (selectedWords) => {
     //   if (!selectedWords || !selectedWords.length) {
@@ -454,6 +497,7 @@ export default function WordsPage() {
     //     setMessage("Помилка експорту: " + (err?.message || "невідома"))
     //   }
     // }
+
 
   //функція для видалення вибраних слів
   const deleteSelected = async (selectedWords) => {
