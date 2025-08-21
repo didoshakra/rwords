@@ -390,6 +390,8 @@ export default function WordsPage() {
       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
 
       // Відправка у додаток лише якщо ми дійсно в RN WebView
+      console.log("isFromApp =", isFromApp)
+      console.log("window.ReactNativeWebView =", window.ReactNativeWebView)
       if (isFromApp && typeof window !== "undefined" && window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
         setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
