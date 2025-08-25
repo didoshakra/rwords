@@ -38,7 +38,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       {/* 📱 Мобільна кнопка: вся зона клікабельна */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 py-2 text-base hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
+        className="flex items-center gap-2 py-2 text-sm sm:text-base hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
         title={user ? user.name || user.email : "Гість"}
       >
         <div
@@ -57,7 +57,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       {/* 🖥️ Десктопна кнопка: тільки аватарка */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
+        className="hidden md:flex text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
         title={user ? user.name || user.email : "Гість"}
         style={{
           color: "#fff",
@@ -84,13 +84,15 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
             </Link>
           ) : (
             <>
-              <div className="block px-4 py-2  border-b border-gray-200">{user.name || user.email}</div>
+              <div className="block px-4 py-2  border-b border-gray-200 text-sm sm:text-base">
+                {user.name || user.email}
+              </div>
               <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setOpen(false)}>
                 Профіль
               </Link>
               <button
                 onClick={() => {
-                //   logout()
+                  //   logout()
                   signOut()
                   setOpen(false)
                 }}
