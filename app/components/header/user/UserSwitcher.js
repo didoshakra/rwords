@@ -34,11 +34,11 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
     : user?.email?.[0]?.toUpperCase() || ""
 
   return (
-    <div className="relative flex items-center h-full" ref={menuRef} text-base sm:text-lg lg:text-xl>
+    <div className="relative flex items-center h-full" ref={menuRef}>
       {/* 📱 Мобільна кнопка: вся зона клікабельна */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 py-2  text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
+        className="flex items-center gap-2 py-2 text-base hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
         title={user ? user.name || user.email : "Гість"}
       >
         <div
@@ -70,7 +70,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
 
       {/* Випадаюче меню */}
       {open && (
-        <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-base text-gray-800">
+        <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-sm text-gray-800">
           {!user ? (
             <Link
               href="/auth"
@@ -90,7 +90,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
               </Link>
               <button
                 onClick={() => {
-                  //   logout()
+                //   logout()
                   signOut()
                   setOpen(false)
                 }}
