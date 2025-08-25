@@ -31,7 +31,7 @@ const LandingInfo = () => {
         </p>
 
         <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-h2Text">🎯 Навіщо цей сайт?</h2>
-        <ul className="list-disc pl-5 mb-5 space-y-1 text-sm sm:text-base lg:text-lg">
+        <ul className="list-disc pl-5 mb-5 space-y-1 text-base sm:text-lg lg:text-xl mb-5 leading-relaxed">
           <li>
             Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
           </li>
