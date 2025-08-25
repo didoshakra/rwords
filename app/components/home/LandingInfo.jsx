@@ -15,7 +15,7 @@ const LandingInfo = () => {
           👋 Вітаємо на RWords
         </h1>
 
-        <p className="text-sm sm:text-base lg:text-lg mb-5 leading-relaxed">
+        <p className="text-base sm:text-lg lg:text-xl mb-5 leading-relaxed">
           Сайт <strong>RWords</strong> — це спроба створити платформу для людей, які вивчають мови за допомогою
           мобільного застосунку{" "}
           <Link
