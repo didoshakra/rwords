@@ -57,13 +57,9 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       {/* 🖥️ Десктопна кнопка: тільки аватарка */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="hidden md:flex text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
+        className="hidden md:flex text-white text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
         title={user ? user.name || user.email : "Гість"}
-        style={{
-          color: "#fff",
-        //   fontWeight: "bold",
-        //   fontSize: 20,
-        }}
+        
       >
         {user ? initials : <FaUserCircle size={32} />}
       </button>
