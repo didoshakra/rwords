@@ -67,13 +67,13 @@ const HeaderThemesMenuButton = ({ setSetingMenuOpen }) => {
 
       {/* Випадаюче меню */}
       <div className={`${themesMenuOpen ? "absolute" : "hidden"} right-0 z-10 mt-2 w-44`}>
-        <ul className="m-0 rounded-lg border border-hBorder bg-hBg p-1 drop-shadow-md dark:border-hBorderD dark:bg-hBgD">
+        <ul className="m-0 rounded-lg border border-hBorder bg-hBg p-1 drop-shadow-md dark:border-hBorderD dark:bg-hBgD ">
           <li
             className="group flex items-center space-x-2 p-2 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD cursor-pointer"
             onClick={themeMenuToggle}
           >
             {resolvedTheme === "dark" ? <FaSun className="h-5 w-5" /> : <FaMoon className="h-5 w-5" />}
-            <span>Темна/світла</span>
+            <span> {resolvedTheme === "dark" ? "Світла" : "Темна"}</span>
           </li>
           <li
             className="group flex items-center space-x-2 p-2 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD cursor-pointer"

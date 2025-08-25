@@ -51,8 +51,11 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
     <div ref={ref_HeaderThemesDroopMenu} className="relative  list-none text-base font-medium">
       {/* іконка seting*/}
       {/* <div className="HeaderThemesDroopMenu__icon" onClick={setSetingThemesMenuToggle}> */}
-      <button className="flex items-center" onClick={setSetingThemesMenuToggle}>
-        <p
+      <button
+        className="flex items-center   text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD"
+        onClick={setSetingThemesMenuToggle}
+      >
+        <span
           className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-hBgHov dark:hover:bg-hBgHovD"
           onClick={setSetingThemesMenuToggle}
         >
@@ -75,45 +78,8 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
             <circle cx="12" cy="7.5" r=".5" fill="currentColor" />{" "}
             <circle cx="16.5" cy="10.5" r=".5" fill="currentColor" />
           </svg>
-          {/* // місяць/coywt */}
-          {/* {resolvedTheme === "dark" ? (
-            <svg
-              className="h-8 w-8  dark:text-hTextD dark:hover:text-hTextHovD"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {" "}
-              <path stroke="none" d="M0 0h24v24H0z" /> <circle cx="12" cy="12" r="3" />{" "}
-              <line x1="12" y1="5" x2="12" y2="3" /> <line x1="17" y1="7" x2="18.4" y2="5.6" />{" "}
-              <line x1="19" y1="12" x2="21" y2="12" /> <line x1="17" y1="17" x2="18.4" y2="18.4" />{" "}
-              <line x1="12" y1="19" x2="12" y2="21" /> <line x1="7" y1="17" x2="5.6" y2="18.4" />{" "}
-              <line x1="6" y1="12" x2="4" y2="12" /> <line x1="7" y1="7" x2="5.6" y2="5.6" />
-            </svg>
-          ) : (
-            <svg
-              className="h-8 w-8 text-hText hover:text-hTextHov "
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {" "}
-              <path stroke="none" d="M0 0h24v24H0z" />{" "}
-              <path d="M16.2 4a9.03 9.03 0 1 0 3.9 12a6.5 6.5 0 1 1 -3.9 -12" />
-            </svg>
-          )} */}
-        </p>
-        <p className="md:hidden">Теми</p>
+        </span>
+        <span className="md:hidden">Теми</span>
       </button>
 
       {/* Випадаюче меню */}
@@ -128,26 +94,12 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
             //   onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           >
             {/* <FontAwesomeIcon icon={themeTypeLight ? faSun : faMoon} /> */}
-            <p title="Темна/світла">
+            <span
+            //  title="Темна/світла"
+            >
               {resolvedTheme === "dark" ? (
                 <svg
-                  className="h-8 w-8  dark:text-hTextHovD dark:group-hover:text-hTextHovD"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  {" "}
-                  <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                  <path d="M16.2 4a9.03 9.03 0 1 0 3.9 12a6.5 6.5 0 1 1 -3.9 -12" />
-                </svg>
-              ) : (
-                <svg
-                  className="h-8 w-8 text-hText group-hover:text-hTextHov "
+                  className="h-8 w-8 text-hText dark:text-hTextHovD group-hover:text-hTextHov dark:group-hover:text-hTextHovD"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -164,17 +116,33 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
                   <line x1="12" y1="19" x2="12" y2="21" /> <line x1="7" y1="17" x2="5.6" y2="18.4" />{" "}
                   <line x1="6" y1="12" x2="4" y2="12" /> <line x1="7" y1="7" x2="5.6" y2="5.6" />
                 </svg>
+              ) : (
+                <svg
+                  className="h-8 w-8  text-hTextHov dark:text-hTextHovD dark:group-hover:text-hTextHovD group-hover:text-hTextHov"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {" "}
+                  <path stroke="none" d="M0 0h24v24H0z" />{" "}
+                  <path d="M16.2 4a9.03 9.03 0 1 0 3.9 12a6.5 6.5 0 1 1 -3.9 -12" />
+                </svg>
               )}
-            </p>
-            <p>Темна/світла</p>
+            </span>
+            <span> {resolvedTheme === "dark" ? "Світла" : "Темна"}</span>
           </li>
           <li
             className="active:text-hTextAct dark:active:text-hTextAct group flex list-none flex-nowrap items-center space-x-1 p-1 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
             onClick={() => setSetingThemesMenuOpen(!setingThemesMenuOpen)}
           >
             {/* // Від цього об'єкту li відраховуються відступи в випадаючих меню мов  */}
-            {/* іконка валік/малювати */}
-            <p>
+            <span>
+              {/* іконка валік/малювати */}
               {/* <svg
                 className="h-8 w-8 text-hText group-hover:text-hTextHov dark:text-hTextD dark:group-hover:text-hTextHovD"
                 width="24"
@@ -210,8 +178,8 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
                 <circle cx="12" cy="7.5" r=".5" fill="currentColor" />{" "}
                 <circle cx="16.5" cy="10.5" r=".5" fill="currentColor" />
               </svg>
-            </p>
-            <p>Теми</p>
+            </span>
+            <span>Теми</span>
           </li>
         </ul>
         {/* Випадаюче меню Теми */}

@@ -38,7 +38,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       {/* 📱 Мобільна кнопка: вся зона клікабельна */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 py-2 hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
+        className="flex items-center gap-2 py-2  text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
         title={user ? user.name || user.email : "Гість"}
       >
         <div
@@ -90,7 +90,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
               </Link>
               <button
                 onClick={() => {
-                //   logout()
+                  //   logout()
                   signOut()
                   setOpen(false)
                 }}

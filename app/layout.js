@@ -14,6 +14,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "RWords",
   description: "Мобільний додаток RWords для вивчення іноземних слів",
+  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0", //WebView і Chrome показуватимуть однаковий розмір шрифту
   icons: {
     icon: "/favicon.ico?v=2",
   },

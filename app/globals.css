@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Заборона зміни шрифтів браузерами Chrome i Safari */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
