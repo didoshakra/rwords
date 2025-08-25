@@ -84,7 +84,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
             </Link>
           ) : (
             <>
-              <div className="block px-4 py-2 font-semibold border-b border-gray-200">{user.name || user.email}</div>
+              <div className="block px-4 py-2  border-b border-gray-200">{user.name || user.email}</div>
               <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setOpen(false)}>
                 Профіль
               </Link>
