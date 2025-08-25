@@ -34,7 +34,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
     : user?.email?.[0]?.toUpperCase() || ""
 
   return (
-    <div className="relative flex items-center h-full" ref={menuRef}>
+    <div className="relative flex items-center h-full" ref={menuRef} text-base sm:text-lg lg:text-xl>
       {/* 📱 Мобільна кнопка: вся зона клікабельна */}
       <button
         onClick={() => setOpen((v) => !v)}
@@ -70,7 +70,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
 
       {/* Випадаюче меню */}
       {open && (
-        <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-sm text-gray-800">
+        <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded z-50 py-2 text-base text-gray-800">
           {!user ? (
             <Link
               href="/auth"
