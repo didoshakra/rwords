@@ -61,8 +61,8 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
         title={user ? user.name || user.email : "Гість"}
         style={{
           color: "#fff",
-          fontWeight: "bold",
-          fontSize: 20,
+        //   fontWeight: "bold",
+        //   fontSize: 20,
         }}
       >
         {user ? initials : <FaUserCircle size={32} />}
