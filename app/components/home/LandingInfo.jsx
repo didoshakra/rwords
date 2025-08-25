@@ -10,12 +10,12 @@ const LandingInfo = () => {
 
   return (
     <>
-      <main className="px-4 py-6 max-w-3xl mx-auto text-pText dark:text-pTextD font-body">
+      <main className="px-4 py-6 max-w-3xl mx-auto text-pText dark:text-pTextD font-body text-base sm:text-lg lg:text-xl">
         <h1 className="text-h1Text font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">
           👋 Вітаємо на RWords
         </h1>
 
-        <p className="text-base sm:text-lg lg:text-xl mb-5 leading-relaxed">
+        <p className="leading-relaxed">
           Сайт <strong>RWords</strong> — це спроба створити платформу для людей, які вивчають мови за допомогою
           мобільного застосунку{" "}
           <Link
@@ -31,7 +31,7 @@ const LandingInfo = () => {
         </p>
 
         <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-h2Text">🎯 Навіщо цей сайт?</h2>
-        <ul className="list-disc pl-5 mb-5 space-y-1 text-base sm:text-lg lg:text-xl mb-5 leading-relaxed">
+        <ul className="list-disc pl-5 mb-5 space-y-1">
           <li>
             Ділитись списками слів за темами: <em>подорожі, побут, робота, культура</em>
           </li>
@@ -40,7 +40,7 @@ const LandingInfo = () => {
         </ul>
 
         <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-h2Text">🧠 Тут ви можете:</h2>
-        <ul className="list-disc pl-5 mb-5 space-y-1 text-sm sm:text-base lg:text-lg">
+        <ul className="list-disc pl-5 mb-5 space-y-1 ">
           <li className="leading-relaxed">
             📱 Завантажити мобільний застосунок{" "}
             <Link
@@ -65,12 +65,10 @@ const LandingInfo = () => {
           {user ? (
             <>
               <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3">Дякуємо, що з нами!</h3>
-              <p className="mb-5text-sm sm:text-base lg:text-lg">
-                Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
-              </p>
+              <p className="mb-5">Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.</p>
               <Link
                 href="/download"
-                className="flex gap-2 justify-center items-center bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition text-sm sm:text-base lg:text-lg"
+                className="flex gap-2 justify-center items-center bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
               >
                 <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
                 До завантаження застосунку ⬇️
@@ -79,7 +77,7 @@ const LandingInfo = () => {
           ) : (
             <>
               <h3 className="text-h3Text text-base sm:text-lg lg:text-xl font-semibold mb-3">Готові почати?</h3>
-              <p className="mb-5text-sm sm:text-base lg:text-lg">
+              <p className="mb-5">
                 Зареєструйтесь, щоб завантажити застосунок RWords, створювати словники, публікувати дописи та
                 коментувати записи.
               </p>
@@ -93,7 +91,7 @@ const LandingInfo = () => {
           )}
         </section>
 
-        <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 text-sm sm:text-base lg:text-lg">
+        <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 ">
           Сайт RWords — це про навчання разом. Ми вивчаємо. Ми ділимось. Ми ростемо.
         </blockquote>
       </main>
@@ -103,7 +101,7 @@ const LandingInfo = () => {
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
           Що таке RWords?
         </h2>
-        <p className=" text-sm sm:text-base lg:text-lg leading-relaxed">
+        <p className="mb-5">
           <strong>RWords</strong> — мобільний застосунок для Android для вивчення іноземних слів та виразів. Ви оцінюєте
           знання, формуєте списки та слухаєте слова у циклічному режимі.
         </p>
@@ -135,7 +133,7 @@ const LandingInfo = () => {
         ].map((item, i) => (
           <div key={i} className="bg-white shadow-md p-4 rounded-md border hover:shadow-lg transition">
             <h3 className="text-h3Text text-sm sm:text-base lg:text-lg font-semibold mb-1">{item.title}</h3>
-            <p className="text-pText text-xs sm:text-sm lg:text-base">{item.desc}</p>
+            <p className="mb-5">{item.desc}</p>
           </div>
         ))}
       </section>
