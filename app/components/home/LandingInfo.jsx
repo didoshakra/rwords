@@ -10,7 +10,7 @@ const LandingInfo = () => {
 
   return (
     <>
-      <main className="px-4 py-6 max-w-3xl mx-auto text-pText dark:text-pTextD font-body text-base sm:text-lg lg:text-xl">
+      <main className="px-4 py-6 max-w-3xl mx-auto text-pText dark:text-pTextD font-body text-sm sm:text-base lg:text-lg">
         <h1 className="text-h1Text font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">
           👋 Вітаємо на RWords
         </h1>
