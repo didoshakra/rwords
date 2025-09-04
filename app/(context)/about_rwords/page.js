@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
 
-
 function ScreenBlock({ title, img, children }) {
   return (
     <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
@@ -187,314 +186,97 @@ export default function HowItWorks() {
         <ScreenBlock title="⚙️ Налаштування прослуховування" img="/rwords_screens/words_settings.jpg">
           {/* <h4 className="font-bold mb-1">🎙️ Доступні слідуючі налаштування</h4> */}
           <ul className="list-disc pl-10 mb-4">
-            <li> ⏳-паузи («➡️ Далі» – переходить до наступного слова</li>
+            <li> ⏳-різні паузи</li>
             <li>⏱️ Затримка голосу для правильного відображення команд</li>
             <li>🔊 Вираз для озвучки кінця списку</li>
             <li>🔁 Вираз для озвучки початку списку</li>
             <li>🎛️ Всі кнопки в словах відображаються</li>
+            <li>📂 Вибір тем</li>
+            <li>✅ Вибір знань </li>
+            <li>🖼️ Показ картинки</li>
             <li>🗣️ Мова оригіналу</li>
             <li>🌐 Мова перекладу</li>
-
           </ul>
           <h4 className="font-bold mb-1">🎧 Налаштовуйте застосунок під свій ритм.</h4>
           {/*  */}
         </ScreenBlock>
+        <ScreenBlock title="🎙️ Налаштування голосових команд" img="/rwords_screens/voices_commands.jpg">
+          {/* <h4 className="font-bold mb-1">🎙️ Доступні слідуючі налаштування</h4> */}
+          <ul className="list-disc pl-10 mb-4">
+            <li>🗣️ Додавання нових голосових команд для кнопок</li>
+            <li>📝 Коригування/❌видалення голосових команд</li>
+            <li>🎙️ Можна додавати команди голосом налаштовуючи їх під свій тембр голосу</li>
+          </ul>
+          <h4 className="font-bold mb-1">🗣️ Налаштувуйте команди під свій тембр голосу</h4>
+          {/*  */}
+        </ScreenBlock>
+        <ScreenBlock title="📂 Вибір тем" img="/rwords_screens/scr_ChoosingTopics.jpg">
+          <h4 className="font-bold mb-1">⚙️ Доступні слідуючі дії:</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>⬇️ Відкривати групу тем</li>
+            <li>✅ Відмічати теми для прослуховування</li>
+            <li>☰ Переміщати теми в списку в межах групи</li>
+          </ul>
+          <h4 className="font-bold mb-1">🧑‍🤝‍🧑 Налаштувуйте послідовність відтворення тем</h4>
+          {/*  */}
+        </ScreenBlock>
+        <ScreenBlock title="🎓 Вибір знань" img="/rwords_screens/scr_ChoosingKnow.jpg">
+          <h4 className="font-bold mb-1">⚙️ Доступний слідуючий вибір:</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>✅ Знаю</li>
+            <li>❌ Не знаю</li>
+            <li>👥 Всі</li>
+          </ul>
+          <h4 className="font-bold mb-1">🎯 Вибирайте тількі потрібні слова</h4>
+          {/*  */}
+        </ScreenBlock>
+        <ScreenBlock title="☰ Меню" img="/rwords_screens/scr_menu.jpg">
+          <h4 className="font-bold mb-1">Тут ви можете</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>📱 Побачити версію вашого додатку</li>
+            <li>🆕 Побачити доступну нову версію(якщо ваш додаток старіший)</li>
+            <li>🔄 Обновити додаток до самої нової версії</li>
+            <li>📂 Зайти у вказані довідники</li>
+            <li>ℹ️ Отримати повну інформацію про додаток</li>
+          </ul>
+          <h4 className="font-bold mb-1">🔄 Обновляйте додаток для отримання доступу до найновіших функцій</h4>
+          {/*  */}
+        </ScreenBlock>
+        <ScreenBlock title="📋 Список слів-кнопки" img="/rwords_screens/words_list_buttons.jpg">
+          <h4 className="font-bold mb-1">Тут ви можете</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>🗂️ 1-й рядок — група тем</li>
+            <li>📑 2-й рядок — тема</li>
+            <li>📝 Слова/фрази на мові оригіналу</li>
+            <li>🔘 Кнопки: Додати, Імпортувати, Перекласти</li>
+            <li>✏️ 🗑️ Редагувати або видаляти слова</li>
+            <li>📥 Імпорт CSV</li>
+            <li>🌍 Переклад на інші мови</li>
+          </ul>
+          <h4 className="font-bold mb-1">🔄 Обновляйте словниковий запас</h4>
+          {/*  */}
+        </ScreenBlock>
+
+        <ScreenBlock title="📋🔀 Список слів-переміщення" img="/rwords_screens/words_list.jpg">
+          <h4 className="font-bold mb-1">Тут ви можете</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>{` Щоб перемістити рядок потріьно: Відмітити слово ✅. а потім натиснути кнопку "Перемістити", яка появиться при відмітці тільки одного рядка-> внизу воявиться віконце для переміщення рядка. І вже тоді стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
+          </ul>
+          <h4 className="font-bold mb-1">🔀 Маніпулюйте словами відповідно до потреб</h4>
+          {/*  */}
+        </ScreenBlock>
+        <ScreenBlock title="🎨 Налаштування колірних схем" img="/rwords_screens/сolors_settings.jpg">
+          <h4 className="font-bold mb-1">Тут ви можете</h4>
+          <ul className="list-disc pl-10 mb-4">
+            <li>🌈 Вибір колірної схеми</li>
+            <li>
+              Натисніть на кнопку із стрілкою іназвою текучої колірної схеми і виберіть любу кольорову схему з списку.
+            </li>
+          </ul>
+          <h4 className="font-bold mb-1">🎨 Вибирайте кольори до своїх вподобань</h4>
+          {/*  */}
+        </ScreenBlock>
       </ScreenBlock>
-
-      {/* Основні екрани */}
-      <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-        <h2 className="text-h2Text text text-xl sm:text-2xl lg:text-3xl font-semibold mb-4 text-center">
-          🧭 Основні екрани2
-        </h2>
-
-        {/* Початковий екран */}
-        {/* <section className="mt-8">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            Початковий екран застосунку
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/scr_home.jpg"
-              alt="Home"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <h4 className="font-semibold mb-1">🔝 Верхня панель</h4>
-              <ul className="list-disc pl-10 mb-4">
-                <li>🌙 Перемикач теми світла/темна</li>
-                <li>❓ Загальний опис додатку</li>
-              </ul>
-              <h4 className="font-bold mb-1">🔻 Нижня панель</h4>
-              <ul className="list-disc pl-10">
-                <li>🏠 Головна</li>
-                <li>🎧 Слухати</li>
-                <li>🌐 wwwRWords</li>
-                <li>☰ Меню</li>
-              </ul>
-            </div>
-          </div>
-        </section> */}
-
-        {/* Слова */}
-        {/* <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            🗣️ Слова/Налаштування і інформація
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <div>
-              <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
-              <ul className="list-disc pl-10 mb-4 ">
-                <li>❓ Підказка</li>
-              </ul>
-              <h4 className="font-bold mb-1">🔻 Нижче</h4>
-              <ul className="list-disc pl-10 mb-4">
-                <li>{`Напис "Голос", або "Не слухаю", якщо мікрофон виключений`}</li>
-                <li>Мікрофон посередині, пульсує при включенні</li>
-                <li>Справа — розпізнані програмні команди</li>
-              </ul>
-              <h4 className="font-bold mb-1">⚙️ Основні налаштування і інформація</h4>
-              <ul className="list-disc pl-10">
-                <li>🎙️ Голосові команди: налаштування голосових команд</li>
-                <li>⚙️ Налаштування: вибір тем та режимів прослуховування</li>
-                <li>🎯 Вибрано слів-кількість вибраних слів для прослуховування</li>
-                <li>
-                  🔻 Вибрані теми: кількість вибраних тем для прослуховування. При натисканні переходить до екрану
-                  вибору тем
-                </li>
-                <li>
-                  {" "}
-                  🔻 Вибрані знання: які знання вибрані для прослуховування. При натисканні переходить до екрану вибору
-                  знань.
-                </li>
-                <li>
-                  ▶️ В самому низу розміщені кнопки: « ↺ З початку », яка запускає процес відтворення і голосового
-                  супроводу слів з початку списку і « ▶️ Продовжити », яка запускає процес відтворення і голосового
-                  супроводу слів з того слова яке прослуховувалось останнім якщо воно є в поточному списку.
-                </li>
-              </ul>
-            </div>
-            <img
-              src="/rwords_screens/scr_wordsInfo.jpg"
-              alt="Words"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-          </div>
-        </section> */}
-        {/* Слова/Прослуховування */}
-        {/* <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            🗣️ Слова/Прослуховування
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/scr_wordsPlay.jpg"
-              alt="Words"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <h4 className="font-bold mb-1">🔝 Нижче</h4>
-              <ul className="list-disc pl-10 mb-4">
-                <li>Напис &quot;Не слухаю&quot;, якщо мікрофон виключений</li>
-                <li>Мікрофон посередині, пульсує при включенні</li>
-                <li>Справа — розпізнані програмні команди</li>
-              </ul>
-              <h4 className="font-bold mb-1">🔝 Основні налаштування</h4>
-              <ul className="list-disc pl-10">
-                <li>🎯 Вибрано слів</li>
-                <li>🎯 Вибрані теми</li>
-                <li>🎯 Вибрані знання</li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
-
-        {/* Налаштування відтворення */}
-        {/* <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            ⚙️ Налаштування прослуховування
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/words_settings.jpg"
-              alt="Settings"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <ul className="list-disc pl-10 mb-4">
-                <li>⏱️ Затримка голосу для правильного відображення команд</li>
-                <li>🔊 Вираз для озвучки кінця списку</li>
-                <li>🔁 Вираз для озвучки початку списку</li>
-                <li>🎛️ Всі кнопки в словах відображаються</li>
-                <li>🗣️ Мова оригіналу</li>
-                <li>🌐 Мова перекладу</li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
-
-        {/* Голосові команди */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            🎙️ Налаштування голосових команд
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/voices_commands.jpg"
-              alt="Voice Commands"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
-            />
-            <div className="text-sm sm:text-base lg:text-lg sm:order-1">
-              <ul className="list-disc pl-10 mb-4">
-                <li>🗣️ Додавання/видалення голосових команд для кнопок</li>
-                <li>🗣️ Можна додавати команди голосом</li>
-                <li>🗣️ Налаштувати під свій тембр</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        {/* Вибір тем */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">⚙️ Вибір тем</h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/scr_ChoosingTopics.jpg"
-              alt="Settings"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <ul className="list-disc pl-10 mb-4">
-                <li>⏱️ Затримка голосу для правильного відображення команд</li>
-                <li>🔊 Вираз для озвучки кінця списку</li>
-                <li>🔁 Вираз для озвучки початку списку</li>
-                <li>🎛️ Всі кнопки в словах відображаються</li>
-                <li>🗣️ Мова оригіналу</li>
-                <li>🌐 Мова перекладу</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        {/* Вибір знань */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">⚙️ Вибір знань</h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <div className="text-sm sm:text-base lg:text-lg">
-              <ul className="list-disc pl-10 mb-4">
-                <li>⏱️ Затримка голосу для правильного відображення команд</li>
-                <li>🔊 Вираз для озвучки кінця списку</li>
-                <li>🔁 Вираз для озвучки початку списку</li>
-                <li>🎛️ Всі кнопки в словах відображаються</li>
-                <li>🗣️ Мова оригіналу</li>
-                <li>🌐 Мова перекладу</li>
-              </ul>
-            </div>
-            <img
-              src="/rwords_screens/scr_ChoosingKnow.jpg"
-              alt="Settings"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-          </div>
-        </div>
-
-        {/* Меню */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">☰ Меню</h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <div className="text-sm sm:text-base lg:text-lg">
-              <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
-              <ul className="list-disc pl-10 mb-4">
-                <li>🔙 Вихід на попередній екран</li>
-                <li>🎙️ Голосові команди</li>
-                <li>⚙️ Налаштування: вибір тем та режимів прослуховування</li>
-                <li>❓ Підказка</li>
-              </ul>
-              <h4 className="font-bold mb-1">🔝 Нижче</h4>
-              <ul className="list-disc pl-10 mb-4">
-                <li>Напис &quot;Не слухаю&quot;, якщо мікрофон виключений</li>
-                <li>Мікрофон посередині, пульсує при включенні</li>
-                <li>Справа — розпізнані програмні команди</li>
-              </ul>
-              <h4 className="font-bold mb-1">🔝 Основні налаштування</h4>
-              <ul className="list-disc pl-10">
-                <li>🎯 Вибрано слів</li>
-                <li>🎯 Вибрані теми</li>
-                <li>🎯 Вибрані знання</li>
-              </ul>
-            </div>
-            <img
-              src="/rwords_screens/scr_menu.jpg"
-              alt="Words"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-          </div>
-        </div>
-        {/* Список слів-кнопки */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            📋 Список слів-кнопки
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/words_list_buttons.jpg"
-              alt="Words List Buttons"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <ul className="list-disc pl-10 mb-4">
-                <li>1-й рядок — група тем</li>
-                <li>2-й рядок — тема</li>
-                <li>Слова/фрази на мові оригіналу</li>
-                <li>Кнопки: Додати, Імпортувати, Перекласти</li>
-                <li>Редагувати або видаляти слова</li>
-                <li>Імпорт CSV</li>
-                <li>Переклад на інші мови</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Список слів-переміщення */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            📋🔀 Список слів-переміщення
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/words_list.jpg"
-              //   src="/rwords_screens/words_list.jpg"
-              alt="Words List Move"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow sm:order-2"
-            />
-            <div className="text-sm sm:text-base lg:text-lg sm:order-1">
-              <ul className="list-disc pl-10">
-                <li>{` Щоб перемістити рядок потріьно: Відмітити слово ✅. а потім натиснути кнопку "Перемістити", яка появиться при відмітці тільки одного рядка-> внизу воявиться віконце для переміщення рядка. І вже тоді стрілками  ↑/↓ перемісти вибраний рядок у потрібне місце. По завершенню переміщення вийти назад, натиснувши кнопку "Готово"`}</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Колірні схеми */}
-        <div className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-bold text-center mb-2">
-            🎨 Налаштування колірних схем
-          </h3>
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <img
-              src="/rwords_screens/сolors_settings.jpg"
-              alt="Colors Settings"
-              className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
-            />
-            <div className="text-sm sm:text-base lg:text-lg">
-              <ul className="list-disc pl-10">
-                <li>🌈 Вибір колірної схеми</li>
-                <li>
-                  Натисніть на кнопку із стрілкою іназвою текучої колірної схеми і виберіть любу кольорову схему з
-                  списку.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Блок цитати */}
       <blockquote className="mt-6 italic border-l-4 border-hBg pl-4 text-base sm:text-lg lg:text-xl">
