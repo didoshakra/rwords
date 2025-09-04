@@ -139,7 +139,7 @@ export default function HowItWorks() {
           </ul>
         </ScreenBlock>
 
-        <ScreenBlock title="🗣️ Слова/Налаштування і інформація" img="/public/rwords_screens/scr_WordsInfo.jpg">
+        <ScreenBlock title="🗣️ Слова/Налаштування і інформація" img="/rwords_screens/scr_WordsInfo.jpg">
           <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>❓ Підказка</li>
