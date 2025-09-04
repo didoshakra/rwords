@@ -139,7 +139,7 @@ export default function HowItWorks() {
           </ul>
         </ScreenBlock>
 
-        <ScreenBlock title="🗣️ Слова/Налаштування і інформація" img="/rwords_screens/scr_wordsInfo.jpg">
+        <ScreenBlock title="🗣️ Слова/Налаштування і інформація" img="/public/rwords_screens/scr_WordsInfo.jpg">
           <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>❓ Підказка</li>
@@ -164,7 +164,7 @@ export default function HowItWorks() {
           </ul>
         </ScreenBlock>
 
-        <ScreenBlock title="🎧 Слова/Прослуховування" img="/rwords_screens/scr_wordsPlay.jpg">
+        <ScreenBlock title="🎧 Слова/Прослуховування" img="/rwords_screens/scr_WordsPlay.jpg">
           <h4 className="font-bold mb-1">🎙️ Доступні наступні кнопки і голосові команди:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li> «➡️ Далі» – переходить до наступного слова</li>
