@@ -242,10 +242,11 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🔄 Обновляйте додаток для отримання доступу до найновіших функцій</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="📋 Список слів-кнопки"
-        img="/rwords_screens/scr_menu.jpg"
-        //  img="/rwords_screens/words_list_buttons.jpg"
-         >
+        <ScreenBlock
+          title="📋 Список слів-кнопки"
+          img="/rwords_screens/words_list_buttons.jpg"
+          //  img="/rwords_screens/words_list_buttons.jpg"
+        >
           <h4 className="font-bold mb-1">Тут ви можете</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>🗂️ 1-й рядок — група тем</li>
