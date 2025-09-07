@@ -392,7 +392,8 @@ export default function HowItWorks() {
           </h3>
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <img
-              src="/rwords_screens/words_list_buttons.jpg"
+              src="/rwords_screens/scr_menu.jpg"
+            //   src="/rwords_screens/words_list_buttons.jpg"
               alt="Words List Buttons"
               className="w-full md:w-1/2 mx-auto my-4 rounded shadow"
             />
