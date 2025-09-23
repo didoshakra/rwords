@@ -79,7 +79,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
             <circle cx="16.5" cy="10.5" r=".5" fill="currentColor" />
           </svg>
         </span>
-        <span className="md:hidden">Теми</span>
+        <span className="md:hidden">Кольори</span>
       </button>
 
       {/* Випадаюче меню */}
@@ -179,7 +179,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
                 <circle cx="16.5" cy="10.5" r=".5" fill="currentColor" />
               </svg>
             </span>
-            <span>Теми</span>
+            <span>Кольори</span>
           </li>
         </ul>
         {/* Випадаюче меню Теми */}
