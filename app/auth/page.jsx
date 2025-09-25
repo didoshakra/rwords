@@ -128,16 +128,16 @@ export default function AuthPage() {
         </svg>
       ),
     },
-    {
-      name: "facebook",
-      label: "Facebook",
-      color: "bg-blue-700",
-      icon: (
-        <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-          <path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 5 3.7 9.1 8.5 9.9v-7H8v-3h2.5v-2.2c0-2.5 1.5-3.8 3.6-3.8 1 0 2 .1 2 .1v2.2H15c-1.2 0-1.6.8-1.6 1.6V12H17l-.5 3h-2v7c4.8-.8 8.5-4.9 8.5-9.9z" />
-        </svg>
-      ),
-    },
+    // {
+    //   name: "facebook",
+    //   label: "Facebook",
+    //   color: "bg-blue-700",
+    //   icon: (
+    //     <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
+    //       <path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 5 3.7 9.1 8.5 9.9v-7H8v-3h2.5v-2.2c0-2.5 1.5-3.8 3.6-3.8 1 0 2 .1 2 .1v2.2H15c-1.2 0-1.6.8-1.6 1.6V12H17l-.5 3h-2v7c4.8-.8 8.5-4.9 8.5-9.9z" />
+    //     </svg>
+    //   ),
+    // },
   ]
 
   return (
