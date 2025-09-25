@@ -94,8 +94,8 @@ const Footer = () => {
                 <path stroke="none" d="M0 0h24v24H0z" />{" "}
                 <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
               </svg>
-              <a className="px-2" href="tel:+380500000000">
-                + 38(050-0000000)
+              <a className="px-2" href="tel:+38053739048">
+                + 38(050-3739048
               </a>
             </li>
             <li className="flex  flex-row items-center justify-start px-4 text-sm">
