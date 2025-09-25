@@ -25,9 +25,9 @@ const SiteFooter = () => {
             <li>
               📞 <a href="tel:+380503739048">+38 (050) 373 90 48</a>
             </li>
-            <li>
+            {/* <li>
               📞 <a href="tel:+380680000000">+38 (068) 000 00 00</a>
-            </li>
+            </li> */}
             <li>
               ✉️ <a href="mailto:ra@gmail.com">ra@gmail.com</a>
             </li>

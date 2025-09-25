@@ -23,7 +23,7 @@ export const headMenu = [
     link: "/about_rwords",
   },
   {
-    a: "Про нас",
+    a: "Про мене",
     link: "/about",
   },
 ]
