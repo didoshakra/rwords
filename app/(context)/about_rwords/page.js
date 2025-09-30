@@ -131,7 +131,7 @@ export default function HowItWorks() {
         </ul>
       </ScreenBlock>
       {/* 1 */}
-      <ScreenBlock title="🧭 Основні екрани1">
+      <ScreenBlock title="🧭 Основні екрани">
         <ScreenBlock title="Початковий екран застосунку" img="/rwords_screens/scr_home.jpg">
           <h4 className="font-semibold mb-1">🔝 Верхня панель</h4>
           <ul className="list-disc pl-10 mb-4">
@@ -140,7 +140,7 @@ export default function HowItWorks() {
           </ul>
         </ScreenBlock>
 
-        <ScreenBlock title="🗣️ Слова/Налаштування і інформація" img="/rwords_screens/scr_WordsInfo.jpg">
+        <ScreenBlock title="🗣️ Слухати/Налаштування і інформація" img="/rwords_screens/scr_WordsInfo.jpg">
           <h4 className="font-bold mb-1">🔝 Верхня панель</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>❓ Підказка</li>
@@ -165,7 +165,7 @@ export default function HowItWorks() {
           </ul>
         </ScreenBlock>
 
-        <ScreenBlock title="🎧 Слова/Прослуховування" img="/rwords_screens/scr_WordsPlay.jpg">
+        <ScreenBlock title="🎧 Слухати/Прослуховування" img="/rwords_screens/scr_WordsPlay.jpg">
           <h4 className="font-bold mb-1">🎙️ Доступні наступні кнопки і голосові команди:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li> «➡️ Далі» – переходить до наступного слова</li>
@@ -182,7 +182,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🎙️ використовуйте голосові команди або кнопки.</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="⚙️ Налаштування прослуховування" img="/rwords_screens/words_settings.jpg">
+        <ScreenBlock title="⚙️ Режими прослуховування" img="/rwords_screens/words_settings.jpg">
           <h4 className="font-bold mb-1">🎙️ Доступні слідуючі налаштування:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li> ⏳-різні паузи після...</li>
