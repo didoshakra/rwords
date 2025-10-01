@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useEffect, useState, useTransition } from "react"
-import { getFeedback, createFeedback } from "@/app/actions/feedbackActions"
+import { getFeedback, createFeedback, deleteFeedback } from "@/app/actions/feedbackActions"
 import { useSession } from "next-auth/react"
 
 export default function FeedbackPage() {
@@ -92,7 +92,7 @@ export default function FeedbackPage() {
         {items.map((fb) => (
           <li key={fb.id} className="border p-3 rounded shadow-sm">
             <p className="text-sm text-gray-500">
-              {fb.user_name ? fb.user_name + " • " : ""}[{fb.type}] {new Date(fb.created_at).toLocaleString()}
+              [{fb.type}] {new Date(fb.created_at).toLocaleString()}
             </p>
             <h3 className="font-semibold">{fb.title}</h3>
             <p>{fb.message}</p>

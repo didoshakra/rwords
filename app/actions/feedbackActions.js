@@ -12,7 +12,7 @@ export async function createFeedback(userId, type, title, message) {
     INSERT INTO feedback (user_id, type, title, message)
     VALUES (${userId}, ${type}, ${title}, ${message})
     RETURNING *;
-  `
+  `                                                                                                                                                                                                         
   return result[0]
 }
 
