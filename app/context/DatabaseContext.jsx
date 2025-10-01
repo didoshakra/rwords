@@ -3,7 +3,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from "react"
-import { сheckСonnection } from "@/app/actions/dbActions" // імпорт функції перевірки
+import { checkConnection } from "@/app/actions/dbActions" // імпорт функції перевірки
 
 const DatabaseContext = createContext({
   isDatabaseReady: false,
@@ -17,7 +17,7 @@ export function DatabaseProvider({ children }) {
   // Функція перевірки підключення
   const checkDatabaseConnection = async () => {
     try {
-      const res = await сheckСonnection()
+      const res = await checkConnection()
       setIsDatabaseReady(res)
       return res
     } catch (error) {

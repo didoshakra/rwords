@@ -134,6 +134,15 @@ export async function initTables() {
       CONSTRAINT fk_post_comment FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_comment FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );`
+  // feedback
+  await sql`
+    CREATE TABLE IF NOT EXISTS feedback (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE SET NULL,
+    type VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`
 }
 
 export async function resetTables() {
@@ -149,7 +158,7 @@ export async function resetTables() {
   await initTables()
 }
 // Перевірка підключення
-export async function сheckСonnection() {
+export async function checkConnection() {
   try {
     const result = await sql`SELECT NOW()`
     return { time: result[0].now }

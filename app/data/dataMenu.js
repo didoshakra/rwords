@@ -9,6 +9,10 @@ export const headMenu = [
     link: "/blog",
   },
   {
+    a: "Bідгуки",
+    link: "/feedback",
+  },
+  {
     a: "Слова",
     link: "/words",
     roles: ["admin", "manager", "user"], // ❗️ admin і manager

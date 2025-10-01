@@ -9,7 +9,7 @@ export async function getPosts() {
     FROM posts
     LEFT JOIN users ON posts.user_id = users.id
     ORDER BY posts.created_at DESC
-  `
+  ` 
 }
 
 export async function getPost(id) {

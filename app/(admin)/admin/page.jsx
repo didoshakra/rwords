@@ -3,7 +3,7 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
-import { initTables, resetTables, сheckСonnection, createRLSPolicies } from "@/app/actions/dbActions"
+import { initTables, resetTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
 
 export default function AdminPage() {
   const [isPending, startTransition] = useTransition()
@@ -34,7 +34,7 @@ export default function AdminPage() {
         <button
           onClick={() =>
             handleAction(async () => {
-              const res = await сheckСonnection()
+              const res = await checkConnection()
               console.log("Перевірка:", res)
             }, "✅ Перевірка підключення до БД пройшла успішно!")
           }
