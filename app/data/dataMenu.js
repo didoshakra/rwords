@@ -5,17 +5,18 @@ export const headMenu = [
     link: "/",
   },
   {
-    a: "Блог",
-    link: "/blog",
-  },
-  {
-    a: "Bідгуки",
-    link: "/feedback",
-  },
-  {
     a: "Слова",
     link: "/words",
     roles: ["admin", "manager", "user"], // ❗️ admin і manager
+  },
+  {
+    a: "RWords",
+    link: "/about_rwords",
+  },
+
+  {
+    a: "Bідгуки",
+    link: "/feedback",
   },
 
   //   {
@@ -23,8 +24,8 @@ export const headMenu = [
   //     link: "/words_player"
   //   },
   {
-    a: "RWords",
-    link: "/about_rwords",
+    a: "Блог",
+    link: "/blog",
   },
   {
     a: "Про мене",
