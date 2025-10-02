@@ -61,7 +61,12 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
           }}
         >
           {avatarUrl ? (
-            <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
+            // <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
+            <img
+              src="https://lh3.googleusercontent.com/a/ACg8ocI1olioWq42IdIB1xROejL4JkZ5h-gpS90Bxdl7fMM7yhAQNFQ=s96-c"
+              alt="Аватар"
+              className="w-full h-full object-cover rounded-full"
+            />
           ) : user ? (
             initials
           ) : (
@@ -79,7 +84,12 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       >
         {/* {user ? initials : <FaUserCircle size={32} />} */}
         {avatarUrl ? (
-          <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
+          //   <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
+          <img
+            src="https://lh3.googleusercontent.com/a/ACg8ocI1olioWq42IdIB1xROejL4JkZ5h-gpS90Bxdl7fMM7yhAQNFQ=s96-c"
+            alt="Аватар"
+            className="w-full h-full object-cover rounded-full"
+          />
         ) : user ? (
           initials
         ) : (
