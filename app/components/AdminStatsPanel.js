@@ -54,7 +54,7 @@ export default function AdminStatsPanel() {
       )}
     </div>
   )
-
+// рендеримо блоки статистики
   return (
     <div className="p-4 max-w-md border rounded shadow bg-white dark:bg-gray-900">
       <h2 className="text-xl font-bold mb-4">📊 Статистика сайту</h2>
