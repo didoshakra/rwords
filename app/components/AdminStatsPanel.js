@@ -8,7 +8,7 @@ export default function AdminStatsPanel() {
   const { data: session } = useSession()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [expanded, setExpanded] = useState("")
+  const [expanded, setExpanded] = useState({}) // зберігаємо стан розкриття по ключах
 
   useEffect(() => {
     if (!session?.user?.role || session.user.role !== "admin") return
@@ -25,7 +25,7 @@ export default function AdminStatsPanel() {
     loadStats()
   }, [session])
 
-  const toggleExpand = (key) => setExpanded(expanded === key ? "" : key)
+  const toggleExpand = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
 
   const sumAdminAction = (field) =>
     stats?.users.filter((u) => u.role === "admin").reduce((sum, u) => sum + (u[field] || 0), 0)
@@ -34,60 +34,28 @@ export default function AdminStatsPanel() {
   if (!stats) return <p>Не вдалося завантажити статистику</p>
   if (!session?.user?.role || session.user.role !== "admin") return <p>Доступ заборонено</p>
 
+  const renderBlock = (key, label, siteField, userField, lastField) => (
+    <div onClick={() => toggleExpand(key)} className="cursor-pointer mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded">
+      {label}: {stats.site[siteField]} ({sumAdminAction(userField)})
+      {expanded[key] && (
+        <ul className="mt-2 ml-4 list-disc">
+          {stats.users.map((u) => (
+            <li key={u.id}>
+              {u.name || u.email}: {u[userField]} — останнє: {u[lastField] || "-"}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+
   return (
     <div className="p-4 max-w-md border rounded shadow bg-white dark:bg-gray-900">
       <h2 className="text-xl font-bold mb-4">📊 Статистика сайту</h2>
 
-      {/* Відвідування */}
-      <div
-        onClick={() => toggleExpand("visits")}
-        className="cursor-pointer mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded"
-      >
-        Відвідувань: {stats.site.visits} ({sumAdminAction("visits")})
-        {expanded === "visits" && (
-          <ul className="mt-2 ml-4 list-disc">
-            {stats.users.map((u) => (
-              <li key={u.id}>
-                {u.name || u.email}: {u.visits} — останнє: {u.last_visit_at || "-"}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Завантаження додатку */}
-      <div
-        onClick={() => toggleExpand("app_downloads")}
-        className="cursor-pointer mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded"
-      >
-        Завантажень додатку: {stats.site.app_downloads} ({sumAdminAction("app_downloads")})
-        {expanded === "app_downloads" && (
-          <ul className="mt-2 ml-4 list-disc">
-            {stats.users.map((u) => (
-              <li key={u.id}>
-                {u.name || u.email}: {u.app_downloads} — останнє: {u.last_app_download_at || "-"}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Завантаження слів */}
-      <div
-        onClick={() => toggleExpand("word_downloads")}
-        className="cursor-pointer mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded"
-      >
-        Завантажень слів: {stats.site.word_downloads} ({sumAdminAction("word_downloads")})
-        {expanded === "word_downloads" && (
-          <ul className="mt-2 ml-4 list-disc">
-            {stats.users.map((u) => (
-              <li key={u.id}>
-                {u.name || u.email}: {u.word_downloads} — останнє: {u.last_word_download_at || "-"}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {renderBlock("visits", "Відвідувань", "visits", "visits", "last_visit_at")}
+      {renderBlock("app_downloads", "Завантажень додатку", "app_downloads", "app_downloads", "last_app_download_at")}
+      {renderBlock("word_downloads", "Завантажень слів", "word_downloads", "word_downloads", "last_word_download_at")}
     </div>
   )
 }
