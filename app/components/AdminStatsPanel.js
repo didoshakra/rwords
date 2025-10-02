@@ -27,7 +27,9 @@ export default function AdminStatsPanel() {
 
   const toggleExpand = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
 
-  const countAdminAction = (field) => stats.users.filter((u) => u.role === "admin" && u[field] > 0).length
+//   const countAdminAction = (field) => stats.users.filter((u) => u.role === "admin" && u[field] > 0).length
+  const sumAdminAction = (field) =>
+    stats.users.filter((u) => u.role === "admin").reduce((acc, u) => acc + (u[field] || 0), 0)
 
   if (loading) return <p>Завантаження...</p>
   if (!stats) return <p>Не вдалося завантажити статистику</p>
@@ -39,7 +41,7 @@ export default function AdminStatsPanel() {
       onClick={() => toggleExpand(key)}
       className="cursor-pointer mb-2 p-2 bg-gray-100 dark:bg-gray-800 rounded"
     >
-      {label}: {stats.site[siteField]} ({countAdminAction(userField)})
+      {label}: {stats.site[siteField]} ({sumAdminAction(userField)})
       {expanded[key] && (
         <ul className="mt-2 ml-4 list-disc">
           {stats.users.map((u) => (
