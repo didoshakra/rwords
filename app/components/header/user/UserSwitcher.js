@@ -61,7 +61,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
           }}
         >
           {avatarUrl ? (
-            <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover" />
+            <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
           ) : user ? (
             initials
           ) : (
