@@ -28,7 +28,7 @@ export default function DownloadButton() {
       </h1>
 
       <a
-        href="https://github.com/didoshakra/rwords/releases/download/v1.0.2/rwords.apk"
+        href="https://github.com/didoshakra/rwords/releases/download/v1.1.3/rwords.apk"
         onClick={handleClick}
         className="items-center inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         style={{
