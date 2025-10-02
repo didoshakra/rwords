@@ -13,7 +13,7 @@ export default function DownloadButton() {
     e.preventDefault()
 
     // Спочатку запускаємо завантаження файлу
-    window.location.href = "https://github.com/didoshakra/rwords/releases/download/v1.0.2/rwords.apk"
+    window.location.href = "https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
 
     // Передаємо userId в server action
     incrementAppDownloads(userId).catch((err) => {
