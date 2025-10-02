@@ -28,7 +28,9 @@ export default function AdminStatsPanel() {
   const toggleExpand = (key) => setExpanded(expanded === key ? "" : key)
 
   const sumAdminAction = (field) =>
-    stats?.users.filter((u) => u.role === "admin").reduce((sum, u) => sum + (u[field] || 0), 0)
+    stats?.users
+      .filter((u) => u.role === "admin")
+      .reduce((sum, u) => sum + (u[field] || 0), 0)
 
   if (loading) return <p>Завантаження...</p>
   if (!stats) return <p>Не вдалося завантажити статистику</p>
