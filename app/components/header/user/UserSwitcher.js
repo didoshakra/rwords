@@ -1,6 +1,6 @@
 //CL/userSwitcher.js //
 "use client"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect} from "react"
 // import { useAuth } from "@/app/context/AuthContext"
 import { signOut, useSession } from "next-auth/react"
 import { FaUserCircle } from "react-icons/fa"
@@ -12,6 +12,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
   const user = session?.user
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
+  const avatarUrl = user?.avatar || null
 
   // Закривати меню при кліку поза ним
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
         className="flex items-center gap-2 py-2 text-sm sm:text-base hover:bg-hBgHov dark:hover:bg-hBgHovD focus:outline-none md:hidden"
         title={user ? user.name || user.email : "Гість"}
       >
-        <div
+        {/* <div
           className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hText"
           style={{
             color: "#fff",
@@ -50,6 +51,22 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
           }}
         >
           {user ? initials : <FaUserCircle size={32} />}
+        </div> */}
+        <div
+          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hText overflow-hidden"
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+        >
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover" />
+          ) : user ? (
+            initials
+          ) : (
+            <FaUserCircle size={32} />
+          )}
         </div>
         <span>Акаунт</span>
       </button>
@@ -59,9 +76,15 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
         onClick={() => setOpen((v) => !v)}
         className="hidden md:flex text-white text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
         title={user ? user.name || user.email : "Гість"}
-        
       >
-        {user ? initials : <FaUserCircle size={32} />}
+        {/* {user ? initials : <FaUserCircle size={32} />} */}
+        {avatarUrl ? (
+          <img src={avatarUrl} alt="Аватар" className="w-full h-full object-cover rounded-full" />
+        ) : user ? (
+          initials
+        ) : (
+          <FaUserCircle size={32} />
+        )}
       </button>
 
       {/* Випадаюче меню */}
