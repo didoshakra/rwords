@@ -31,17 +31,17 @@ export default function HowItWorks() {
       </div>
       {/* Опис застосунку */}
       <section className="mb-6">
-        <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-2">
-          📖 Цу платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
+        <h2 className="text-h2Text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">
+          📖 Це платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
         </h2>
         <h3 className=" text-h3Text text-lg sm:text-xl lg:text-2xl font-semibold  ml-4 mb-1">
           1. Мобільний застосунок на Android RWords.
         </h3>
-        <h3 className=" text-h3Text text-lg  sm:text-xl lg:text-2xl font-semibold  ml-4 mb-1">
+        <h3 className=" text-h3Text text-sm  sm:text-lg lg:text-xl font-semibold  ml-4 mb-1">
           2. Цей сайт RWords.
         </h3>
         {/* <p className="text-base sm:text-lg lg:text-xl font-medium mb-2"> */}
-        <p className="text-xs sm:text-sm lg:text-lg  mb-2">
+        <p className="text-xs sm:text-sm lg:text-lg  mb-1">
           Основне завдання застосунку — допомогти вам ефективно вивчати іноземні слова, вирази і речення ,
           використовуючи голосові команди і кнопки для формування списків тільки з тих слів, які ви хочете вивчати,
           відкидаючи уже відомі вам слова із уже сформованих списків. Це дозволяє зосередитися на вивченні нових слів і
