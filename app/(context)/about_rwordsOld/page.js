@@ -25,7 +25,7 @@ export default function HowItWorks() {
       {/* Головний заголовок */}
       <h1 className="inline-flex items-center justify-center gap-2 text-h1Text text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
         <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
-        Що таке RWords?
+        Що таке RWords???
       </h1>
 
       {/* Опис застосунку */}

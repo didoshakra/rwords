@@ -31,19 +31,19 @@
 @layer base {
   html {
     /* Emerald 80-900*/
-  --color-pCol0:#ecfdf5;
-  --color-pCol1: #d1fae5;
-  --color-pCol2: #a7f3d0;
-  --color-pCol3: #6ee7b7;
-  --color-pCol4: #34d399;
-  --color-pCol5: #10b981;
-  --color-pCol6: #059669;
-  --color-pCol7: #047857;
-  --color-pCol8: #065f46;
-  --color-pCol9: #064e3b;
-  --color-pCol10: #c026d3; /* fuchsia-600 */
-  --color-pCol11: #e11d48; /* rose-600 */
-  --color-pCol12: #ccfbf1; /* teal-100 — легкий споріднений фон */
+    --color-pCol0: #ecfdf5;
+    --color-pCol1: #d1fae5;
+    --color-pCol2: #a7f3d0;
+    --color-pCol3: #6ee7b7;
+    --color-pCol4: #34d399;
+    --color-pCol5: #10b981;
+    --color-pCol6: #059669;
+    --color-pCol7: #047857;
+    --color-pCol8: #065f46;
+    --color-pCol9: #064e3b;
+    --color-pCol10: #c026d3; /* fuchsia-600 */
+    --color-pCol11: #e11d48; /* rose-600 */
+    --color-pCol12: #ccfbf1; /* teal-100 — легкий споріднений фон */
   }
 
   @import "@/styles/themes/tIndigo.css";
@@ -67,4 +67,6 @@
   @import "@/styles/themes/tZinc.css";
   @import "@/styles/themes/tNeutral.css";
   @import "@/styles/themes/tStone.css";
+  /*  */
+  
 }
