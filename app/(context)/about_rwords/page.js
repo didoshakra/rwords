@@ -34,7 +34,7 @@ export default function HowItWorks() {
         <h2 className="text-h2Text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">
           📖 Це платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
         </h2>
-        <h3 className=" text-h3Text text-lg sm:text-xl lg:text-2xl font-semibold  ml-4 mb-1">
+        <h3 className=" text-h3Text text-lg sm:text-xl lg:text-xl font-semibold  ml-4 mb-1">
           1. Мобільний застосунок на Android RWords.
         </h3>
         <h3 className=" text-h3Text text-sm  sm:text-lg lg:text-xl font-semibold  ml-4 mb-1">
