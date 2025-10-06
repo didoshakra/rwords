@@ -31,10 +31,10 @@ export default function HowItWorks() {
       </div>
       {/* Опис застосунку */}
       <section className="mb-6">
-        <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">
-          📖 RWords — платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
+        <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-2">
+          📖 Це платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
         </h2>
-        <h3 className=" text-h3Text text-lg sm:text-xl lg:text-2xl font-semibold  ml-4 mb-1">
+        <h3 className=" text-h3Text text-lg sm:text-xl lg:text-xl font-semibold  ml-4 mb-1">
           1. Мобільний застосунок на Android RWords.
         </h3>
         <h3 className=" text-h3Text text-lg  sm:text-xl lg:text-xl font-semibold  ml-4 mb-1">
