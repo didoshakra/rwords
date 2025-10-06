@@ -4,9 +4,20 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
 
-function ScreenBlock({ title, img, children }) {
+// function ScreenBlock({ title, img, children }) {
+//   return (
+//     <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
+//       <h3 className="h3Text text-h3Text text-center mb-2">{title}</h3>
+//       <div className={`grid gap-4 items-center ${img ? "md:grid-cols-2" : "md:grid-cols-1"}`}>
+//         {img && <img src={img} alt={title} className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />}
+//         <div className="text-xs sm:text-sm lg:text-base">{children}</div>
+//       </div>
+//     </section>
+//   )
+// }
+function ScreenBlock({ id, title, img, children }) {
   return (
-    <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
+    <section id={id} className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
       <h3 className="h3Text text-h3Text text-center mb-2">{title}</h3>
       <div className={`grid gap-4 items-center ${img ? "md:grid-cols-2" : "md:grid-cols-1"}`}>
         {img && <img src={img} alt={title} className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />}
@@ -66,36 +77,92 @@ export default function HowItWorks() {
       </section>
       {/*  */}
       {/* 1. Основні можливості */}
-      <ScreenBlock title="📝 Основні можливості застосунку">
+      <ScreenBlock title="📝 В астосунку ви можете:">
         <ul className="list-disc pl-10 space-y-2">
-          <li>
-            🎧 Слухати слова, вирази та речення —
+          <li className="h4Text text-h3Text  mb-1">
+            🎙️
             <Link href="#listen" className="text-blue-600 underline ml-1">
-              детальні дії
+              Налаштовувити середовище для прослуховуванням
             </Link>
           </li>
-          <li>
-            📂 Вибір тем —
-            <Link href="#topics" className="text-blue-600 underline ml-1">
-              детальні дії
+          <li className="h4Text text-h3Text  mb-1">
+            🎧
+            <Link href="#listenPlay" className="text-blue-600 underline ml-1">
+              Слухати слова, вирази та речення і оцінювати свої знання
             </Link>
           </li>
-          <li>
-            🎓 Вибір знань («Знаю»/«Не знаю») —
-            <Link href="#knowledge" className="text-blue-600 underline ml-1">
-              детальні дії
+
+          <li className="h4Text text-h3Text  mb-1">
+            ⚙️
+            <Link href="#listeningMode" className="text-blue-600 underline ml-1">
+              Вибирати режими прослуховування
             </Link>
           </li>
-          <li>
-            ☰ Меню та налаштування —
-            <Link href="#menu" className="text-blue-600 underline ml-1">
-              детальні дії
+          <li className="h4Text text-h3Text  mb-1">
+            🗣️
+            <Link href="#voiceCommands" className="text-blue-600 underline ml-1">
+              Налаштувати голосові команди
             </Link>
           </li>
-          <li>
-            📋 Список слів і імпорт CSV —
-            <Link href="#words" className="text-blue-600 underline ml-1">
-              детальні дії
+          <li className="h4Text text-h3Text  mb-1">
+            📂
+            <Link href="#choiceTopics" className="text-blue-600 underline ml-1">
+              Вибирати теми для прослуховування
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            🎓
+            <Link href="#choiceKnowledge" className="text-blue-600 underline ml-1">
+              Вибрати знання для прослуховування
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            ☰
+            <Link href="#choiceMenu" className="text-blue-600 underline ml-1">
+              Перейти в меню і вибрати щось із запропонованого списку
+            </Link>
+          </li>
+
+          <li className="h4Text text-h3Text  mb-1">
+            📋
+            <Link href="#wordList" className="text-blue-600 underline ml-1">
+              Робити щось зі списком слів
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            📋
+            <Link href="#topicsList" className="text-blue-600 underline ml-1">
+              Робити щось зі списком тем
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            📋
+            <Link href="#csvStructure" className="text-blue-600 underline ml-1">
+              Ознайомитися з CSV структурою файлу імпорту .csv
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            🌈
+            <Link href="#colorSettings" className="text-blue-600 underline ml-1">
+              Вибрати колірну схему
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            🌐
+            <Link href="#wwwRWords" className="text-blue-600 underline ml-1">
+              Перейти на сайт RWords
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            📋
+            <Link href="#wwwWordsList" className="text-blue-600 underline ml-1">
+              Вибрати список слів на сайті і імпортувати його в застосунок
+            </Link>
+          </li>
+          <li className="h4Text text-h3Text  mb-1">
+            📋
+            <Link href="#wwwWordsImport" className="text-blue-600 underline ml-1">
+              Завантаження списку слів з сайту
             </Link>
           </li>
         </ul>
@@ -144,9 +211,9 @@ export default function HowItWorks() {
       </ScreenBlock>
 
       <ScreenBlock title="🧭 Застосунок має 4-й основні екрани,">
-        <h3 className="h3Text text-h3Text text-center mb-1">
+        <h4 className="h4Text text-h3Text text-center mb-1">
           Вони відкриваються по натисканню кнопок в нижній навігаційній панелі.
-        </h3>
+        </h4>
         <ul className="list-disc pl-10 space-y-2">
           <li>
             <strong>1.🏠 Home</strong> — титульний екран з іконками перемикання тем🌙-темна/🌞-світла і ❓-загальний
@@ -183,7 +250,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">Тут ви можете</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>🎙️🚫 включати/виключати мікрофон для того щоб додаток міг слухати голосові команди</li>
-            <li>🎙️ налаштовувати голосові команти по кнопці/рядку голосові команди;</li>
+            <li>🎙️ налаштовувати голосові команди по кнопці/рядку голосові команди;</li>
             <li>⚙️ налаштовувати режими прослуховування </li>
             <li>🎯 бачити к-сть вибраних слів для прослуховування</li>
             <li> ▼ обирати знання для прослуховування</li>
@@ -197,16 +264,7 @@ export default function HowItWorks() {
             </li>
           </ul>
         </ScreenBlock>
-        <ScreenBlock title="🗣️ Слухати/Налаштування і інформація" img="/rwords_screens/scr_listenNotGreen.jpg">
-          <h4 className="font-bold mb-1">Коли є не вибрані теми</h4>
-          <ul className="list-disc pl-10 mb-4">
-            <li>
-              Замість кнопок «↺ З початку» / «▶️ Продовжити» відображається повідомлення про відсутність вибраних тем
-            </li>
-          </ul>
-        </ScreenBlock>
-
-        <ScreenBlock title="🎧 Слухати/Прослуховування" img="/rwords_screens/scr_ListenPlayGreen.jpg">
+        <ScreenBlock id="listenPlay" title="🎧 Слухати/Прослуховування" img="/rwords_screens/scr_ListenPlayGreen.jpg">
           <h4 className="font-bold mb-1">🎙️ Доступні наступні кнопки і голосові команди:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li> «➡️ Далі» – переходить до наступного слова</li>
@@ -223,7 +281,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🎙️ використовуйте голосові команди або кнопки.</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="⚙️ Режими прослуховування" img="/rwords_screens/scr_settingsGreen.jpg">
+        <ScreenBlock id="listeningMode" title="⚙️ Режими прослуховування" img="/rwords_screens/scr_settingsGreen.jpg">
           <h4 className="font-bold mb-1">🎙️ Доступні слідуючі налаштування:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li> ⏳-різні паузи після...</li>
@@ -240,7 +298,11 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🎧 Налаштовуйте застосунок під свій ритм.</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="🎙️ Налаштування голосових команд" img="/rwords_screens/scr_viiceComandsGreen.jpg">
+        <ScreenBlock
+          id="voiceCommands"
+          title="🎙️ Налаштування голосових команд"
+          img="/rwords_screens/scr_viiceComandsGreen.jpg"
+        >
           {/* <h4 className="font-bold mb-1">🎙️ Доступні слідуючі налаштування</h4> */}
           <ul className="list-disc pl-10 mb-4">
             <li>🗣️ Додавання нових голосових команд для кнопок</li>
@@ -252,7 +314,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🗣️ Налаштувуйте команди під свій тембр голосу</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="📂 Вибір тем" img="/rwords_screens/scr_ChoosingTopicsGreen.jpg">
+        <ScreenBlock id="choiceTopics" title="📂 Вибір тем" img="/rwords_screens/scr_ChoosingTopicsGreen.jpg">
           <h4 className="font-bold mb-1">⚙️ Доступні слідуючі дії:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>▼ Відкривати групу тем</li>
@@ -262,7 +324,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🧑‍🤝‍🧑 Налаштувуйте послідовність відтворення тем</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="🎓 Вибір знань" img="/rwords_screens/scr_ChoosingKnowGreen.jpg">
+        <ScreenBlock id="choiceKnowledge" title="🎓 Вибір знань" img="/rwords_screens/scr_ChoosingKnowGreen.jpg">
           <h4 className="font-bold mb-1">⚙️ Доступний слідуючий вибір:</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>✅ Знаю</li>
@@ -272,7 +334,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🎯 Вибирайте тількі потрібні слова</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="☰ Меню" img="/rwords_screens/scr_menuGreen.jpg">
+        <ScreenBlock id="choiceMenu" title="☰ Меню" img="/rwords_screens/scr_menuGreen.jpg">
           <h4 className="font-bold mb-1">Тут ви можете</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>📱 Побачити версію вашого додатку</li>
@@ -286,11 +348,7 @@ export default function HowItWorks() {
           {/*  */}
         </ScreenBlock>
 
-        <ScreenBlock
-          title="📋 Список слів"
-          img="/rwords_screens/scr_WordsListGreen.jpg"
-          //  img="/rwords_screens/words_list_buttons.jpg"
-        >
+        <ScreenBlock id="wordList" title="📋 Список слів" img="/rwords_screens/scr_WordsListGreen.jpg">
           <h4 className="font-bold mb-1">Тут ви бачите</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>
@@ -315,7 +373,7 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🔄 Обновляйте словниковий запас</h4>
           {/*  */}
         </ScreenBlock>
-        <ScreenBlock title="📋 Теми" img="/rwords_screens/scr_TopicsListGreen.jpg">
+        <ScreenBlock id="topicsList" title="📋 Теми" img="/rwords_screens/scr_TopicsListGreen.jpg">
           <h4 className="font-bold mb-1">Тут ви бачите</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>
@@ -335,6 +393,7 @@ export default function HowItWorks() {
           {/*  */}
         </ScreenBlock>
         <ScreenBlock
+          id="csvStructure"
           title="📋CSV структура файлу імпорту .csv"
           img="/rwords_screens/scr_FileCsv.jpg"
           //  img="/rwords_screens/words_list_buttons.jpg"
@@ -361,7 +420,11 @@ export default function HowItWorks() {
           {/*  */}
         </ScreenBlock>
 
-        <ScreenBlock title="🎨 Налаштування колірних схем" img="/rwords_screens/scr_colorSettingsGreen.jpg">
+        <ScreenBlock
+          id="colorSettings"
+          title="🎨 Налаштування колірних схем"
+          img="/rwords_screens/scr_colorSettingsGreen.jpg"
+        >
           <h4 className="font-bold mb-1">Тут ви можете</h4>
           <ul className="list-disc pl-10 mb-4">
             <li>🌈 Вибір колірної схеми</li>
@@ -374,6 +437,7 @@ export default function HowItWorks() {
         </ScreenBlock>
         {/*  www*/}
         <ScreenBlock
+          id="wwwRWords"
           title="📋 Сайт RWords вид з додатку"
           img="/rwords_screens/scr_wwwGreen.jpg"
           //  img="/rwords_screens/words_list_buttons.jpg"
@@ -387,6 +451,7 @@ export default function HowItWorks() {
           {/*  */}
         </ScreenBlock>
         <ScreenBlock
+          id="wwwWordsList"
           title="📋 Список слів на сайті"
           img="/rwords_screens/scr_wwwWordsListGreen.jpg"
           //  img="/rwords_screens/words_list_buttons.jpg"
@@ -415,7 +480,8 @@ export default function HowItWorks() {
           <h4 className="font-bold mb-1">🔄 Обновляйте словниковий запас</h4>
         </ScreenBlock>
         <ScreenBlock
-          title="📋 Список слів на сайті"
+          id="wwwWordsImport"
+          title="📋 Завантаження списку слів з сайту"
           img="/rwords_screens/scr_wwwWordsImportGreen.jpg"
           //  img="/rwords_screens/words_list_buttons.jpg"
         >

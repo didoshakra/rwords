@@ -13,10 +13,6 @@ export const headMenu = [
     a: "RWords",
     link: "/about_rwords",
   },
-  {
-    a: "RWordsOld",
-    link: "/about_rwordsOld",
-  },
 
   {
     a: "Bідгуки",
