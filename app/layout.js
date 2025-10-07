@@ -8,17 +8,11 @@ import Header from "@/app/components/header/Header"
 import SiteFooter from "./components/header/SiteFooter"
 import HeaderTape from "./components/header/HeaderTape"
 import { getStats } from "@/app/actions/statsActions"
+import { defaultMetadata } from "@/lib/seoConfig"
+
+export const metadata = defaultMetadata
 
 const inter = Inter({ subsets: ["latin"] })
-
-export const metadata = {
-  title: "RWords",
-  description: "Мобільний додаток RWords для вивчення іноземних слів",
-//   viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0", //WebView і Chrome показуватимуть однаковий розмір шрифту
-  icons: {
-    icon: "/favicon.ico?v=2",
-  },
-}
 
 // Робимо layout async
 export default async function RootLayout({ children }) {

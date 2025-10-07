@@ -3,18 +3,29 @@
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
+import { defaultMetadata } from "@/lib/seoConfig"
 
-// function ScreenBlock({ title, img, children }) {
-//   return (
-//     <section className="space-y-4 text-xs sm:text-sm lg:text-base mb-6">
-//       <h3 className="h3Text text-h3Text text-center mb-2">{title}</h3>
-//       <div className={`grid gap-4 items-center ${img ? "md:grid-cols-2" : "md:grid-cols-1"}`}>
-//         {img && <img src={img} alt={title} className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />}
-//         <div className="text-xs sm:text-sm lg:text-base">{children}</div>
-//       </div>
-//     </section>
-//   )
-// }
+export const metadata = {
+  ...defaultMetadata,
+  title: "Про застосунок RWords",
+  description: "Як RWords допомагає вивчати англійські слова з голосовим керуванням і тренуванням вимови.",
+  openGraph: {
+    ...defaultMetadata.openGraph,
+    url: "https://rwords.vercel.app/about_rwords",
+    title: "Про застосунок RWords",
+    description: "Як RWords допомагає вивчати англійські слова з голосовим керуванням і тренуванням вимови.",
+    images: [
+      {
+        url: "https://rwords.vercel.app/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "RWords Author Page",
+      },
+    ],
+  },
+}
+
+
 function ScreenBlock({ id, title, img, children }) {
   return (
     <section id={id} className="space-y-2 text-xs sm:text-sm lg:text-base mb-6">

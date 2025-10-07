@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://rwords.vercel.app/sitemap.xml
+
+# Неіндексовані технічні сторінки
+Disallow: /auth
