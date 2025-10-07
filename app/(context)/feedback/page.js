@@ -4,28 +4,6 @@
 import React, { useEffect, useState, useTransition } from "react"
 import { getFeedback, createFeedback } from "@/app/actions/feedbackActions"
 import { useSession } from "next-auth/react"
-import { defaultMetadata } from "@/lib/seoConfig"
-
-export const metadata = {
-  ...defaultMetadata,
-  title: "Відгуки, зауваженняі пропозиції користувачів",
-  description:
-    "Що кажуть користувачі RWords про навчання англійської. Залиш свій відгук. Дай нам знати, що покращити, або виправити",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/feedback",
-    title: "Зауваженняі пропозиції користувачів",
-    description: "Що кажуть користувачі RWords про навчання англійської. Залиш свій відгук. Зауваження, пропозиції.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 export default function FeedbackPage() {
   const { data: session } = useSession()

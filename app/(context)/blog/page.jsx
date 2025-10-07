@@ -6,27 +6,7 @@ import { getPosts, createPost, deletePost, updatePost } from "@/app/actions/blog
 import Link from "next/link"
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
-import { defaultMetadata } from "@/lib/seoConfig"
 
-export const metadata = {
-  ...defaultMetadata,
-  title: "Блог RWords",
-  description: "Поради, історії та статті про ефективне вивчення англійської мови.",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/blog",
-    title: "Блог RWords",
-    description: "Поради, історії та статті про ефективне вивчення англійської мови.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 // Проста модалка
 function Modal({ open, onClose, children }) {

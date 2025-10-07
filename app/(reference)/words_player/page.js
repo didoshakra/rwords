@@ -4,28 +4,7 @@
 import { useEffect, useState, useRef } from "react"
 import Script from "next/script"
 import { getWords } from "@/app/actions/wordActions" // твоя функція для отримання слів
-import { defaultMetadata } from "@/lib/seoConfig"
 
-export const metadata = {
-  ...defaultMetadata,
-  title: "RWords — Прослуховування та запам’ятовування слів",
-  description:
-    " Пролуховуй  та запам’ятовуй слова, оцінюй свої знання, керуй процесом голосом. Вибирай теми і ще не вивчені слова для прослуховування.",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/words_player",
-    title: "Прослуховування і оцінка знань слів в RWords",
-    description: "Слухай, повторюй і запам’ятовуй іноземні (англійські) слова разом із RWords. Оцінюй свої знання. Керуй процесом голосом.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 export default function WordsPage() {
   const [isStarted, setIsStarted] = useState(false)

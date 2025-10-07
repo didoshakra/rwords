@@ -11,27 +11,7 @@ import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
-import { defaultMetadata } from "@/lib/seoConfig"
 
-export const metadata = {
-  ...defaultMetadata,
-  title: "Список слів для вивчення",
-  description: "Переглянь усі слова, які ти вивчаєш у RWords",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/words",
-    title: "Список слів для вивчення",
-    description: "Переглянь усі слова, які ти вивчаєш у RWords.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 
 function Modal({ open, onClose, children }) {

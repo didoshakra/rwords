@@ -14,27 +14,7 @@ import { getSections } from "@/app/actions/sectionActions" // Передбача
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
-import { defaultMetadata } from "@/lib/seoConfig"
 
-export const metadata = {
-  ...defaultMetadata,
-  title: "Список тем для вивчення",
-  description: "Переглянь усі теми, які ти вивчаєш у RWords",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/topics",
-    title: "Список тем для вивчення",
-    description: "Переглянь усі теми, які ти вивчаєш у RWords.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 function Modal({ open, onClose, children }) {
   if (!open) return null

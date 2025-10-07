@@ -3,27 +3,6 @@
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
-import { defaultMetadata } from "@/lib/seoConfig"
-
-export const metadata = {
-  ...defaultMetadata,
-  title: "Про застосунок RWords",
-  description: "Як RWords допомагає вивчати англійські слова з голосовим керуванням і тренуванням вимови.",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/about_rwords",
-    title: "Про застосунок RWords",
-    description: "Як RWords допомагає вивчати англійські слова з голосовим керуванням і тренуванням вимови.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 
 function ScreenBlock({ id, title, img, children }) {

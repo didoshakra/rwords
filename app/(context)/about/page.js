@@ -1,27 +1,6 @@
 //About.js
 
 import Image from "next/image"
-import { defaultMetadata } from "@/lib/seoConfig"
-
-export const metadata = {
-  ...defaultMetadata,
-  title: "RWords — Про мене",
-  description: "Дізнайтеся більше про автора застосунку RWords.",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/about",
-    title: "RWords — Про мене",
-    description: "Хто створив RWords і навіщо.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 
 const pageAboutMe_text1 = `Я — ентузіаст-розробник програмного забезпечення старшого (пенсійного) покоління, який "убиває" свій вільний час, вивчаючи нові технології програмування. Цей сайт і застосунок — спроба зробити щось корисне (і, можливо, не лише для себе), використовуючи JS, React, Next.js, React Native, PostgreSQL, MySQL та інші "примочки".`

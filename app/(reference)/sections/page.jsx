@@ -6,27 +6,7 @@ import { getSections, createSection, updateSection, deleteSection, deleteSection
 // import { useAuth } from "@/app/context/AuthContext"
 import TableView from "@/app/components/tables/TableView"
 import { useSession } from "next-auth/react"
-import { defaultMetadata } from "@/lib/seoConfig"
 
-export const metadata = {
-  ...defaultMetadata,
-  title: "Список груп тем для вивчення",
-  description: "Переглянь усі групи тем, які ти вивчаєш у RWords",
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    url: "https://rwords.vercel.app/sections",
-    title: "Список груп тем для вивчення",
-    description: "Переглянь усі групи тем, які ти вивчаєш у RWords.",
-    images: [
-      {
-        url: "https://rwords.vercel.app/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "RWords Author Page",
-      },
-    ],
-  },
-}
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
