@@ -12,7 +12,11 @@ import { defaultMetadata } from "@/lib/seoConfig"
 
 export const metadata = defaultMetadata
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],    // потрібний підмножина
+  display: "swap",       // зменшує FOUT/FOIT
+  variable: "--font-inter", // опціонально для використання через CSS var
+})
 
 // Робимо layout async
 export default async function RootLayout({ children }) {
