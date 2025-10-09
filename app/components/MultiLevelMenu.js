@@ -7,6 +7,7 @@ import Link from "next/link"
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 import { useDatabase } from "@/app/context/DatabaseContext"
+import { useAuth } from "@/app/context/AuthContext"
 
 const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   const { isDatabaseReady } = useDatabase()
@@ -14,6 +15,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   const { data: session, status } = useSession()
 //   const user = session?.user
   const user = isFromApp ? "user" : session?.user
+  console.log("MenuItem user:", user)
   const [open, setOpen] = useState(false)
   const ref = useRef()
 
