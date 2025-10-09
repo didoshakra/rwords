@@ -13,12 +13,11 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   const { isDatabaseReady } = useDatabase()
   const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
-//   const user = session?.user
-  const user = isFromApp ? "user" : session?.user
+  const user = session?.user
   console.log("MenuItem user:", user)
   const [open, setOpen] = useState(false)
   const ref = useRef()
- 
+
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -33,7 +32,8 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   // Якщо у елемента є roles, перевіряємо доступ користувача
 
   if (item.roles) {
-    const hasAccess = user ? item.roles.includes(user.role) : !isDatabaseReady // Якщо користувача нема, то даємо доступ тільки якщо БД не готова
+    // const hasAccess = user ? item.roles.includes(user.role) : !isDatabaseReady // Якщо користувача нема, то даємо доступ тільки якщо БД не готова
+    const hasAccess = isFromApp ? item.roles.includes("user") : user ? item.roles.includes(user.role) : !isDatabaseReady
 
     if (!hasAccess) {
       console.log(`Ховаємо пункт '${item.title}' — user:`, user, " — roles:", item.roles)
