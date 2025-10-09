@@ -14,7 +14,6 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
-  console.log("MenuItem user:", user)
   const [open, setOpen] = useState(false)
   const ref = useRef()
 
