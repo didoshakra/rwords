@@ -18,7 +18,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   console.log("MenuItem user:", user)
   const [open, setOpen] = useState(false)
   const ref = useRef()
-
+ 
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
