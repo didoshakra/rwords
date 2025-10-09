@@ -10,7 +10,7 @@ export const headMenu = [
     roles: ["admin", "manager", "user"], // ❗️ admin і manager
   },
   {
-    a: "RWords",
+    a: "RWords", 
     link: "/about_rwords",
   },
 

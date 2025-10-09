@@ -9,10 +9,11 @@ import { useSession } from "next-auth/react"
 import { useDatabase } from "@/app/context/DatabaseContext"
 
 const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
-    const { isDatabaseReady } = useDatabase()
-//   const { user } = useAuth()
+  const { isDatabaseReady } = useDatabase()
+  const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
-  const user = session?.user
+//   const user = session?.user
+  const user = isFromApp ? "user" : session?.user
   const [open, setOpen] = useState(false)
   const ref = useRef()
 
@@ -29,14 +30,6 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   // ❗️Перевірка ролі з умовою
   // Якщо у елемента є roles, перевіряємо доступ користувача
 
-//   if (item.roles) {
-//     const hasAccess = user ? item.roles.includes(user.role) : item.skipRoleCheckIfNoUser === true
-
-//     if (!hasAccess) {
-//       console.log(`Ховаємо пункт '${item.title}' — user:`, user, " — roles:", item.roles)
-//       return null
-//     }
-//   }
   if (item.roles) {
     const hasAccess = user ? item.roles.includes(user.role) : !isDatabaseReady // Якщо користувача нема, то даємо доступ тільки якщо БД не готова
 
