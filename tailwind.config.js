@@ -126,48 +126,45 @@ module.exports = {
         //-- table (th) ------------------------------------------
         tabThOn: "var(--color-pCol8)",
         tabThOnD: "var(--color-pCol4)",
-        tabThBg: "var(--color-pCol1)",
+        tabThBg: "var(--color-pCol2)",
         tabThBgD: "#1e293b", //--color-pCol8: #1e293b;
-        tabBgHov: "var(--color-pCol2)",
-        tabBgHovD: "var(--color-pCol7)",
+        // tabBgHov: "var(--color-pCol2)",
+        // tabBgHovD: "var(--color-pCol7)",
         tabThBorder: "var(--color-pCol3)",
         tabThBorderD: "#64748b", //--color-pCol5:#64748b;
 
         //-- table/tr Рядки
 
         //
-        tabTrBg: "#FFFFFF",
-        tabTrBgD: "rgb(55 65 81)",
-        tabTrBgHov: "var(--color-pCol1)",
-        tabTrBgHovD: "var(--color-pCol6)",
         tabTrOn: "#000000",
         tabTrOnD: "#FFFFFF",
+        tabTrBg: "#FFFFFF",
+        tabTrBgD: "rgb(55 65 81)",
+        tabTrBgHov: "var(--color-pCol2)",
+        tabTrBgHovD: "var(--color-pCol5)",
+        tabTrBgSel: "var(--color-pCol3)", //Вибрані рядки
+        tabTrBgSelHov: "var(--color-pCol5)",
 
+        tabTr1On: "var(--color-pCol7)",
+        tabTr1OnD: "var(--color-pCol2)",
         tabTr1Bg: "var(--color-pCol0)",
         tabTr1BgD: "rgb(55 65 81)",
         tabTr1BgHov: "var(--color-pCol2)",
         tabTr1BgHovD: "var(--color-pCol5)",
-        tabTr1On: "var(--color-pCol7)",
-        tabTr1OnD: "var(--color-pCol2)",
-        tabTrBgHovD: "var(--color-pCol3)",
-        tabTrBgSel: "var(--color-pCol4)", //Вибрані рядки
-        tabTrBgSelHov: "var(--color-pCol3)",
+        tabTr1BgSel: "var(--color-pCol4)", //Вибрані рядки
+        tabTr1BgSelHov: "var(--color-pCol3)",
 
-        tabTr2Bg: "var(--color-pCol1)",
-        tabTr2BgD: "rgb(55 65 81)",
-        tabTr2BgHov: "var(--color-pCol3)",
-        tabTr2BgHovD: "var(--color-pCol7)",
         tabTr2On: "var(--color-pCol8)",
         tabTr2OnD: "var(--color-pCol4)",
+        tabTr2Bg: "var(--color-pCol1)",
+        tabTr2BgD: "rgb(55 65 81)",
+        tabTr2BgHov: "var(--color-pCol2)",
+        tabTr2BgHovD: "var(--color-pCol5)",
 
-        tabTrBorder: "var(--color-pCol1)",
-        tabTrBorderD: "#dde2eb",
-        tabTrOn: "var(--color-pCol9)",
-        tabTrOnD: "var(--color-pCol0)",
-        tabTrBgEve: "var(--color-pCol0)",
-        tabTrBgEveD: "#4b5563",
-        tabTrBgHov: "var(--color-pCol1)",
-        // tabTrBgHovD: "#707885",
+        // tabTrBorder: "var(--color-pCol1)",
+        // tabTrBorderD: "#dde2eb",
+        // tabTrBgEve: "var(--color-pCol0)",
+        // tabTrBgEveD: "#4b5563",
       },
     },
 

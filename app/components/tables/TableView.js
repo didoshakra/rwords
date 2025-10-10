@@ -304,7 +304,8 @@ export default function TableView({
               </span>
 
               <span>
-                ({topicWords.length})⮞ {level1Head}: {topic.name}
+                {/* ({topicWords.length})⮞ {level1Head}: {topic.name} */}
+                ({topicWords.length}) {level1Head}: {topic.name}
               </span>
               <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
             </div>
