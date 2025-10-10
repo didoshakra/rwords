@@ -18,7 +18,7 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
     return headMenu.map((item, index) => {
       return (
         <li
-          className="flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+          className="flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
           key={index}
           //   onClick={() => setDrawerHeaderMenuDroopOpen(false)}
           onClick={() => tagleMenu()}
@@ -32,16 +32,16 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
   return (
     <div className="m-0 items-center pb-2 ">
       <div
-        className="w-fullroup flex list-none flex-nowrap items-center space-x-1 text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+        className="w-fullroup flex list-none flex-nowrap items-center space-x-1 text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
         onClick={() => setDrawerHeaderMenuDroopOpen(!drawerHeaderMenuDroopOpen)}
         title="меню"
       >
         {/* іконка мобільного меню */}
-        <p className="pl-2 text-lg font-medium italic  text-hText dark:textD ">Головне меню</p>
+        <p className="pl-2 text-lg font-medium italic  text-hOn dark:textD ">Головне меню</p>
         {drawerHeaderMenuDroopOpen ? (
           // стрілка вверх
           <svg
-            className="h-6 w-6  dark:hover:text-hTextHovD dark:group-hover:text-hTextHov"
+            className="h-6 w-6  dark:hover:text-hOnHovD dark:group-hover:text-hOnHov"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -57,7 +57,7 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
         ) : (
           // стрілка вниз
           <svg
-            className="h-6 w-6  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+            className="h-6 w-6  dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
             width="24"
             height="24"
             viewBox="0 0 24 24"

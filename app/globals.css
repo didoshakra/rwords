@@ -64,15 +64,15 @@
 /* =================== */
 @layer utilities {
   /* === Заголовки === */
-  .h1Text {
+  .h1On {
     @apply text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight;
   }
 
-  .h2Text {
+  .h2On {
     @apply text-xl sm:text-2xl lg:text-3xl font-semibold leading-snug;
   }
 
-  .h3Text {
+  .h3On {
     @apply text-lg sm:text-xl lg:text-2xl font-semibold leading-snug;
   }
 
@@ -81,7 +81,7 @@
   }
 
   /* === Параграфи === */
-  .pText {
+  .pOn {
     @apply text-sm sm:text-base lg:text-lg font-normal leading-snug;
   }
 

@@ -39,7 +39,7 @@ const HeaderThemesMenuButton = ({ setSetingMenuOpen }) => {
         <span className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-hBgHov dark:hover:bg-hBgHovD">
           {/* іконка фарби */}
           <svg
-            className="h-7 w-7 text-hText dark:text-hTextHovD"
+            className="h-7 w-7 text-hOn dark:text-hOnHovD"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -57,9 +57,9 @@ const HeaderThemesMenuButton = ({ setSetingMenuOpen }) => {
             <circle cx="16.5" cy="10.5" r=".5" fill="currentColor" />
           </svg>
           {/* {resolvedTheme === "dark" ? (
-            <FaSun className="h-7 w-7 text-hTextD hover:text-hTextHov" />
+            <FaSun className="h-7 w-7 text-hOnD hover:text-hOnHov" />
           ) : (
-            <FaMoon className="h-7 w-7 text-hText dark:text-hTextHovD" />
+            <FaMoon className="h-7 w-7 text-hOn dark:text-hOnHovD" />
           )} */}
         </span>
         <span className="md:hidden ml-2">Теми</span>
@@ -69,14 +69,14 @@ const HeaderThemesMenuButton = ({ setSetingMenuOpen }) => {
       <div className={`${themesMenuOpen ? "absolute" : "hidden"} right-0 z-10 mt-2 w-44`}>
         <ul className="m-0 rounded-lg border border-hBorder bg-hBg p-1 drop-shadow-md dark:border-hBorderD dark:bg-hBgD ">
           <li
-            className="group flex items-center space-x-2 p-2 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD cursor-pointer"
+            className="group flex items-center space-x-2 p-2 text-hOn hover:bg-hBgHov hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD cursor-pointer"
             onClick={themeMenuToggle}
           >
             {resolvedTheme === "dark" ? <FaSun className="h-5 w-5" /> : <FaMoon className="h-5 w-5" />}
             <span> {resolvedTheme === "dark" ? "Світла" : "Темна"}</span>
           </li>
           <li
-            className="group flex items-center space-x-2 p-2 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD cursor-pointer"
+            className="group flex items-center space-x-2 p-2 text-hOn hover:bg-hBgHov hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD cursor-pointer"
             onClick={() => setSetingThemesMenuOpen(!setingThemesMenuOpen)}
           >
             <FaPalette className="h-5 w-5" />

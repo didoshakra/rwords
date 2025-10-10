@@ -45,7 +45,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen }) => {
   return (
     <li ref={ref} className="py-1" style={{ paddingLeft: `${depth * 5}px` }}>
       <div
-        className={`flex items-center  cursor-pointer hover:text-blue-600 text-level${depth}`}
+        className={`flex items-center  cursor-pointer hover:text-levelHover text-level${depth}`}
         onClick={() => {
           if (hasSubmenu) setOpen((prev) => !prev)
           else setDrawerOpen?.(false)

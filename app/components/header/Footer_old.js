@@ -3,7 +3,7 @@
 
 const Footer = () => {
   return (
-    <section className="mx-auto max-w-full bg-bodyBg dark:bg-bodyBgD">
+    <section className="mx-auto max-w-full bg-pBg dark:bg-pBgD">
       <div className=" flex items-center justify-center p-1">
         {/* стрілка */}
         <a
@@ -11,7 +11,7 @@ const Footer = () => {
           className=" flex h-[60px] w-[60px]  items-center justify-center  rounded-full border-0 border-current bg-hBg  hover:bg-hBgHov dark:bg-hBg dark:hover:bg-hBgHovD"
         >
           <svg
-            className="h-10 w-10 text-hText"
+            className="h-10 w-10 text-hOn"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -28,13 +28,13 @@ const Footer = () => {
       </div>
       <div className="flex w-full flex-col items-start justify-between pt-10 md:flex-row">
         <div className="relative flex flex-col items-start justify-start text-left">
-          <h2 className="flex flex-row items-center justify-center px-4 text-lg font-bold text-hText dark:text-hTextD">
+          <h2 className="flex flex-row items-center justify-center px-4 text-lg font-bold text-hOn dark:text-hOnD">
             RAtest
           </h2>
           <ul className="flex items-center justify-between">
             <li className="flex  flex-row items-center justify-start px-4">
               <a
-                className="group flex list-none flex-nowrap items-center space-x-1 p-1 text-hText  hover:text-hTextHov dark:text-hTextD  dark:hover:text-hTextHovD"
+                className="group flex list-none flex-nowrap items-center space-x-1 p-1 text-hOn  hover:text-hOnHov dark:text-hOnD  dark:hover:text-hOnHovD"
                 href="https://www.facebook.com/profile.php?id=100017742340573"
               >
                 {/* Facebook */}
@@ -56,10 +56,10 @@ const Footer = () => {
         </div>
 
         <div className="relative flex flex-col items-start justify-start py-2 text-left">
-          <h2 className="flex  flex-row items-center justify-center px-4 text-lg font-bold text-hText dark:text-hTextD">
+          <h2 className="flex  flex-row items-center justify-center px-4 text-lg font-bold text-hOn dark:text-hOnD">
             Є запитання?
           </h2>
-          <ul className="text-hText dark:text-hTextD">
+          <ul className="text-hOn dark:text-hOnD">
             <li className="flex  flex-row items-center justify-start px-4 text-sm">
               <svg className="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -143,7 +143,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="flex w-full flex-row items-center justify-center pt-10 text-hText dark:text-hTextD">
+      <div className="flex w-full flex-row items-center justify-center pt-10 text-hOn dark:text-hOnD">
         Copyright © {new Date().getFullYear()}-{new Date().getMonth()}-{new Date().getDate()}
         {/* Серце*/}
         <svg

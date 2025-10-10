@@ -52,7 +52,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
       {/* іконка seting*/}
       {/* <div className="HeaderThemesDroopMenu__icon" onClick={setSetingThemesMenuToggle}> */}
       <button
-        className="flex items-center   text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD"
+        className="flex items-center   text-hOn hover:text-hOnHov dark:text-hOnD dark:hover:text-hOnHovD"
         onClick={setSetingThemesMenuToggle}
       >
         <span
@@ -61,7 +61,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
         >
           {/* іконка фарби */}
           <svg
-            className="h-8 w-8  dark:text-hTextD dark:hover:text-hTextHovD"
+            className="h-8 w-8  dark:text-hOnD dark:hover:text-hOnHovD"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -89,7 +89,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
         >
           <li
             // ref={ref_HeaderThemesDroopMenu}
-            className="active:text-hTextAct dark:active:text-hTextAct group flex list-none flex-nowrap items-center space-x-1 p-1 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="active:text-hOnAct dark:active:text-hOnAct group flex list-none flex-nowrap items-center space-x-1 p-1 text-hOn hover:bg-hBgHov hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             onClick={themeMenuToggle}
             //   onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
           >
@@ -99,7 +99,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
             >
               {resolvedTheme === "dark" ? (
                 <svg
-                  className="h-8 w-8 text-hText dark:text-hTextHovD group-hover:text-hTextHov dark:group-hover:text-hTextHovD"
+                  className="h-8 w-8 text-hOn dark:text-hOnHovD group-hover:text-hOnHov dark:group-hover:text-hOnHovD"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -118,7 +118,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
                 </svg>
               ) : (
                 <svg
-                  className="h-8 w-8  text-hTextHov dark:text-hTextHovD dark:group-hover:text-hTextHovD group-hover:text-hTextHov"
+                  className="h-8 w-8  text-hOnHov dark:text-hOnHovD dark:group-hover:text-hOnHovD group-hover:text-hOnHov"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -137,14 +137,14 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
             <span> {resolvedTheme === "dark" ? "Світла" : "Темна"}</span>
           </li>
           <li
-            className="active:text-hTextAct dark:active:text-hTextAct group flex list-none flex-nowrap items-center space-x-1 p-1 text-hText hover:bg-hBgHov hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="active:text-hOnAct dark:active:text-hOnAct group flex list-none flex-nowrap items-center space-x-1 p-1 text-hOn hover:bg-hBgHov hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             onClick={() => setSetingThemesMenuOpen(!setingThemesMenuOpen)}
           >
             {/* // Від цього об'єкту li відраховуються відступи в випадаючих меню мов  */}
             <span>
               {/* іконка валік/малювати */}
               {/* <svg
-                className="h-8 w-8 text-hText group-hover:text-hTextHov dark:text-hTextD dark:group-hover:text-hTextHovD"
+                className="h-8 w-8 text-hOn group-hover:text-hOnHov dark:text-hOnD dark:group-hover:text-hOnHovD"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
@@ -161,7 +161,7 @@ const HeaderThemesDroopMenu = ({ setMobileDroopMenu }) => {
               </svg> */}
               {/* іконка фарби */}
               <svg
-                className="h-8 w-8 text-hText group-hover:text-hTextHov dark:text-hTextD dark:group-hover:text-hTextHovD"
+                className="h-8 w-8 text-hOn group-hover:text-hOnHov dark:text-hOnD dark:group-hover:text-hOnHovD"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"

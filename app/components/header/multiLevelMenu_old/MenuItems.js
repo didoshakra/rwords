@@ -126,8 +126,6 @@ const MenuItems = ({ idKey, items, depthLevel, setDrawerOpen }) => {
           <>
             <button
               id={domId}
-              //   className="  hover:text-itemHover"
-              //   className="menu-items-button  hover:text-itemHover"
               className={`${styleColor}  hover:text-itemHover flex text-center`}
               type="button"
               aria-haspopup="menu" //тип інтерактивного спливаючого елемента

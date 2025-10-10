@@ -7,7 +7,6 @@ import Link from "next/link"
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 
-
 // Проста модалка
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -28,7 +27,7 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function BlogPage() {
-//   const { user } = useAuth()
+  //   const { user } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [posts, setPosts] = useState([])
@@ -113,15 +112,15 @@ export default function BlogPage() {
   }
 
   return (
-    <main className="text-pText dark:text-pTextD max-w-3xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-h1Text text-2xl sm:text-3xl lg:text-4xl font-bold mb-6">Блог</h1>
+    <main className="text-pOn dark:text-pOnD max-w-3xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-h1On text-2xl sm:text-3xl lg:text-4xl font-bold mb-6">Блог</h1>
 
       <div className="mb-6 flex justify-between items-center">
         <span className="font-semibold text-lg">Пости:</span>
         {user && (
           <button
             onClick={openAddModal}
-            className="bg-btBg dark:btBgD text-btText dark:text-btTextD hover:opacity-70 transition-colors duration-200 text-white px-4 py-2 rounded-full"
+            className="bg-btBg dark:btBgD text-btOn dark:text-btOnD hover:opacity-70 transition-colors duration-200 text-white px-4 py-2 rounded-full"
           >
             Додати пост
           </button>
@@ -166,7 +165,7 @@ export default function BlogPage() {
 
       {/* Модалка для додавання/редагування */}
       <Modal open={modal === "add" || (modal && modal.type === "edit")} onClose={closeModal}>
-        <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
+        <h2 className="text-h2On text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
           {modal && modal.type === "edit" ? "Редагувати пост" : "Додати пост"}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -190,7 +189,7 @@ export default function BlogPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="bg-btBg dark:btBgD text-btText dark:text-btTextD hover:opacity-70 transition-colors duration-200 px-4 py-2 rounded-full"
+              className="bg-btBg dark:btBgD text-btOn dark:text-btOnD hover:opacity-70 transition-colors duration-200 px-4 py-2 rounded-full"
             >
               {isPending
                 ? modal && modal.type === "edit"
@@ -203,7 +202,7 @@ export default function BlogPage() {
             <button
               type="button"
               onClick={closeModal}
-              className="px-4 py-2 rounded-full border bg-bt1Bg dark:bt1BgD text-bt1Text dark:text-bt1TextD hover:opacity-70  transition-colors duration-150"
+              className="px-4 py-2 rounded-full border bg-bt1Bg dark:bt1BgD text-bt1On dark:text-bt1OnD hover:opacity-70  transition-colors duration-150"
             >
               Відмінити
             </button>

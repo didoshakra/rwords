@@ -1,17 +1,17 @@
 // SiteFooter.jsx
 "use client"
-import {img} from "next/image"
+import { img } from "next/image"
 
 const SiteFooter = () => {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="bg-bodyBg dark:bg-bodyBgD text-pText dark:text-pTextD border-t border-gray-200 dark:border-gray-700 mt-10">
+    <footer className="bg-pBg dark:bg-pBgD text-pOn dark:text-pOnD border-t border-gray-200 dark:border-gray-700 mt-10">
       {/* <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col md:flex-row justify-between gap-8"> */}
       <div className="max-w-6xl px-4 py-10 flex flex-col md:flex-row justify-between gap-8">
         {/* Logo / Brand */}
         <div>
-          <h1 className="text-2xl font-bold text-h1Text dark:text-h1TextD mb-2">RWords</h1>
+          <h1 className="text-2xl font-bold text-h1On mb-2">RWords</h1>
           <p className="text-sm max-w-xs">
             Застосунок для вивчення слів з голосовим керуванням, персональними словниками і оцінкою знань.
           </p>
@@ -19,7 +19,7 @@ const SiteFooter = () => {
 
         {/* Контакти */}
         <div>
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Контакти</h3>
+          <h3 className="text-h3On text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Контакти</h3>
           <ul className="space-y-1 text-sm">
             <li>📍 вул. Гулака, Калуш, Україна</li>
             <li>
@@ -36,17 +36,17 @@ const SiteFooter = () => {
 
         {/* Соцмережі */}
         <div>
-          <h3 className="text-h3Text text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Ми в соцмережах</h3>
+          <h3 className="text-h3On text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Ми в соцмережах</h3>
           <ul className="flex space-x-4 items-center">
             <li>
               {/* GitHub */}
               <a
-                className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+                className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
                 href="https://github.com/didoshakra?tab=repositories"
                 title="GitHub"
               >
                 <svg
-                  className="h-6 w-6  dark:hover:text-hTextHovD"
+                  className="h-6 w-6  dark:hover:text-hOnHovD"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -65,7 +65,7 @@ const SiteFooter = () => {
                 href="https://www.facebook.com/profile.php?id=100004339204236"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-hTextHov dark:hover:text-hTextHovD"
+                className="hover:text-hOnHov dark:hover:text-hOnHovD"
               >
                 <svg
                   className="h-6 w-6"
@@ -88,7 +88,7 @@ const SiteFooter = () => {
                 title="Instagram"
               >
                 <svg
-                  className="h-6 w-6  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+                  className="h-6 w-6  dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -110,7 +110,7 @@ const SiteFooter = () => {
                 title="Х/Twitter"
               >
                 <svg
-                  className="h-5 w-5 dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+                  className="h-5 w-5 dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 1200 1227"
                   fill="currentColor"

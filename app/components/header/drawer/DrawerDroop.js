@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import DrawerHeaderMenuDroop from './DrawerHeaderMenuDroop'
+import DrawerHeaderMenuDroop from "./DrawerHeaderMenuDroop"
 import DrawerSocialMenuDroop from "@/app/components/header/drawer/DrawerSocialMenuDroop"
 import DrawerExtendedMenuDroop from "@/app/components/header/drawer/DrawerExtendedMenuDroop"
 //***************************************************************** */
@@ -28,7 +28,7 @@ export default function DrawerDroop({ drawerOpen, setDrawerOpen }) {
           </Link>
           <Link
             href="/"
-            className="justify-begin  flex items-center px-4 text-2xl font-bold italic text-hText  dark:text-hTextD md:text-2xl"
+            className="justify-begin  flex items-center px-4 text-2xl font-bold italic text-hOn  dark:text-hOnD md:text-2xl"
             title="RWORDS"
           >
             RWords
@@ -37,7 +37,7 @@ export default function DrawerDroop({ drawerOpen, setDrawerOpen }) {
         <div onClick={(e) => setDrawerOpen(false)} className="pr-2">
           {/* <IconCancel */}
           <svg
-            className="h-6 w-6 text-hText dark:text-hTextD"
+            className="h-6 w-6 text-hOn dark:text-hOnD"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -54,13 +54,13 @@ export default function DrawerDroop({ drawerOpen, setDrawerOpen }) {
         </div>
       </div>
       {/* --- Список меню --<hr Divider/Роздільник-------------------------------- */}
-      <hr className="h-0.5 min-w-full mt-2 bg-drawDropHr" />
+      <hr className="h-0.5 min-w-full mt-2 bg-drawDropHr dark:bg-drawDropHrD" />
       <DrawerHeaderMenuDroop setDrawerOpen={setDrawerOpen} />
       {/* ----------------------------------------------------------- */}
-      <hr className="h-0.5 min-w-full bg-drawDropHr" />
+      <hr className="h-0.5 min-w-full bg-drawDropHr dark:bg-drawDropHrD" />
       <DrawerExtendedMenuDroop setDrawerOpen={setDrawerOpen} />
       {/* ----------------------------------------------------------- */}
-      <hr className="h-0.5 min-w-full bg-drawDropHr" />
+      <hr className="h-0.5 min-w-full bg-drawDropHr dark:bg-drawDropHrD" />
       {/* ----------------------------------------------------------- */}
       <DrawerSocialMenuDroop />
       {/* <Navbar multilevelMenu={menuBig} title={"Багаторівнневе пробне меню"} setDrawerOpen={setDrawerOpen} /> */}

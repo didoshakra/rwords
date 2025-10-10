@@ -1,13 +1,13 @@
 //CL/userSwitcher.js //
 "use client"
-import { useState, useRef, useEffect} from "react"
+import { useState, useRef, useEffect } from "react"
 // import { useAuth } from "@/app/context/AuthContext"
 import { signOut, useSession } from "next-auth/react"
 import { FaUserCircle } from "react-icons/fa"
 import Link from "next/link"
 
 export default function UserSwitcher({ setMobileDroopMenu }) {
-//   const { user, logout } = useAuth()
+  //   const { user, logout } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [open, setOpen] = useState(false)
@@ -43,7 +43,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
         title={user ? user.name || user.email : "Гість"}
       >
         {/* <div
-          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hText"
+          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hOn"
           style={{
             color: "#fff",
             fontWeight: "bold",
@@ -53,7 +53,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
           {user ? initials : <FaUserCircle size={32} />}
         </div> */}
         <div
-          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hText overflow-hidden"
+          className="w-10 h-10 flex items-center justify-center rounded-full transition-colors bg-hOn overflow-hidden"
           style={{
             color: "#fff",
             fontWeight: "bold",
@@ -79,7 +79,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
       {/* 🖥️ Десктопна кнопка: тільки аватарка */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="hidden md:flex text-white text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hText hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
+        className="hidden md:flex text-white text-sm sm:text-base items-center justify-center w-10 h-10 rounded-full bg-hOn hover:bg-hBgHov dark:hover:bg-hBgHovD transition-colors focus:outline-none"
         title={user ? user.name || user.email : "Гість"}
       >
         {/* {user ? initials : <FaUserCircle size={32} />} */}

@@ -20,52 +20,60 @@ module.exports = {
         level3: "#ac00ca",
         level4: "#fcd34d",
         level5: "#0e6955",
-        // closeLevel: "#82AE46",
-        // 1: "#82AE46",
-        // 2: "#00f",
-        // 3: "#13ff11",
-        // 4: "#ac00ca",
+        levelHover: "#2563eb",
 
         itemHover: "#f64532",
-        mainColor: "red",
 
-        /* -- Для меню вибору тем --*/
-        themeDefBg: "#bef264",
-        theme1Bg: "#a5b4fc",
-        theme2Bg: "#f9a8d4",
-        theme3Bg: "#fcd34d",
-        theme4Bg: "#86efac",
-
-        //0-- Загальні
-        bodyBg: "var(--color-pCol0)",
-        bodyBgD: "#334155", // --color-pCol7: #334155;
         //
-        infoMsg: "#8c92f8",
+        infoMsg: "#4f46e5",
         infoMsgD: "#8c92f8",
-        errorMsg: "#f21e08",
-        errorMsgD: "#f21e08",
+        errorMsg: "#f64532",
+        errorMsgD: "#f64532",
         eclipseBg: "rgba(36, 12, 12, 0.3)", //Затемнення екрану
-        linkText: "#00f",
+        linkText: "#1d4ed8",
+        linkTextD: "#2563eb",
+
+        //-- page --------------------------------------------
+        pBg: "var(--color-pCol0)",
+        pBgD: "#334155",
+        pOn: "var(--color-pCol7)",
+        pOnD: "var(--color-pCol3)",
+        //-- page1 --------------------------------------------
+        pBg1: "var(--color-pCol1)",
+        pBg1D: "#1e293b",
+        pOn1: "var(--color-pCol8)",
+        pOn1D: "var(--color-pCol0)",
+
+        //--  картка -------------------------------
+        kBg: "var(--color-pCol12)",
+        kOn: "var(--color-pCol7)",
+        kBor: "var(--color-pCol3)",
+
+        //-- картка1 -------------------------------
+        k1Bg: "var(--color-pCol1)",
+        k1On: "var(--color-pCol8)",
+        k1Bor: "var(--color-pCol4)",
+
         //6-- headTape --------------------------------------------
-        hTapeText: "var(--color-pCol0)",
+        hTapeOn: "var(--color-pCol0)",
         hTapeBg: "var(--color-pCol6)",
         hTapeBgD: "#0f172a", //--color-pCol9: #0f172a;
 
         //1-- form (Bg-для 2-х форм)-------
-        fBg: "var(--color-pCol)",
-        fBgD: "#1e293b", //--color-pCol8: #1e293b;
-        fBg1: "var(--color-pCol1)",
-        fBg1D: "#334155", //--color-pCol7: #334155;
-        fBorder: "var(--color-pCol4)",
-        fBorderD: "#64748b", //--color-pCol5:#64748b;
-        fText: "var(--color-pCol7)",
-        fTextD: "var(--color-pCol2)",
-        fTextHov: "var(--color-pCol8)",
-        fTextHovD: "var(--color-pCol8)",
-        fInputBg: "var(--color-pCol0)",
-        fInputBgD: "#475569", //  --color-pCol6: #475569;
-        fBgHov: "var(--color-pCol2)",
-        fBgHovD: "var(--color-pCol1)",
+        // fBg: "var(--color-pCol)",
+        // fBgD: "#1e293b", //--color-pCol8: #1e293b;
+        // fBg1: "var(--color-pCol1)",
+        // fBg1D: "#334155", //--color-pCol7: #334155;
+        // fBorder: "var(--color-pCol4)",
+        // fBorderD: "#64748b", //--color-pCol5:#64748b;
+        // fText: "var(--color-pCol7)",
+        // fTextD: "var(--color-pCol2)",
+        // fTextHov: "var(--color-pCol8)",
+        // fTextHovD: "var(--color-pCol8)",
+        // fInputBg: "var(--color-pCol0)",
+        // fInputBgD: "#475569", //  --color-pCol6: #475569;
+        // fBgHov: "var(--color-pCol2)",
+        // fBgHovD: "var(--color-pCol1)",
 
         //2-- head --------------------------------------------
         // Bg
@@ -76,92 +84,90 @@ module.exports = {
         hBorder: "var(--color-pCol3)",
         hBorderD: "#64748b", //--color-pCol5:#64748b;
         // Text
-        hText: "var(--color-pCol8)",
-        hTextD: "var(--color-pCol3)",
-        hTextHov: "var(--color-pCol9)",
-        hTextHovD: "var(--color-pCol4)",
-        hTextImg: "var(--color-pCol6)",
+        hOn: "var(--color-pCol8)",
+        hOnD: "var(--color-pCol2)",
+        hOnHov: "var(--color-pCol6)",
+        hOnHovD: "var(--color-pCol2)",
         //
-        h1Text: "var(--color-pCol11)",
-        h1TextD: "var(--color-pCol11)",
+        h1On: "var(--color-pCol11)",
+        h1OnD: "var(--color-pCol11)",
         //
-        h2Text: "var(--color-pCol10)",
-        h2TextD: "var(--color---color-pCol10)",
+        h2On: "var(--color-pCol10)",
+        h2OnD: "var(--color---color-pCol10)",
         //
-        h3Text: "var(--color-pCol8)",
-        h3TextD: "var(--color---color-pCol8)",
-
-        //-- page --------------------------------------------
-        // Bg
-        pBg: "var(--color-pCol2)",
-        pBgD: "#1e293b", //--color-pCol8: #1e293b;
-        pBg1: "var(--color-pCol12)",
-        pBg1D: "#1e293b", //--color-pCol8: #1e293b;
-        pBgHov: "var(--color-pCol3)",
-        pBgHovD: "var(--color-pCol6)",
-        pBorder: "var(--color-pCol3)",
-        pBorderD: "#64748b", //--color-pCol5:#64748b;
-        // Text
-        pText: "var(--color-pCol6)",
-        pTextD: "var(--color-pCol3)",
-        pTextHov: "var(--color-pCol8)",
-        pTextHovD: "var(--color-pCol3)",
-        pTextImg: "var(--color-pCol6)",
+        h3On: "var(--color-pCol9)",
+        h3OnD: "var(--color---color-pCol1)",
 
         // bottom:
-        btText: "var(--color-pCol0)",
-        btTextD: "var(--color-pCol0)",
-        // btTextHov: "var(--color-pCol0)",
-        // btTextHovD: "var(--color-pCol0)",
-        btBg: "var(--color-pCol6)",
-        btBgD: "var(--color-pCol6)",
-        btBgHov: "var(--color-pCol8)",
+        btBg: "var(--color-pCol5)",
+        btBgD: "var(--color-pCol5)",
+        btBgHov: "var(--color-pCol4)",
+        btOn: "var(--color-pCol0)",
+        btOnD: "var(--color-pCol0)",
         //
-        bt1Text: "var(--color-pCol0)",
-        bt1TextD: "var(--color-pCol0)",
         bt1Bg: "var(--color-pCol10)",
         bt1BgD: "var(--color-pCol6)",
         bt1BgHov: "var(--color-pCol4)",
+        bt1On: "var(--color-pCol0)",
+        bt1OnD: "var(--color-pCol0)",
 
         //3--Випадаючоге меню
         drawDropMenuBg: "var(--color-pCol1)",
         drawDropMenuBgD: "#1e293b", //--color-pCol8: #1e293b;
         drawDropHr: "var(--color-pCol3)", // Лінії розмежування
-        drawDropHrD: "#475569", // --color-pCol6: #475569;
+        drawDropHrD: "var(--color-pCol3)", // --color-pCol6: #475569;
 
         //--- iconT /Table,Form,Card,
-        iconT: "#f64532",
-        iconTD: "#f64532",
-        iconInfo: "#138611",
-        iconInfoD: "#13ff11",
+        // iconT: "#f64532",
+        // iconTD: "#f64532",
+        // iconInfo: "#138611",
+        // iconInfoD: "#13ff11",
 
-        //-- table (th/нижній підсумок) ------------------------------------------
-        tabThBorder: "var(--color-pCol3)",
-        tabThBorderD: "#64748b", //--color-pCol5:#64748b;
-        // tabThBorderD: "#475569", //--color-pCol6;
-        tabThText: "var(--color-pCol9)",
-        tabThTextD: "var(--color-pCol3)",
+        //-- table (th) ------------------------------------------
+        tabThOn: "var(--color-pCol8)",
+        tabThOnD: "var(--color-pCol4)",
         tabThBg: "var(--color-pCol1)",
         tabThBgD: "#1e293b", //--color-pCol8: #1e293b;
         tabBgHov: "var(--color-pCol2)",
         tabBgHovD: "var(--color-pCol7)",
+        tabThBorder: "var(--color-pCol3)",
+        tabThBorderD: "#64748b", //--color-pCol5:#64748b;
 
         //-- table/tr Рядки
+
+        //
+        tabTrBg: "#FFFFFF",
+        tabTrBgD: "rgb(55 65 81)",
+        tabTrBgHov: "var(--color-pCol1)",
+        tabTrBgHovD: "var(--color-pCol6)",
+        tabTrOn: "#000000",
+        tabTrOnD: "#FFFFFF",
+
+        tabTr1Bg: "var(--color-pCol0)",
+        tabTr1BgD: "rgb(55 65 81)",
+        tabTr1BgHov: "var(--color-pCol2)",
+        tabTr1BgHovD: "var(--color-pCol5)",
+        tabTr1On: "var(--color-pCol7)",
+        tabTr1OnD: "var(--color-pCol2)",
+        tabTrBgHovD: "var(--color-pCol3)",
+        tabTrBgSel: "var(--color-pCol4)", //Вибрані рядки
+        tabTrBgSelHov: "var(--color-pCol3)",
+
+        tabTr2Bg: "var(--color-pCol1)",
+        tabTr2BgD: "rgb(55 65 81)",
+        tabTr2BgHov: "var(--color-pCol3)",
+        tabTr2BgHovD: "var(--color-pCol7)",
+        tabTr2On: "var(--color-pCol8)",
+        tabTr2OnD: "var(--color-pCol4)",
+
         tabTrBorder: "var(--color-pCol1)",
         tabTrBorderD: "#dde2eb",
-        tabTrText: "var(--color-pCol9)",
-        tabTrTextD: "var(--color-pCol0)",
-        tabTrBg: "#fff",
-        tabTrBgD: "rgb(55 65 81)",
+        tabTrOn: "var(--color-pCol9)",
+        tabTrOnD: "var(--color-pCol0)",
         tabTrBgEve: "var(--color-pCol0)",
         tabTrBgEveD: "#4b5563",
         tabTrBgHov: "var(--color-pCol1)",
         // tabTrBgHovD: "#707885",
-        tabTrBgHovD: "var(--color-pCol4)",
-        tabTrBgSel: "var(--color-pCol2)", //Вибрані рядки
-        tabTrBgSelD: "#677485",
-        tabTrBgSelHov: "var(--color-pCol3)",
-        tabTrBgSelHovD: "#8694a6",
       },
     },
 

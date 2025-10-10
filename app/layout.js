@@ -13,8 +13,8 @@ import { defaultMetadata } from "@/lib/seoConfig"
 export const metadata = defaultMetadata
 
 const inter = Inter({
-  subsets: ["latin"],    // потрібний підмножина
-  display: "swap",       // зменшує FOUT/FOIT
+  subsets: ["latin"], // потрібний підмножина
+  display: "swap", // зменшує FOUT/FOIT
   variable: "--font-inter", // опціонально для використання через CSS var
 })
 
@@ -27,16 +27,14 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" className="light">
-      <body suppressHydrationWarning className={`${inter.className} bg-bodyBg dark:bg-bodyBgD`}>
+      <body suppressHydrationWarning className={`${inter.className} bg-pBg dark:bg-pBgD`}>
         {/* Передаємо прапорець isFromApp у Providers */}
         <Providers isFromApp={isFromApp}>
           {/* <HeaderTapeWrapper /> */}
           <HeaderTape stats={stats} />
           <Header />
           {/* Головний контейнер */}
-          <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          {children}
-          </main>
+          <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
           <SiteFooter />
         </Providers>
       </body>

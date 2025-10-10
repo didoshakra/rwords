@@ -279,9 +279,15 @@ export default function TableView({
 
     return (
       <React.Fragment key={topic.id}>
-        <tr onClick={() => toggleLevel1(topic.id)} className="bg-gray-200 cursor-pointer hover:opacity-70">
+        <tr
+          onClick={() => toggleLevel1(topic.id)}
+          className="bg-tabTr1Bg dark:bg-tabTr1BgD cursor-pointer hover:bg-tabTr1BgHov dark:hover:bg-tabTr1BgHovD"
+        >
           <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
-            <div className="flex items-center gap-2" style={{ userSelect: "none", cursor: "pointer" }}>
+            <div
+              className="flex text-tabTr1On dark:text-tabTr1OnD items-center gap-2"
+              style={{ userSelect: "none", cursor: "pointer" }}
+            >
               <span
                 onClick={(e) => {
                   e.stopPropagation()
@@ -311,8 +317,15 @@ export default function TableView({
 
   //  Ф-ція для рендерингу рядка теми
   const renderItemRow = (item) => (
-    <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-blue-200"}>
-      {/* <td style={{ width: 30, border: "1px solid #ccc", padding: "4px", textAlign: "center" }}> */}
+    // <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-blue-200"}>
+    <tr
+      key={item.id}
+      className={
+        isSelected(item.id)
+          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov "
+          : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov "
+      }
+    >
       <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
         <input
           type="checkbox"
@@ -366,7 +379,7 @@ export default function TableView({
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
   return (
     <main className="p-1 max-w-4xl mx-auto">
-      <h1 className="font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
+      <h1 className="text-h1On dark:text-h1OnD font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
       <div className="flex flex-wrap gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-sm mb-3 font-body">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
@@ -496,43 +509,38 @@ export default function TableView({
       </div>
       {/* 2ий рядок над таблицею/повідомлення */}
       {message && (
-        <p className="mb-3 text-green-700 font-medium text-xs sm:text-sm" role="alert">
+        <p className="mb-3 text-pOn dark:text-pOnD font-medium text-xs sm:text-sm" role="alert">
           {message}
         </p>
       )}
       {/* перший рядок над таблицею */}
       <div className="flex gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-sm mb-2 font-body">
-        <span className="text-gray-700">📄Всього зап: {tData.length} </span>
+        <span className="text-pOn dark:text-pOnD">📄Всього зап: {tData.length} </span>
 
         <button
           onClick={() => (selectedIds.length === tData.length ? clearSelection() : selectAll())}
-          className="text-sm px-2 py-1 rounded border"
+          className="text-pOn dark:text-pOnD text-sm px-2 py-1 rounded border"
         >
           {selectedIds.length === tData.length ? "☑ Зняти всі" : "☐ Виділити всі"}
         </button>
         {selectedIds.length > 0 && (
-          <span className="text-blue-700">
-            Виділено: {level0Head} {selectedIds.length}
-          </span>
+          <span className="text-infoMsg dark:text-infoMsgD">Виділено Слів: {selectedIds.length}</span>
         )}
         {selectedLevel1.length > 0 && (
           // <span className="text-green-700">Виділено {level1Head} : {selectedLevel1.length}</span>
-          <span className="text-green-700">
-            {level1Head} : {selectedLevel1.length}
-          </span>
+          <span className="text-infoMsg dark:text-infoMsgD">Тем : {selectedLevel1.length}</span>
         )}
       </div>
       {/*  */}
       <div
         ref={tableContainerRef}
-        className="overflow-x-auto max-h-[500px] overflow-auto border border-gray-300 rounded shadow-sm"
+        className="overflow-x-auto max-h-[500px] overflow-auto border border-tabThBorder dark:border-tabThBorderD rounded shadow-sm"
       >
-        {/* <table className="w-full border-collapse text-xs sm:text-sm lg:text-sm font-body"> */}
         <table
           style={{ minWidth: totalWidth }}
-          className="table-fixed border-collapse text-xs sm:text-sm lg:text-sm font-body"
+          className="table-fixed border-collapse  text-xs sm:text-sm lg:text-sm font-body"
         >
-          <thead className="bg-gray-100 sticky top-0 z-10">
+          <thead className="bg-tabThBg dark:bg-tabThBgD text-tabThOn dark:text-tabThOnD sticky top-0 z-10">
             <tr>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
@@ -565,9 +573,13 @@ export default function TableView({
                   <React.Fragment key={section.id}>
                     <tr
                       onClick={() => toggleLevel2(section.id)}
-                      className="bg-gray-300 cursor-pointer hover:opacity-70"
+                      //   className="bg-gray-300 cursor-pointer hover:opacity-70"
+                      className="bg-tabTr2Bg dark:bg-tabTr2BgD cursor-pointer hover:bg-tabTr2BgHov dark:hover:bg-tabTr2BgHovD"
                     >
-                      <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-bold">
+                      <td
+                        colSpan={showOwnerMark ? columns.length + 2 : columns.length}
+                        className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
+                      >
                         {level2Head}: {section.name} ({sectionLevel1.length})
                         {/* {openLevel2.includes(section.id) ? " 🔽" : " ▶️"} */}
                         {/* {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : " ▶️"} */}

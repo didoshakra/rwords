@@ -1,18 +1,18 @@
 //HeaderTape.js
 "use client"
-import { FaEye, FaDownload, FaFileAlt,FaMobileAlt } from "react-icons/fa"
+import { FaEye, FaDownload, FaFileAlt, FaMobileAlt } from "react-icons/fa"
 import { useAuth } from "@/app/context/AuthContext"
 
 const HeaderTape = ({ stats }) => {
-    const { isFromApp } = useAuth()
+  const { isFromApp } = useAuth()
   return (
-    <div className="h-18 my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeText dark:bg-hTapeBgD dark:text-hTapeText md:h-6 md:flex-row md:justify-between md:px-2 ">
+    <div className="h-18 my-auto mt-1 flex w-full flex-col justify-start  overflow-hidden bg-hTapeBg px-1 text-sm text-hTapeOn dark:bg-hTapeBgD dark:text-hTapeOn md:h-6 md:flex-row md:justify-between md:px-2 ">
       <div className="flex justify-between space-x-1">
         <a className="flex items-center justify-start space-x-1  text-xs" href="tel:+380503739048">
           {/* <IconPhone width={iconSize} height={iconSize} colorFill="white" /> */}
           {/* phone */}
           <svg
-            className="h-4 w-4 text-hTapeText dark:text-hTapeText"
+            className="h-4 w-4 text-hTapeOn dark:text-hTapeOn"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -30,7 +30,7 @@ const HeaderTape = ({ stats }) => {
         </a>
         {/* <a className="flex items-center justify-start space-x-1 text-xs" href="tel:+38068-0000000">
           <svg
-            className="h-4 w-4 text-hTapeText dark:text-hTapeText"
+            className="h-4 w-4 text-hTapeOn dark:text-hTapeOn"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -50,7 +50,6 @@ const HeaderTape = ({ stats }) => {
 
       {/* права сторона */}
       <div className="flex justify-between items-center text-center space-x-1 md:justify-end ">
-        
         {/* Статистика */}
         <div className="flex items-center space-x-2 text-xs">
           <span className="flex items-center space-x-1">
@@ -72,7 +71,7 @@ const HeaderTape = ({ stats }) => {
             title="GitHub"
           >
             <svg
-              className="h-4 w-4  dark:hover:text-hTextHovD"
+              className="h-4 w-4  dark:hover:text-hOnHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -91,7 +90,7 @@ const HeaderTape = ({ stats }) => {
             title="Х/Twitter1"
           >
             <svg
-              className="h-3 w-3 dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+              className="h-3 w-3 dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1200 1227"
               fill="currentColor"
@@ -106,7 +105,7 @@ const HeaderTape = ({ stats }) => {
             title="Instagram"
           >
             <svg
-              className="h-4 w-4  dark:hover:text-hTextHovD dark:group-hover:text-hTextHovD"
+              className="h-4 w-4  dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

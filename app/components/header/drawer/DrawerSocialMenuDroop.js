@@ -13,12 +13,12 @@ const DrawerSocialMenuDroop = () => {
       <ul className="flex space-x-4 items-center">
         <li>
           <a
-            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             href="https://github.com/didoshakra?tab=repositories"
             title="GitHub"
           >
             <svg
-              className="h-6 w-6  dark:hover:text-hTextHovD"
+              className="h-6 w-6  dark:hover:text-hOnHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -34,14 +34,14 @@ const DrawerSocialMenuDroop = () => {
         </li>
         <li>
           <a
-            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             href="https://www.facebook.com/profile.php?id=100004339204236"
             target="_blank"
             rel="noopener noreferrer"
             title="Facebook"
           >
             <svg
-              className="h-6 w-6  dark:hover:text-hTextHovD"
+              className="h-6 w-6  dark:hover:text-hOnHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -57,12 +57,12 @@ const DrawerSocialMenuDroop = () => {
         <li>
           {/* IconInstagram */}
           <a
-            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             href="https://www.instagram.com/didoshakr/"
             title="Instagram"
           >
             <svg
-              className="h-6 w-6  dark:hover:text-hTextHovD"
+              className="h-6 w-6  dark:hover:text-hOnHovD"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -80,12 +80,12 @@ const DrawerSocialMenuDroop = () => {
         </li>
         <li>
           <a
-            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             href="https://x.com/RDidosak"
             title="Х/Twitter"
           >
             <svg
-              className="h-4 w-4  dark:hover:text-hTextHovD"
+              className="h-4 w-4  dark:hover:text-hOnHovD"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1200 1227"
               fill="currentColor"
@@ -103,12 +103,12 @@ const DrawerSocialMenuDroop = () => {
   return (
     <div className="m-0 items-center">
       <div
-        className="w-fullroup flex list-none flex-nowrap items-center space-x-1 text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:text-hTextD dark:hover:bg-hBgHovD dark:hover:text-hTextHovD"
+        className="w-fullroup flex list-none flex-nowrap items-center space-x-1 text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
         onClick={() => setDrawerSocialMenuDroop(!drawerSocialMenuDroop)}
         title="меню"
       >
         {/* іконка мобільного меню */}
-        <p className="pl-2 text-lg font-medium italic  text-hText">Контакти</p>
+        <p className="pl-2 text-lg font-medium italic  text-hOn">Контакти</p>
         {drawerSocialMenuDroop ? (
           // стрілка вверх
           <svg

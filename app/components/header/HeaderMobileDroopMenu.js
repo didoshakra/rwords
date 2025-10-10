@@ -43,7 +43,7 @@ const HeaderMobileDroopMenu = () => {
       >
         {/* іконка три крапки по Y */}
         <svg
-          className="h-8 w-8  text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD"
+          className="h-8 w-8  text-hOn hover:text-hOnHov dark:text-hOnD dark:hover:text-hOnHovD"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -56,7 +56,7 @@ const HeaderMobileDroopMenu = () => {
         </svg>
         {/* іконка шестерня */}
         {/* <svg
-          className="h-8 w-8  text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD"
+          className="h-8 w-8  text-hOn hover:text-hOnHov dark:text-hOnD dark:hover:text-hOnHovD"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -78,11 +78,11 @@ const HeaderMobileDroopMenu = () => {
         <ul
           className={`m-0 w-[150px] rounded-lg  border border-hBorder bg-hBg p-1 text-base font-medium drop-shadow-md dark:border-hBorderD dark:bg-hBgD`}
         >
-          <li className="dark:text-hTex flex w-full list-none  items-center text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:hover:bg-hBgHovD dark:hover:text-hTextHovD">
+          <li className="dark:text-hTex flex w-full list-none  items-center text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:hover:bg-hBgHovD dark:hover:text-hOnHovD">
             <HeaderThemesDroopMenu setMobileDroopMenu={setMobileDroopMenu} />
           </li>
           {/* Випадаюче меню User */}
-          <li className="dark:text-hTex flex w-full list-none  items-center text-hText  hover:bg-hBgHov  hover:text-hTextHov dark:hover:bg-hBgHovD dark:hover:text-hTextHovD">
+          <li className="dark:text-hTex flex w-full list-none  items-center text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:hover:bg-hBgHovD dark:hover:text-hOnHovD">
             <UserSwitcher setMobileDroopMenu={setMobileDroopMenu} />
           </li>
         </ul>

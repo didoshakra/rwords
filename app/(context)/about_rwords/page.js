@@ -4,11 +4,10 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
 
-
 function ScreenBlock({ id, title, img, children }) {
   return (
     <section id={id} className="space-y-2 text-xs sm:text-sm lg:text-base mb-6">
-      <h3 className="h3Text text-h3Text text-center mb-2">{title}</h3>
+      <h3 className="h3On text-h3On text-center mb-2">{title}</h3>
       <div className={`grid gap-2 items-center ${img ? "md:grid-cols-2" : "md:grid-cols-1"}`}>
         {img && <img src={img} alt={title} className="w-full md:w-1/2 mx-auto my-4 rounded shadow" />}
         <div className="text-xs sm:text-sm lg:text-base">{children}</div>
@@ -22,10 +21,10 @@ export default function HowItWorks() {
   const user = session?.user
 
   return (
-    <main className="px-1 py-4 max-w-4xl mx-auto text-pText dark:text-pTextD">
+    <main className="px-1 py-4 max-w-4xl mx-auto text-pOn dark:text-pOnD">
       {/* Головний заголовок */}
       <div className="flex justify-center mt-1 mb-2">
-        <h1 className="h1Text text-h1Text inline-flex items-center gap-2 ">
+        <h1 className="h1On text-h1On inline-flex items-center gap-2 ">
           <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
           Що таке RWords?
         </h1>
@@ -33,24 +32,24 @@ export default function HowItWorks() {
 
       {/* Опис застосунку */}
       <section className="mb-6">
-        <h2 className="h2Text text-h2Text mb-2 ">
+        <h2 className="h2On text-h2On mb-2 ">
           📖 Це платформа для вивчення іноземних слів і фраз, яка складається з 2-х частин:
         </h2>
-        <h3 className="h3Text text-h3Text mx-8 mb-1 ">1. Застосунку RWords</h3>
-        <h3 className="h3Text text-h3Text mx-8 mb-1 ">2. Цього сайту</h3>
+        <h3 className="h3On text-h3On mx-8 mb-1 ">1. Застосунку RWords</h3>
+        <h3 className="h3On text-h3On mx-8 mb-1 ">2. Цього сайту</h3>
 
-        <p className="pText text-Text mb-2 indent-8">
+        <p className="pOn text-Text mb-2 indent-8">
           <span className="font-bold"> Основне завдання застосунку</span> — допомогти вам ефективно вивчати іноземні
           слова, вирази і речення, використовуючи голосові команди і кнопки для формування списків тільки з тих слів,
           які ви хочете вивчати, відкидаючи уже відомі вам слова із уже сформованих списків. Це дозволяє зосередитися на
           вивченні нових слів і підвищує ефективність процесу навчання.
         </p>
-        <p className="pText text-Text mb-2 indent-8">
+        <p className="pOn text-Text mb-2 indent-8">
           <span className="font-bold">Основне завдання сайту</span> — допомогти вам швидко знаходити додаткові слова,
           вирази і речення, створювати і редагувати нові списки для їх вивчення. А також допомогти мені розвивати цей
           сайт і додаток на основі ваших відгуків і побажань.
         </p>
-        <p className="pText text-Text mb-2 indent-8">
+        <p className="pOn text-Text mb-2 indent-8">
           <span className="font-bold">У застосунку ви можете</span> прослуховувати слова, вирази та речення з перекладом
           на вибрану мову із вибраних вами списків. Під час прослуховування ви можете оцінювати свої знання натискаючи
           кнопки «Знаю» / «Не знаю», чи подаючи аналогічні команди голосом. Це дає можливість при виборі списків для
@@ -59,7 +58,7 @@ export default function HowItWorks() {
           всі слова, які ви відмітили як знаю, позначаються 👍. У «Теми» ви знайдете кількісне і % значення. Ви також
           можете формувати нові списки шляхом імпорту з сайту RWords або імпорту з CSV файлів.
         </p>
-        <p className="pText text-Text mb-2 indent-8">
+        <p className="pOn text-Text mb-2 indent-8">
           <span className="font-bold">На сайті ви можете</span> створювати, редагувати, видаляти, імпортувати (CSV) і
           перекладати слова, вирази і речення, а також створювати і редагувати теми і групи тем. Після створення нових
           списків на сайті, ви можете імпортувати їх у застосунок.
@@ -69,89 +68,89 @@ export default function HowItWorks() {
       {/* 1. Основні можливості */}
       <ScreenBlock title="📝 В застосунку ви можете">
         <ul className="list-disc pl-4 space-y-2">
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🎙️
             <Link href="#listen" className="text-blue-600 underline ml-1">
               Налаштовувати середовище для прослуховуванням
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🎧
             <Link href="#listenPlay" className="text-blue-600 underline ml-1">
               Слухати слова, вирази та речення і оцінювати свої знання
             </Link>
           </li>
 
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             ⚙️
             <Link href="#listeningMode" className="text-blue-600 underline ml-1">
               Вибирати режими прослуховування
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🗣️
             <Link href="#voiceCommands" className="text-blue-600 underline ml-1">
               Налаштувати голосові команди
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📂
             <Link href="#choiceTopics" className="text-blue-600 underline ml-1">
               Вибирати теми для прослуховування
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🎓
             <Link href="#choiceKnowledge" className="text-blue-600 underline ml-1">
               Вибрати знання для прослуховування
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             ☰
             <Link href="#choiceMenu" className="text-blue-600 underline ml-1">
               Перейти в меню і вибрати щось із запропонованого списку
             </Link>
           </li>
 
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📋
             <Link href="#wordList" className="text-blue-600 underline ml-1">
               Робити щось зі списком слів
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📋
             <Link href="#topicsList" className="text-blue-600 underline ml-1">
               Робити щось зі списком тем
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📋
             <Link href="#csvStructure" className="text-blue-600 underline ml-1">
               Ознайомитися з CSV структурою файлу імпорту .csv
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🌈
-            <Link href="#colorSettings" className="text-blue-600 underline ml-1">
+            <Link href="#colorSettings" className="text-linkText underline ml-1">
               Вибрати колірну схему
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             🌐
-            <Link href="#wwwRWords" className="text-blue-600 underline ml-1">
+            <Link href="#wwwRWords" className="text-linkText underline ml-1">
               Перейти на сайт RWords
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📋
-            <Link href="#wwwWordsList" className="text-blue-600 underline ml-1">
+            <Link href="#wwwWordsList" className="text-linkText underline ml-1">
               Вибрати список слів на сайті і імпортувати його в застосунок
             </Link>
           </li>
-          <li className="h4Text text-h3Text  mb-1">
+          <li className="h4Text text-h3On  mb-1">
             📋
-            <Link href="#wwwWordsImport" className="text-blue-600 underline ml-1">
+            <Link href="#wwwWordsImport" className="text-linkText underline ml-1">
               Завантаження списку слів з сайту
             </Link>
           </li>
@@ -159,18 +158,18 @@ export default function HowItWorks() {
       </ScreenBlock>
       {/*  */}
       {/* Секція завантаження застосунку */}
-      <section className="bg-pBg1 text-sm sm:text-base lg:text-lg mb-6 text-center py-10 px-6 rounded">
+      <section className="bg-kBg text-sm sm:text-base lg:text-lg mb-6 text-center py-10 px-6 rounded">
         {user ? (
           <Link
             href="/download"
-            className="flex items-center justify-center gap-2 bg-pBg text-pText dark:text-pTextD px-6 py-3 rounded hover:bg-pBgHov transition "
+            className="flex items-center justify-center gap-2 bg-btBg text-btOn dark:text-btOnD px-6 py-3 rounded hover:bg-btBgHov transition "
           >
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
             До завантаження застосунку ⬇️
           </Link>
         ) : (
           <>
-            <p className="mb-6  text-pText  dark:text-pTextD">
+            <p className="mb-6  text-pOn  dark:text-pOnD">
               Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
               коментувати записи.
             </p>
@@ -185,7 +184,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Підзаголовок "Як працює" */}
-      <h2 className="text-h2Text text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">
+      <h2 className="text-h2On text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">
         📖 Як працює застосунок RWords
       </h2>
       <ScreenBlock title="🧠 Головна ідея застосунку">
@@ -201,7 +200,7 @@ export default function HowItWorks() {
       </ScreenBlock>
 
       <ScreenBlock title="🧭 Застосунок має 4-й основні екрани.">
-        {/* <h4 className="h4Text text-h3Text text-center mb-1">
+        {/* <h4 className="h4Text text-h3On text-center mb-1">
           Вони відкриваються по натисканню кнопок в нижній навігаційній панелі.
         </h4> */}
         <ul className="list-disc pl-4 space-y-2">
@@ -211,10 +210,10 @@ export default function HowItWorks() {
           </li>
           <li>
             <strong>2.🎧 Слухати</strong> — головний екран який складається з 2-х частин:
-            <p className="pText text-Text mt-1">
+            <p className="pOn text-Text mt-1">
               У 1-й частині екрану «Слухати» ви можете налаштовувати і отримувати інформацію про прослуховування
             </p>
-            <p className="pText text-Text mt-1">
+            <p className="pOn text-Text mt-1">
               У 2-й частині екрану «Слухати» ви можете прослуховувати і оцінювати слова.
             </p>
           </li>
@@ -430,11 +429,7 @@ export default function HowItWorks() {
           {/*  */}
         </ScreenBlock>
         {/*  www*/}
-        <ScreenBlock
-          id="wwwRWords"
-          title="📋 Сайт RWords вид з додатку"
-          img="/rwords_screens/scr_wwwGreen.jpg"
-        >
+        <ScreenBlock id="wwwRWords" title="📋 Сайт RWords вид з додатку" img="/rwords_screens/scr_wwwGreen.jpg">
           <h4 className="font-bold mb-1">Тут ви можете </h4>
           <ul className="list-disc pl-4 mb-4">
             <li>🗂️ Перейти на домашню сторінку сайту RWords</li>

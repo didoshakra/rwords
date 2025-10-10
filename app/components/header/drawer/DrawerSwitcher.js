@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import DrawerDroop from './DrawerDroop'
+import DrawerDroop from "./DrawerDroop"
 import BackShadow from "../BackShadow" //Затемнення екрану
 
 export default function DrawerSwitcher({ thrme }) {
@@ -14,7 +14,7 @@ export default function DrawerSwitcher({ thrme }) {
         onClick={(e) => setDrawerOpen(!drawerOpen)}
       >
         <svg
-          className="h-8 w-8 text-hText hover:text-hTextHov dark:text-hTextD dark:hover:text-hTextHovD"
+          className="h-8 w-8 text-hOn hover:text-hOnHov dark:text-hOnD dark:hover:text-hOnHovD"
           width="24"
           height="24"
           viewBox="0 0 24 24"

@@ -13,9 +13,9 @@ const WordsHome = () => {
         items-center justify-center bg-[url('/images/home/travel-the-world-monument-concept.jpg')] bg-cover bg-center bg-no-repeat text-center"
       >
         <div className="flex h-full w-full flex-col items-center justify-center px-3 text-center align-middle">
-          {/* <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-h1Text"> */}
+          {/* <h1 className="items-center justify-center font-serif text-3xl sm:text-4xl  lg:text-5xl font-extrabold leading-normal text-h1On"> */}
           <h1
-            className="custom-outline items-center justify-center font-serif text-4xl sm:text-5xl  lg:text-6xl font-extrabold leading-normal text-h1Text mb-4"
+            className="custom-outline items-center justify-center font-serif text-4xl sm:text-5xl  lg:text-6xl font-extrabold leading-normal text-h1On mb-4"
             style={{
               textShadow:
                 "-2px -2px 4px rgba(0,0,0,0.8), 2px -2px 4px rgba(0,0,0,0.8), -2px 2px 4px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.8)",
@@ -24,7 +24,7 @@ const WordsHome = () => {
             Вчіть слова щоб подорожувати
           </h1>
           <h2
-            className="inline-block font-sans text-base text-h2Text sm:text-lg lg:text-xl font-bold uppercase tracking-normal "
+            className="inline-block font-sans text-base text-h2On sm:text-lg lg:text-xl font-bold uppercase tracking-normal "
             style={{
               textShadow: [
                 "-3px -3px 6px rgba(0,0,0,1)",
@@ -45,7 +45,7 @@ const WordsHome = () => {
       >
         <div className="flex h-full flex-col items-center justify-center px-3 align-middle ">
           <h1
-            className="h-auto items-center justify-center  font-sans text-4xl sm:text-5xl  lg:text-6xl font-extrabold leading-normal text-h1Text mb-4"
+            className="h-auto items-center justify-center  font-sans text-4xl sm:text-5xl  lg:text-6xl font-extrabold leading-normal text-h1On mb-4"
             style={{
               textShadow:
                 "-2px -2px 4px rgba(0,0,0,0.8), 2px -2px 4px rgba(0,0,0,0.8), -2px 2px 4px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.8)",
@@ -54,7 +54,7 @@ const WordsHome = () => {
             Вчіть слова щоб спілкуватись
           </h1>
           <h2
-            className="inline-block font-sans text-base sm:text-lg lg:text-xl   font-bold uppercase tracking-normal text-h2Text"
+            className="inline-block font-sans text-base sm:text-lg lg:text-xl   font-bold uppercase tracking-normal text-h2On"
             style={{
               textShadow: [
                 "-3px -3px 6px rgba(0,0,0,1)",
