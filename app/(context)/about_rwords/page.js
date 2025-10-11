@@ -175,7 +175,7 @@ export default function HowItWorks() {
             </p>
             <Link
               href="/auth"
-              className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition text-base md:text-lg"
+              className="display-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition text-base md:text-lg"
             >
               Увійти або зареєструватись
             </Link>
