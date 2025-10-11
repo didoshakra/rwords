@@ -62,7 +62,7 @@ const LandingInfo = () => {
         <section className="bg-kBg dark:bg-kBgD text-kOn dark:text-kOnD text-center py-6 px-4 rounded-md">
           {user ? (
             <>
-              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-semibold mb-3">Дякуємо, що з нами!</h3>
+              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-medium mb-3">Дякуємо, що з нами!</h3>
               <p className="mb-5 font-medium">
                 Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
               </p>
@@ -77,14 +77,14 @@ const LandingInfo = () => {
             </>
           ) : (
             <>
-              <h3 className="text-h3On text-base sm:text-lg lg:text-xl font-semibold mb-3">Готові почати?</h3>
-              <p className="mb-5">
+              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-bold mb-3">Готові почати?</h3>
+              <p className="mb-5 text-pOn  dark:text-pOnD font-mtedium">
                 Зареєструйтесь, щоб завантажити застосунок RWords, створювати словники, публікувати дописи та
                 коментувати записи.
               </p>
               <Link
                 href="/auth"
-                className="display-block bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base lg:text-lg"
+                className="inline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
               >
                 Увійти або зареєструватись
               </Link>

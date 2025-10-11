@@ -34,7 +34,7 @@ module.exports = {
         linkTextD: "#2563eb",
 
         //-- page --------------------------------------------
-        pBg: "var(--color-pCol0)",
+      pBg: "var(--color-pCol0)",
         pBgD: "#334155",
         pOn: "var(--color-pCol7)",
         pOnD: "var(--color-pCol3)",

@@ -169,13 +169,14 @@ export default function HowItWorks() {
           </Link>
         ) : (
           <>
-            <p className="mb-6  text-pOn  dark:text-pOnD">
+            <p className="mb-6  text-pOn  dark:text-pOnD font-medium">
               Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
               коментувати записи.
             </p>
+
             <Link
               href="/auth"
-              className="display-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition text-base md:text-lg"
+              className="inline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
             >
               Увійти або зареєструватись
             </Link>
