@@ -12,5 +12,5 @@ html[data-theme="tGray"] {
   --color-pCol9: #111827;
   --color-pCol10: #2563eb; /* blue-600 */
   --color-pCol11: #d97706; /* amber-600 */
-  --color-pCol12: #f4f4f5; /* zinc-100 — легкий споріднений фон */
+  --color-pCol12: #e4e4e7; /* zinc-200 — легкий споріднений фон */
 }

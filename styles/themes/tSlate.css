@@ -12,5 +12,5 @@ html[data-theme="tSlate"] {
   --color-pCol9: #1c1917;
   --color-pCol10: #2563eb; /* blue-600 */
   --color-pCol11: #d97706; /* amber-600 */
-  --color-pCol12: #f3f4f6; /* gray-100 — легкий споріднений фон */
+  --color-pCol12: #e5e7eb; /* gray-200 — легкий споріднений фон */
 }

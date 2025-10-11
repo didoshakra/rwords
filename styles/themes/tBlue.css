@@ -12,6 +12,5 @@ html[data-theme="tBlue"] {
   --color-pCol9: #1e3a8a;
   --color-pCol10: #f59e0b; /* amber-500 */
   --color-pCol11: #e11d48; /* rose-600 */
-  --color-pCol12: #cffafe; /* sky-50 — легкий споріднений фон */
-  /* --color-pCol12: #e0f2fe; sky-100 — легкий споріднений фон */
+  --color-pCol12: #bae6fd; /* sky-200 — легкий споріднений фон */
 }

@@ -50,7 +50,7 @@ module.exports = {
         kBor: "var(--color-pCol3)",
 
         // картка1 -------------------------------
-        k1Bg: "var(--color-pCol1)",
+        k1Bg: "var(--color-pCol2)",
         k1On: "var(--color-pCol8)",
         k1Bor: "var(--color-pCol4)",
 
