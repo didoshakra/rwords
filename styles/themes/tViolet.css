@@ -10,7 +10,7 @@ html[data-theme="tViolet"] {
   --color-pCol7: #6d28d9;
   --color-pCol8: #5b21b6;
   --color-pCol9: #4c1d95;
-  --color-pCol10: #f59e0b; /* amber-500 */
-  --color-pCol11: #14b8a6; /* teal-500 */
+  --color-pCol10: #14b8a6; /* teal-500 */
+  --color-pCol11: #f59e0b; /* amber-500 */
   --color-pCol12: #e9d5ff; /* purple-200 — легкий споріднений фон */
 }

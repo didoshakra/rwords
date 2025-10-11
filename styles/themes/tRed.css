@@ -10,7 +10,7 @@ html[data-theme="tRed"] {
   --color-pCol7: #b91c1c;
   --color-pCol8: #991b1b;
   --color-pCol9: #7f1d1d;
-  --color-pCol10: #0ea5e9; /* blue-500 */
-  --color-pCol11: #14b8a6; /* teal-500 */
+  --color-pCol10: #14b8a6; /* teal-500 */
+  --color-pCol11: #0ea5e9; /* blue-500 */
   --color-pCol12: #fbcfe8; /* pink-200 — легкий споріднений фон */
 }

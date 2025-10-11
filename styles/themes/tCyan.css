@@ -1,6 +1,6 @@
 html[data-theme="tCyan"] {
- /* Cyan 80-900*/
-  --color-pCol0:#ecfeff;
+  /* Cyan 80-900*/
+  --color-pCol0: #ecfeff;
   --color-pCol1: #cffafe;
   --color-pCol2: #a5f3fc;
   --color-pCol3: #67e8f9;
@@ -10,7 +10,7 @@ html[data-theme="tCyan"] {
   --color-pCol7: #0e7490;
   --color-pCol8: #155e75;
   --color-pCol9: #164e63;
-  --color-pCol10: #f59e0b; /* amber-500 */
-  --color-pCol11: #e11d48; /* rose-600 */
+  --color-pCol10: #e11d48; /* rose-600 */
+  --color-pCol11: #f59e0b; /* amber-500 */
   --color-pCol12: #99f6e4; /* teal-200 — легкий споріднений фон */
 }

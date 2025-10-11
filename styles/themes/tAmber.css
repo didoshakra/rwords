@@ -10,7 +10,6 @@ html[data-theme="tAmber"] {
   --color-pCol7: #b45309;
   --color-pCol8: #92400e;
   --color-pCol9: #78350f;
-  /* Контрастні акцентні кольори (для заголовків або кнопок) */
   --color-pCol10: #2563eb; /* blue-600 — контрастний для заголовків */
   --color-pCol11: #7c3aed; /* violet-600 — контрастний для акцентів */
   --color-pCol12: #ffedd5; /* orange-200 — легкий споріднений фон */

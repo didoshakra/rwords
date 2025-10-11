@@ -91,11 +91,11 @@ module.exports = {
         hOnHov: "var(--color-pCol6)",
         hOnHovD: "var(--color-pCol2)",
         //
-        h1On: "var(--color-pCol11)",
-        h1OnD: "var(--color-pCol11)",
+        h1On: "var(--color-pCol10)",
+        h1OnD: "var(--color-pCol10)",
         //
-        h2On: "var(--color-pCol10)",
-        h2OnD: "var(--color---color-pCol10)",
+        h2On: "var(--color-pCol11)",
+        h2OnD: "var(--color-pCol11)",
         //
         h3On: "var(--color-pCol9)",
         h3OnD: "var(--color---color-pCol1)",

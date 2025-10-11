@@ -10,7 +10,7 @@ html[data-theme="tIndigo"] {
   --color-pCol7: #4338ca;
   --color-pCol8: #3730a3;
   --color-pCol9: #312e81;
-  --color-pCol10: #f59e0b; /* amber-500 */
-  --color-pCol11: #22c55e; /* green-500 */
+  --color-pCol10: #22c55e; /* green-500 */
+  --color-pCol11: #f59e0b; /* amber-500 */
   --color-pCol12: #ddd6fe; /* violet-200 — легкий споріднений фон */
 }

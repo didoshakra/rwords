@@ -10,7 +10,7 @@ html[data-theme="tTeal"] {
   --color-pCol7: #0f766e;
   --color-pCol8: #115e59;
   --color-pCol9: #134e4a;
-  --color-pCol10: #d97706; /* amber-600 */
-  --color-pCol11: #dc2626; /* red-600 */
+  --color-pCol10: #dc2626; /* red-600 */
+  --color-pCol11: #d97706; /* amber-600 */
   --color-pCol12: #a5f3fc; /* cyan-200 — легкий споріднений фон */
 }
