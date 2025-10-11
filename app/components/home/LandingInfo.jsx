@@ -18,7 +18,7 @@ const LandingInfo = () => {
           мобільного застосунку{" "}
           <Link
             href="/about_rwords"
-            className="inline-flex justify-center items-center gap-2 italic font-semibold text-linkText dark:text-linkTextD hover:underline align-middle"
+            className="inline-flex justify-center items-center gap-2 italic font-semibold text-linkOn dark:text-linkOnD hover:underline align-middle"
           >
             <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
             RWords.
@@ -43,7 +43,7 @@ const LandingInfo = () => {
             📱 Завантажити мобільний застосунок{" "}
             <Link
               href="/about_rwords"
-              className="inline-flex justify-center items-center gap-2 italic font-semibold text-linkText dark:text-linkTextD hover:underline"
+              className="inline-flex justify-center items-center gap-2 italic font-semibold text-linkOn dark:text-linkOnD hover:underline"
             >
               <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
               RWords
@@ -78,13 +78,12 @@ const LandingInfo = () => {
           ) : (
             <>
               <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-bold mb-3">Готові почати?</h3>
-              <p className="mb-5 text-pOn  dark:text-pOnD font-mtedium">
-                Зареєструйтесь, щоб завантажити застосунок RWords, створювати словники, публікувати дописи та
-                коментувати записи.
+              <p className="mb-5 text-pOn  dark:text-pOnD font-semibold">
+                Зареєструйтесь, щоб завантажити застосунок RWords.
               </p>
               <Link
                 href="/auth"
-                className="inline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
+                className="font-semiboldinline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
               >
                 Увійти або зареєструватись
               </Link>
@@ -109,7 +108,7 @@ const LandingInfo = () => {
         </p>
         <Link
           href="/about_rwords"
-          className="italic font-semibold text-linkText hover:underline text-sm sm:text-base lg:text-lg"
+          className="italic font-semibold text-linkOn hover:underline text-sm sm:text-base lg:text-lg"
         >
           Більше про RWords.
         </Link>

@@ -21,7 +21,7 @@ export default function AuthPage() {
 
   const handleSocialSignIn = async (provider) => {
     try {
-    //   const res = await signIn(provider, { redirect: false })
+      //   const res = await signIn(provider, { redirect: false })
       const res = await signIn(provider, {
         callbackUrl: "/", // або інший шлях
       })
@@ -96,7 +96,7 @@ export default function AuthPage() {
     {
       name: "google",
       label: "Google",
-      color: "bg-red-700",//
+      color: "bg-red-700", //
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 48 48">
           <path
@@ -142,7 +142,9 @@ export default function AuthPage() {
 
   return (
     <main className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">{mode === "login" ? "Форма входу" : "Форма реєстрації"}</h1>
+      <h1 className="text-center text-h1On text-2xl font-bold mb-4">
+        {mode === "login" ? "Форма входу" : "Форма реєстрації"}
+      </h1>
 
       <div className="flex flex-col gap-2 mb-4">
         {socialProviders.map((p) => (
@@ -156,7 +158,7 @@ export default function AuthPage() {
         ))}
       </div>
 
-      <div className="text-center my-4 text-gray-500">або</div>
+      <div className="text-center my-4 text-pOn dark:text-pOnD ">або</div>
 
       <form onSubmit={handleSubmit} autoComplete="off" autoSave="off" className="flex flex-col gap-4">
         {mode === "register" && (
@@ -168,8 +170,12 @@ export default function AuthPage() {
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             required
-            className="border rounded p-2"
-            autoComplete="off"
+            // className="p-2 border rounded text-fOn dark:text-fOnD bg-fBg dark:bg-fBgD border-fBorder
+            //  hover:border-fBorderHov dark:hover:border-fBorderHovD
+            //  focus:outline-none focus:ring-2 focus:fBorFocus"
+
+            className="p-2 border rounded text-fOn dark:text-fOnD border-fBorder
+            bg-fBg dark:bg-fBgD hover:border-fBorHov focus:border-2 focus:border-fBorFocus focus:outline-none"
           />
         )}
 
@@ -181,7 +187,8 @@ export default function AuthPage() {
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
-          className="border rounded p-2"
+          className="p-2 border rounded text-fOn dark:text-fOnD border-fBorder
+            bg-fBg dark:bg-fBgD hover:border-fBorHov focus:border-2 focus:border-fBorFocus focus:outline-none"
           autoComplete="email"
         />
 
@@ -194,13 +201,15 @@ export default function AuthPage() {
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
-            className="border rounded p-2 w-full pr-24"
+            // className="border rounded p-2 w-full pr-24"
+            className="p-2 w-full pr-24 border rounded text-fOn dark:text-fOnD border-fBorder
+            bg-fBg dark:bg-fBgD hover:border-fBorHov focus:border-2 focus:border-fBorFocus focus:outline-none"
             autoComplete="new-password"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-blue-600"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-linkOn"
           >
             {showPassword ? "Приховати" : "Показати"}
           </button>
@@ -213,34 +222,39 @@ export default function AuthPage() {
             value={form.confirmPassword}
             onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
             required
-            className="border rounded p-2"
+            className="p-2 border rounded text-fOn dark:text-fOnD border-fBorder
+            bg-fBg dark:bg-fBgD hover:border-fBorHov focus:border-2 focus:border-fBorFocus focus:outline-none"
           />
         )}
 
-        <button type="submit" disabled={isPending} className="bg-blue-600 text-white p-2 rounded">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="bg-bt1Bg dark:bg-bt1BgD text-bt1On dark:text-bt1OnD p-2 rounded"
+        >
           {isPending ? "Обробка..." : mode === "login" ? "Увійти" : "Зареєструватись"}
         </button>
       </form>
 
-      <p className="mt-4 text-center">
+      <p className="mt-4 text-pOn dark:text-pOnD text-center">
         {mode === "login" ? (
           <>
             Немає акаунту?{" "}
-            <button className="underline text-blue-600" onClick={() => setMode("register")}>
+            <button className="underline linkOn" onClick={() => setMode("register")}>
               Зареєструватись
             </button>
           </>
         ) : (
           <>
             Вже є акаунт?{" "}
-            <button className="underline text-blue-600" onClick={() => setMode("login")}>
+            <button className="underline text-linkOn" onClick={() => setMode("login")}>
               Увійти
             </button>
           </>
         )}
       </p>
 
-      {message && <p className="mt-4 text-center text-red-600">{message}</p>}
+      {message && <p className="mt-4 text-center text-errorMsg">{message}</p>}
     </main>
   )
 }

@@ -132,25 +132,25 @@ export default function HowItWorks() {
           </li>
           <li className="h4Text text-h3On  mb-1">
             🌈
-            <Link href="#colorSettings" className="text-linkText underline ml-1">
+            <Link href="#colorSettings" className="text-linkOn underline ml-1">
               Вибрати колірну схему
             </Link>
           </li>
           <li className="h4Text text-h3On  mb-1">
             🌐
-            <Link href="#wwwRWords" className="text-linkText underline ml-1">
+            <Link href="#wwwRWords" className="text-linkOn underline ml-1">
               Перейти на сайт RWords
             </Link>
           </li>
           <li className="h4Text text-h3On  mb-1">
             📋
-            <Link href="#wwwWordsList" className="text-linkText underline ml-1">
+            <Link href="#wwwWordsList" className="text-linkOn underline ml-1">
               Вибрати список слів на сайті і імпортувати його в застосунок
             </Link>
           </li>
           <li className="h4Text text-h3On  mb-1">
             📋
-            <Link href="#wwwWordsImport" className="text-linkText underline ml-1">
+            <Link href="#wwwWordsImport" className="text-linkOn underline ml-1">
               Завантаження списку слів з сайту
             </Link>
           </li>
@@ -169,7 +169,7 @@ export default function HowItWorks() {
           </Link>
         ) : (
           <>
-            <p className="mb-6  text-pOn  dark:text-pOnD font-medium">
+            <p className="mb-6  text-pOn  dark:text-pOnD font-semibold">
               Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
               коментувати записи.
             </p>
