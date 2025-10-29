@@ -1,6 +1,7 @@
 // SiteFooter.jsx
 "use client"
-import { img } from "next/image"
+import Image from "next/image"
+// import { img } from "next/image"
 
 const SiteFooter = () => {
   const year = new Date().getFullYear()
@@ -127,8 +128,8 @@ const SiteFooter = () => {
       <div className="al text-center py-4 border-t border-gray-300 dark:border-gray-600 text-sm flex flex-wrap justify-center items-center gap-1">
         <span>© {year} RWords. Усі права захищено.</span>
         <span className="inline-flex items-center gap-1 px-1">
-          <img src="/images/home/trident.png" alt="Тризуб" width={12} height={12} />
-          <img src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
+          <Image src="/images/home/trident.png" alt="Тризуб" width={12} height={12} />
+          <Image src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
           Все буде Україна! ❤️
         </span>
       </div>

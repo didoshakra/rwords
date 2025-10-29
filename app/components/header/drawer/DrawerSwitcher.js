@@ -12,6 +12,7 @@ export default function DrawerSwitcher({ thrme }) {
       <button
         className="flex items-center justify-center rounded-full p-1 hover:bg-hBgHov dark:hover:bg-hBgHovD md:p-2"
         onClick={(e) => setDrawerOpen(!drawerOpen)}
+        aria-label="Відкрити меню навігації"
       >
         <svg
           className="h-8 w-8 text-hOn hover:text-hOnHov dark:text-hOnD dark:hover:text-hOnHovD"

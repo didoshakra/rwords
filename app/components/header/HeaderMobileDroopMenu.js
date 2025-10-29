@@ -40,6 +40,7 @@ const HeaderMobileDroopMenu = () => {
       <button
         className="flex items-center justify-center rounded-full p-1 transition-colors hover:bg-hBgHov dark:hover:bg-hBgHovD"
         onClick={onSetingMenu}
+        aria-label="Відкрити меню налаштувань"
       >
         {/* іконка три крапки по Y */}
         <svg
