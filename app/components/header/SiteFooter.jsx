@@ -1,6 +1,6 @@
 // SiteFooter.jsx
 "use client"
-import Image from "next/image"
+import Image, { img } from "next/image"
 // import { img } from "next/image"
 
 const SiteFooter = () => {
@@ -129,7 +129,7 @@ const SiteFooter = () => {
         <span>© {year} RWords. Усі права захищено.</span>
         <span className="inline-flex items-center gap-1 px-1">
           <Image src="/images/home/trident.png" alt="Тризуб" width={12} height={12} />
-          <Image src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
+          <img src="https://flagcdn.com/w40/ua.png" alt="Прапор України" className="w-5 h-4 inline-block" />
           Все буде Україна! ❤️
         </span>
       </div>
