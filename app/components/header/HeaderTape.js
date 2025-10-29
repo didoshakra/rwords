@@ -66,7 +66,7 @@ const HeaderTape = ({ stats }) => {
         <div className="flex justify-start space-x-1">
           {/* GitHub */}
           <a
-            className="flex items-center justify-start space-x-1 text-sm"
+            className="flex items-center justify-start pl-2"
             href="https://github.com/didoshakra?tab=repositories"
             title="GitHub"
           >
@@ -84,11 +84,7 @@ const HeaderTape = ({ stats }) => {
             </svg>
           </a>
           {/* Х/Twitter */}
-          <a
-            className="flex items-center justify-start space-x-1 text-sm"
-            href="https://x.com/RDidosak"
-            title="Х/Twitter1"
-          >
+          <a className="flex items-center justify-start pl-1" href="https://x.com/RDidosak" title="Х/Twitter1">
             <svg
               className="h-3 w-3 dark:hover:text-hOnHovD dark:group-hover:text-hOnHovD"
               xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +96,7 @@ const HeaderTape = ({ stats }) => {
           </a>
           {/* IconInstagram */}
           <a
-            className="flex items-center justify-start space-x-1 text-sm"
+            className="flex items-center justify-start pl-1"
             href="https://www.instagram.com/didoshakr/"
             title="Instagram"
           >
@@ -121,7 +117,7 @@ const HeaderTape = ({ stats }) => {
           </a>
           {/* Facebook */}
           <a
-            className="flex items-center justify-start space-x-1 text-sm"
+            className="flex items-center justify-start pl-1"
             href="https://www.facebook.com/profile.php?id=100004339204236"
           >
             <svg
