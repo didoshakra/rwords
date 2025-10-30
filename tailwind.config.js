@@ -36,7 +36,7 @@ module.exports = {
         // page --------------------------------------------
         pBg: "var(--color-pCol0)",
         pBgD: "#334155",
-        pOn: "var(--color-pCol7)",
+        pOn: "var(--color-pCol8)",
         pOnD: "var(--color-pCol3)",
         // page1 --------------------------------------------
         pBg1: "var(--color-pCol1)",
@@ -46,7 +46,7 @@ module.exports = {
 
         //  картка -------------------------------
         kBg: "var(--color-pCol12)",
-        kOn: "var(--color-pCol7)",
+        kOn: "var(--color-pCol8)",
         kBor: "var(--color-pCol3)",
 
         // картка1 -------------------------------
@@ -61,7 +61,7 @@ module.exports = {
 
         // form
 
-        fOn: "var(--color-pCol7)",
+        fOn: "var(--color-pCol8)",
         fOnD: "var(--color-pCol2)",
         fBg: "var(--color-pCol1)",
         fBgD: "#64748b", //  --color-pCol6: #475569;
@@ -71,7 +71,7 @@ module.exports = {
         // fBorHovD: "var(--color-pCol1)",
         fBorHov: "var(--color-pCol13)",
         fBorFocus: "var(--color-pCol13)",
-        // fBorFocusD: "var(--color-pCol11)",
+        // fBorFocusD: "var(--color-pCol11)",  
         // fBgHov: "var(--color-pCol2)",
         // fBgHovD: "var(--color-pCol1)",
 
@@ -143,7 +143,7 @@ module.exports = {
         tabTrBgSel: "var(--color-pCol3)", //Вибрані рядки
         tabTrBgSelHov: "var(--color-pCol5)",
         // tabTr1 -------------------------------
-        tabTr1On: "var(--color-pCol7)",
+        tabTr1On: "var(--color-pCol8)",
         tabTr1OnD: "var(--color-pCol2)",
         tabTr1Bg: "var(--color-pCol0)",
         tabTr1BgD: "rgb(55 65 81)",
