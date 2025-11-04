@@ -37,7 +37,7 @@ const SiteFooter = () => {
 
         {/* Соцмережі */}
         <div>
-          <h3 className="text-h3On text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Ми в соцмережах</h3>
+          <h3 className="text-h3On text text-lg sm:text-xl lg:text-2xl font-semibold mb-2">Я в соцмережах</h3>
           <ul className="flex space-x-4 items-center">
             <li>
               {/* GitHub */}
