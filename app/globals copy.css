@@ -1,36 +1,41 @@
+/* =================== */
+/* 2️⃣ Підключення тем */
+/* =================== */
+/* ВСЕ @import має бути тут, поза @layer */
+@import "@/styles/themes/tIndigo.css";
+@import "@/styles/themes/tPink.css";
+@import "@/styles/themes/tGreen.css";
+@import "@/styles/themes/tAmber.css";
+@import "@/styles/themes/tGray.css";
+@import "@/styles/themes/tLime.css";
+@import "@/styles/themes/tRed.css";
+@import "@/styles/themes/tYellow.css";
+@import "@/styles/themes/tEmerald.css";
+@import "@/styles/themes/tTeal.css";
+@import "@/styles/themes/tCyan.css";
+@import "@/styles/themes/tSky.css";
+@import "@/styles/themes/tBlue.css";
+@import "@/styles/themes/tViolet.css";
+@import "@/styles/themes/tPurple.css";
+@import "@/styles/themes/tFuchsia.css";
+@import "@/styles/themes/tRose.css";
+@import "@/styles/themes/tOrange.css";
+@import "@/styles/themes/tZinc.css";
+@import "@/styles/themes/tNeutral.css";
+@import "@/styles/themes/tStone.css";
+
+/* =================== */
+/* 1️⃣ Підключення Tailwind */
+/* =================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Заборона зміни шрифтів браузерами Chrome i Safari
+/* =================== */
+/* 3️⃣ Основні CSS-перемінні (root) і базові стилі */
+/* =================== */
 @layer base {
   html {
-    -webkit-text-size-adjust: 100%;
-  }
-} */
-
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
-
-/* body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
-} */
-
-@layer base {
-  html {
-    /* Emerald 80-900*/
     --color-pCol0: #ecfdf5;
     --color-pCol1: #d1fae5;
     --color-pCol2: #a7f3d0;
@@ -41,36 +46,24 @@
     --color-pCol7: #047857;
     --color-pCol8: #065f46;
     --color-pCol9: #064e3b;
-    --color-pCol10: #c026d3; /* fuchsia-600 */
-    --color-pCol11: #e11d48; /* rose-600 */
-    --color-pCol12: #ccfbf1; /* teal-100 — легкий споріднений фон */
+    --color-pCol10: #e11d48;
+    --color-pCol11: #c026d3;
+    --color-pCol12: #ccfbf1;
   }
 
-  @import "@/styles/themes/tIndigo.css";
-  @import "@/styles/themes/tPink.css";
-  @import "@/styles/themes/tGreen.css";
-  @import "@/styles/themes/tAmber.css";
-  @import "@/styles/themes/tGray.css";
-  @import "@/styles/themes/tLime.css";
-  @import "@/styles/themes/tRed.css";
-  @import "@/styles/themes/tYellow.css";
-  @import "@/styles/themes/tEmerald.css";
-  @import "@/styles/themes/tTeal.css";
-  @import "@/styles/themes/tCyan.css";
-  @import "@/styles/themes/tSky.css";
-  @import "@/styles/themes/tBlue.css";
-  @import "@/styles/themes/tViolet.css";
-  @import "@/styles/themes/tPurple.css";
-  @import "@/styles/themes/tFuchsia.css";
-  @import "@/styles/themes/tRose.css";
-  @import "@/styles/themes/tOrange.css";
-  @import "@/styles/themes/tZinc.css";
-  @import "@/styles/themes/tNeutral.css";
-  @import "@/styles/themes/tStone.css";
-  /*  */
+  /* Можна додати глобальні базові стилі тут */
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background-color: var(--color-pCol0);
+  }
 }
-/* === Заголовки === */
-/* @layer utilities {
+
+/* =================== */
+/* 4️⃣ Кастомні утиліти / шрифти / типографія */
+/* =================== */
+@layer utilities {
+  /* === Заголовки === */
   .h1On {
     @apply text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight;
   }
@@ -87,6 +80,7 @@
     @apply text-base sm:text-lg lg:text-xl font-medium leading-normal;
   }
 
+  /* === Параграфи === */
   .pOn {
     @apply text-sm sm:text-base lg:text-lg font-normal leading-snug;
   }
@@ -98,4 +92,4 @@
   .p-lgText {
     @apply text-base sm:text-lg lg:text-xl font-normal leading-normal;
   }
-} */
+}
