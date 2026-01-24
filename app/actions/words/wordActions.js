@@ -46,19 +46,19 @@ export async function updateWord(id, form, userId, role) {
   `
 }
 
-export async function deleteWord(id, userId, role) {
-  if (!userId) throw new Error("Користувач не авторизований")
+// export async function deleteWord(id, userId, role) {
+//   if (!userId) throw new Error("Користувач не авторизований")
 
-  const result = await sql`SELECT user_id FROM words WHERE id = ${id}`
-  const word = result[0]
-  if (!word) throw new Error("Слово не знайдено")
+//   const result = await sql`SELECT user_id FROM words WHERE id = ${id}`
+//   const word = result[0]
+//   if (!word) throw new Error("Слово не знайдено")
 
-  if (role !== "admin" && userId !== word.user_id) {
-    throw new Error("Недостатньо прав для видалення")
-  }
+//   if (role !== "admin" && userId !== word.user_id) {
+//     throw new Error("Недостатньо прав для видалення")
+//   }
 
-  await sql`DELETE FROM words WHERE id = ${id}`
-}
+//   await sql`DELETE FROM words WHERE id = ${id}`
+// }
 
 export async function deleteWords(ids, userId, role) {
   console.log("wordActions/deleteWords/ids=", ids)

@@ -1,4 +1,4 @@
-// app/download/page.js
+// app/download/page.js//Завантаження застосунку RWords
 "use client"
 
 import { incrementAppDownloads } from "@/app/actions/statsActions"

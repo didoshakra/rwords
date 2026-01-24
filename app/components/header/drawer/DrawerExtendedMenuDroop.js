@@ -17,11 +17,11 @@ const DrawerExtendedMenuDroop = ({ setDrawerOpen }) => {
       >
         <p className="pl-2 text-lg font-medium italic text-hOn dark:text-hOnD">Розширене меню</p>
         {drawerExtendedMenuDroopOpen ? (
-          <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+          <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none">
             <polyline points="6 15 12 9 18 15" />
           </svg>
         ) : (
-          <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+          <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none">
             <polyline points="6 9 12 15 18 9" />
           </svg>
         )}
@@ -29,7 +29,8 @@ const DrawerExtendedMenuDroop = ({ setDrawerOpen }) => {
 
       {drawerExtendedMenuDroopOpen && (
         <div className="relative pl-4">
-          <MultiLevelMenu items={menuAdmin} setDrawerOpen={setDrawerOpen} />
+          {/* <MultiLevelMenu items={menuAdmin} setDrawerOpen={setDrawerOpen} /> */}
+          <MultiLevelMenu items={menuAdmin} setDrawerOpen={setDrawerOpen} isRowFirst={false} />
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState, useRef } from "react"
 import Script from "next/script"
-import { getWords } from "@/app/actions/wordActions"
+import { getWords } from "@/app/actions/words/wordActions"
 
 const WordPlayer = () => {
   const [words, setWords] = useState([])

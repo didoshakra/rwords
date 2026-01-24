@@ -63,6 +63,13 @@ export default function DrawerDroop({ drawerOpen, setDrawerOpen }) {
       <hr className="h-0.5 min-w-full bg-drawDropHr dark:bg-drawDropHrD" />
       {/* ----------------------------------------------------------- */}
       <DrawerSocialMenuDroop />
+      {/* <Navbar multilevelMenu={menuBig} title={"Багаторівнневе пробне меню"} setDrawerOpen={setDrawerOpen} /> */}
+      {/* <hr className="h-0.5 min-w-full bg-drawDropHr" /> */}
+      {/* <hr className="h-0.5 min-w-full bg-drawDropHr" /> */}
+      {/* <Navbar multilevelMenu={menuAdmin} title={"Адмін"} setDrawerOpen={setDrawerOpen} /> */}
+      {/* ----------------------------------------------------------- */}
+      {/* <hr className="h-0.5 min-w-full bg-drawDropHr" /> */}
+      {/* <Navbar multilevelMenu={menuDocuments} title={"Документи"} setDrawerOpen={setDrawerOpen} /> */}
     </div>
   )
 }

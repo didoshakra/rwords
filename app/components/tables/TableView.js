@@ -52,14 +52,15 @@ export default function TableView({
   const tableContainerRef = useRef(null) //Для скролу при переміщенні****
   const rowRefs = useRef([]) //Для скролу при переміщенні
   //   Для розкриття груп(секцій)
-  const [openLevel2, setOpenLevel2] = useState([])
-  const [openLevel1, setOpenLevel1] = useState([]) // за замовчуванням всі відкриті
+  const [openLevel2, setOpenLevel2] = useState([]) //   Для розкриття груп
+  const [openLevel1, setOpenLevel1] = useState([]) //   Для розкриття груп // за замовчуванням всі відкриті
 
   useEffect(() => {
     setTData(data || [])
     setLevel1(dataLevel1 || [])
     setLevel2(dataLevel2 || [])
-    setOpenLevel1(dataLevel1 || [])
+    setOpenLevel1(dataLevel1?.map((item) => item.id) || []) // За замовчуванням всі теми розкриті
+    setOpenLevel2(dataLevel2?.map((item) => item.id) || []) // За замовчуванням всі групи розкриті
   }, [data, dataLevel2, dataLevel1])
 
   useEffect(() => {
@@ -77,9 +78,21 @@ export default function TableView({
     }
   }, [message])
 
-  //   console.log("TableView/TData=", tData)
-  //   console.log("TableView/level1=", level1)
-  //   console.log("TableView/level2=", level2)
+//   console.log("TableView/TData=========================================================")
+//   console.log("TableView/TData=", tData)
+//   console.log("TableView/level1=", level1)
+//   console.log("TableView/level2=", level2)
+//   console.log("TableView/openLevel1=", openLevel1)
+//   console.log("TableView/openLevel2=", openLevel2)
+//   console.log("TableView/level2Id=", level2Id)
+//   console.log("TableView/level1Id=", level1Id)
+  if (level2?.length > 0) {
+    // console.log("TableView/first level2 item:", level2[0])
+    // console.log(
+    //   "TableView/level1 filtered by level2[0].id:",
+    //   level1?.filter((t) => t[level2Id] === level2[0].id)
+    // )
+  }
 
   const toggleSelectTopic = (id) => {
     setSelectedLevel1((prev) => {
@@ -304,8 +317,8 @@ export default function TableView({
               </span>
 
               <span>
-                {/* ({topicWords.length})⮞ {level1Head}: {topic.name} */}
-                ({topicWords.length}) {level1Head}: {topic.name}
+                {/* ({topicWords.length})⮞ {level1Head}: {topic.name} */}({topicWords.length}) {level1Head}:{" "}
+                {topic.name}
               </span>
               <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
             </div>
@@ -380,7 +393,9 @@ export default function TableView({
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
   return (
     <main className="p-1 max-w-4xl mx-auto">
-      <h1 className="text-h1On dark:text-h1OnD font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">{title}</h1>
+      <h1 className="text-h1On dark:text-h1OnD font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">
+        {title}
+      </h1>
       <div className="flex flex-wrap gap-1 sm:gap-2 items-center text-xs sm:text-sm lg:text-sm mb-3 font-body">
         {/* ДОДАТИ, ПЕРЕКЛАСТИ, ІМПОРТУВАТИ – завжди */}
         {user && selectedIds.length === 0 && (
@@ -581,9 +596,7 @@ export default function TableView({
                         colSpan={showOwnerMark ? columns.length + 2 : columns.length}
                         className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
                       >
-                        {level2Head}: {section.name} ({sectionLevel1.length})
-                        {/* {openLevel2.includes(section.id) ? " 🔽" : " ▶️"} */}
-                        {/* {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : " ▶️"} */}
+                        {level2Head}:{section.name} ({sectionLevel1.length})
                         {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : ""}
                       </td>
                     </tr>

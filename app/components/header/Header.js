@@ -1,4 +1,4 @@
-//CL/Header.js
+//Header.js
 "use client"
 
 import HeaderLogo from "./HeaderLogo"

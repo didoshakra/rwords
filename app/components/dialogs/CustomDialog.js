@@ -1,4 +1,4 @@
-// Components/dialogs/CustomDialog.js
+// Components/dialogs/CustomDialog.js//Діалогове вікно з кастомними кнопками
 // Кнопки діалогу замість confirm
 
 import React from "react"

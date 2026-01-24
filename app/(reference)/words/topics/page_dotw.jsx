@@ -2,8 +2,8 @@
 "use client"
 
 import React, { useEffect, useState, useTransition } from "react"
-import { getTopics, createTopic, updateTopic, deleteTopic } from "@/app/actions/topicActions"
-import { getSections } from "@/app/actions/sectionActions" // Передбачається, що є ця функція для завантаження секцій
+import { getTopics, createTopic, updateTopic, deleteTopic } from "@/app/actions/words/topicActions"
+import { getSections } from "@/app/actions/words/sectionActions" // Передбачається, що є ця функція для завантаження секцій
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 
@@ -22,7 +22,7 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function TopicsPage() {
-//   const { user } = useAuth()
+  //   const { user } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [topics, setTopics] = useState([])
@@ -247,4 +247,3 @@ export default function TopicsPage() {
     </main>
   )
 }
-

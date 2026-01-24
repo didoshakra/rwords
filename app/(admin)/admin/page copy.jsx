@@ -1,46 +1,32 @@
 //CL/ app/admin/page.jsx
 //Створення/перестворення  таюлиць БД
-// з прогрес баром
+// Без прогресу бару
 
 "use client"
 
 import React, { useState, useTransition } from "react"
 import { initTables, resetTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
-import { clearCloudinaryAndDB } from "@/app/actions/cloudinary/clearCloudinaryAndDB"
-
+import { clearCloudinaryAndDB } from "@/app/actions/cloudinaryActions"
 
 export default function AdminPage() {
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState("")
   const [error, setError] = useState(null)
-  const [cloudProgress, setCloudProgress] = useState(null) // новий стан
 
-  const handleAction = async (actionFn, successText) => {
+  const handleAction = async (actionFn, defaultMsg) => {
     setMessage("")
     setError(null)
 
     startTransition(async () => {
       try {
-        const res = await actionFn(setCloudProgress)
-
-        if (res?.message) {
-          setMessage(res.message)
-        } else if (successText) {
-          setMessage(successText)
-        } else {
-          setMessage("✅ Дія виконана")
-        }
-
-        setCloudProgress(null)
+        const msg = await actionFn()
+        setMessage(msg || defaultMsg)
       } catch (e) {
         console.error("❌ Помилка:", e)
-        const msg = e?.message || JSON.stringify(e) || "Невідома помилка"
-        setError("Помилка: " + msg)
-        setCloudProgress(null)
+        setError("Помилка: " + (e.message || "невідома"))
       }
     })
   }
-
 
   return (
     <main className="p-8 max-w-lg mx-auto space-y-6">
@@ -88,24 +74,21 @@ export default function AdminPage() {
           {isPending ? "⏳ Створення..." : "Створити політики RLS/Тільки для supabase.com"}
         </button>
 
-        {/* Очистити Cloudinary + БД */}
+        {/* Очистити Cloudinary */}
         <button
-          onClick={() => {
-            const confirmed = confirm(
-              "⚠️ Увага! Це видалить ВСІ файли з Cloudinary та ВСІ записи в таблиці pictures. Дію неможливо скасувати. Продовжити?",
+          onClick={() =>
+            handleAction(
+              async () => {
+                const result = await clearCloudinaryAndDB()
+                return result.message
+              },
+              "", // message будемо ставити з сервера
             )
-            if (!confirmed) return
-
-            handleAction(clearCloudinaryAndDB, "")
-          }}
+          }
           disabled={isPending}
           className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50"
         >
-          {isPending
-            ? cloudProgress !== null
-              ? `⏳ Видалено ${cloudProgress} файлів з Cloudinary...`
-              : "⏳ Очищення Cloudinary та БД..."
-            : "Очистити Cloudinary + БД"}
+          {isPending ? "⏳ Очищення Cloudinary та БД..." : "Очистити Cloudinary + БД"}
         </button>
       </div>
 

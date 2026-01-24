@@ -7,6 +7,25 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // >>> ДОДАЙ СЮДИ <<<
+  safelist: [
+    "bg-levelBg0",
+    "bg-levelBg1",
+    "bg-levelBg2",
+    "bg-levelBg3",
+    "bg-levelBg4",
+    "bg-levelBg5",
+
+    "text-levelHover",
+    "text-level0",
+    "text-level1",
+    "text-level2",
+    "text-level3",
+    "text-level4",
+    "text-level5",
+  ],
+  // <<< ДОДАНО >>>
+
   theme: {
     extend: {
       backgroundImage: {
@@ -14,15 +33,32 @@ module.exports = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        level0: "#f64532",
-        level1: "#82AE46",
-        level2: "#13ff11",
-        level3: "#ac00ca",
-        level4: "#fcd34d",
-        level5: "#0e6955",
-        levelHover: "#2563eb",
-
-        itemHover: "#dc2626", //"#f64532",
+        // levelHover: "#2563eb",
+        levelHover: "#f64532",
+        // level0: "#f64532",
+        // level1: "#82AE46",
+        // level2: "#13ff11",
+        // level3: "#ac00ca",
+        // level4: "#fcd34d",
+        // level5: "#0e6955",
+        // levelBg0: "#0e6955",
+        // levelBg1: "#fcd34d",
+        // levelBg2: "#ac00ca",
+        // levelBg3: "#13ff11",
+        // levelBg4: "#82AE46",
+        // levelBg5: "#f64532",
+        level0: "var(--color-pCol9)",
+        level1: "var(--color-pCol8)",
+        level2: "var(--color-pCol7)",
+        level3: "var(--color-pCol6)",
+        level4: "var(--color-pCol5)",
+        level5: "var(--color-pCol4)",
+        levelBg0: "var(--color-pCol5)",
+        levelBg1: "var(--color-pCol4)",
+        levelBg2: "var(--color-pCol3)",
+        levelBg3: "var(--color-pCol2)",
+        levelBg4: "var(--color-pCol1)",
+        levelBg5: "var(--color-pCol0)",
 
         //
         infoMsg: "#4f46e5",
@@ -34,33 +70,32 @@ module.exports = {
         linkOnD: "#2563eb", //bg-blue-600
 
         // page --------------------------------------------
-        pBg: "var(--color-pCol0)",
+        pBg: "var(--color-pCol1)",
         pBgD: "#334155",
         pOn: "var(--color-pCol8)",
         pOnD: "var(--color-pCol3)",
         // page1 --------------------------------------------
-        pBg1: "var(--color-pCol1)",
+        pBg1: "var(--color-pCol2)",
         pBg1D: "#1e293b",
         pOn1: "var(--color-pCol8)",
         pOn1D: "var(--color-pCol0)",
 
         //  картка -------------------------------
-        kBg: "var(--color-pCol12)",
+        kBg: "var(--color-pCol2)",
         kOn: "var(--color-pCol8)",
         kBor: "var(--color-pCol3)",
 
         // картка1 -------------------------------
-        k1Bg: "var(--color-pCol2)",
+        k1Bg: "var(--color-pCol3)",
         k1On: "var(--color-pCol8)",
         k1Bor: "var(--color-pCol4)",
 
         // headTape --------------------------------------------
-        hTapeOn: "var(--color-pCol0)",
         hTapeBg: "var(--color-pCol6)",
+        hTapeOn: "var(--color-pCol0)",
         hTapeBgD: "#0f172a", //--color-pCol9: #0f172a;
 
         // form
-
         fOn: "var(--color-pCol8)",
         fOnD: "var(--color-pCol2)",
         fBg: "var(--color-pCol1)",
@@ -71,7 +106,7 @@ module.exports = {
         // fBorHovD: "var(--color-pCol1)",
         fBorHov: "var(--color-pCol13)",
         fBorFocus: "var(--color-pCol13)",
-        // fBorFocusD: "var(--color-pCol11)",  
+        // fBorFocusD: "var(--color-pCol11)",
         // fBgHov: "var(--color-pCol2)",
         // fBgHovD: "var(--color-pCol1)",
 
@@ -79,8 +114,8 @@ module.exports = {
         hOn: "var(--color-pCol8)",
         hOnD: "var(--color-pCol2)",
         hOnHov: "var(--color-pCol6)",
-        hOnHovD: "var(--color-pCol2)",
-        hBg: "var(--color-pCol2)",
+        hOnHovD: "var(--color-pCol3)",
+        hBg: "var(--color-pCol3)",
         hBgD: "#1e293b", //--color-pCol8: #1e293b;
         hBgHov: "var(--color-pCol3)",
         hBgHovD: "var(--color-pCol6)",

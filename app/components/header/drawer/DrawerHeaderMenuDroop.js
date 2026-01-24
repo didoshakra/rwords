@@ -3,8 +3,9 @@
 
 "use client"
 import { useState } from "react"
-import Link from "next/link"
-import { headMenu } from "../../../data/dataMenu"
+// import Link from "next/link"
+import MultiLevelMenu from "@/app/components/MultiLevelMenu"
+import {  headMenu } from "@/app/data/dataMenu"
 
 const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
   const [drawerHeaderMenuDroopOpen, setDrawerHeaderMenuDroopOpen] = useState(false)
@@ -13,21 +14,21 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
     setDrawerHeaderMenuDroopOpen(false)
     setDrawerOpen(false)
   }
-  //випадаюче меню Налаштувань
-  const renderMenu = () => {
-    return headMenu.map((item, index) => {
-      return (
-        <li
-          className="flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
-          key={index}
-          //   onClick={() => setDrawerHeaderMenuDroopOpen(false)}
-          onClick={() => tagleMenu()}
-        >
-          <Link href={`${item.link}`}>{item.a}</Link>
-        </li>
-      )
-    })
-  }
+//   //випадаюче меню Налаштувань
+//   const renderMenu = () => {
+//     return headMenu.map((item, index) => {
+//       return (
+//         <li
+//           className="flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
+//           key={index}
+//           //   onClick={() => setDrawerHeaderMenuDroopOpen(false)}
+//           onClick={() => tagleMenu()}
+//         >
+//           <Link href={`${item.link}`}>{item.a}</Link>
+//         </li>
+//       )
+//     })
+//   }
 
   return (
     <div className="m-0 items-center pb-2 ">
@@ -76,7 +77,8 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
 
       {/* список головного меню */}
       <div className={`${drawerHeaderMenuDroopOpen ? "relative" : "hidden"} pl-4 `}>
-        <ul>{renderMenu()}</ul>
+        {/* <ul>{renderMenu()}</ul>//Старе меню */}
+        <MultiLevelMenu items={headMenu} isRowFirst={false} />
       </div>
     </div>
   )

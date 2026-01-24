@@ -1,9 +1,17 @@
-// /sections/page.jsx
+// /pictures/pictures_sections/page.jsx
 "use client"
 
 import React, { useEffect, useState, useTransition } from "react"
-import { getSections, createSection, updateSection, deleteSection } from "@/app/actions/sectionActions"
-import { useAuth } from "@/app/context/AuthContext"
+import {
+  getSections,
+  createSection,
+  updateSection,
+  deleteSection,
+  deleteSections,
+} from "@/app/actions/pictures/picturesSectionActions"
+// import { useAuth } from "@/app/context/AuthContext"
+import TableView from "@/app/components/tables/TableView"
+import { useSession } from "next-auth/react"
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -20,14 +28,15 @@ function Modal({ open, onClose, children }) {
 }
 
 export default function SectionsPage() {
-  const { user } = useAuth()
-  const [sections, setSections] = useState([])
+  const { data: session, status } = useSession()
+  const user = session?.user
+  const [pictureSections, setPictureSections] = useState([])
   const [message, setMessage] = useState("")
   const [modal, setModal] = useState(null) // null | 'add' | { type: 'edit', section }
   const [name, setName] = useState("")
-  const [img, setImg] = useState("")
   const [pn, setPn] = useState(0)
   const [isPending, startTransition] = useTransition()
+  const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
 
   useEffect(() => {
     loadSections()
@@ -35,13 +44,12 @@ export default function SectionsPage() {
 
   const loadSections = () => {
     getSections()
-      .then(setSections)
+      .then(setPictureSections)
       .catch((err) => setMessage("Помилка: " + err.message))
   }
 
   const openAddModal = () => {
     setName("")
-    setImg("")
     setPn(0)
     setModal("add")
     setMessage("")
@@ -49,7 +57,6 @@ export default function SectionsPage() {
 
   const openEditModal = (section) => {
     setName(section.name)
-    setImg(section.img)
     setPn(section.pn)
     setModal({ type: "edit", section })
     setMessage("")
@@ -58,7 +65,6 @@ export default function SectionsPage() {
   const closeModal = () => {
     setModal(null)
     setName("")
-    setImg("")
     setPn(0)
     setMessage("")
   }
@@ -70,10 +76,10 @@ export default function SectionsPage() {
       try {
         if (!user) throw new Error("Потрібна авторизація")
         if (modal?.type === "edit") {
-          await updateSection(modal.section.id, { name, img, pn }, user)
+          await updateSection(modal.section.id, { name, pn }, user)
           setMessage("Секцію оновлено")
         } else {
-          await createSection({ name, img, pn }, user.id)
+          await createSection({ name, pn }, user.id)
           setMessage("Секцію додано")
         }
         closeModal()
@@ -84,12 +90,16 @@ export default function SectionsPage() {
     })
   }
 
-  const handleDelete = (section) => {
-    if (!confirm("Ви впевнені, що хочете видалити цю секцію?")) return
+  const handleDelete = (t) => {
+    console.log("topics/handleDelete/t=", t)
+    if (!confirm(`Ви впевнені, що хочете видалити ${t.length} секцій?`)) return
+
     startTransition(async () => {
       try {
-        await deleteSection(section.id, user)
-        setMessage("Секцію видалено")
+        // t — це масив секцій, треба передати масив id
+        const ids = t.map((s) => s.id)
+        await deleteSections(ids, user.id, user.role)
+        setMessage("Видалено")
         loadSections()
       } catch (err) {
         setMessage("Помилка: " + err.message)
@@ -97,53 +107,43 @@ export default function SectionsPage() {
     })
   }
 
-  const isOwnerOrAdmin = (s) => user && (user.id === s.user_id || user.role === "admin")
-
+  //Для TableView
+  const columns = [
+    {
+      label: "№п",
+      accessor: "pn",
+      type: "integer",
+      width: 50,
+      styleCell: { alignItems: "center" },
+      //   styleCellText: {color: 'green'},
+      markIfOwner: true, // 🚀 нове поле
+    },
+    { label: "Група тем", accessor: "name", type: "text", width: 250 },
+    {
+      label: "Sid",
+      accessor: "id",
+      type: "integer",
+      width: 40,
+      styleCell: { alignItems: "center" },
+    },
+  ]
   return (
     <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Секції</h1>
-
-      {user && (
-        <button onClick={openAddModal} className="mb-4 bg-blue-600 text-white px-4 py-2 rounded">
-          ➕ Додати секцію
-        </button>
-      )}
-
-      {message && <p className="mb-4 text-green-700 font-medium">{message}</p>}
-
-      <table className="w-full border border-gray-300 bg-white shadow-sm">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2 border">ID</th>
-            <th className="p-2 border">Порядок</th>
-            <th className="p-2 border">Назва</th>
-            <th className="p-2 border">Зображення</th>
-            <th className="p-2 border">Дії</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sections.map((s) => (
-            <tr key={s.id} className="hover:bg-gray-50">
-              <td className="p-2 border">{s.id}</td>
-              <td className="p-2 border">{s.pn}</td>
-              <td className="p-2 border">{s.name}</td>
-              <td className="p-2 border">{s.img}</td>
-              <td className="p-2 border">
-                {isOwnerOrAdmin(s) && (
-                  <div className="flex gap-2">
-                    <button onClick={() => openEditModal(s)} className="text-blue-600 hover:underline text-sm">
-                      ✏️
-                    </button>
-                    <button onClick={() => handleDelete(s)} className="text-red-600 hover:underline text-sm">
-                      🗑️
-                    </button>
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableView
+        data={pictureSections}
+        columns={columns}
+        title={"Групи тем"}
+        level0Head="Групи тем"
+        onAdd={openAddModal}
+        onEdit={openEditModal}
+        onDelete={handleDelete} // передаємо обєкти
+        sortField={"pn"} //поле для порядку
+        isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
+        message={message} //Для повідомлення
+        setMessage={setMessage} //Для повідомлення
+        actionsOk={actionsOk} //
+        setActionsOk={setActionsOk}
+      />
 
       <Modal open={!!modal} onClose={closeModal}>
         <h2 className="text-lg font-semibold mb-4">{modal?.type === "edit" ? "Редагувати секцію" : "Додати секцію"}</h2>
@@ -155,13 +155,7 @@ export default function SectionsPage() {
             onChange={(e) => setName(e.target.value)}
             className="border p-2 rounded"
           />
-          <input
-            type="text"
-            placeholder="Зображення"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
-            className="border p-2 rounded"
-          />
+         
           <input
             type="number"
             placeholder="Порядок"

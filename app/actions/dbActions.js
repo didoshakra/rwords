@@ -58,7 +58,7 @@ export async function initTables() {
   ON CONFLICT (email) DO NOTHING;`
 
   console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
-
+  // =====================================================
   // sections
   await sql`
     CREATE TABLE IF NOT EXISTS sections (
@@ -72,10 +72,15 @@ export async function initTables() {
 
   // додати запис "інше" у sections
   const userId = 1 // для демо, бо ще нема авторизації
-  await sql`
+  // Перевіряємо, чи є хоча б один рядок у topics
+  const sectionsExist = await sql`SELECT 1 FROM topics LIMIT 1;`
+
+  if (sectionsExist.length === 0) {
+    // додати запис "інше" у sections
+    await sql`
     INSERT INTO sections (pn, name, img, user_id)
-    VALUES (0, 'інше', 'other', ${userId})
-    ON CONFLICT DO NOTHING;`
+    VALUES (0, 'інше', 'other', ${userId})`
+  }
 
   // topics
   await sql`
@@ -90,11 +95,15 @@ export async function initTables() {
       CONSTRAINT fk_user_topic FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );`
   // додати запис "інше" у topics
-  await sql`
-  INSERT INTO topics (pn, name, img, section_id, user_id)
-  VALUES (0, 'інше', 'other', 1, ${userId})
-  ON CONFLICT DO NOTHING;
-`
+  // Перевіряємо, чи є хоча б один рядок у topics
+  const topicsExist = await sql`SELECT 1 FROM topics LIMIT 1;`
+
+  if (topicsExist.length === 0) {
+    // додати запис "інше" у topics
+    await sql`
+    INSERT INTO topics (pn, name, img, section_id, user_id)
+    VALUES (0, 'інше', 'other', 1, ${userId})`
+  }
 
   // words
   await sql`
@@ -110,6 +119,73 @@ export async function initTables() {
       CONSTRAINT fk_topic FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_word FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );`
+  // =====================================================
+  // pictures_sections
+  await sql`
+    CREATE TABLE IF NOT EXISTS pictures_sections (
+      id SERIAL PRIMARY KEY,
+      pn INTEGER DEFAULT 0,
+      name TEXT NOT NULL,
+      user_id INTEGER NOT NULL,
+      CONSTRAINT fk_user_section FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    );`
+
+  // додати запис "інше" у sections
+  //   const userId = 1 /// для демо, бо ще нема авторизації
+  // Перевіряємо, чи є хоча б один рядок у pictures_sections
+  const picturesSectionsExist = await sql`SELECT 1 FROM pictures_sections LIMIT 1;`
+
+  if (picturesSectionsExist.length === 0) {
+    // додати запис "інше" у sections
+    await sql`
+    INSERT INTO pictures_sections (pn, name, user_id)
+    VALUES (0, 'інше', ${userId})`
+  }
+
+  // pictures_topics
+  await sql`
+    CREATE TABLE IF NOT EXISTS pictures_topics (
+      id SERIAL PRIMARY KEY,
+      pn INTEGER DEFAULT 0,
+      name TEXT NOT NULL,
+      pictures_sections_id INTEGER DEFAULT 1,
+      user_id INTEGER NOT NULL,
+      CONSTRAINT fk_section FOREIGN KEY(pictures_sections_id) REFERENCES pictures_sections(id) ON DELETE CASCADE,
+      CONSTRAINT fk_user_topic FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    );`
+  // додати запис "інше" у pictures_topics
+  // Перевіряємо, чи є хоча б один рядок у pictures_topics
+  const picturesTopicsExist = await sql`SELECT 1 FROM pictures_topics LIMIT 1;`
+
+  if (picturesTopicsExist.length === 0) {
+    // додати запис "інше" у pictures_topics
+    await sql`
+    INSERT INTO pictures_topics (pn, name, pictures_sections_id, user_id)
+    VALUES (0, 'інше', 1, ${userId})`
+  }
+
+  // pictures (stores image metadata, linked to pictures_topics and users)
+  await sql`
+    CREATE TABLE IF NOT EXISTS pictures (
+      id SERIAL PRIMARY KEY,
+      pn INTEGER DEFAULT 0,
+      topic_id INTEGER DEFAULT 1,
+      pictures_name TEXT DEFAULT '',
+      title TEXT NOT NULL,
+      file_name TEXT,
+      url TEXT NOT NULL,
+      public_id  TEXT NOT NULL
+      format TEXT,
+      width INTEGER,
+      height INTEGER,
+      bytes INTEGER,
+      original_bytes INTEGER,
+      created_at TIMESTAMP DEFAULT NOW(),
+      user_id INTEGER NOT NULL,
+      CONSTRAINT fk_topic FOREIGN KEY(topic_id) REFERENCES pictures_topics(id) ON DELETE CASCADE,
+      CONSTRAINT fk_user_word FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+    );`
+  // =====================================================
 
   // posts (блог)
   await sql`
@@ -143,11 +219,17 @@ export async function initTables() {
     title VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`
+  console.log("✅ dbActions: Всі таблиці ініціалізовані.")
 }
 
 export async function resetTables() {
   // Потрібно видаляти таблиці у зворотньому порядку через FK залежності
   await sql`DROP TABLE IF EXISTS site_stats;` // Спочатку нову статистику (якщо є)
+  // pictures-related
+  await sql`DROP TABLE IF EXISTS pictures;`
+  await sql`DROP TABLE IF EXISTS pictures_topics;`
+  await sql`DROP TABLE IF EXISTS pictures_sections;`
+  // blog and words
   await sql`DROP TABLE IF EXISTS comments;`
   await sql`DROP TABLE IF EXISTS posts;`
   await sql`DROP TABLE IF EXISTS words;`
@@ -180,6 +262,11 @@ export async function createRLSPolicies() {
   await sql`ALTER TABLE words ENABLE ROW LEVEL SECURITY;`
   await sql`ALTER TABLE posts ENABLE ROW LEVEL SECURITY;`
   await sql`ALTER TABLE comments ENABLE ROW LEVEL SECURITY;`
+
+  // Enable RLS for pictures-related tables
+  await sql`ALTER TABLE pictures_sections ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE pictures_topics ENABLE ROW LEVEL SECURITY;`
+  await sql`ALTER TABLE pictures ENABLE ROW LEVEL SECURITY;`
 
   // --- USERS ---
   await sql`
@@ -441,6 +528,144 @@ export async function createRLSPolicies() {
         ) THEN
           CREATE POLICY "Only owner can delete comments"
           ON comments FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- PICTURES_SECTIONS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select pictures_sections'
+        ) THEN
+          CREATE POLICY "All can select pictures_sections"
+          ON pictures_sections FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert pictures_sections'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert pictures_sections"
+          ON pictures_sections FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update pictures_sections'
+        ) THEN
+          CREATE POLICY "Only owner can update pictures_sections"
+          ON pictures_sections FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete pictures_sections'
+        ) THEN
+          CREATE POLICY "Only owner can delete pictures_sections"
+          ON pictures_sections FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- PICTURES_TOPICS ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select pictures_topics'
+        ) THEN
+          CREATE POLICY "All can select pictures_topics"
+          ON pictures_topics FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert pictures_topics'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert pictures_topics"
+          ON pictures_topics FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update pictures_topics'
+        ) THEN
+          CREATE POLICY "Only owner can update pictures_topics"
+          ON pictures_topics FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete pictures_topics'
+        ) THEN
+          CREATE POLICY "Only owner can delete pictures_topics"
+          ON pictures_topics FOR DELETE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+
+  // --- PICTURES ---
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'All can select pictures'
+        ) THEN
+          CREATE POLICY "All can select pictures"
+          ON pictures FOR SELECT
+          USING (true);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only authenticated can insert pictures'
+        ) THEN
+          CREATE POLICY "Only authenticated can insert pictures"
+          ON pictures FOR INSERT
+          WITH CHECK (auth.uid() IS NOT NULL);
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can update pictures'
+        ) THEN
+          CREATE POLICY "Only owner can update pictures"
+          ON pictures FOR UPDATE
+          USING (user_id = auth.uid());
+        END IF;
+      END $$;
+    `
+  await sql`
+      DO $$ BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM pg_policies WHERE policyname = 'Only owner can delete pictures'
+        ) THEN
+          CREATE POLICY "Only owner can delete pictures"
+          ON pictures FOR DELETE
           USING (user_id = auth.uid());
         END IF;
       END $$;

@@ -3,22 +3,27 @@
 "use client"
 
 import React, { useEffect, useState, useTransition, useRef } from "react"
-import { getWords, createWord, updateWord, deleteWords, importCSV, translateWord } from "@/app/actions/wordActions"
-import { getSections } from "@/app/actions/sectionActions"
-import { getTopics } from "@/app/actions/topicActions"
+import {
+  getWords,
+  createWord,
+  updateWord,
+  deleteWords,
+  importCSV,
+  translateWord,
+} from "@/app/actions/words/wordActions"
+import { getSections } from "@/app/actions/words/sectionActions"
+import { getTopics } from "@/app/actions/words/topicActions"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
 
-
-
 function Modal({ open, onClose, children }) {
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex ite             ms-center justify-center bg-black/50">
-      <div className="bg-white rounded-xl p-6 min-w-[320px] relative shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-white rounded-xl p-6 min-w-[320px] max-h-[90vh] overflow-y-auto relative shadow-xl">
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl"
@@ -106,6 +111,7 @@ export default function WordsPage() {
   const [sections, setSections] = useState([])
   const [modal, setModal] = useState(null) // null | {type, word}
   const [id, setId] = useState(null)
+  const [section_id, setSectionId] = useState("")
   const [word, setWord] = useState("")
   const [translation, setTranslation] = useState("")
   const [topic_id, setTopicId] = useState("")
@@ -151,10 +157,11 @@ export default function WordsPage() {
   const openAddModal = () => {
     console.log("words/openAddModal")
     setId(null)
+    setSectionId("")
     setWord("")
     setTranslation("")
     setTopicId("")
-    setPn("")
+    setPn("0")
     setKnow(false)
     setImg("")
     setModal({ type: "add" })
@@ -163,6 +170,9 @@ export default function WordsPage() {
 
   const openEditModal = (w) => {
     setId(w.id)
+    // Знаходимо section_id з topic
+    const topic = topics.find((t) => t.id === w.topic_id)
+    setSectionId(topic?.section_id?.toString() || "")
     setWord(w.word)
     setTranslation(w.translation)
     setTopicId(w.topic_id.toString())
@@ -176,6 +186,7 @@ export default function WordsPage() {
   const closeModal = () => {
     setModal(null)
     setId(null)
+    setSectionId("")
     setWord("")
     setTranslation("")
     setTopicId("")
@@ -189,6 +200,7 @@ export default function WordsPage() {
     e.preventDefault()
     if (!user) return setMessage("Потрібна авторизація")
     if (!word.trim()) return setMessage("Заповніть слово ")
+    if (!section_id) return setMessage("Оберіть секцію")
     if (!topic_id) return setMessage("Оберіть топік")
 
     const data = {
@@ -640,8 +652,30 @@ export default function WordsPage() {
             />
           </div>
           <div>
+            <label htmlFor="section_id" className="block font-medium mb-1">
+              Секція
+            </label>
+            <select
+              id="section_id"
+              value={section_id}
+              onChange={(e) => {
+                setSectionId(e.target.value)
+                setTopicId("") // Скидаємо топік при зміні секції
+              }}
+              className="border p-2 rounded"
+              required
+            >
+              <option value="">Оберіть секцію</option>
+              {sections.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label htmlFor="topic_id" className="block font-medium mb-1">
-              Топік
+              Тема
             </label>
             <select
               id="topic_id"
@@ -649,13 +683,17 @@ export default function WordsPage() {
               onChange={(e) => setTopicId(e.target.value)}
               className="border p-2 rounded"
               required
+              disabled={!section_id}
             >
               <option value="">Оберіть топік</option>
-              {topics.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
+              {section_id &&
+                topics
+                  .filter((t) => t.section_id?.toString() === section_id)
+                  .map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.name}
+                    </option>
+                  ))}
             </select>
           </div>
           <div>

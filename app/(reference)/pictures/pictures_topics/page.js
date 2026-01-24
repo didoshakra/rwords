@@ -9,12 +9,11 @@ import {
   deleteTopic,
   deleteTopics,
   checkTopicRelations,
-} from "@/app/actions/topicActions"
-import { getSections } from "@/app/actions/sectionActions" // Передбачається, що є ця функція для завантаження секцій
+} from "@/app/actions/pictures/picturesTopicActions"
+import { getSections } from "@/app/actions/pictures/picturesSectionActions" // Передбачається, що є ця функція для завантаження секцій
 // import { useAuth } from "@/app/context/AuthContext"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
-
 
 function Modal({ open, onClose, children }) {
   if (!open) return null
@@ -32,6 +31,7 @@ function Modal({ open, onClose, children }) {
 
 //Для TableView
 const columns = [
+    { label: "Тема", accessor: "name", type: "text", width: 250 },
   {
     label: "№п",
     accessor: "pn",
@@ -41,8 +41,8 @@ const columns = [
     //   styleCellText: {color: 'green'},
     markIfOwner: true, // 🚀 нове поле
   },
-  { label: "Тема", accessor: "name", type: "text", width: 250 },
-  { label: "Секція", accessor: "section_name", type: "text", width: 250 },
+
+//   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
   {
     label: "Tid",
     accessor: "id",
@@ -53,16 +53,16 @@ const columns = [
 ]
 
 export default function TopicsPage() {
-//   const { isFromApp } = useAuth()
+  //   const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
-  const [topics, setTopics] = useState([])
-  const [sections, setSections] = useState([])
+  const [picturesTopics, setPicturesTopics] = useState([])
+  const [picturesSections, setPicturesSections] = useState([])
   const [modal, setModal] = useState(null) // null | {type, topic}
   const [id, setId] = useState(null)
   const [name, setName] = useState("")
   const [section_id, setSectionId] = useState("")
-  const [pn, setPn] = useState("")
+//   const [pn, setPn] = useState("")
   const [message, setMessage] = useState("")
   const [isPending, startTransition] = useTransition()
   const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
@@ -70,26 +70,24 @@ export default function TopicsPage() {
   useEffect(() => {
     loadTopics()
     loadSections()
-    // console.log("topics/Topics=", topics)
-    // console.log("topics/Sections=", sections)
   }, [])
 
   const loadTopics = () => {
     getTopics()
-      .then(setTopics)
+      .then(setPicturesTopics)
       .catch((err) => setMessage("Помилка: " + err.message))
   }
 
   const loadSections = () => {
     getSections()
-      .then(setSections)
+      .then(setPicturesSections)
       .catch(() => setSections([]))
   }
 
   const openAddModal = () => {
     setId(null)
     setName("")
-    setPn("")
+    // setPn("")
     setSectionId("")
     setModal({ type: "add" })
     setMessage("")
@@ -98,8 +96,8 @@ export default function TopicsPage() {
   const openEditModal = (t) => {
     setId(t.id)
     setName(t.name)
-    setPn(t.pn)
-    setSectionId(t.section_id.toString())
+    // setPn(t.pn)
+    setSectionId(t.pictures_sections_id.toString())
     setModal({ type: "edit", topic: t })
     setMessage("")
   }
@@ -108,7 +106,7 @@ export default function TopicsPage() {
     setModal(null)
     setId(null)
     setName("")
-    setPn("")
+    // setPn("")
     setSectionId("")
     setMessage("")
   }
@@ -118,11 +116,11 @@ export default function TopicsPage() {
     if (!user) return setMessage("Потрібна авторизація")
     if (!name.trim()) return setMessage("Введіть назву")
     if (section_id === "") return setMessage("Оберіть секцію")
-    if (pn === "") return setMessage("Введіть порядок")
+    // if (pn === "") return setMessage("Введіть порядок")
 
     const data = {
       name: name.trim(),
-      pn: Number(pn),
+    //   pn: Number(pn),
       section_id: Number(section_id),
     }
 
@@ -144,7 +142,6 @@ export default function TopicsPage() {
   }
 
   const handleDelete = (t) => {
-    console.log("topics/handleDelete/t=", t)
     if (!confirm(`Ви впевнені, що хочете видалити ${t.length} тем?`)) return
 
     startTransition(async () => {
@@ -159,24 +156,12 @@ export default function TopicsPage() {
     })
   }
   const handleThemeDownload = (t) => {
-    console.log("topics/handleDelete/t=", t)
     if (!confirm(`Ви впевнені, що хочете завантажити ${t.length} тем?`)) return
 
-    // startTransition(async () => {
-    //   try {
-    //     // await deleteTopic(t.id, user)
-    //     await deleteSelectedTopics(t) // ✅ вже масив
-    //     setMessage("Видалено")
-    //     loadTopics()
-    //   } catch (err) {
-    //     setMessage("Помилка: " + err.message)
-    //   }
-    // })
+
   }
 
   const deleteSelectedTopics = async (selectedTopics) => {
-    console.log("topics/deleteSelectedTopics/selectedTopics=", JSON.stringify(selectedTopics, null, 2))
-
     if (!user) {
       alert("Потрібна авторизація, щоб видаляти топіки")
       return
@@ -242,18 +227,18 @@ export default function TopicsPage() {
   return (
     <main className="p-6 max-w-4xl mx-auto">
       <TableView
-        data={topics}
-        dataLevel1={sections}
-        level1Id="section_id"
+        data={picturesTopics}
+        dataLevel1={picturesSections}
+        level1Id="pictures_sections_id"
         columns={columns}
         title={"Теми"}
-        level0Head="Тема"
+        level0Head="Тема картин"
         level1Head="Група тем"
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
         // onThemeDownload={isFromApp ? handleThemeDownload : undefined}
-        sortField={"pn"} //поле для порядку
+        // sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення
         setMessage={setMessage} //Для повідомлення
@@ -292,7 +277,7 @@ export default function TopicsPage() {
               required
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="pn" className="block font-medium mb-1">
               Порядок (PN)
             </label>
@@ -305,20 +290,20 @@ export default function TopicsPage() {
               className="border p-2 rounded"
               required
             />
-          </div>
+          </div> */}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
               Секція
             </label>
             <select
-              id="section_id"
+              id="sections_id"
               value={section_id}
               onChange={(e) => setSectionId(e.target.value)}
               className="border p-2 rounded"
               required
             >
               <option value="">Оберіть секцію</option>
-              {sections.map((section) => (
+              {picturesSections.map((section) => (
                 <option key={section.id} value={section.id}>
                   {section.name}
                 </option>
