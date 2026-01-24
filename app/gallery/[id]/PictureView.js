@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 export default function PictureView({ picture }) {
   const router = useRouter()
 
+  // ESC для повернення
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") router.push("/gallery")
@@ -29,6 +30,7 @@ export default function PictureView({ picture }) {
 
   return (
     <main className="relative w-screen h-screen bg-black">
+      {/* Картинка на весь екран */}
       <Image
         src={picture.url}
         alt={picture.pictures_name || "Picture"}
@@ -36,13 +38,29 @@ export default function PictureView({ picture }) {
         style={{ objectFit: "contain" }}
         priority
       />
-      <h2 className="absolute top-4 left-4 text-white text-xl bg-black/50 p-2 rounded">{picture.pictures_name}</h2>
+
+      {/* Назад: стрілочка */}
       <Link
         href="/gallery"
-        className="absolute top-4 right-4 text-white bg-black/50 px-3 py-1 rounded hover:bg-black/70"
+        className="absolute top-4 left-4 text-white bg-black/50 p-2 rounded-full hover:bg-black/70"
+        aria-label="Назад"
       >
-        Назад
+        {/* Можна замінити на SVG */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
       </Link>
+
+      {/* Назва по центру */}
+      <h2 className="absolute top-4 left-1/2 -translate-x-1/2 text-white text-lg bg-black/50 px-4 py-1 rounded">
+        {picture.pictures_name}
+      </h2>
     </main>
   )
 }
