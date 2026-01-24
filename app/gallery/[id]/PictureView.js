@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation"
 export default function PictureView({ picture }) {
   const router = useRouter()
 
-  // ESC для повернення
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") router.push("/gallery")
@@ -19,7 +18,7 @@ export default function PictureView({ picture }) {
 
   if (!picture) {
     return (
-      <main className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4">
+      <main className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4 overflow-hidden">
         <p className="text-lg mb-4">Картинка не знайдена</p>
         <Link href="/gallery" className="text-blue-500 underline">
           Повернутися в галерею
@@ -29,7 +28,7 @@ export default function PictureView({ picture }) {
   }
 
   return (
-    <main className="relative w-screen h-screen bg-black">
+    <main className="fixed inset-0 bg-black overflow-hidden">
       {/* Картинка на весь екран */}
       <Image
         src={picture.url}
@@ -39,13 +38,12 @@ export default function PictureView({ picture }) {
         priority
       />
 
-      {/* Назад: стрілочка */}
+      {/* Стрілка назад */}
       <Link
         href="/gallery"
         className="absolute top-4 left-4 text-white bg-black/50 p-2 rounded-full hover:bg-black/70"
         aria-label="Назад"
       >
-        {/* Можна замінити на SVG */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

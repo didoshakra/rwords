@@ -59,7 +59,8 @@ export default async function RootLayout({ children }) {
           <HeaderTape stats={stats} />
           <Header />
           {/* Головний контейнер */}
-          <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
+          <div className=" overflow-hidden">{children}</div>
+          {/* <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main> */}
           <SiteFooter />
         </Providers>
       </body>

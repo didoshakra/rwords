@@ -78,7 +78,7 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
       {/* список головного меню */}
       <div className={`${drawerHeaderMenuDroopOpen ? "relative" : "hidden"} pl-4 `}>
         {/* <ul>{renderMenu()}</ul>//Старе меню */}
-        <MultiLevelMenu items={headMenu} isRowFirst={false} />
+        <MultiLevelMenu setDrawerOpen={setDrawerOpen} items={headMenu} isRowFirst={false} />
       </div>
     </div>
   )
