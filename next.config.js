@@ -1,6 +1,15 @@
+// next.config.js
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   images: {
-    domains: ["content.rozetka.com.ua"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**", // дозволяє всі шляхи
+      },
+    ],
   },
 }
+
+module.exports = nextConfig

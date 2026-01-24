@@ -1,8 +1,24 @@
-//  actions/pictures/picturesActions.js
+//actions/pictures/picturesActions.js
 "use server"
 
 import { sql } from "@/lib/dbConfig"
 import cloudinary from "@/lib/cloudinary"
+
+export async function getPictureById(id) {
+  if (!id) throw new Error("ID картинки не передано")
+
+  const result = await sql`
+    SELECT pictures.*, users.name AS user_name
+    FROM pictures
+    LEFT JOIN users ON pictures.user_id = users.id
+    WHERE pictures.id = ${id}
+  `
+
+  // result — масив, беремо перший елемент
+  return result[0] || null
+}
+
+
 
 export async function getPictures() {
   const result = await sql`

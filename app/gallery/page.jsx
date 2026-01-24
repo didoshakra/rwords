@@ -1,7 +1,8 @@
-// app/gallery/page.jsx 
+// app/gallery/page.jsx
 "use client"
 
 import React, { useEffect, useState } from "react"
+import Link from "next/link"
 import { getPictures } from "@/app/actions/pictures/picturesActions"
 import { getSections } from "@/app/actions/pictures/picturesSectionActions"
 import { getTopics } from "@/app/actions/pictures/picturesTopicActions"
@@ -93,15 +94,26 @@ export default function GalleryPage() {
             const topic = topics.find((t) => t.id === pic.topic_id)
             const section = sections.find((s) => s.id === topic?.pictures_sections_id)
             return (
-              <div key={pic.id} className="border rounded overflow-hidden shadow-sm">
-                <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
-                <div className="p-2 text-sm">
-                  <div className="font-medium">{pic.pictures_name}</div>
-                  <div className="text-gray-500 text-xs">
-                    {topic?.name || "Без теми"} / {section?.name || "Без секції"}
+              //   <div key={pic.id} className="border rounded overflow-hidden shadow-sm">
+              //     <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
+              //     <div className="p-2 text-sm">
+              //       <div className="font-medium">{pic.pictures_name}</div>
+              //       <div className="text-gray-500 text-xs">
+              //         {topic?.name || "Без теми"} / {section?.name || "Без секції"}
+              //       </div>
+              //     </div>
+              //   </div>
+              <Link href={`/gallery/${pic.id}`} key={pic.id}>
+                <div className="border rounded overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition">
+                  <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
+                  <div className="p-2 text-sm">
+                    <div className="font-medium">{pic.pictures_name}</div>
+                    <div className="text-gray-500 text-xs">
+                      {topic?.name || "Без теми"} / {section?.name || "Без секції"}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
