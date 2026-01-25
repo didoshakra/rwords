@@ -57,7 +57,7 @@ export default function PictureView({ picture }) {
       </Link>
 
       {/* Назва по центру */}
-      <h2 className="absolute top-4 left-1/2 -translate-x-1/2 text-white text-lg bg-black/50 px-4 py-1 rounded">
+      <h2 className="absolute top-4 left-1/2 -translate-x-1/2 text-white text-lg bg-h2On dark:bg-h2OnD px-4 py-1 rounded">
         {picture.pictures_name}
       </h2>
     </main>
