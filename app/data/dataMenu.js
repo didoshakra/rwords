@@ -84,7 +84,7 @@ export const headMenu = [
         submenu: [
           {
             id: 1,
-            title: "Групи тем картин",
+            title: "Художники",
             url: "/pictures/pictures_sections",
           },
           {

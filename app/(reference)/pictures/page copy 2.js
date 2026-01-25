@@ -307,8 +307,8 @@ export default function PicturesPage() {
     e.preventDefault()
 
     if (!user) return setMessage("Потрібна авторизація")
-    if (!section_id) return setMessage("Оберіть секцію")
-    if (!topic_id) return setMessage("Оберіть топік")
+    if (!section_id) return setMessage("Оберіть художника")
+    if (!topic_id) return setMessage("Оберіть тему")
     if (selectedFiles.length === 0) return setMessage("Оберіть файли")
 
     setIsUploading(true)
@@ -460,8 +460,8 @@ export default function PicturesPage() {
       {/* {topics.length > 0 && sections.length > 0 && ( */}
       <TableView
         data={pictures}
-        dataLevel1={topics}
-        dataLevel2={sections}
+        dataLevel1={теми}
+        dataLevel2={художники}
         level1Id="topic_id"
         level2Id="pictures_sections_id"
         columns={columns}
@@ -499,7 +499,7 @@ export default function PicturesPage() {
           )}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
-              Секція
+              Художник
             </label>
             <select
               id="section_id"
@@ -511,7 +511,7 @@ export default function PicturesPage() {
               className="border p-2 rounded"
               required
             >
-              <option value="">Оберіть секцію</option>
+              <option value="">Оберіть художника</option>
               {sections.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}

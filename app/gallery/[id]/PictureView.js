@@ -28,7 +28,8 @@ export default function PictureView({ picture }) {
   }
 
   return (
-    <main className="fixed inset-0 bg-black overflow-hidden">
+    // <main className="fixed inset-0 bg-black overflow-hidden">
+    <main className="fixed inset-0 bg-pBg dark:bg-pBgD overflow-hidden">
       {/* Картинка на весь екран */}
       <Image
         src={picture.url}

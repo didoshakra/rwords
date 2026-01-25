@@ -55,7 +55,7 @@ export default function GalleryPage() {
       {/* Фільтри */}
       <div className="flex gap-4 mb-6">
         <div>
-          <label className="block mb-1 font-medium">Секція</label>
+          <label className="block mb-1 font-medium">Художник</label>
           <select
             value={selectedSection}
             onChange={(e) => {
@@ -64,7 +64,7 @@ export default function GalleryPage() {
             }}
             className="border p-2 rounded"
           >
-            <option value="">Усі секції</option>
+            <option value="">Усі художники</option>
             {sections.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name}

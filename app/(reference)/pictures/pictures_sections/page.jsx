@@ -118,7 +118,7 @@ export default function SectionsPage() {
       //   styleCellText: {color: 'green'},
       markIfOwner: true, // 🚀 нове поле
     },
-    { label: "Група тем", accessor: "name", type: "text", width: 250 },
+    { label: "Художники", accessor: "name", type: "text", width: 250 },
     {
       label: "Sid",
       accessor: "id",
@@ -132,8 +132,8 @@ export default function SectionsPage() {
       <TableView
         data={pictureSections}
         columns={columns}
-        title={"Групи тем"}
-        level0Head="Групи тем"
+        title={"Художники"}
+        level0Head="Художники"
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо обєкти
@@ -155,7 +155,7 @@ export default function SectionsPage() {
             onChange={(e) => setName(e.target.value)}
             className="border p-2 rounded"
           />
-         
+
           <input
             type="number"
             placeholder="Порядок"

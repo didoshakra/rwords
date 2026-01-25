@@ -115,7 +115,7 @@ export default function TopicsPage() {
     e.preventDefault()
     if (!user) return setMessage("Потрібна авторизація")
     if (!name.trim()) return setMessage("Введіть назву")
-    if (section_id === "") return setMessage("Оберіть секцію")
+    if (section_id === "") return setMessage("Оберіть художника")
     // if (pn === "") return setMessage("Введіть порядок")
 
     const data = {
@@ -233,7 +233,7 @@ export default function TopicsPage() {
         columns={columns}
         title={"Теми"}
         level0Head="Тема картин"
-        level1Head="Група тем"
+        level1Head="Художники"
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
@@ -293,7 +293,7 @@ export default function TopicsPage() {
           </div> */}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
-              Секція
+              Художник
             </label>
             <select
               id="sections_id"
@@ -302,7 +302,7 @@ export default function TopicsPage() {
               className="border p-2 rounded"
               required
             >
-              <option value="">Оберіть секцію</option>
+              <option value="">Оберіть художника</option>
               {picturesSections.map((section) => (
                 <option key={section.id} value={section.id}>
                   {section.name}
