@@ -37,6 +37,17 @@ export default function GalleryPage() {
     return matchSection && matchTopic
   })
 
+  const sortedPictures = [...filteredPictures].sort((a, b) => {
+    const topicA = topics.find((t) => t.id === a.topic_id)
+    const topicB = topics.find((t) => t.id === b.topic_id)
+
+    if (topicA.pictures_sections_id !== topicB.pictures_sections_id) {
+      return topicA.pictures_sections_id - topicB.pictures_sections_id
+    }
+
+    return a.topic_id - b.topic_id
+  })
+
   return (
     <main className="p-4 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Галерея картин</h1>
@@ -90,19 +101,10 @@ export default function GalleryPage() {
         <div className="text-gray-500">Картинок не знайдено</div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredPictures.map((pic) => {
+          {/* {filteredPictures.map((pic) => {
             const topic = topics.find((t) => t.id === pic.topic_id)
             const section = sections.find((s) => s.id === topic?.pictures_sections_id)
             return (
-              //   <div key={pic.id} className="border rounded overflow-hidden shadow-sm">
-              //     <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
-              //     <div className="p-2 text-sm">
-              //       <div className="font-medium">{pic.pictures_name}</div>
-              //       <div className="text-gray-500 text-xs">
-              //         {topic?.name || "Без теми"} / {section?.name || "Без секції"}
-              //       </div>
-              //     </div>
-              //   </div>
               <Link href={`/gallery/${pic.id}`} key={pic.id}>
                 <div className="border rounded overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition">
                   <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
@@ -114,6 +116,39 @@ export default function GalleryPage() {
                   </div>
                 </div>
               </Link>
+            )
+          })} */}
+          {sortedPictures.map((pic, index) => {
+            const topic = topics.find((t) => t.id === pic.topic_id)
+            const section = sections.find((s) => s.id === topic?.pictures_sections_id)
+
+            const prevPic = sortedPictures[index - 1]
+            const prevTopic = prevPic ? topics.find((t) => t.id === prevPic.topic_id) : null
+
+            const isNewSection = !prevTopic || prevTopic.pictures_sections_id !== topic.pictures_sections_id
+
+            const isNewTopic = !prevTopic || prevTopic.id !== topic.id
+
+            return (
+              <React.Fragment key={pic.id}>
+                {/* Заголовок секції */}
+                {isNewSection && <h2 className="col-span-full text-2xl font-bold mt-8 mb-2">{section?.name}</h2>}
+
+                {/* Заголовок теми */}
+                {isNewTopic && (
+                  <h3 className="col-span-full text-lg font-semibold mb-4 text-gray-700">{topic?.name}</h3>
+                )}
+
+                {/* Картинка */}
+                <Link href={`/gallery/${pic.id}`}>
+                  <div className="border rounded overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition">
+                    <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
+                    <div className="p-2 text-sm">
+                      <div className="font-medium">{pic.pictures_name}</div>
+                    </div>
+                  </div>
+                </Link>
+              </React.Fragment>
             )
           })}
         </div>
