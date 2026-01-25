@@ -18,11 +18,23 @@ export default function PictureView({ picture }) {
 
   if (!picture) {
     return (
-      <main className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4 overflow-hidden">
-        <p className="text-lg mb-4">Картинка не знайдена</p>
-        <Link href="/gallery" className="text-blue-500 underline">
-          Повернутися в галерею
-        </Link>
+      //   <main className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4 overflow-hidden">
+      //     <p className="text-lg mb-4">Картинка не знайдена</p>
+      //     <Link href="/gallery" className="text-blue-500 underline">
+      //       Повернутися в галерею
+      //     </Link>
+      //   </main>
+      <main className="fixed inset-0 bg-black overflow-hidden">
+        <div className="relative w-full h-full">
+          <Image
+            src={picture.url}
+            alt={picture.pictures_name || "Picture"}
+            fill
+            className="object-contain"
+            sizes="100vw"
+            priority
+          />
+        </div>
       </main>
     )
   }
