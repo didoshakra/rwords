@@ -267,57 +267,12 @@ export default function PicturesPage() {
     setSelectedFiles([])
   }
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
 
-//     if (!user) return setMessage("Потрібна авторизація")
-//     if (!section_id) return setMessage("Оберіть секцію")
-//     if (!topic_id) return setMessage("Оберіть топік")
-//     if (selectedFiles.length === 0) return setMessage("Оберіть файли")
-
-//     setIsUploading(true)
-//     setMessage("")
-
-//     let uploadedCount = 0
-//     const failedFiles = []
-
-//     try {
-//       for (const item of selectedFiles) {
-//         try {
-//           await createPictureFromFile({
-//             file: item.file,
-//             pictures_name: item.pictures_name.trim(), // ⬅️ передаємо
-//             title: item.title?.trim() || item.pictures_name.trim(),
-//             topic_id: Number(topic_id),
-//             user_id: user.id,
-//           })
-
-//           uploadedCount++
-//           setMessage(`⏳ Завантажено ${uploadedCount} з ${selectedFiles.length}`)
-//         } catch (err) {
-//           console.error("Помилка файлу", item.file.name, err)
-//           failedFiles.push(item.file.name)
-//         }
-//       }
-
-//       if (failedFiles.length === 0) {
-//         setMessage(`✅ Успішно завантажено ${uploadedCount} файлів`)
-//       } else {
-//         setMessage(`⚠️ Завантажено ${uploadedCount}, помилки: ${failedFiles.join(", ")}`)
-//       }
-
-//       closeModal()
-//       loadPictures()
-//     } finally {
-//       setIsUploading(false)
-//       setSelectedFiles([])
-//     }
-//   }
 const handleSubmit = async (e) => {
   e.preventDefault()
   if (!user) return setMessage("Потрібна авторизація")
-  if (!section_id) return setMessage("Оберіть секцію")
-  if (!topic_id) return setMessage("Оберіть топік")
+  if (!section_id) return setMessage("Оберіть художника")
+  if (!topic_id) return setMessage("Оберіть тему")
 
   setIsUploading(true)
   setMessage("")

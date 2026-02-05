@@ -90,3 +90,19 @@ export const metadata = {
 4️⃣ Мінімальні зміни у формі (frontend)/У твоєму Modal тимчасово:Додаємо input
 
 ////--	20260125-#  Додаємо картинки в хмару/Cloudinary ***********************************
+НЕ грузиться png: бо Server Actions у Next.js за замовчуванням мають ліміт 1MB.
+Потрібно збільшити serverActions.bodySizeLimit.
+Відкрий:
+next.config.js
+і додай:
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
+}
+
+
+module.exports = nextConfig
