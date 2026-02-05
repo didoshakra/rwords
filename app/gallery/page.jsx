@@ -73,7 +73,7 @@ export default function GalleryPage() {
         </div>
 
         <div>
-          <label className="block mb-1 font-medium text-h3On dark:text-h3OnD">Тема</label>
+          <label className="block mb-1 font-medium text-h3On dark:text-h3OnD">Теми</label>
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}

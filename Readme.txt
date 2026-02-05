@@ -88,3 +88,5 @@ export const metadata = {
 3️⃣ Server Action: upload + optimize + DB
     /app/actions/pictures/uploadPictureAction.js
 4️⃣ Мінімальні зміни у формі (frontend)/У твоєму Modal тимчасово:Додаємо input
+
+////--	20260125-#  Додаємо картинки в хмару/Cloudinary ***********************************

@@ -460,13 +460,13 @@ const handleSubmit = async (e) => {
         level1Id="topic_id"
         level2Id="pictures_sections_id"
         columns={columns}
-        title={"Картини"}
+        title={"Каталог картини"}
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        level0Head="Картини"
+        level0Head="Каталог картини"
         level1Head="Тема"
-        level2Head="Група тем"
+        level2Head="Художник"
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки
         message={message} //Для повідомлення
@@ -495,19 +495,19 @@ const handleSubmit = async (e) => {
           )}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
-              Секція
+              Художник
             </label>
             <select
               id="section_id"
               value={section_id}
               onChange={(e) => {
                 setSectionId(e.target.value)
-                setTopicId("") // Скидаємо топік при зміні секції
+                setTopicId("") // Скидаємо топік при зміні художника
               }}
               className="border p-2 rounded"
               required
             >
-              <option value="">Оберіть секцію</option>
+              <option value="">Оберіть художника</option>
               {sections.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -527,7 +527,7 @@ const handleSubmit = async (e) => {
               required
               disabled={!section_id}
             >
-              <option value="">Оберіть топік</option>
+              <option value="">Оберіть тему</option>
               {section_id &&
                 topics
                   .filter((t) => t.pictures_sections_id?.toString() === section_id)
