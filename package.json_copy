@@ -1,0 +1,39 @@
+{
+  "name": "rnext14",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tanstack/react-table": "^8.21.3",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.9.0",
+    "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
+    "next": "^16.1.4",
+    "next-auth": "^4.24.11",
+    "next-themes": "^0.2.1",
+    "pg": "^8.11.3",
+    "postgres": "^3.4.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.49.3",
+    "react-icons": "^5.5.0",
+    "sharp": "^0.34.5",
+    "xlsx": "^0.18.5",
+    "zod": "^3.22.4",
+    "zxcvbn": "^4.4.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0"
+  }
+}

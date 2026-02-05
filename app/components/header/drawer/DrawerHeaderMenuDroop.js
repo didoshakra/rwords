@@ -1,4 +1,4 @@
-//DrawerHeaderMenuDroop.js
+//components/header/drawer/DrawerHeaderMenuDroop.js
 //Меню в Drawer з Header
 
 "use client"
@@ -9,26 +9,6 @@ import {  headMenu } from "@/app/data/dataMenu"
 
 const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
   const [drawerHeaderMenuDroopOpen, setDrawerHeaderMenuDroopOpen] = useState(false)
-
-  const tagleMenu = () => {
-    setDrawerHeaderMenuDroopOpen(false)
-    setDrawerOpen(false)
-  }
-//   //випадаюче меню Налаштувань
-//   const renderMenu = () => {
-//     return headMenu.map((item, index) => {
-//       return (
-//         <li
-//           className="flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
-//           key={index}
-//           //   onClick={() => setDrawerHeaderMenuDroopOpen(false)}
-//           onClick={() => tagleMenu()}
-//         >
-//           <Link href={`${item.link}`}>{item.a}</Link>
-//         </li>
-//       )
-//     })
-//   }
 
   return (
     <div className="m-0 items-center pb-2 ">

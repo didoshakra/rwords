@@ -9,7 +9,8 @@
 /* 3️⃣ Основні CSS-перемінні (root) і базові стилі */
 /* =================== */
 @layer base {
-  html {
+  /* html {  */
+  :root{
     --color-pCol0: #ecfdf5;
     --color-pCol1: #d1fae5;
     --color-pCol2: #a7f3d0;

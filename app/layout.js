@@ -17,7 +17,7 @@ import "@/styles/themes/tTeal.css";
 import "@/styles/themes/tCyan.css";
 import "@/styles/themes/tSky.css";
 import "@/styles/themes/tBlue.css";
-import "@/styles/themes/tViolet.css";
+import "@/styles/themes/tViolet.css"; 
 import "@/styles/themes/tPurple.css";
 import "@/styles/themes/tFuchsia.css";
 import "@/styles/themes/tRose.css";

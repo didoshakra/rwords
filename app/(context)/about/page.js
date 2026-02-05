@@ -1,4 +1,4 @@
-//About.js
+//app/About.js
 
 import Image from "next/image"
 

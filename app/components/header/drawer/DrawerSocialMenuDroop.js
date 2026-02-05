@@ -1,5 +1,4 @@
-//DrawerSocialMenuDroop.js
-//Меню в Drawer з Header
+//components/header/drawer/DrawerSocialMenuDroop.js
 
 "use client"
 import { useState } from "react"
