@@ -3,11 +3,15 @@
 
 import React, { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 import { getPictures } from "@/app/actions/pictures/picturesActions"
 import { getSections } from "@/app/actions/pictures/picturesSectionActions"
 import { getTopics } from "@/app/actions/pictures/picturesTopicActions"
 
 export default function GalleryPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
   const [pictures, setPictures] = useState([])
   const [sections, setSections] = useState([])
   const [topics, setTopics] = useState([])
@@ -27,6 +31,32 @@ export default function GalleryPage() {
       })
       .catch((err) => setMessage("Помилка завантаження: " + err.message))
   }, [])
+
+  // Зчитування фільтрів з URL при завантаженні та при зміні даних
+  useEffect(() => {
+    if (sections.length === 0 || topics.length === 0) return
+
+    const sectionParam = searchParams.get("section")
+    const topicParam = searchParams.get("topic")
+
+    if (sectionParam && sections.some((s) => s.id.toString() === sectionParam)) {
+      setSelectedSection(sectionParam)
+    }
+    if (topicParam && topics.some((t) => t.id.toString() === topicParam)) {
+      setSelectedTopic(topicParam)
+    }
+  }, [searchParams, sections, topics])
+
+  // Оновлення URL при зміні фільтрів
+  const updateURL = (section, topic) => {
+    const params = new URLSearchParams()
+    if (section) params.set("section", section)
+    if (topic) params.set("topic", topic)
+
+    const queryString = params.toString()
+    const newUrl = queryString ? `/gallery?${queryString}` : "/gallery"
+    router.push(newUrl, { scroll: false })
+  }
 
   // Фільтровані картинки
   const filteredPictures = pictures.filter((pic) => {
@@ -58,8 +88,10 @@ export default function GalleryPage() {
           <select
             value={selectedSection}
             onChange={(e) => {
-              setSelectedSection(e.target.value)
+              const newSection = e.target.value
+              setSelectedSection(newSection)
               setSelectedTopic("") // скидаємо топік при зміні секції
+              updateURL(newSection, "")
             }}
             className="border p-2 rounded"
           >
@@ -76,7 +108,11 @@ export default function GalleryPage() {
           <label className="block mb-1 font-medium text-h3On dark:text-h3OnD">Теми</label>
           <select
             value={selectedTopic}
-            onChange={(e) => setSelectedTopic(e.target.value)}
+            onChange={(e) => {
+              const newTopic = e.target.value
+              setSelectedTopic(newTopic)
+              updateURL(selectedSection, newTopic)
+            }}
             className="border p-2 rounded"
             disabled={!selectedSection}
           >
