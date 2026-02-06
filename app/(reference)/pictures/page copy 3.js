@@ -141,8 +141,8 @@ export default function PicturesPage() {
   const [sections, setSections] = useState([])
   const [topics, setTopics] = useState([])
   const [pictures, setPictures] = useState([])
-  const [selectedSection, setSelectedSection] = useState("")
-  const [selectedTopic, setSelectedTopic] = useState("")
+  const [selectedSection, setSelectedSection] = useState("") // Для фільтрації TableView
+  const [selectedTopic, setSelectedTopic] = useState("") // Для фільтрації TableView
 
   const [modal, setModal] = useState(null) // null | {type, picture}
   const [id, setId] = useState(null)
