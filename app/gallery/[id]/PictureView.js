@@ -43,13 +43,24 @@ export default function PictureView({ picture }) {
     // <main className="fixed inset-0 bg-black overflow-hidden">
     <main className="fixed inset-0 bg-pBg dark:bg-pBgD overflow-hidden">
       {/* Картинка на весь екран */}
-      <Image
+      {/* <Image
         src={picture.url}
         alt={picture.pictures_name || "Picture"}
         fill
         style={{ objectFit: "contain" }}
         priority
-      />
+      /> */}
+      {picture.media_type === "video" ? (
+        <video src={picture.url} className="w-full h-full object-contain" controls autoPlay />
+      ) : (
+        <Image
+          src={picture.url}
+          alt={picture.pictures_name || "Picture"}
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+        />
+      )}
 
       {/* Стрілка назад */}
       <Link

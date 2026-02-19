@@ -70,31 +70,31 @@ export const headMenu = [
   },
   {
     id: 3,
-    title: "Галерея",
+    title: "Медіа",
     submenu: [
       {
         id: 1,
-        title: "Картини",
+        title: "Галерея медіа",
         url: "/gallery",
       },
       {
         id: 2,
-        title: "Каталог картин",
+        title: "Каталог",
         roles: ["admin", "manager", "user"], // ❗️ admin і manager
         submenu: [
           {
             id: 1,
-            title: "Художники",
+            title: "Автори",
             url: "/pictures/pictures_sections",
           },
           {
             id: 2,
-            title: "Теми картин",
+            title: "Теми",
             url: "/pictures/pictures_topics",
           },
           {
             id: 3,
-            title: "Картини",
+            title: "Каталог медіа",
             url: "/pictures",
           },
         ],

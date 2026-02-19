@@ -118,7 +118,7 @@ export default function SectionsPage() {
       //   styleCellText: {color: 'green'},
       markIfOwner: true, // 🚀 нове поле
     },
-    { label: "Художники", accessor: "name", type: "text", width: 250 },
+    { label: "Автори", accessor: "name", type: "text", width: 250 },
     {
       label: "Sid",
       accessor: "id",
@@ -132,8 +132,8 @@ export default function SectionsPage() {
       <TableView
         data={pictureSections}
         columns={columns}
-        title={"Художники"}
-        level0Head="Художники"
+        title={"Автори"}
+        level0Head="Автори"
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо обєкти

@@ -13,9 +13,9 @@ export default function TableView({
   dataLevel2,
   level1Id,
   level2Id,
-  level0Head = "Слова",
+//   level0Head = "Слова",
   level1Head = "Тема",
-  level2Head = "Група тем",
+  level2Head = "Автор",
   columns,
   title,
   onAdd,
@@ -596,7 +596,7 @@ export default function TableView({
                         colSpan={showOwnerMark ? columns.length + 2 : columns.length}
                         className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
                       >
-                        {level2Head}:{section.name} ({sectionLevel1.length})
+                        {level2Head}: {section.name} ({sectionLevel1.length})
                         {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : ""}
                       </td>
                     </tr>

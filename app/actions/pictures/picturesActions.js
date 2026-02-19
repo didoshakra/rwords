@@ -31,10 +31,61 @@ export async function getPictures() {
 }
 
 
+// export async function createPictureFromFile({ file, pictures_name, title, topic_id, user_id }) {
+//   if (!file) throw new Error("Файл не переданий")
+//   const originalBytes = file.size // розмір оригінального файлу
+//   if (!user_id) throw new Error("Користувач не авторизований")
+
+//   const buffer = Buffer.from(await file.arrayBuffer())
+//   const uploadResult = await new Promise((resolve, reject) => {
+//     cloudinary.uploader
+//       .upload_stream(
+//         {
+//           folder: "pictures",
+//           resource_type: "image",
+//           format: "webp", // конвертація всіх форматів у WebP
+//           quality: "auto", // оптимізація розміру
+//         },
+//         (error, result) => {
+//           if (error) reject(error)
+//           else resolve(result)
+//         },
+//       )
+//       .end(buffer)
+//   })
+
+
+//   const result = await sql`
+//     INSERT INTO pictures
+//       (pictures_name, title, file_name, url, format, width, height, bytes, original_bytes, public_id, topic_id, user_id, pn)
+//     VALUES
+//       (
+//         ${pictures_name || file.name},
+//         ${title || pictures_name || file.name},
+//         ${file.name},   -- правильне ім'я файлу з браузера
+//         ${uploadResult.secure_url},
+//         ${uploadResult.format},
+//         ${uploadResult.width},
+//         ${uploadResult.height},
+//         ${uploadResult.bytes},
+//         ${originalBytes},
+//         ${uploadResult.public_id},
+//         ${topic_id || 1},
+//         ${user_id},
+//         0
+//       )
+//     RETURNING *
+//   `
+
+//   return result[0]
+// }
 export async function createPictureFromFile({ file, pictures_name, title, topic_id, user_id }) {
   if (!file) throw new Error("Файл не переданий")
-  const originalBytes = file.size // розмір оригінального файлу
+  const originalBytes = file.size
   if (!user_id) throw new Error("Користувач не авторизований")
+
+  const isVideo = file.type.startsWith("video/")
+  const media_type = isVideo ? "video" : "image"
 
   const buffer = Buffer.from(await file.arrayBuffer())
   const uploadResult = await new Promise((resolve, reject) => {
@@ -42,9 +93,8 @@ export async function createPictureFromFile({ file, pictures_name, title, topic_
       .upload_stream(
         {
           folder: "pictures",
-          resource_type: "image",
-          format: "webp", // конвертація всіх форматів у WebP
-          quality: "auto", // оптимізація розміру
+          resource_type: media_type,
+          ...(isVideo ? {} : { format: "webp", quality: "auto" }),
         },
         (error, result) => {
           if (error) reject(error)
@@ -56,22 +106,23 @@ export async function createPictureFromFile({ file, pictures_name, title, topic_
 
   const result = await sql`
     INSERT INTO pictures
-      (pictures_name, title, file_name, url, format, width, height, bytes, original_bytes, public_id, topic_id, user_id, pn)
+      (pictures_name, title, file_name, url, format, width, height, bytes, original_bytes, public_id, topic_id, user_id, pn, media_type)
     VALUES
       (
         ${pictures_name || file.name},
         ${title || pictures_name || file.name},
-        ${file.name},   -- правильне ім'я файлу з браузера
+        ${file.name},
         ${uploadResult.secure_url},
         ${uploadResult.format},
-        ${uploadResult.width},
-        ${uploadResult.height},
+        ${uploadResult.width || null},
+        ${uploadResult.height || null},
         ${uploadResult.bytes},
         ${originalBytes},
         ${uploadResult.public_id},
         ${topic_id || 1},
         ${user_id},
-        0
+        0,
+        ${media_type}
       )
     RETURNING *
   `

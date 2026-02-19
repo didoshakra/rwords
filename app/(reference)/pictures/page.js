@@ -271,7 +271,7 @@ export default function PicturesPage() {
 const handleSubmit = async (e) => {
   e.preventDefault()
   if (!user) return setMessage("Потрібна авторизація")
-  if (!section_id) return setMessage("Оберіть художника")
+  if (!section_id) return setMessage("Оберіть автора")
   if (!topic_id) return setMessage("Оберіть тему")
 
   setIsUploading(true)
@@ -415,13 +415,13 @@ const handleSubmit = async (e) => {
         level1Id="topic_id"
         level2Id="pictures_sections_id"
         columns={columns}
-        title={"Каталог картини"}
+        title={"Каталог медіа"}
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        level0Head="Каталог картини"
+        level0Head="Каталог медіа"
         level1Head="Тема"
-        level2Head="Художник"
+        level2Head="Автор"
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки
         message={message} //Для повідомлення
@@ -450,19 +450,19 @@ const handleSubmit = async (e) => {
           )}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
-              Художник
+              Автор
             </label>
             <select
               id="section_id"
               value={section_id}
               onChange={(e) => {
                 setSectionId(e.target.value)
-                setTopicId("") // Скидаємо топік при зміні художника
+                setTopicId("") // Скидаємо топік при зміні автора
               }}
               className="border p-2 rounded"
               required
             >
-              <option value="">Оберіть художника</option>
+              <option value="">Оберіть автора</option>
               {sections.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -500,7 +500,8 @@ const handleSubmit = async (e) => {
             <label className="block font-medium mb-1">Файли зображень</label>
             <input
               type="file"
-              accept="image/*"
+              //   accept="image/*"
+              accept="image/*,video/*"
               multiple
               className="border p-2 rounded w-full"
               onClick={(e) => {
@@ -576,8 +577,12 @@ const handleSubmit = async (e) => {
                       ✕
                     </button>
 
-                    <img src={item.previewUrl} alt="preview" className="h-32 object-contain mx-auto" />
-
+                    {/* <img src={item.previewUrl} alt="preview" className="h-32 object-contain mx-auto" /> */}
+                    {item.file.type.startsWith("video/") ? (
+                      <video src={item.previewUrl} className="h-32 object-contain mx-auto" controls />
+                    ) : (
+                      <img src={item.previewUrl} alt="preview" className="h-32 object-contain mx-auto" />
+                    )}
                     <input
                       type="text"
                       value={item.pictures_name}

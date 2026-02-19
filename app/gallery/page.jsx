@@ -164,7 +164,12 @@ export default function GalleryPage() {
                 {/* Картинка */}
                 <Link href={`/gallery/${pic.id}`}>
                   <div className="border rounded overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition">
-                    <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
+                    {/* <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" /> */}
+                    {pic.media_type === "video" ? (
+                      <video src={pic.url} className="w-full h-48 object-cover" muted autoPlay loop playsInline />
+                    ) : (
+                      <img src={pic.url} alt={pic.pictures_name} className="w-full h-48 object-cover" />
+                    )}
                     <div className="p-2 text-sm">
                       <div className="font-medium">{pic.pictures_name}</div>
                     </div>

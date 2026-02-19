@@ -182,6 +182,8 @@ export async function initTables() {
       original_bytes INTEGER,
       created_at TIMESTAMP DEFAULT NOW(),
       user_id INTEGER NOT NULL,
+      file_type TEXT,
+      media_type TEXT DEFAULT 'image',
       CONSTRAINT fk_topic FOREIGN KEY(topic_id) REFERENCES pictures_topics(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_word FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );`
