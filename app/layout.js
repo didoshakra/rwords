@@ -17,7 +17,7 @@ import "@/styles/themes/tTeal.css";
 import "@/styles/themes/tCyan.css";
 import "@/styles/themes/tSky.css";
 import "@/styles/themes/tBlue.css";
-import "@/styles/themes/tViolet.css"; 
+import "@/styles/themes/tViolet.css";
 import "@/styles/themes/tPurple.css";
 import "@/styles/themes/tFuchsia.css";
 import "@/styles/themes/tRose.css";
@@ -51,7 +51,8 @@ export default async function RootLayout({ children }) {
   const stats = await getStats() // Server action
 
   return (
-    <html lang="en" className="light">
+    // <html lang="en" className="light">
+        <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${inter.className} bg-pBg dark:bg-pBgD`}>
         {/* Передаємо прапорець isFromApp у Providers */}
         <Providers isFromApp={isFromApp}>
