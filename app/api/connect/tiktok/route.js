@@ -10,7 +10,8 @@ export async function GET() {
   const authUrl =
     `https://www.tiktok.com/v2/auth/authorize/` +
     `?client_key=${clientKey}` +
-    `&scope=user.info.basic,video.upload,video.publish` +
+    // `&scope=user.info.basic,video.upload,video.publish` +
+    `&scope=user.info.basic,video.publish` +
     `&response_type=code` +
     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
     `&state=vlad_secure_state`
