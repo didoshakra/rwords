@@ -255,6 +255,28 @@ export const menuAdmin = [
           },
         ],
       },
+      {
+        id: 3,
+        title: "n8n",
+        submenu: [
+          {
+            id: 1,
+            title: "YouTube",
+            submenu: [
+              {
+                id: 1,
+                title: "Умови використання",
+                url: "/n8n/youtube/terms",
+              },
+              {
+                id: 3,
+                title: "Політика конфіденційності",
+                url: "/n8n/youtube/privacy",
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
