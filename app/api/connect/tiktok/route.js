@@ -1,4 +1,4 @@
-// auth/tiktok/route.js/Цей роут перенаправляє користувача на сторінку логіну TikTok.
+// app/auth/tiktok/route.js/Цей роут перенаправляє користувача на сторінку логіну TikTok.
 
 import { NextResponse } from "next/server"
 
