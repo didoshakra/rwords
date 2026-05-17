@@ -351,7 +351,9 @@ export default function TableView({
             </div>
           </td>
         </tr>
-        {openLevel1.includes(topic.id) && topicWords.length > 0 && topicWords.map((item) => renderItemRow(item))}
+        {openLevel1.includes(topic.id) &&
+          topicWords.length > 0 &&
+          topicWords.map((item) => <ItemRow key={item.id} item={item} />)}
       </React.Fragment>
     )
   }
@@ -489,6 +491,96 @@ export default function TableView({
           />
         </div>
       </div>
+    )
+  }
+
+  // ItemRow
+  const ItemRow = ({ item }) => {
+    const longPressHandlers = columns.map((col) => {
+      const isTextCol = !col.type || col.type === "text"
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      return useLongPress(() => {
+        if (isTextCol) setViewModal({ item, col })
+      }, 500)
+    })
+
+    return (
+      <tr
+        key={item.id}
+        className={
+          isSelected(item.id)
+            ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov "
+            : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov "
+        }
+      >
+        <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+          <input
+            type="checkbox"
+            checked={isSelected(item.id)}
+            onClick={(e) => e.stopPropagation()}
+            onChange={() => toggleSelect(item.id)}
+          />
+        </td>
+
+        {showOwnerMark && (
+          <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+            {item.user_id === user?.id && "🧑‍💻"}
+          </td>
+        )}
+
+        {columns.map((col, colIdx) => {
+          const value = item[col.accessor]
+          let content
+
+          switch (col.type) {
+            case "know":
+              content = value ? "👍" : ""
+              break
+            case "boolean":
+              content = value ? "✔" : ""
+              break
+            case "integer":
+              content = value != null ? Math.floor(Number(value)) : "-"
+              break
+            default:
+              content = value ?? ""
+          }
+
+          const isTextCol = !col.type || col.type === "text"
+          const handleOpen = () => {
+            if (isTextCol) setViewModal({ item, col })
+          }
+
+          return (
+            <td
+              key={col.accessor}
+              style={{
+                width: col.width,
+                borderBottom: "1px solid #ccc",
+                padding: "4px",
+                ...(col.styleCell || {}),
+              }}
+              onDoubleClick={handleOpen}
+              {...longPressHandlers[colIdx]}
+            >
+              <span
+                style={{
+                  ...col.styleCellText,
+                  display: "block",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  cursor: isTextCol ? "pointer" : "default",
+                  maxWidth: col.width ? col.width - 8 : undefined,
+                }}
+                title={isTextCol && typeof content === "string" ? content : undefined}
+              >
+                {content}
+              </span>
+            </td>
+          )
+        })}
+      </tr>
     )
   }
 
@@ -718,7 +810,7 @@ export default function TableView({
             {(!level2 || level2.length === 0) &&
               (!level1 || level1.length === 0) &&
               //   data.map((item) => renderFlatRow(item))}
-              data.map((item) => renderItemRow(item))}
+              data.map((item) => <ItemRow key={item.id} item={item} />)}
           </tbody>
         </table>
       </div>
