@@ -8,12 +8,14 @@ import { useSession } from "next-auth/react"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
 // Додати хук useLongPress для мобілки(перед компонентом TableView):
-function useLongPress(callback, ms = 500) {
+function useLongPress(callback, ms = 600) {
   const timerRef = useRef(null)
+  const firedRef = useRef(false)
 
   const start = (e) => {
-    // Не спрацьовувати якщо це скрол
+    firedRef.current = false
     timerRef.current = setTimeout(() => {
+      firedRef.current = true
       callback(e)
     }, ms)
   }
@@ -28,7 +30,7 @@ function useLongPress(callback, ms = 500) {
   return {
     onTouchStart: start,
     onTouchEnd: clear,
-    onTouchMove: clear, // скасувати якщо почався скрол
+    onTouchMove: clear,
     onTouchCancel: clear,
   }
 }
@@ -452,14 +454,14 @@ export default function TableView({
 
     return (
       <div
-        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50"
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60"
         onClick={() => setViewModal(null)}
       >
         <div
           className="
           bg-white dark:bg-gray-800
-          w-full sm:w-[90vw] sm:max-w-2xl
-          max-h-[90vh] sm:max-h-[80vh]
+          w-full sm:w-[90vw] sm:max-w-3xl
+          h-[90vh] sm:h-[80vh]
           rounded-t-2xl sm:rounded-xl
           shadow-xl flex flex-col
           p-4 sm:p-6
@@ -496,6 +498,7 @@ export default function TableView({
 
   // ItemRow
   const ItemRow = ({ item }) => {
+    const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches
     const longPressHandlers = columns.map((col) => {
       const isTextCol = !col.type || col.type === "text"
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -560,7 +563,7 @@ export default function TableView({
                 padding: "4px",
                 ...(col.styleCell || {}),
               }}
-              onDoubleClick={handleOpen}
+              onDoubleClick={isTouchDevice ? undefined : handleOpen}
               {...longPressHandlers[colIdx]}
             >
               <span
