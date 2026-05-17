@@ -7,6 +7,32 @@ import React, { useEffect, useState, useTransition, useRef } from "react"
 import { useSession } from "next-auth/react"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
+// Додати хук useLongPress для мобілки(перед компонентом TableView):
+function useLongPress(callback, ms = 500) {
+  const timerRef = useRef(null)
+
+  const start = (e) => {
+    // Не спрацьовувати якщо це скрол
+    timerRef.current = setTimeout(() => {
+      callback(e)
+    }, ms)
+  }
+
+  const clear = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+  }
+
+  return {
+    onTouchStart: start,
+    onTouchEnd: clear,
+    onTouchMove: clear, // скасувати якщо почався скрол
+    onTouchCancel: clear,
+  }
+}
+
 export default function TableView({
   data,
   dataLevel1,
@@ -373,8 +399,14 @@ export default function TableView({
             content = value ?? ""
         }
 
-        // Тільки текстові колонки відкривають модалку
         const isTextCol = !col.type || col.type === "text"
+
+        const handleOpen = () => {
+          if (isTextCol) setViewModal({ item, col })
+        }
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const longPress = useLongPress(handleOpen, 500)
 
         return (
           <td
@@ -384,9 +416,9 @@ export default function TableView({
               borderBottom: "1px solid #ccc",
               padding: "4px",
               ...(col.styleCell || {}),
-              // НЕ додаємо overflowWrap — він конфліктує з nowrap
             }}
-            onDoubleClick={() => isTextCol && setViewModal({ item, col })}
+            onDoubleClick={handleOpen}
+            {...longPress}
           >
             <span
               style={{
@@ -396,7 +428,7 @@ export default function TableView({
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 cursor: isTextCol ? "pointer" : "default",
-                maxWidth: col.width ? col.width - 8 : undefined, // 8px = padding
+                maxWidth: col.width ? col.width - 8 : undefined,
               }}
               title={isTextCol && typeof content === "string" ? content : undefined}
             >
