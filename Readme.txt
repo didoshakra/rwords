@@ -94,15 +94,6 @@ export const metadata = {
 Потрібно збільшити serverActions.bodySizeLimit.
 Відкрий:
 next.config.js
-і додай:
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb",
-    },
-  },
-}
 
-
-module.exports = nextConfig
+///--- 20260503 Автогенерпціє відео із тексту (shorts)   --------------------------
+    npm install google-auth-library

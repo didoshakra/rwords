@@ -41,7 +41,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle }) => 
       //   style={{ paddingLeft: depth > 0 ? `${depth * 5}px` : undefined }}
     >
       <div
-        className={`flex items-center cursor-pointer font-semibold hover:text-levelHover text-level${depth % 6}`}
+        className={`flex items-center cursor-pointer font-semibold hover:text-levelHover text-level${depth % 6} dark:text-hOnD`}
         onClick={() => {
           if (hasSubmenu) setOpen((p) => !p)
           else setDrawerOpen?.(false)

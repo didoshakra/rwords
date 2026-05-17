@@ -1,4 +1,4 @@
-//CL/context/AuthContext.jsx
+//APP/context/AuthContext.jsx
 //  новий стейт fromApp для збереження прапорця з сервера.
 "use client"
 

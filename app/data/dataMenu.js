@@ -25,8 +25,12 @@ export const headMenu0 = [
     link: "/blog",
   },
   {
-    a: "Про мене",
+    a: "Про мене1",
     link: "/about",
+  },
+  {
+    a: "Shorts",
+    link: "/shorts",
   },
 ]
 export const headMenu = [
@@ -211,6 +215,12 @@ export const headMenu = [
     id: 6,
     title: "Про мене",
     url: "/about",
+  },
+  {
+    id: 6,
+    title: "Shorts",
+    url: "/shorts",
+    roles: ["admin", "manager"], // ❗️ admin і manager
   },
 ]
 export const menuAdmin = [

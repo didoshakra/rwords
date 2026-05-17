@@ -118,7 +118,7 @@ module.exports = {
         hBg: "var(--color-pCol3)",
         hBgD: "#1e293b", //--color-pCol8: #1e293b;
         hBgHov: "var(--color-pCol3)",
-        hBgHovD: "var(--color-pCol6)", 
+        hBgHovD: "var(--color-pCol6)",
         hBorder: "var(--color-pCol3)",
         hBorderD: "#64748b", //--color-pCol5:#64748b;
         //
