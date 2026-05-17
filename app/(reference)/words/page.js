@@ -19,6 +19,104 @@ import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
 
+// ExpandableField який рендерить textarea + кнопку ⛶ що відкриває ViewModal в режимі редагування.
+function ExpandableField({ id, label, value, onChange, placeholder, required }) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div>
+      <label htmlFor={id} className="block font-medium mb-1">
+        {label}
+      </label>
+      <div className="flex gap-1 items-start">
+        <textarea
+          id={id}
+          rows={2}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+          className="border p-2 rounded flex-1 resize-none text-sm"
+        />
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          title="Розгорнути"
+          className="text-lg px-2 py-1 border rounded hover:bg-gray-100"
+        >
+          ⛶
+        </button>
+      </div>
+
+      {/* Велике модальне вікно редагування */}
+      {expanded && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/60"
+          onClick={() => setExpanded(false)}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "860px",
+              height: "85vh",
+              background: "white",
+              borderRadius: "16px 16px 0 0",
+              boxShadow: "0 -4px 32px rgba(0,0,0,0.18)",
+              display: "flex",
+              flexDirection: "column",
+              padding: "16px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 12,
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ fontWeight: 600, fontSize: 16 }}>{label}</span>
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                style={{
+                  fontSize: 22,
+                  lineHeight: 1,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#888",
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <textarea
+              autoFocus
+              rows={10}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              style={{
+                flex: 1,
+                width: "100%",
+                resize: "none",
+                border: "1px solid #ccc",
+                borderRadius: 8,
+                padding: 12,
+                fontSize: 15,
+                lineHeight: 1.6,
+                outline: "none",
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function Modal({ open, onClose, children }) {
   if (!open) return null
   return (
@@ -65,40 +163,6 @@ const columns = [
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
 
-  //   { label: "Тема", accessor: "topic_name", type: "text", width: 250 },
-  //   { label: "Секція", accessor: "section_name", type: "text", width: 250 },
-
-  //   { label: "Файл img", accessor: "img", type: "text", width: 150 },
-  //   {
-  //     label: "№s",
-  //     accessor: "section_pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //   },
-  //   {
-  //     label: "№t",
-  //     accessor: "topic_pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //   },
-
-  //   {
-  //     label: "id",
-  //     accessor: "id",
-  //     type: "integer",
-  //     width: 60,
-  //     styleCell: { alignItems: "center" },
-  //     //   styleCellText: {color: 'green'},
-  //   },
-  //   {
-  //     label: "Tid",
-  //     accessor: "topic_id",
-  //     type: "integer",
-  //     width: 40,
-  //     styleCell: { alignItems: "center" },
-  //   },
 ]
 
 export default function WordsPage() {
@@ -610,34 +674,14 @@ export default function WordsPage() {
               />
             </div>
           )}
-          <div>
-            <label htmlFor="word" className="block font-medium mb-1">
-              Слово
-            </label>
-            <input
-              id="word"
-              type="text"
-              placeholder="Слово"
-              value={word}
-              onChange={(e) => setWord(e.target.value)}
-              className="border p-2 rounded"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="translation" className="block font-medium mb-1">
-              Переклад
-            </label>
-            <input
-              id="translation"
-              type="text"
-              placeholder="Переклад"
-              value={translation}
-              onChange={(e) => setTranslation(e.target.value)}
-              className="border p-2 rounded"
-              //   required
-            />
-          </div>
+          <ExpandableField id="word" label="Слово" value={word} onChange={setWord} placeholder="Слово" required />
+          <ExpandableField
+            id="translation"
+            label="Переклад"
+            value={translation}
+            onChange={setTranslation}
+            placeholder="Переклад"
+          />
           <div>
             <label htmlFor="pn" className="block font-medium mb-1">
               Порядок (PN)
@@ -696,19 +740,7 @@ export default function WordsPage() {
                   ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="img" className="block font-medium mb-1">
-              URL зображення
-            </label>
-            <input
-              id="img"
-              type="text"
-              placeholder="URL зображення"
-              value={img}
-              onChange={(e) => setImg(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
+          <ExpandableField id="img" label="URL зображення" value={img} onChange={setImg} placeholder="URL зображення" />
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={know} onChange={(e) => setKnow(e.target.checked)} />
             Знаю
