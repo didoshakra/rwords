@@ -51,7 +51,7 @@ export const headMenu = [
       {
         id: 2,
         title: "Теми і слова",
-        roles: ["admin", "manager", "user"], // ❗️ admin і manager
+        // roles: ["admin", "manager", "user"], // ❗️ admin і manager
         submenu: [
           {
             id: 1,

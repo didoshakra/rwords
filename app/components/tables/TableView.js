@@ -13,7 +13,7 @@ export default function TableView({
   dataLevel2,
   level1Id,
   level2Id,
-//   level0Head = "Слова",
+  //   level0Head = "Слова",
   level1Head = "Тема",
   level2Head = "Автор",
   columns,
@@ -54,6 +54,7 @@ export default function TableView({
   //   Для розкриття груп(секцій)
   const [openLevel2, setOpenLevel2] = useState([]) //   Для розкриття груп
   const [openLevel1, setOpenLevel1] = useState([]) //   Для розкриття груп // за замовчуванням всі відкриті
+  const [viewModal, setViewModal] = useState(null) // { item, colAccessor }
 
   useEffect(() => {
     setTData(data || [])
@@ -78,14 +79,14 @@ export default function TableView({
     }
   }, [message])
 
-//   console.log("TableView/TData=========================================================")
-//   console.log("TableView/TData=", tData)
-//   console.log("TableView/level1=", level1)
-//   console.log("TableView/level2=", level2)
-//   console.log("TableView/openLevel1=", openLevel1)
-//   console.log("TableView/openLevel2=", openLevel2)
-//   console.log("TableView/level2Id=", level2Id)
-//   console.log("TableView/level1Id=", level1Id)
+  //   console.log("TableView/TData=========================================================")
+  //   console.log("TableView/TData=", tData)
+  //   console.log("TableView/level1=", level1)
+  //   console.log("TableView/level2=", level2)
+  //   console.log("TableView/openLevel1=", openLevel1)
+  //   console.log("TableView/openLevel2=", openLevel2)
+  //   console.log("TableView/level2Id=", level2Id)
+  //   console.log("TableView/level1Id=", level1Id)
   if (level2?.length > 0) {
     // console.log("TableView/first level2 item:", level2[0])
     // console.log(
@@ -329,9 +330,8 @@ export default function TableView({
     )
   }
 
-  //  Ф-ція для рендерингу рядка теми
+  //  Ф-ція для рендерингу рядка
   const renderItemRow = (item) => (
-    // <tr key={item.id} className={isSelected(item.id) ? "bg-blue-100" : "hover:bg-blue-200"}>
     <tr
       key={item.id}
       className={
@@ -373,6 +373,9 @@ export default function TableView({
             content = value ?? ""
         }
 
+        // Тільки текстові колонки відкривають модалку
+        const isTextCol = !col.type || col.type === "text"
+
         return (
           <td
             key={col.accessor}
@@ -381,16 +384,82 @@ export default function TableView({
               borderBottom: "1px solid #ccc",
               padding: "4px",
               ...(col.styleCell || {}),
-              overflowWrap: "break-word", // перенос тільки при переповненні
+              // НЕ додаємо overflowWrap — він конфліктує з nowrap
             }}
+            onDoubleClick={() => isTextCol && setViewModal({ item, col })}
           >
-            <span style={col.styleCellText}>{content}</span>
+            <span
+              style={{
+                ...col.styleCellText,
+                display: "block",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                cursor: isTextCol ? "pointer" : "default",
+                maxWidth: col.width ? col.width - 8 : undefined, // 8px = padding
+              }}
+              title={isTextCol && typeof content === "string" ? content : undefined}
+            >
+              {content}
+            </span>
           </td>
         )
       })}
     </tr>
   )
+
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
+
+  //   компонент модалки показу тексту поля
+  const ViewModal = () => {
+    if (!viewModal) return null
+    const { item, col } = viewModal
+    const value = item[col.accessor] ?? ""
+
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50"
+        onClick={() => setViewModal(null)}
+      >
+        <div
+          className="
+          bg-white dark:bg-gray-800
+          w-full sm:w-[90vw] sm:max-w-2xl
+          max-h-[90vh] sm:max-h-[80vh]
+          rounded-t-2xl sm:rounded-xl
+          shadow-xl flex flex-col
+          p-4 sm:p-6
+        "
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-3 shrink-0">
+            <h2 className="font-semibold text-base text-gray-700 dark:text-gray-200 truncate pr-4">{col.label}</h2>
+            <button
+              onClick={() => setViewModal(null)}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl leading-none shrink-0"
+            >
+              ✕
+            </button>
+          </div>
+          <textarea
+            readOnly
+            className="
+            flex-1 w-full resize-none rounded border
+            border-gray-300 dark:border-gray-600
+            p-3 text-sm
+            text-gray-800 dark:text-gray-100
+            bg-gray-50 dark:bg-gray-700
+            focus:outline-none
+          "
+            value={value}
+            onFocus={(e) => e.target.select()}
+            autoFocus
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <main className="p-1 max-w-4xl mx-auto">
       <h1 className="text-h1On dark:text-h1OnD font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">
@@ -518,8 +587,8 @@ export default function TableView({
             {translate
               ? "⛔Зупинити переклад"
               : selectedIds.length > 0
-              ? "🌐Перекласти виділені✔️"
-              : "🌐Перекласти всі"}{" "}
+                ? "🌐Перекласти виділені✔️"
+                : "🌐Перекласти всі"}{" "}
           </button>
         )}
       </div>
@@ -552,10 +621,7 @@ export default function TableView({
         ref={tableContainerRef}
         className="overflow-x-auto max-h-[500px] overflow-auto border border-tabThBorder dark:border-tabThBorderD rounded shadow-sm"
       >
-        <table
-          style={{ minWidth: totalWidth }}
-          className="table-fixed border-collapse  text-xs sm:text-sm lg:text-sm font-body"
-        >
+        <table style={{ width: totalWidth }} className="border-collapse text-xs sm:text-sm lg:text-sm font-body">
           <thead className="bg-tabThBg dark:bg-tabThBgD text-tabThOn dark:text-tabThOnD sticky top-0 z-10">
             <tr>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
@@ -631,6 +697,7 @@ export default function TableView({
         moveInfo={moveInfo}
         moveSelectedRow={moveSelectedRow}
       />
+      <ViewModal />
     </main>
   )
 }
