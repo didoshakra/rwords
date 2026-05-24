@@ -110,7 +110,7 @@ function ItemRow({ item, columns, isSelected, toggleSelect, showOwnerMark, user,
     <tr
       className={
         isSelected(item.id)
-          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov"
+          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD"
           : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
       }
     >
@@ -137,22 +137,32 @@ function ItemRow({ item, columns, isSelected, toggleSelect, showOwnerMark, user,
         let content
 
         switch (col.type) {
-          case "know":    content = value ? "👍" : "";  break
-          case "boolean": content = value ? "✔"  : "";  break
-          case "integer": content = value != null ? Math.floor(Number(value)) : "-"; break
-          default:        content = value ?? ""
+          case "know":
+            content = value ? "👍" : ""
+            break
+          case "boolean":
+            content = value ? "✔" : ""
+            break
+          case "integer":
+            content = value != null ? Math.floor(Number(value)) : "-"
+            break
+          default:
+            content = value ?? ""
         }
 
         const isTextCol = !col.type || col.type === "text"
-        const handleOpen = () => { if (isTextCol) setViewModal({ item, col }) }
+        const handleOpen = () => {
+          if (isTextCol) setViewModal({ item, col })
+        }
 
         return (
           <td
             key={col.accessor}
             style={{
-              width: col.width,
+              minWidth: col.width,
               borderBottom: "1px solid #ccc",
               padding: "4px",
+              overflow: "hidden", // 👈 ДОДАЙ
               ...(col.styleCell || {}),
             }}
             onDoubleClick={handleOpen}
@@ -162,11 +172,13 @@ function ItemRow({ item, columns, isSelected, toggleSelect, showOwnerMark, user,
               style={{
                 ...col.styleCellText,
                 display: "block",
+                // width: "100%",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 cursor: isTextCol ? "pointer" : "default",
-                maxWidth: col.width ? col.width - 8 : undefined,
+                // maxWidth: col.width ? col.width - 8 : undefined,
+                maxWidth: "100%", // 👈 ключ
               }}
               title={isTextCol && typeof content === "string" ? content : undefined}
             >
@@ -196,6 +208,7 @@ export default function TableView({
   onClickCsv,
   onTranslate,
   onThemeDownload,
+  onImportText,
   translate,
   isPending,
   message,
@@ -398,6 +411,14 @@ export default function TableView({
                 📂 Імпорт CSV
               </button>
             )}
+            {onImportText && (
+              <button
+                onClick={onImportText}
+                className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
+              >
+                📋 Імпорт тексту
+              </button>
+            )}
           </>
         )}
 
@@ -524,7 +545,10 @@ export default function TableView({
         ref={tableContainerRef}
         className="overflow-x-auto max-h-[500px] overflow-auto border border-tabThBorder dark:border-tabThBorderD rounded shadow-sm"
       >
-        <table style={{ width: totalWidth }} className="border-collapse text-xs sm:text-sm lg:text-sm font-body">
+        <table
+          style={{ minWidth: totalWidth, width: "100%", tableLayout: "fixed" }}
+          className="border-collapse text-xs sm:text-sm lg:text-sm font-body"
+        >
           <thead className="bg-tabThBg dark:bg-tabThBgD text-tabThOn dark:text-tabThOnD sticky top-0 z-10">
             <tr>
               {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
@@ -532,7 +556,7 @@ export default function TableView({
               {columns.map((col) => (
                 <th
                   key={col.accessor}
-                  style={{ width: col.width, border: "1px solid #ccc", padding: "4px", overflowWrap: "break-word" }}
+                  style={{ minWidth: col.width, border: "1px solid #ccc", padding: "4px", overflowWrap: "break-word" }}
                 >
                   {col.label}
                 </th>

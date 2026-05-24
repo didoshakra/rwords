@@ -18,11 +18,11 @@ import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
+import ImportTextModal from "@/app/components/modals/ImportTextModal"
 
 // ExpandableField який рендерить textarea + кнопку ⛶ що відкриває ViewModal в режимі редагування.
 function ExpandableField({ id, label, value, onChange, placeholder, required }) {
   const [expanded, setExpanded] = useState(false)
-
   return (
     <div>
       <label htmlFor={id} className="block font-medium mb-1">
@@ -162,7 +162,6 @@ const columns = [
     // styleCellText: { fontWeight: 600 },
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 250 },
-
 ]
 
 export default function WordsPage() {
@@ -194,6 +193,7 @@ export default function WordsPage() {
   //  Вхідні змінні які мають передаватись в майбутній TableView
   const fromLanguage = "uk"
   const toLanguage = "en"
+  const [importTextOpen, setImportTextOpen] = useState(false)
 
   useEffect(() => {
     loadWords()
@@ -561,7 +561,7 @@ export default function WordsPage() {
 
     if (othersCount > 0) {
       const confirmed = confirm(
-        `У виборі є ${othersCount} чужих слів. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`
+        `У виборі є ${othersCount} чужих слів. Видалити лише ваші (${ownIds.length})? Натисніть OK, щоб видалити свої, або Відмінити.`,
       )
       if (!confirmed) return
     }
@@ -644,6 +644,7 @@ export default function WordsPage() {
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
         onThemeDownload={isFromApp ? handleThemeDownload : undefined}
+        onImportText={() => setImportTextOpen(true)}
         translate={translate} //Чи перекладено для зміни кнопки
         level0Head="Слова"
         level1Head="Тема"
@@ -768,6 +769,17 @@ export default function WordsPage() {
         buttons={dialogConfig.buttons}
         onResult={handleDialogResult}
         onClose={() => setDialogOpen(false)}
+      />
+      <ImportTextModal
+        open={importTextOpen}
+        onClose={() => setImportTextOpen(false)}
+        sections={sections}
+        userId={user?.id}
+        onSuccess={() => {
+          loadWords()
+          loadTopics()
+          loadSections()
+        }}
       />
     </main>
   )
