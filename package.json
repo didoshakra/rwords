@@ -2,12 +2,12 @@
   "name": "rnext14",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
   "dependencies": {
     "@google/genai": "^1.52.0",
     "@mozilla/readability": "^0.6.0",

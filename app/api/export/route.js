@@ -32,7 +32,7 @@ export async function GET(req) {
 
     // 3) Слова обраних тем
     const words = await sql`
-      SELECT id, topic_id, word, translation, img, pn
+      SELECT id, topic_id, word, translation, img, pn, group_key, type
       FROM words
       WHERE topic_id = ANY(${ids}::int[])
     `

@@ -442,7 +442,7 @@ export default function WordsPage() {
 
   //   -------------------------------------------
 
-  // Кнопка завантаження тем
+  // Кнопка завантаження тем в додаток
   const handleThemeDownload = async (selectedWords) => {
     // alert("window.ReactNativeWebView = " + (window.ReactNativeWebView ? "YES" : "NO"))//Для перевірки
     //   alert("isFromApp=" + isFromApp + " window.ReactNativeWebView=" + !!window.ReactNativeWebView)

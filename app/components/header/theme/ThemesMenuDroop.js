@@ -1,4 +1,4 @@
-//ThemesMenuDroop.js
+//ThemesMenuDroop.js//НЕ чіпаємо
 //Саме випадаюче меню вибору палітри тем
 
 import { useRef, useEffect } from "react"

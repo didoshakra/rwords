@@ -115,6 +115,8 @@ export async function initTables() {
       translation TEXT DEFAULT '',
       know BOOLEAN DEFAULT false,
       img TEXT DEFAULT '',
+      group_key TEXT DEFAULT '',
+      type TEXT DEFAULT '',
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_topic FOREIGN KEY(topic_id) REFERENCES topics(id) ON DELETE CASCADE,
       CONSTRAINT fk_user_word FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
