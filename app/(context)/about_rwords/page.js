@@ -22,6 +22,32 @@ export default function HowItWorks() {
 
   return (
     <main className="px-1 py-4 max-w-4xl mx-auto text-pOn dark:text-pOnD">
+      {/* Секція завантаження застосунку */}
+      <section className="bg-kBg text-sm sm:text-base lg:text-lg mb-6 text-center py-4 px-4 rounded">
+        {/* {user ? ( */}
+          <Link
+            href="/download"
+            className="flex items-center justify-center gap-2 bg-btBg text-btOn dark:text-btOnD px-6 py-3 rounded hover:bg-btBgHov transition "
+          >
+            <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
+            До завантаження застосунку ⬇️
+          </Link>
+        {/* ) : (
+          <>
+            <p className="mb-6  text-pOn  dark:text-pOnD font-semibold">
+              Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
+              коментувати записи.
+            </p>
+
+            <Link
+              href="/auth"
+              className="inline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
+            >
+              Увійти або зареєструватись
+            </Link>
+          </>
+        )} */}
+      </section>
       {/* Головний заголовок */}
       <div className="flex justify-center mt-1 mb-2">
         <h1 className="h1On text-h1On inline-flex items-center gap-2 ">
@@ -157,32 +183,6 @@ export default function HowItWorks() {
         </ul>
       </ScreenBlock>
       {/*  */}
-      {/* Секція завантаження застосунку */}
-      <section className="bg-kBg text-sm sm:text-base lg:text-lg mb-6 text-center py-10 px-6 rounded">
-        {user ? (
-          <Link
-            href="/download"
-            className="flex items-center justify-center gap-2 bg-btBg text-btOn dark:text-btOnD px-6 py-3 rounded hover:bg-btBgHov transition "
-          >
-            <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
-            До завантаження застосунку ⬇️
-          </Link>
-        ) : (
-          <>
-            <p className="mb-6  text-pOn  dark:text-pOnD font-semibold">
-              Зареєструйтесь, щоб завантажити застосунок RWords, створювати власні словники, публікувати дописи та
-              коментувати записи.
-            </p>
-
-            <Link
-              href="/auth"
-              className="inline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
-            >
-              Увійти або зареєструватись
-            </Link>
-          </>
-        )}
-      </section>
 
       {/* Підзаголовок "Як працює" */}
       <h2 className="text-h2On text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 text-center">
@@ -298,7 +298,8 @@ export default function HowItWorks() {
             <li>🗣️ Додавати нові голосові команди для кнопок</li>
             <li>📝 Коригувати/❌видаляти голосові команди</li>
             <li>
-              🎙️ Голосові команди можна додавати не тільки з клавіатури, а і голосом, налаштовуючи їх під свій тембр{" "}
+              🎙️ Голосові команди можна додавати не тільки з клавіатури, а і голосом, налаштовуючи їх під свій
+              тембр{" "}
             </li>
           </ul>
           <h4 className="font-bold mb-1">🗣️ Налаштовуйте команди під свій тембр голосу</h4>

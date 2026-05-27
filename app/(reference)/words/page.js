@@ -165,7 +165,7 @@ const columns = [
 ]
 
 export default function WordsPage() {
-  // prors
+  // prors//Вхідні змінні які мають передаватись в майбутній TableView
   const { isFromApp } = useAuth() //Чи вхід з додатку
   const { data: session, status } = useSession()
   const user = session?.user
@@ -181,8 +181,11 @@ export default function WordsPage() {
   const [pn, setPn] = useState("")
   const [know, setKnow] = useState(false)
   const [img, setImg] = useState("")
+  const [group_key, setGroupKey] = useState("")
+  const [type, setType] = useState("word")
   const [message, setMessage] = useState("")
   const [isPending, startTransition] = useTransition() // isPending	Показати loader / disabled//
+  const [importTextOpen, setImportTextOpen] = useState(false) //Ітмпорт тексту для розділення по реченнях
   // Стани для перекладу (useState та useRef)
   const [translate, setTranslate] = useState(false)
   const stopRequested = useRef(false)
@@ -190,10 +193,12 @@ export default function WordsPage() {
   const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogConfig, setDialogConfig] = useState({})
-  //  Вхідні змінні які мають передаватись в майбутній TableView
+  //
+
+  //   З налаштування
   const fromLanguage = "uk"
   const toLanguage = "en"
-  const [importTextOpen, setImportTextOpen] = useState(false)
+  const reversImportCSV = false //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
 
   useEffect(() => {
     loadWords()
@@ -219,7 +224,6 @@ export default function WordsPage() {
   }
 
   const openAddModal = () => {
-    console.log("words/openAddModal")
     setId(null)
     setSectionId("")
     setWord("")
@@ -228,13 +232,14 @@ export default function WordsPage() {
     setPn("0")
     setKnow(false)
     setImg("")
+    setGroupKey("")
+    setType("word")
     setModal({ type: "add" })
     setMessage("")
   }
 
   const openEditModal = (w) => {
     setId(w.id)
-    // Знаходимо section_id з topic
     const topic = topics.find((t) => t.id === w.topic_id)
     setSectionId(topic?.section_id?.toString() || "")
     setWord(w.word)
@@ -243,6 +248,8 @@ export default function WordsPage() {
     setPn(w.pn.toString())
     setKnow(w.know)
     setImg(w.img || "")
+    setGroupKey(w.group_key || "")
+    setType(w.type || "word")
     setModal({ type: "edit", word: w })
     setMessage("")
   }
@@ -257,6 +264,8 @@ export default function WordsPage() {
     setPn("")
     setKnow(false)
     setImg("")
+    setGroupKey("")
+    setType("word")
     setMessage("")
   }
 
@@ -266,6 +275,9 @@ export default function WordsPage() {
     if (!word.trim()) return setMessage("Заповніть слово ")
     if (!section_id) return setMessage("Оберіть секцію")
     if (!topic_id) return setMessage("Оберіть топік")
+    const wordCount = word.trim().split(/\s+/).length
+    const resolvedGroupKey = group_key.trim() || (wordCount === 1 ? word.trim() : "")
+    const resolvedType = type || (wordCount === 1 ? "word" : /[.?!]$/.test(word) ? "sentence" : "phrase")
 
     const data = {
       word: word.trim(),
@@ -274,6 +286,8 @@ export default function WordsPage() {
       pn: pn ? Number(pn) : 0,
       know,
       img: img.trim(),
+      group_key: resolvedGroupKey,
+      type: resolvedType,
     }
 
     startTransition(async () => {
@@ -331,8 +345,16 @@ export default function WordsPage() {
         const text = await file.text()
         // Виклик серверної action-функції importCSV, яку треба імпортувати
         // const result = await importCSV(text, user?.id, user?.role)
-        const result = await importCSV(text, user?.id)
-        setMessage(result)
+        const result = await importCSV(text, reversImportCSV, user?.id)
+        // setMessage(result)
+        setDialogConfig({
+          type: "info",
+          title: "Результат імпорту",
+          message: result,
+          buttons: [{ label: "OK", className: "bg-blue-600 text-white" }],
+        })
+        setDialogOpen(true)
+        // alert(result) // 👈 додай це
         loadWords()
         loadTopics()
         loadSections()
@@ -492,51 +514,6 @@ export default function WordsPage() {
     }
   }
 
-  //   const handleThemeDownload = async (selectedWords) => {
-  //     if (!selectedWords || !selectedWords.length) {
-  //       setMessage("Нічого не вибрано (потрібно відмітити слова).")
-  //       return
-  //     }
-
-  //     const topicIds = [...new Set(selectedWords.map((w) => w.topic_id))]
-  //     if (!topicIds.length) {
-  //       setMessage("Нічого не вибрано для завантаження.")
-  //       return
-  //     }
-
-  //     setMessage("Завантаження...")
-
-  //     try {
-  //       const res = await fetch(`/api/export?ids=${topicIds.join(",")}`, { cache: "no-store" })
-  //       if (!res.ok) throw new Error(await res.text())
-
-  //       const payload = await res.json()
-  //       const selectedWordIds = new Set(selectedWords.map((w) => w.id))
-  //       payload.words = payload.words.filter((w) => selectedWordIds.has(w.id))
-
-  //       // --- мінімальне доповнення ---
-  //       const sendMessageToApp = () => {
-  //         if (window?.ReactNativeWebView?.postMessage) {
-  //           window.ReactNativeWebView.postMessage(JSON.stringify({ type: "rwords-export", payload }))
-  //           setMessage(`Відправлено у додаток: тем ${payload.topics.length}, слів ${payload.words.length}.`)
-  //         } else {
-  //           // якщо WebView ще не готовий, повторюємо через 200мс
-  //           setTimeout(sendMessageToApp, 200)
-  //         }
-  //       }
-
-  //       if (isFromApp) {
-  //         sendMessageToApp()
-  //         return
-  //       }
-
-  //       setMessage("Завантаження JSON можливе лише у додатку.")
-  //     } catch (err) {
-  //       console.error(err)
-  //       setMessage("Помилка експорту: " + (err?.message || "невідома"))
-  //     }
-  //   }
-
   //функція для видалення вибраних слів
   const deleteSelected = async (selectedWords) => {
     // console.log("words/deleteSelected0/selectedWords=", selectedWords)
@@ -624,6 +601,8 @@ export default function WordsPage() {
         })
       }
       // index === 1 — Відмінити
+    } else if (dialogConfig.type === "info") {
+      // просто закриваємо діалог, нічого не робимо
     }
     // Додавай інші типи діалогів за потреби
   }
@@ -676,6 +655,37 @@ export default function WordsPage() {
             </div>
           )}
           <ExpandableField id="word" label="Слово" value={word} onChange={setWord} placeholder="Слово" required />
+          {/* Group Key — автозаповнення якщо порожньо */}
+          <div>
+            <label htmlFor="group_key" className="block font-medium mb-1">
+              Група (group_key)
+            </label>
+            <input
+              id="group_key"
+              type="text"
+              placeholder="Залиште порожнім — заповниться автоматично"
+              value={group_key}
+              onChange={(e) => setGroupKey(e.target.value)}
+              className="border p-2 rounded w-full"
+            />
+          </div>
+
+          {/* Type */}
+          <div>
+            <label htmlFor="type" className="block font-medium mb-1">
+              Тип
+            </label>
+            <select
+              id="type"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="border p-2 rounded w-full"
+            >
+              <option value="word">word</option>
+              <option value="phrase">phrase</option>
+              <option value="sentence">sentence</option>
+            </select>
+          </div>
           <ExpandableField
             id="translation"
             label="Переклад"

@@ -11,8 +11,40 @@ const LandingInfo = () => {
   return (
     <>
       <main className="px-4 py-6 max-w-3xl mx-auto text-pOn dark:text-pOnD font-body text-sm sm:text-base lg:text-lg">
-        <h1 className="text-h1On font-heading text-xl sm:text-2xl lg:text-3xl font-bold mb-3">👋 Вітаємо на RWords</h1>
-
+        <section className="bg-kBg dark:bg-kBgD text-kOn dark:text-kOnD text-center py-4 px-4 rounded-md">
+          {/* {user ? ( */}
+          <>
+            {/* <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-medium mb-3">Дякуємо, що з нами!</h3> */}
+            {/* <p className="mb-5 font-medium">
+                Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
+              </p> */}
+            <Link
+              href="/download"
+              // className="flex gap-2 justify-center items-center bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
+              className="flex gap-2 justify-center items-center bg-btBg text-btOn px-2 py-2 rounded hover:bg-btBgHov transition"
+            >
+              <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
+              До завантаження застосунку ⬇️
+            </Link>
+          </>
+          {/* ) : (
+            <>
+              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-bold mb-3">Готові почати?</h3>
+              <p className="mb-5 text-pOn  dark:text-pOnD font-semibold">
+                Зареєструйтесь, щоб завантажити застосунок RWords.
+              </p>
+              <Link
+                href="/auth"
+                className="font-semiboldinline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
+              >
+                Увійти або зареєструватись
+              </Link>
+            </>
+          )} */}
+        </section>
+        <h1 className="text-h1On font-heading text-xl sm:text-2xl lg:text-3xl font-bold my-6 mb-3">
+          👋 Вітаємо на RWords
+        </h1>
         <p className="leading-relaxed">
           Сайт <strong>RWords</strong> — це спроба створити платформу для людей, які вивчають мови за допомогою
           мобільного застосунку{" "}
@@ -58,38 +90,6 @@ const LandingInfo = () => {
           <li>🌐 Перекладати слова автоматично на будь-яку мову</li>
           {/* <li>🔁 Слухати слова безпосередньо на сайті(не в додатку)  → переклад → оцінка (поки в розробці)</li> */}
         </ul>
-
-        <section className="bg-kBg dark:bg-kBgD text-kOn dark:text-kOnD text-center py-6 px-4 rounded-md">
-          {user ? (
-            <>
-              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-medium mb-3">Дякуємо, що з нами!</h3>
-              <p className="mb-5 font-medium">
-                Ви вже зареєстровані. Тепер ви можете користуватись усіма можливостями сайту.
-              </p>
-              <Link
-                href="/download"
-                // className="flex gap-2 justify-center items-center bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 transition"
-                className="flex gap-2 justify-center items-center bg-btBg text-btOn px-5 py-2 rounded hover:bg-btBgHov transition"
-              >
-                <Image src="/images/home/RW_know_64.png" alt="RWords" width={20} height={20} priority />
-                До завантаження застосунку ⬇️
-              </Link>
-            </>
-          ) : (
-            <>
-              <h3 className="text-h1On text-base sm:text-lg lg:text-xl font-bold mb-3">Готові почати?</h3>
-              <p className="mb-5 text-pOn  dark:text-pOnD font-semibold">
-                Зареєструйтесь, щоб завантажити застосунок RWords.
-              </p>
-              <Link
-                href="/auth"
-                className="font-semiboldinline-block bg-btBg text-btOn hover:bg-btBgHov px-5 py-2 rounded transition text-sm sm:text-base lg:text-lg"
-              >
-                Увійти або зареєструватись
-              </Link>
-            </>
-          )}
-        </section>
 
         <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 ">
           {/* <blockquote className="mt-6 italic border-l-4 border-gray-300 pl-4 text-gray-700 dark:text-gray-300 font-medium"> */}

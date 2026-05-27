@@ -255,7 +255,7 @@ export default function TableView({
 
   useEffect(() => {
     if (message) {
-      const timer = setTimeout(() => setMessage(""), 4000)
+      const timer = setTimeout(() => setMessage(""), 8000)
       return () => clearTimeout(timer)
     }
   }, [message])
@@ -518,9 +518,17 @@ export default function TableView({
 
       {/* Повідомлення */}
       {message && (
-        <p className="mb-3 text-pOn dark:text-pOnD font-medium text-xs sm:text-sm" role="alert">
+        <div
+          className="mb-3 px-4 py-2 rounded-lg text-sm font-medium text-center shadow"
+          style={{
+            background: message.includes("Помилка") ? "#fee2e2" : "#dcfce7",
+            color: message.includes("Помилка") ? "#b91c1c" : "#15803d",
+            border: message.includes("Помилка") ? "1px solid #fca5a5" : "1px solid #86efac",
+          }}
+          role="alert"
+        >
           {message}
-        </p>
+        </div>
       )}
 
       {/* Рядок статистики */}
