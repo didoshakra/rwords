@@ -1,4 +1,3 @@
-// MultiLevelMenu.js
 "use client"
 import React, { useState, useRef, useEffect } from "react"
 import Link from "next/link"
@@ -6,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { useDatabase } from "@/app/context/DatabaseContext"
 import { useAuth } from "@/app/context/AuthContext"
 
-const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle }) => {
+const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle, onClose }) => {
   const { isDatabaseReady } = useDatabase()
   const { isFromApp } = useAuth()
   const { data: session } = useSession()
@@ -30,25 +29,34 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle }) => 
   }
 
   const hasSubmenu = item.submenu && item.submenu.length > 0
-
-  // Верхній рядок vs інші рівні
   const layoutClass = depth === 0 && isRowFirst ? "flex items-center gap-4 px-2" : "py-1"
 
+  const closeAll = () => {
+    setOpen(false)
+    onClose?.()
+  }
+
   return (
-    <li
-      ref={ref}
-      className={`${layoutClass} relative px-2`}
-      //   style={{ paddingLeft: depth > 0 ? `${depth * 5}px` : undefined }}
-    >
+    <li ref={ref} className={`${layoutClass} relative px-2`}>
       <div
         className={`flex items-center cursor-pointer font-semibold hover:text-levelHover text-level${depth % 6} dark:text-hOnD`}
         onClick={() => {
           if (hasSubmenu) setOpen((p) => !p)
-          else setDrawerOpen?.(false)
+          else {
+            setDrawerOpen?.(false)
+            onClose?.()
+          }
         }}
       >
         {item.url ? (
-          <Link href={item.url} className="no-underline" onClick={() => setDrawerOpen?.(false)}>
+          <Link
+            href={item.url}
+            className="no-underline"
+            onClick={() => {
+              setDrawerOpen?.(false)
+              closeAll()
+            }}
+          >
             {item.title}
           </Link>
         ) : (
@@ -74,14 +82,12 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle }) => 
         <ul
           className={`absolute z-50 bg-levelBg${
             (depth + 1) % 6
-          } rounded-md shadow-lg border border-gray-200 dark:border-gray-700 mt-1   ${open ? "block" : "hidden"}`}
+          } rounded-md shadow-lg border border-gray-200 dark:border-gray-700 mt-1 ${open ? "block" : "hidden"}`}
           style={{
             left: 0,
             top: "80%",
-            // Let submenu size to content but cap it with maxWidth
             width: "max-content",
             maxWidth: 350,
-            // marginLeft: depth > 0 ? `${depth * 5}px` : "0",
             marginLeft: "5px",
           }}
         >
@@ -92,6 +98,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle }) => 
               depth={depth + 1}
               setDrawerOpen={setDrawerOpen}
               isRowFirst={isRowFirst}
+              onClose={closeAll}
             />
           ))}
         </ul>

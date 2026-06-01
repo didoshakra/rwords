@@ -24,9 +24,8 @@ const headerMenuStyle = {
 const HeaderMenu = () => {
   return (
     <div className="flex-1 min-w-0 justify-center hidden md:flex">
-      {/* <MultiLevelMenu items={menuAdmin} isRowFirst={false} /> */}
-      {/* <MultiLevelMenu items={headMenu} isRowFirst={true} /> */}
-      <MultiLevelMenu items={headMenu} isRowFirst={true} menuStyle={headerMenuStyle} />
+      <MultiLevelMenu items={headMenu}
+      isRowFirst={true} menuStyle={headerMenuStyle} />
     </div>
   )
 }

@@ -94,41 +94,8 @@ function ViewModal({ viewModal, onClose }) {
   )
 }
 
-// //Автоскрол при переміщенні рядків
-// const scrollToMarkerRow = (offset) => {
-//   if (!moveInfo) return
-//   const { idx, groups, topicWords } = moveInfo
-//   const targetIdx = idx + offset
-//   if (targetIdx < 0 || targetIdx >= groups.length) return
-
-//   const targetGroupKey = groups[targetIdx]
-//   const groupItems = topicWords.filter((w) => (w.group_key || String(w.id)) === targetGroupKey)
-
-//   // При русі вгору — перший рядок групи, вниз — останній
-//   const targetItem = offset < 0 ? groupItems[0] : groupItems[groupItems.length - 1]
-//   if (!targetItem) return
-
-//   // Знаходимо рядок в таблиці по data-id
-//   const container = tableContainerRef.current
-//   if (!container) return
-//   const row = container.querySelector(`tr[data-id="${targetItem.id}"]`)
-//   if (!row) return
-//   row.scrollIntoView({ behavior: "smooth", block: "nearest" })
-// }
-
 // ── Рядок таблиці (окремий компонент щоб хуки працювали коректно) ──────────
-function ItemRow({
-  item,
-  columns,
-  isSelected,
-  toggleSelect,
-  showOwnerMark,
-  user,
-  setViewModal,
-  moveMode,
-  moveOffset,
-  moveInfo,
-}) {
+function ItemRow({ item, columns, isSelected, toggleSelect, showOwnerMark, user, setViewModal }) {
   // Один масив long-press handlers — по одному на колонку
   // Хуки викликаються на верхньому рівні компонента (не в .map) ✅
   const handlers = columns.map((col) => {
@@ -141,7 +108,6 @@ function ItemRow({
 
   return (
     <tr
-      data-id={item.id}
       className={
         isSelected(item.id)
           ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD"
@@ -150,50 +116,12 @@ function ItemRow({
     >
       {/* Чекбокс */}
       <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
-        {moveMode && moveInfo ? (
-          (() => {
-            const { idx, groups, topicWords, word } = moveInfo
-            const targetIdx = idx + moveOffset
-
-            if (item.id === word.id) return <span style={{ color: "orange", fontSize: 16 }}>⮞</span>
-
-            if (item.topic_id !== word.topic_id)
-              return (
-                <input
-                  type="checkbox"
-                  checked={isSelected(item.id)}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={() => toggleSelect(item.id)}
-                />
-              )
-
-            const itemGroupKey = item.group_key || String(item.id)
-            const itemGroupIdx = groups.indexOf(itemGroupKey)
-            const groupItems = topicWords.filter((w) => (w.group_key || String(w.id)) === itemGroupKey)
-
-            if (moveOffset < 0 && itemGroupIdx === targetIdx && groupItems[0]?.id === item.id)
-              return <span style={{ color: "orange", fontSize: 16 }}>▲</span>
-
-            if (moveOffset > 0 && itemGroupIdx === targetIdx && groupItems[groupItems.length - 1]?.id === item.id)
-              return <span style={{ color: "orange", fontSize: 16 }}>▼</span>
-
-            return (
-              <input
-                type="checkbox"
-                checked={isSelected(item.id)}
-                onClick={(e) => e.stopPropagation()}
-                onChange={() => toggleSelect(item.id)}
-              />
-            )
-          })()
-        ) : (
-          <input
-            type="checkbox"
-            checked={isSelected(item.id)}
-            onClick={(e) => e.stopPropagation()}
-            onChange={() => toggleSelect(item.id)}
-          />
-        )}
+        <input
+          type="checkbox"
+          checked={isSelected(item.id)}
+          onClick={(e) => e.stopPropagation()}
+          onChange={() => toggleSelect(item.id)}
+        />
       </td>
 
       {/* Власник */}
@@ -284,7 +212,6 @@ export default function TableView({
   onReversTranslate,
   onThemeDownload,
   onImportText,
-  onSavePn,
   isPending,
   message,
   setMessage,
@@ -311,15 +238,14 @@ export default function TableView({
   const [openLevel2, setOpenLevel2] = useState([])
   const [openLevel1, setOpenLevel1] = useState([])
   const [viewModal, setViewModal] = useState(null)
-  const [moveOffset, setMoveOffset] = useState(0)
 
   // ── Effects ──────────────────────────────────────────────────────────────
   useEffect(() => {
     setTData(data || [])
     setLevel1(dataLevel1 || [])
     setLevel2(dataLevel2 || [])
-    // setOpenLevel1([]) // ← закриті за замовчуванням
-    // setOpenLevel2([]) // ← закриті за замовчуванням
+    setOpenLevel1([]) // ← закриті за замовчуванням
+    setOpenLevel2([]) // ← закриті за замовчуванням
   }, [data, dataLevel2, dataLevel1])
 
   useEffect(() => {
@@ -402,78 +328,31 @@ export default function TableView({
   const startMoveMode = () => {
     if (selectedIds.length !== 1) return
     const id = selectedIds[0]
-    const word = tData.find((w) => w.id === id)
-    if (!word) return
-
-    const topicWords = tData.filter((w) => w.topic_id === word.topic_id).sort((a, b) => a.pn - b.pn)
-
-    const groups = [...new Set(topicWords.map((w) => w.group_key || String(w.id)))]
-    const idx = groups.indexOf(word.group_key || String(word.id))
-
-    console.log("word:", word)
-    console.log("groups:", groups)
-    console.log("idx:", idx) // якщо -1 — проблема тут
-
-    setMoveOffset(0)
-    setMoveInfo({ idx, total: groups.length, groups, topicWords, word })
+    const idx = tData.findIndex((w) => w.id === id)
+    if (idx === -1) return
+    setMoveInfo({ idx, total: tData.length })
+    scrollRowIntoView(idx)
     setMoveMode(true)
   }
 
-  const scrollToMarkerRow = (offset) => {
+  const moveSelectedRow = (direction) => {
     if (!moveInfo) return
-    const { idx, groups, topicWords } = moveInfo
-    const targetIdx = idx + offset
-    if (targetIdx < 0 || targetIdx >= groups.length) return
-
-    const targetGroupKey = groups[targetIdx]
-    const groupItems = topicWords.filter((w) => (w.group_key || String(w.id)) === targetGroupKey)
-    const targetItem = offset < 0 ? groupItems[0] : groupItems[groupItems.length - 1]
-    if (!targetItem) return
-
-    const container = tableContainerRef.current
-    if (!container) return
-    const row = container.querySelector(`tr[data-id="${targetItem.id}"]`)
-    if (!row) return
-    row.scrollIntoView({ behavior: "smooth", block: "center" })
+    const { idx } = moveInfo
+    const topicId = tData[idx].topic_id
+    const topicWords = tData.filter((w) => w.topic_id === topicId)
+    const topicIndexes = topicWords.map((w) => tData.findIndex((x) => x.id === w.id))
+    const localIdx = topicIndexes.indexOf(idx)
+    let newIdx = idx
+    if (direction === "up" && localIdx > 0) newIdx = topicIndexes[localIdx - 1]
+    else if (direction === "down" && localIdx < topicIndexes.length - 1) newIdx = topicIndexes[localIdx + 1]
+    if (newIdx === idx) return
+    let updatedWords = [...tData]
+    ;[updatedWords[idx], updatedWords[newIdx]] = [updatedWords[newIdx], updatedWords[idx]]
+    setTData(updatedWords.map((w, i) => ({ ...w, pn: i + 1 })))
+    setIsOrderChanged(true)
+    setMoveInfo((prev) => ({ ...prev, idx: newIdx }))
+    if (rowRefs.current[newIdx]) rowRefs.current[newIdx].scrollIntoView({ behavior: "smooth", block: "nearest" })
   }
-
-  const moveSelectedRow = (offset) => {
-  if (!moveInfo) return
-  const { idx, groups, topicWords } = moveInfo
-
-  const newIdx = idx + offset
-  if (newIdx < 0 || newIdx >= groups.length) return
-
-  const newGroups = [...groups]
-
-  // Послідовні свапи замість одного великого
-  if (offset > 0) {
-    for (let i = idx; i < newIdx; i++) {
-      ;[newGroups[i], newGroups[i + 1]] = [newGroups[i + 1], newGroups[i]]
-    }
-  } else {
-    for (let i = idx; i > newIdx; i--) {
-      ;[newGroups[i], newGroups[i - 1]] = [newGroups[i - 1], newGroups[i]]
-    }
-  }
-
-  let pn = 1
-  const reindexed = []
-  for (const key of newGroups) {
-    const groupWords = topicWords.filter(w => (w.group_key || String(w.id)) === key)
-    for (const w of groupWords) {
-      reindexed.push({ ...w, pn: pn++ })
-    }
-  }
-
-  const newData = tData.map(w => {
-    const updated = reindexed.find(u => u.id === w.id)
-    return updated || w
-  })
-
-  setTData(newData)
-  setIsOrderChanged(true)
-}
 
   // ── Рендер групи level1 ───────────────────────────────────────────────────
   const renderTopic = (topic, topicWords) => {
@@ -532,9 +411,6 @@ export default function TableView({
               showOwnerMark={showOwnerMark}
               user={user}
               setViewModal={setViewModal}
-              moveMode={moveMode}
-              moveOffset={moveOffset}
-              moveInfo={moveInfo}
             />
           ))}
       </React.Fragment>
@@ -792,9 +668,6 @@ export default function TableView({
                   showOwnerMark={showOwnerMark}
                   user={user}
                   setViewModal={setViewModal}
-                  moveMode={moveMode}
-                  moveOffset={moveOffset}
-                  moveInfo={moveInfo}
                 />
               ))}
           </tbody>
@@ -803,58 +676,9 @@ export default function TableView({
 
       <MoveRowModal
         open={moveMode}
-        onClose={() => {
-          setMoveMode(false)
-          setMoveOffset(0)
-        }}
-        onDone={() => {
-          if (moveOffset !== 0) {
-            const { idx, groups, topicWords } = moveInfo
-            const newIdx = idx + moveOffset
-            const newGroups = [...groups]
-
-            // Послідовні свапи
-            if (moveOffset > 0) {
-              for (let i = idx; i < newIdx; i++) {
-                ;[newGroups[i], newGroups[i + 1]] = [newGroups[i + 1], newGroups[i]]
-              }
-            } else {
-              for (let i = idx; i > newIdx; i--) {
-                ;[newGroups[i], newGroups[i - 1]] = [newGroups[i - 1], newGroups[i]]
-              }
-            }
-
-            let pn = 1
-            const reindexed = []
-            for (const key of newGroups) {
-              const groupWords = topicWords.filter((w) => (w.group_key || String(w.id)) === key)
-              for (const w of groupWords) {
-                reindexed.push({ ...w, pn: pn++ })
-              }
-            }
-
-            const newData = tData.map((w) => {
-              const updated = reindexed.find((u) => u.id === w.id)
-              return updated || w
-            })
-
-            setTData(newData)
-            setIsOrderChanged(true)
-            if (onSavePn) onSavePn(reindexed)
-          }
-          setMoveMode(false)
-          setMoveOffset(0)
-        }}
+        onClose={() => setMoveMode(false)}
         moveInfo={moveInfo}
-        moveOffset={moveOffset}
-        onUp={() => {
-          setMoveOffset((prev) => prev - 1)
-          scrollToMarkerRow(moveOffset - 1)
-        }}
-        onDown={() => {
-          setMoveOffset((prev) => prev + 1)
-          scrollToMarkerRow(moveOffset + 1)
-        }}
+        moveSelectedRow={moveSelectedRow}
       />
 
       <ViewModal viewModal={viewModal} onClose={() => setViewModal(null)} />

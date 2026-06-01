@@ -9,7 +9,9 @@ import {
   updateWord,
   deleteWords,
   importCSV,
+  importBatch,
   translateWord,
+  updateWordsPn,
 } from "@/app/actions/words/wordActions"
 import { getSections } from "@/app/actions/words/sectionActions"
 import { getTopics } from "@/app/actions/words/topicActions"
@@ -19,6 +21,8 @@ import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
 import ImportTextModal from "@/app/components/modals/ImportTextModal"
+
+
 
 // ExpandableField який рендерить textarea + кнопку ⛶ що відкриває ViewModal в режимі редагування.
 function ExpandableField({ id, label, value, onChange, placeholder, required }) {
@@ -158,10 +162,13 @@ const columns = [
     label: "Слова",
     accessor: "word",
     type: "text",
-    width: 250,
+    width: 550,
     // styleCellText: { fontWeight: 600 },
   },
-  { label: "Переклад", accessor: "translation", type: "text", width: 250 },
+  { label: "Переклад", accessor: "translation", type: "text", width: 550 },
+  { label: "img", accessor: "img", type: "text", width: 50 },
+  { label: "Група", accessor: "group_key", type: "text", width: 100 },
+  { label: "Тип", accessor: "type", type: "text", width: 100 },
 ]
 
 export default function WordsPage() {
@@ -188,6 +195,7 @@ export default function WordsPage() {
   const [importTextOpen, setImportTextOpen] = useState(false) //Ітмпорт тексту для розділення по реченнях
   // Стани для перекладу (useState та useRef)
   const [translate, setTranslate] = useState(false)
+  const [reversTranslate, setReversTranslate] = useState(false)
   const stopRequested = useRef(false)
   const translatedCountRef = useRef(0)
   const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
@@ -198,7 +206,7 @@ export default function WordsPage() {
   //   З налаштування
   const fromLanguage = "uk"
   const toLanguage = "en"
-  const reversImportCSV = false //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
+  const reversImportCSV = true //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
 
   useEffect(() => {
     loadWords()
@@ -283,13 +291,12 @@ export default function WordsPage() {
       word: word.trim(),
       translation: translation.trim(),
       topic_id: Number(topic_id),
-      pn: pn ? Number(pn) : 0,
       know,
       img: img.trim(),
       group_key: resolvedGroupKey,
       type: resolvedType,
+      // pn — не передаємо, керується переміщенням
     }
-
     startTransition(async () => {
       try {
         if (modal?.type === "edit") {
@@ -331,39 +338,73 @@ export default function WordsPage() {
     setIsOrderChanged(true) // ⚠️ встановлюємо прапорець змін
   }
 
+  // Перерахунок pn після переміщення рядків
+  const handleSavePn = async (updatedWords) => {
+    try {
+      await updateWordsPn(updatedWords.map((w) => ({ id: w.id, pn: w.pn })))
+      loadWords() // ← ось сюди
+    } catch (e) {
+      console.error("Помилка збереження порядку:", e)
+    }
+  }
+
   //   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   // Імпорт з csv
   const handleFileUpload = async (event) => {
-    console.log("words/handleFileUpload")
     const file = event.target.files[0]
     if (!file) return
-    console.log("words/handleFileUpload/")
-    setMessage("Початок імпорту...")
-    startTransition(async () => {
-      try {
-        const text = await file.text()
-        // Виклик серверної action-функції importCSV, яку треба імпортувати
-        // const result = await importCSV(text, user?.id, user?.role)
-        const result = await importCSV(text, reversImportCSV, user?.id)
-        // setMessage(result)
-        setDialogConfig({
-          type: "info",
-          title: "Результат імпорту",
-          message: result,
-          buttons: [{ label: "OK", className: "bg-blue-600 text-white" }],
-        })
-        setDialogOpen(true)
-        // alert(result) // 👈 додай це
-        loadWords()
-        loadTopics()
-        loadSections()
-      } catch (error) {
-        setMessage(error.message || "Помилка імпорту")
+
+    setMessage("Парсинг файлу...")
+
+    try {
+      const text = await file.text()
+
+      // 1. Парсимо файл — отримуємо sections
+      const sections = await importCSV(text, reversImportCSV, user?.id)
+      // 2. Рахуємо загальну кількість слів
+      const allWords = sections.flatMap((s) => s.topics.flatMap((t) => t.words))
+      const totalWords = allWords.length
+      let importedTotal = 0
+      let skippedTotal = 0
+
+      // 3. Розбиваємо на батчі по 50 слів
+      const BATCH_SIZE = 50
+      let wordCount = 0
+
+      for (const section of sections) {
+        for (const topic of section.topics) {
+          const words = topic.words
+          for (let i = 0; i < words.length; i += BATCH_SIZE) {
+            const batchWords = words.slice(i, i + BATCH_SIZE)
+
+            // Відправляємо батч як мінімальну структуру
+            const batchSection = [
+              {
+                ...section,
+                topics: [{ ...topic, words: batchWords }],
+              },
+            ]
+
+            const result = await importBatch(batchSection, user?.id, reversImportCSV)
+            importedTotal += result.importedWordsCount
+            skippedTotal += result.skippedWordsCount
+            wordCount += batchWords.length
+
+            setMessage(`⏳ Імпортовано ${wordCount} з ${totalWords} слів...`)
+          }
+        }
       }
-      // Очищуємо input, щоб можна було знову завантажити той самий файл, якщо треба
-      event.target.value = null
-    })
+
+      setMessage(`✅ Готово! Імпортовано: ${importedTotal} слів, пропущено дублікатів: ${skippedTotal}`)
+      loadWords()
+      loadTopics()
+      loadSections()
+    } catch (error) {
+      setMessage("Помилка імпорту: " + error.message)
+    }
+
+    event.target.value = null
   }
 
   const startTranslation = async (wordsToTranslate) => {
@@ -380,19 +421,25 @@ export default function WordsPage() {
         return
       }
 
-      const word = wordsToTranslate[i].word
-      const id = wordsToTranslate[i].id
+      const id = Number(wordsToTranslate[i].id)
+      const textToTranslate = reversTranslate ? wordsToTranslate[i].translation : wordsToTranslate[i].word
+      const from = reversTranslate ? toLanguage : fromLanguage
+      const to = reversTranslate ? fromLanguage : toLanguage
+
+      if (!id || !textToTranslate?.trim()) continue
 
       try {
-        await translateWord(word, fromLanguage, toLanguage) // server action
+        await translateWord(id, textToTranslate, from, to, reversTranslate)
         translatedCountRef.current++
         setMessage(`Перекладено ${translatedCountRef.current} з ${wordsToTranslate.length}`)
       } catch (err) {
-        console.error("❌ Помилка перекладу:", word, err)
-        setMessage(`Помилка перекладу слова "${word}" (${translatedCountRef.current} з ${wordsToTranslate.length})`)
+        console.error("❌ Помилка перекладу:", textToTranslate, err)
+        setMessage(
+          `Помилка перекладу "${textToTranslate}" (${translatedCountRef.current} з ${wordsToTranslate.length})`,
+        )
       }
 
-      await new Promise((res) => setTimeout(res, 400)) // пауза
+      await new Promise((res) => setTimeout(res, 400))
     }
 
     alert(`✅ Переклад завершено: ${translatedCountRef.current} із ${wordsToTranslate.length}`)
@@ -428,7 +475,7 @@ export default function WordsPage() {
       return
     }
 
-    const untranslatedWords = words.filter((w) => !w.translation?.trim())
+    const untranslatedWords = words.filter((w) => (reversTranslate ? !w.word?.trim() : !w.translation?.trim()))
 
     if (untranslatedWords.length === 0) {
       setDialogConfig({
@@ -624,7 +671,10 @@ export default function WordsPage() {
         onTranslate={translateWords}
         onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         onImportText={() => setImportTextOpen(true)}
+        onSavePn={handleSavePn} // Перерахунок pn після переміщення рядків
         translate={translate} //Чи перекладено для зміни кнопки
+        reversTranslate={reversTranslate}
+        onReversTranslate={() => setReversTranslate((prev) => !prev)}
         level0Head="Слова"
         level1Head="Тема"
         level2Head="Група тем"

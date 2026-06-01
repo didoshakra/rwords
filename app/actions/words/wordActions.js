@@ -1,4 +1,4 @@
-// wordActions.jswordActions.js
+// wordActions.js
 "use server"
 
 import { sql } from "@/lib/dbConfig"
@@ -16,7 +16,13 @@ export async function getWords() {
 export async function createWord(form, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
 
-  const { word, translation = "", topic_id = 1, pn = 0, know = false, img = "", group_key = "", type = "word" } = form
+  const { word, translation = "", topic_id = 1, know = false, img = "", group_key = "", type = "word" } = form
+
+  // Беремо максимальний pn теми
+  const maxPnRes = await sql`
+    SELECT MAX(pn) AS maxpn FROM words WHERE topic_id = ${topic_id}
+  `
+  const pn = (maxPnRes[0].maxpn || 0) + 1
 
   const result = await sql`
     INSERT INTO words (word, translation, topic_id, pn, know, img, group_key, type, user_id)
@@ -29,39 +35,38 @@ export async function createWord(form, userId) {
 export async function updateWord(id, form, userId, role) {
   if (!userId) throw new Error("Користувач не авторизований")
 
-  const result = await sql`SELECT user_id FROM words WHERE id = ${id}`
-  const word = result[0]
-  if (!word) throw new Error("Слово не знайдено")
+  const result = await sql`SELECT user_id, topic_id FROM words WHERE id = ${id}`
+  const existing = result[0]
+  if (!existing) throw new Error("Слово не знайдено")
 
-  if (role !== "admin" && userId !== word.user_id) {
+  if (role !== "admin" && userId !== existing.user_id) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const {
-    word: w,
-    translation = "",
-    topic_id = 1,
-    pn = 0,
-    know = false,
-    img = "",
-    group_key = "",
-    type = "word",
-  } = form
+  const { word: w, translation = "", topic_id, know = false, img = "", group_key = "", type = "word" } = form
+
+  // Якщо тема змінилась — беремо новий pn
+  let pn = null
+  if (Number(topic_id) !== Number(existing.topic_id)) {
+    const maxPnRes = await sql`
+      SELECT MAX(pn) AS maxpn FROM words WHERE topic_id = ${topic_id}
+    `
+    pn = (maxPnRes[0].maxpn || 0) + 1
+  }
 
   await sql`
     UPDATE words
     SET word = ${w},
         translation = ${translation},
         topic_id = ${topic_id},
-        pn = ${pn},
         know = ${know},
         img = ${img},
         group_key = ${group_key},
         type = ${type}
+        ${pn !== null ? sql`, pn = ${pn}` : sql``}
     WHERE id = ${id}
   `
 }
-
 
 export async function deleteWords(ids, userId, role) {
   console.log("wordActions/deleteWords/ids=", ids)
@@ -94,6 +99,93 @@ export async function updateWordPn(id, pn, userId, role) {
   await sql`UPDATE words SET pn = ${pn} WHERE id = ${id}`
 }
 
+// для розбивки на куски importCSV
+export async function importBatch(sections, userId, reversImportCSV = false) {
+  if (!userId) throw new Error("Користувач не авторизований")
+
+  let importedWordsCount = 0
+  let skippedWordsCount = 0
+  let importedTopicsCount = 0
+  let importedSectionsCount = 0
+  let skippedTopicsCount = 0
+  let skippedSectionsCount = 0
+
+  for (const section of sections) {
+    const sectionRes = await sql`SELECT id FROM sections WHERE name = ${section.name}`
+    let sectionId
+
+    if (sectionRes.length > 0) {
+      sectionId = sectionRes[0].id
+      skippedSectionsCount++
+    } else {
+      const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
+      const maxPn = maxPnRes[0].maxPn || 0
+      const insertSectionRes = await sql`
+        INSERT INTO sections (name, img, pn, user_id)
+        VALUES (${section.name}, ${section.img || "other"}, ${maxPn + 1}, ${userId})
+        RETURNING id
+      `
+      sectionId = insertSectionRes[0].id
+      importedSectionsCount++
+    }
+
+    for (const topic of section.topics) {
+      const topicRes = await sql`
+        SELECT id FROM topics WHERE name = ${topic.name} AND section_id = ${sectionId}
+      `
+      let topicId
+
+      if (topicRes.length > 0) {
+        topicId = topicRes[0].id
+        skippedTopicsCount++
+      } else {
+        const maxPnTopicRes = await sql`
+          SELECT MAX(pn) AS maxPn FROM topics WHERE section_id = ${sectionId}
+        `
+        const maxPnTopic = maxPnTopicRes[0].maxPn || 0
+        const insertTopicRes = await sql`
+          INSERT INTO topics (name, img, section_id, pn, user_id)
+          VALUES (${topic.name}, ${topic.img || "other"}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
+          RETURNING id
+        `
+        topicId = insertTopicRes[0].id
+        importedTopicsCount++
+      }
+
+      const maxPnWordRes = await sql`
+        SELECT MAX(pn) AS maxPn FROM words WHERE topic_id = ${topicId}
+      `
+      let pn = maxPnWordRes[0].maxPn || 0
+
+      for (const { word, group_key, type, translation, img } of topic.words) {
+        const wordExistRes = await sql`
+            SELECT id FROM words
+            WHERE ${reversImportCSV ? sql`translation = ${translation}` : sql`word = ${word}`}
+            AND topic_id = ${topicId}
+            `
+        if (wordExistRes.length === 0) {
+          pn++
+          await sql`
+            INSERT INTO words (word, group_key, type, translation, img, topic_id, pn, user_id)
+            VALUES (${word}, ${group_key}, ${type}, ${translation}, ${img}, ${topicId}, ${pn}, ${userId})
+          `
+          importedWordsCount++
+        } else {
+          skippedWordsCount++
+        }
+      }
+    }
+  }
+
+  return {
+    importedWordsCount,
+    skippedWordsCount,
+    importedTopicsCount,
+    importedSectionsCount,
+    skippedTopicsCount,
+    skippedSectionsCount,
+  }
+}
 
 export async function importCSV(fileContent, reversImportCSV, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
@@ -180,20 +272,20 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
         // Слово: word;group_key;type;translation;img
         if (!currentTopic) continue
         const parts = line.split(";").map((s) => s.trim())
-        const word = reversImportCSV ? parts[3] : parts[0]
-        if (!word) continue
-        const wordCount = word.trim().split(/\s+/).length
-        const group_key = parts[1] !== undefined && parts[1] !== "" ? parts[1] : wordCount === 1 ? word : ""
+        const rawWord = parts[0]
+        if (!rawWord) continue
+        const word = reversImportCSV ? "" : rawWord
+        const translation = reversImportCSV ? rawWord : parts[3] || ""
+        const wordCount = rawWord.trim().split(/\s+/).length
+        const group_key = parts[1] !== undefined && parts[1] !== "" ? parts[1] : wordCount === 1 ? rawWord : ""
         const type =
           parts[2] !== undefined && parts[2] !== ""
             ? parts[2]
             : wordCount === 1
               ? "word"
-              : /[.?!]$/.test(word)
+              : /[.?!]$/.test(rawWord)
                 ? "sentence"
                 : "phrase"
-
-        const translation = reversImportCSV ? parts[0] || "" : parts[3] || ""
         const img = parts[4] || ""
 
         currentTopic.words.push({ word, group_key, type, translation, img })
@@ -204,78 +296,7 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
       throw new Error("Не знайдено жодної теми для імпорту!")
     }
 
-    // --- 6. Зберігаємо в БД ---
-    let importedWordsCount = 0
-    let skippedTopicsCount = 0
-    let skippedWordsCount = 0
-    let importedTopicsCount = 0
-    let importedSectionsCount = 0
-    let skippedSectionsCount = 0
-
-    for (const section of sections) {
-      const sectionRes = await sql`SELECT id FROM sections WHERE name = ${section.name}`
-      let sectionId
-
-      if (sectionRes.length > 0) {
-        sectionId = sectionRes[0].id
-        skippedSectionsCount++
-      } else {
-        const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
-        const maxPn = maxPnRes[0].maxPn || 0
-        const insertSectionRes = await sql`
-          INSERT INTO sections (name, img, pn, user_id)
-          VALUES (${section.name}, ${section.img || "other"}, ${maxPn + 1}, ${userId})
-          RETURNING id
-        `
-        sectionId = insertSectionRes[0].id
-        importedSectionsCount++
-      }
-
-      for (const topic of section.topics) {
-        const topicRes = await sql`
-          SELECT id FROM topics WHERE name = ${topic.name} AND section_id = ${sectionId}
-        `
-        let topicId
-
-        if (topicRes.length > 0) {
-          topicId = topicRes[0].id
-          skippedTopicsCount++
-        } else {
-          const maxPnTopicRes = await sql`
-            SELECT MAX(pn) AS maxPn FROM topics WHERE section_id = ${sectionId}
-          `
-          const maxPnTopic = maxPnTopicRes[0].maxPn || 0
-          const insertTopicRes = await sql`
-            INSERT INTO topics (name, img, section_id, pn, user_id)
-            VALUES (${topic.name}, ${topic.img || "other"}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
-            RETURNING id
-          `
-          topicId = insertTopicRes[0].id
-          importedTopicsCount++
-        }
-
-        const maxPnWordRes = await sql`
-          SELECT MAX(pn) AS maxPn FROM words WHERE topic_id = ${topicId}
-        `
-        let pn = maxPnWordRes[0].maxPn || 0
-
-        for (const { word, group_key, type, translation, img } of topic.words) {
-          const wordExistRes = await sql`
-            SELECT id FROM words WHERE word = ${word} AND topic_id = ${topicId}
-          `
-          if (wordExistRes.length === 0) {
-            pn++
-            await sql`
-              INSERT INTO words (word, group_key, type, translation, img, topic_id, pn, user_id)
-              VALUES (${word}, ${group_key}, ${type}, ${translation}, ${img}, ${topicId}, ${pn}, ${userId})
-            `
-            importedWordsCount++
-          } else {
-            skippedWordsCount++
-          }
-        }
-      }
-    }
+    return sections
 
     if (importedWordsCount === 0) {
       return `Імпортовано 0 слів. Секцій пропущено: ${skippedSectionsCount}, тем пропущено: ${skippedTopicsCount}, слів пропущено: ${skippedWordsCount}.`
@@ -291,10 +312,9 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
   }
 }
 
-
-export async function translateWord(word, fromLanguage, toLanguage) {
+export async function translateWord(id, textToTranslate, fromLanguage, toLanguage, reversTranslate = false) {
   const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-    word
+    textToTranslate,
   )}&langpair=${fromLanguage}|${toLanguage}`
 
   const res = await fetch(apiUrl)
@@ -304,9 +324,25 @@ export async function translateWord(word, fromLanguage, toLanguage) {
   const translated = data?.responseData?.translatedText ?? ""
   const cleaned = translated.replace(/(^-+)|(-+$)/g, "").trim()
 
-  await sql`
-    UPDATE words SET translation = ${cleaned} WHERE word = ${word}
-  `
+  if (reversTranslate) {
+    await sql`UPDATE words SET word = ${cleaned} WHERE id = ${id}`
+  } else {
+    await sql`UPDATE words SET translation = ${cleaned} WHERE id = ${id}`
+  }
 
   return cleaned
+}
+// Перерахунок pn після переміщення рядків
+export async function updateWordsPn(words) {
+  if (!words || words.length === 0) return
+
+  const ids = words.map((w) => w.id)
+  const pns = words.map((w) => w.pn)
+
+  await sql`
+    UPDATE words AS w
+    SET pn = v.pn
+    FROM unnest(${ids}::int[], ${pns}::int[]) AS v(id, pn)
+    WHERE w.id = v.id
+  `
 }
