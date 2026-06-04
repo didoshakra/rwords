@@ -1,8 +1,7 @@
-// app/download/page.js//Завантаження застосунку RWords
 // app/download/page.js — Завантаження застосунку RWords
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { incrementAppDownloads } from "@/app/actions/statsActions"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -11,12 +10,32 @@ export default function DownloadButton() {
   const { data: session } = useSession()
   const userId = session?.user?.id
   const [downloading, setDownloading] = useState(false)
+  const timerRef = useRef(null)
+
+  const closeOverlay = (handler) => {
+    setDownloading(false)
+    document.removeEventListener("visibilitychange", handler)
+    if (timerRef.current) clearTimeout(timerRef.current)
+  }
 
   const handleClick = (e) => {
     e.preventDefault()
     setDownloading(true)
-    window.location.href =
-      "https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
+
+    window.location.href = "https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
+
+    // Коли браузер показав діалог "встановити" — сторінка йде у фон,
+    // а коли користувач повертається — прибираємо оверлей
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        closeOverlay(handleVisibility)
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibility)
+
+    // Запасний варіант: прибрати через 3 хв якщо нічого не сталось
+    timerRef.current = setTimeout(() => closeOverlay(handleVisibility), 3 * 60 * 1000)
+
     incrementAppDownloads(userId).catch((err) => {
       console.error("Помилка при збільшенні статистики:", err)
     })
@@ -25,13 +44,7 @@ export default function DownloadButton() {
   return (
     <main className="flex flex-col text-pOn dark:text-pOnD max-w-3xl items-center mx-auto p-6 bg-pBg dark:bg-pBgD min-h-screen">
       <h1 className="flex flex-col items-center text-lg sm:text-2xl lg:text-3xl font-bold mb-4 gap-2">
-        <Image
-          src="/images/home/RW_know_64.png"
-          alt="RWords"
-          width={64}
-          height={64}
-          priority={true}
-        />
+        <Image src="/images/home/RW_know_64.png" alt="RWords" width={64} height={64} priority={true} />
       </h1>
 
       <a
@@ -57,18 +70,13 @@ export default function DownloadButton() {
         <ol className="list-decimal list-inside mt-2 space-y-1">
           <li>🔔 Подивіться у шторці повідомлень та натисніть «Відкрити».</li>
           <li>
-            📂 Якщо не бачите повідомлення — знайдіть файл{" "}
-            <strong>RWords.apk</strong> у папці «Завантаження».
+            📂 Якщо не бачите повідомлення — знайдіть файл <strong>RWords.apk</strong> у папці «Завантаження».
           </li>
-          <li>
-            ✅ Підтвердьте дозвіл на встановлення з цього джерела, якщо Android
-            попросить.
-          </li>
+          <li>✅ Підтвердьте дозвіл на встановлення з цього джерела, якщо Android попросить.</li>
           <li>🚀 Насолоджуйтесь використанням додатку RWords!</li>
         </ol>
         <p className="mt-2 italic text-h2On dark:text-text-h2OnD">
-          Порада: ця інструкція допоможе уникнути плутанини при встановленні з
-          браузера.
+          Порада: ця інструкція допоможе уникнути плутанини при встановленні з браузера.
         </p>
       </div>
 
@@ -109,9 +117,7 @@ export default function DownloadButton() {
                 animation: "spin 0.8s linear infinite",
               }}
             />
-            <p style={{ fontWeight: 600, fontSize: 16, color: "#111", margin: 0 }}>
-              ⬇️ Завантаження RWords...
-            </p>
+            <p style={{ fontWeight: 600, fontSize: 16, color: "#111", margin: 0 }}>⬇️ Завантаження RWords...</p>
             <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
               Може тривати до 2 хвилин
               <br />
