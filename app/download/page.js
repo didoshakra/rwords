@@ -119,7 +119,7 @@ export default function DownloadButton() {
             />
             <p style={{ fontWeight: 600, fontSize: 16, color: "#111", margin: 0 }}>⬇️ Завантаження RWords...</p>
             <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
-              Може тривати до 2 хвилин
+              Може тривати до 3 хвилин
               <br />
               Не закривайте сторінку
             </p>
