@@ -1,6 +1,8 @@
 // app/download/page.js//Завантаження застосунку RWords
+// app/download/page.js — Завантаження застосунку RWords
 "use client"
 
+import { useState } from "react"
 import { incrementAppDownloads } from "@/app/actions/statsActions"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
@@ -8,14 +10,13 @@ import Image from "next/image"
 export default function DownloadButton() {
   const { data: session } = useSession()
   const userId = session?.user?.id
+  const [downloading, setDownloading] = useState(false)
 
   const handleClick = (e) => {
     e.preventDefault()
-
-    // Спочатку запускаємо завантаження файлу
-    window.location.href = "https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
-
-    // Передаємо userId в server action
+    setDownloading(true)
+    window.location.href =
+      "https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
     incrementAppDownloads(userId).catch((err) => {
       console.error("Помилка при збільшенні статистики:", err)
     })
@@ -24,11 +25,16 @@ export default function DownloadButton() {
   return (
     <main className="flex flex-col text-pOn dark:text-pOnD max-w-3xl items-center mx-auto p-6 bg-pBg dark:bg-pBgD min-h-screen">
       <h1 className="flex flex-col items-center text-lg sm:text-2xl lg:text-3xl font-bold mb-4 gap-2">
-        <Image src="/images/home/RW_know_64.png" alt="RWords" width={64} height={64} priority={true} />
+        <Image
+          src="/images/home/RW_know_64.png"
+          alt="RWords"
+          width={64}
+          height={64}
+          priority={true}
+        />
       </h1>
 
       <a
-        // href="https://github.com/didoshakra/rwords/releases/download/v1.1.2/rwords.apk"
         href="https://github.com/didoshakra/rwords/releases/latest/download/rwords.apk"
         onClick={handleClick}
         className="items-center inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -51,15 +57,71 @@ export default function DownloadButton() {
         <ol className="list-decimal list-inside mt-2 space-y-1">
           <li>🔔 Подивіться у шторці повідомлень та натисніть «Відкрити».</li>
           <li>
-            📂 Якщо не бачите повідомлення — знайдіть файл <strong>RWords.apk</strong> у папці «Завантаження».
+            📂 Якщо не бачите повідомлення — знайдіть файл{" "}
+            <strong>RWords.apk</strong> у папці «Завантаження».
           </li>
-          <li>✅ Підтвердьте дозвіл на встановлення з цього джерела, якщо Android попросить.</li>
+          <li>
+            ✅ Підтвердьте дозвіл на встановлення з цього джерела, якщо Android
+            попросить.
+          </li>
           <li>🚀 Насолоджуйтесь використанням додатку RWords!</li>
         </ol>
         <p className="mt-2 italic text-h2On dark:text-text-h2OnD">
-          Порада: ця інструкція допоможе уникнути плутанини при встановленні з браузера.
+          Порада: ця інструкція допоможе уникнути плутанини при встановленні з
+          браузера.
         </p>
       </div>
+
+      {/* Оверлей під час завантаження */}
+      {downloading && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.55)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: "16px",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "16px",
+              maxWidth: "320px",
+              margin: "0 1rem",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                border: "4px solid #e5e7eb",
+                borderTopColor: "#2563eb",
+                borderRadius: "50%",
+                animation: "spin 0.8s linear infinite",
+              }}
+            />
+            <p style={{ fontWeight: 600, fontSize: 16, color: "#111", margin: 0 }}>
+              ⬇️ Завантаження RWords...
+            </p>
+            <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
+              Може тривати до 2 хвилин
+              <br />
+              Не закривайте сторінку
+            </p>
+          </div>
+        </div>
+      )}
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </main>
   )
 }
