@@ -103,7 +103,7 @@ const DrawerSocialMenuDroop = () => {
           {/* Telegram */}
           <a
             className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
-            href="https://web.telegram.org/a/#-1003658046778"
+            href="https://web.telegram.org/a/#-1003658046778/"
             title="Telegram"
           >
             <svg
@@ -125,7 +125,7 @@ const DrawerSocialMenuDroop = () => {
           {/* TikTok */}
           <a
             className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
-            href="https://www.youtube.com/@RA-Animations/"
+            href="https://www.tiktok.com/@ikkar_animation"
             title="TikTok"
           >
             <svg
