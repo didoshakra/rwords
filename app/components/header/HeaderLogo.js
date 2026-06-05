@@ -21,7 +21,7 @@ const HeaderLogo = () => {
       <Link href="/">
         <div className="flex items-center justify-start px-1 text-xl sm:text-xl lg:text-2xl font-bold italic text-hOn hover:text-hOnHov hover:bg-hBgHov dark:text-hOnD dark:hover:text-hOnHovD dark:hover:bg-hBgHovD gap-2">
           RWords
-          <span style={{ fontSize: "14px" }}>(test)</span>
+          {/* <span style={{ fontSize: "14px" }}>(test)</span> */}
         </div>
       </Link>
       {/* ========================================================================== */}
