@@ -158,7 +158,7 @@ module.exports = {
 
         // table (th) ------------------------------------------
         tabThOn: "var(--color-pCol0)",
-        tabThOnD: "var(--color-pCol4)",
+        tabThOnD: "var(--color-pCol0)",
         tabThBg: "var(--color-pCol5)",
         tabThBgD: "#1e293b", //--color-pCol8: #1e293b;
         tabThBorder: "var(--color-pCol3)",
@@ -169,30 +169,30 @@ module.exports = {
         tabTrOnD: "#FFFFFF",
         tabTrBg: "#FFFFFF",
         tabTrBgD: "rgb(55 65 81)",
-        tabTrBgHov: "var(--color-pCol10)",
-        tabTrBgHovD: "var(--color-pCol3 )",
+        tabTrBgHov: "var(--color-pCol11)",
+        tabTrBgHovD: "var(--color-pCol11 )",
         tabTrBgSel: "var(--color-pCol1)", //Вибрані рядки
         // tabTrBgSelD: "var(--color-pCol6)", //Вибрані рядки
         tabTrBgSelD: "#475569", //Вибрані рядки
         // fBgD: "#64748b", //  --color-pCol6: #475569;
-        tabTrBgSelHov: "var(--color-pCol3)",
-        tabTrBgSelHovD: "var(--color-pCol3)",
+        tabTrBgSelHov: "var(--color-pCol10)",
+        tabTrBgSelHovD: "var(--color-pCol11)",
         // tabTr1 -------------------------------
-        tabTr1On: "var(--color-pCol8)",
+        tabTr1On: "var(--color-pCol0)",
         tabTr1OnD: "var(--color-pCol0)",
-        tabTr1Bg: "var(--color-pCol3)",
+        tabTr1Bg: "var(--color-pCol4)",
         tabTr1BgD: "rgb(55 65 81)",
-        tabTr1BgHov: "var(--color-pCol10)",
-        tabTr1BgHovD: "var(--color-pCol3)",
+        tabTr1BgHov: "var(--color-pCol11)",
+        tabTr1BgHovD: "var(--color-pCol11)",
         tabTr1BgSel: "var(--color-pCol2)", //Вибрані рядки
-        tabTr1BgSelHov: "var(--color-pCol0)",
-        // tabTr2 -------------------------------
-        tabTr2On: "var(--color-pCol8)",
-        tabTr2OnD: "var(--color-pCol4)",
+        tabTr1BgSelHov: "var(--color-pCol11)",
+        // tabTr2 ------------------------------- hover:opacity-70
+        tabTr2On: "var(--color-pCol9)",
+        tabTr2OnD: "var(--color-pCol3)",
         tabTr2Bg: "var(--color-pCol4)",
         tabTr2BgD: "rgb(55 65 81)",
-        tabTr2BgHov: "var(--color-pCol10)",
-        tabTr2BgHovD: "var(--color-pCol3)",
+        tabTr2BgHov: "var(--color-pCol11)",
+        tabTr2BgHovD: "var(--color-pCol11)",
 
         // tabTrBorder: "var(--color-pCol1)",
         // tabTrBorderD: "#dde2eb",

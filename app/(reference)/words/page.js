@@ -736,19 +736,19 @@ export default function WordsPage() {
       alert("Потрібна авторизація, щоб видаляти слова")
       return
     }
-    console.log("words/deleteSelected1")
+    // console.log("words/deleteSelected1")
 
     // Визначаємо, які слова належать користувачу
     const ownWords = selectedWords.filter((w) => user.role === "admin" || w.user_id === user.id)
     const ownIds = ownWords.map((w) => w.id)
     const othersCount = selectedWords.length - ownWords.length
-    console.log("words/deleteSelected2")
+    // console.log("words/deleteSelected2")
     if (ownIds.length === 0) {
       // Нема своїх слів для видалення
       alert("Усі вибрані записи належать іншим користувачам. Видаляти нічого.")
       return
     }
-    console.log("words/deleteSelected2")
+    // console.log("words/deleteSelected2")
 
     if (othersCount > 0) {
       const confirmed = confirm(
@@ -757,9 +757,9 @@ export default function WordsPage() {
       if (!confirmed) return
     }
 
-    console.log("words/deleteSelected2")
+    // console.log("words/deleteSelected2")
     try {
-      console.log("words/deleteSelected3/deleteWords")
+    //   console.log("words/deleteSelected3/deleteWords")
       await deleteWords(ownIds, user?.id, user?.role)
       setMessage(`🗑️ Видалено ${ownIds.length} слів`)
       //   clearSelection()
@@ -918,7 +918,7 @@ export default function WordsPage() {
             onChange={setTranslation}
             placeholder="Переклад"
           />
-          <div>
+          {/* <div>
             <label htmlFor="pn" className="block font-medium mb-1">
               Порядок (PN)
             </label>
@@ -930,7 +930,7 @@ export default function WordsPage() {
               onChange={(e) => setPn(e.target.value)}
               className="border p-2 rounded"
             />
-          </div>
+          </div> */}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
               Секція
@@ -983,7 +983,7 @@ export default function WordsPage() {
           </label>
           <div className="flex gap-4 mt-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {modal?.type === "edit" ? "Оновити" : "Додати"}
+              {modal?.type === "edit" ? "Зберегти" : "Додати"}
             </button>
             <button type="button" onClick={closeModal} className="border px-4 py-2 rounded">
               Відмінити
@@ -1019,7 +1019,7 @@ export default function WordsPage() {
               className="border p-2 rounded w-full"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block font-medium mb-1">Порядок (pn)</label>
             <input
               type="number"
@@ -1027,10 +1027,10 @@ export default function WordsPage() {
               onChange={(e) => setSectionPn(e.target.value)}
               className="border p-2 rounded w-full"
             />
-          </div>
+          </div> */}
           <div className="flex gap-4 mt-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {sectionModal === "edit" ? "Оновити" : "Додати"}
+              {sectionModal === "edit" ? "Зберегти" : "Додати"}
             </button>
             <button type="button" onClick={closeSectionModal} className="border px-4 py-2 rounded">
               Відмінити
@@ -1039,7 +1039,7 @@ export default function WordsPage() {
         </form>
       </Modal>
 
-      {/* ── Модалка ТЕМИ ── */}
+      {/* ── Модалка ТЕМИ(додавання-редагування) ── */}
       <Modal open={!!topicModal} onClose={closeTopicModal}>
         <h2 className="text-lg font-semibold mb-4">{topicModal === "edit" ? "Редагувати тему" : "Додати тему"}</h2>
         <form onSubmit={handleTopicSubmit} className="flex flex-col gap-3">
@@ -1080,7 +1080,7 @@ export default function WordsPage() {
               className="border p-2 rounded w-full"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block font-medium mb-1">Порядок (pn)</label>
             <input
               type="number"
@@ -1088,10 +1088,10 @@ export default function WordsPage() {
               onChange={(e) => setTopicPn(e.target.value)}
               className="border p-2 rounded w-full"
             />
-          </div>
+          </div> */}
           <div className="flex gap-4 mt-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {topicModal === "edit" ? "Оновити" : "Додати"}
+              {topicModal === "edit" ? "Зберегти" : "Додати"}
             </button>
             <button type="button" onClick={closeTopicModal} className="border px-4 py-2 rounded">
               Відмінити

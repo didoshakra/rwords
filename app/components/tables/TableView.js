@@ -153,7 +153,7 @@ function ItemRow({
       //   }
       className={
         isSelected(item.id)
-          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400"
+          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov hover:bg:opacity-70 dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400"
           : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
       }
       //   className={
@@ -298,7 +298,7 @@ function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, le
             }}
             className="px-4 py-2 rounded-lg bg-btBg text-white hover:opacity-70 text-sm"
           >
-            ➕ {isSection ? `Додати ${level1Head}` : "Додати слово"}
+            ➕ {isSection ? `Додати секцію` : "Додати тему"}
           </button>
         )}
         {onEdit && (
@@ -984,11 +984,13 @@ export default function TableView({
         onAdd={
           menuModal
             ? menuModal.type === "section"
-              ? onAddTopic
-                ? () => onAddTopic({ section_id: menuModal.item.id })
+              ? onAddSection
+                ? // ? () => onAddTopic({ section_id: menuModal.item.id })
+                  () => onAddSection()
                 : null
               : onAdd
-                ? () => onAdd({ topic_id: menuModal.item.id })
+                ? // ? () => onAdd({ topic_id: menuModal.item.id })
+                  () => onAddTopic({ section_id: menuModal.item.id })
                 : null
             : null
         }
