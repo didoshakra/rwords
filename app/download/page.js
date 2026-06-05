@@ -34,7 +34,7 @@ export default function DownloadButton() {
     document.addEventListener("visibilitychange", handleVisibility)
 
     // Запасний варіант: прибрати через 3 хв якщо нічого не сталось
-    timerRef.current = setTimeout(() => closeOverlay(handleVisibility), 3 * 60 * 1000)
+    timerRef.current = setTimeout(() => closeOverlay(handleVisibility), 2 * 60 * 1000)
 
     incrementAppDownloads(userId).catch((err) => {
       console.error("Помилка при збільшенні статистики:", err)
@@ -119,7 +119,7 @@ export default function DownloadButton() {
             />
             <p style={{ fontWeight: 600, fontSize: 16, color: "#111", margin: 0 }}>⬇️ Завантаження RWords...</p>
             <p style={{ fontSize: 13, color: "#6b7280", margin: 0 }}>
-              Може тривати до 3 хвилин
+              Може тривати до 2 хвилин
               <br />
               Не закривайте сторінку
             </p>

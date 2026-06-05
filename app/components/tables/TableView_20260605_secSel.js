@@ -2,6 +2,7 @@
 // Оптимізовано// Працює для всіх рівнів
 // Недоробл селект секш
 
+
 import React, { useEffect, useState, useRef } from "react"
 import { useSession } from "next-auth/react"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
@@ -25,8 +26,8 @@ function useLongPress(callback, ms = 600) {
 
   return {
     onTouchStart: start,
-    onTouchEnd: clear,
-    onTouchMove: clear,
+    onTouchEnd:   clear,
+    onTouchMove:  clear,
     onTouchCancel: clear,
   }
 }
@@ -58,38 +59,13 @@ function ViewModal({ viewModal, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Заголовок */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 12,
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              fontWeight: 600,
-              fontSize: 16,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              paddingRight: 8,
-            }}
-          >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexShrink: 0 }}>
+          <span style={{ fontWeight: 600, fontSize: 16, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
             {col.label}
           </span>
           <button
             onClick={onClose}
-            style={{
-              fontSize: 22,
-              lineHeight: 1,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#888",
-              flexShrink: 0,
-            }}
+            style={{ fontSize: 22, lineHeight: 1, background: "none", border: "none", cursor: "pointer", color: "#888", flexShrink: 0 }}
           >
             ✕
           </button>
@@ -119,6 +95,27 @@ function ViewModal({ viewModal, onClose }) {
   )
 }
 
+// //Автоскрол при переміщенні рядків
+// const scrollToMarkerRow = (offset) => {
+//   if (!moveInfo) return
+//   const { idx, groups, topicWords } = moveInfo
+//   const targetIdx = idx + offset
+//   if (targetIdx < 0 || targetIdx >= groups.length) return
+
+//   const targetGroupKey = groups[targetIdx]
+//   const groupItems = topicWords.filter((w) => (w.group_key || String(w.id)) === targetGroupKey)
+
+//   // При русі вгору — перший рядок групи, вниз — останній
+//   const targetItem = offset < 0 ? groupItems[0] : groupItems[groupItems.length - 1]
+//   if (!targetItem) return
+
+//   // Знаходимо рядок в таблиці по data-id
+//   const container = tableContainerRef.current
+//   if (!container) return
+//   const row = container.querySelector(`tr[data-id="${targetItem.id}"]`)
+//   if (!row) return
+//   row.scrollIntoView({ behavior: "smooth", block: "nearest" })
+// }
 
 // ── Рядок таблиці (окремий компонент щоб хуки працювали коректно) ──────────
 function ItemRow({
@@ -146,21 +143,11 @@ function ItemRow({
   return (
     <tr
       data-id={item.id}
-      //   className={
-      //     isSelected(item.id)
-      //       ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD"
-      //       : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
-      //   }
       className={
         isSelected(item.id)
-          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400"
+          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD"
           : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
       }
-      //   className={
-      //     isSelected(item.id)
-      //       ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD outline outline-2 outline-amber-400"
-      //       : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
-      //   }
     >
       {/* Чекбокс */}
       <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
@@ -277,62 +264,6 @@ function ItemRow({
   )
 }
 
-// компонент модалки меню CRUD для секцій і тем
-function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, level2Head }) {
-  if (!menuModal) return null
-  const isSection = menuModal.type === "section"
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
-      <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 min-w-[220px] flex flex-col gap-2"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <p className="font-semibold text-sm mb-2 text-center">
-          {isSection ? level2Head : level1Head}: {menuModal.item.name}
-        </p>
-        {onAdd && (
-          <button
-            onClick={() => {
-              onAdd()
-              onClose()
-            }}
-            className="px-4 py-2 rounded-lg bg-btBg text-white hover:opacity-70 text-sm"
-          >
-            ➕ {isSection ? `Додати ${level1Head}` : "Додати слово"}
-          </button>
-        )}
-        {onEdit && (
-          <button
-            onClick={() => {
-              onEdit()
-              onClose()
-            }}
-            className="px-4 py-2 rounded-lg bg-btBg text-white hover:opacity-70 text-sm"
-          >
-            ✏️ Редагувати
-          </button>
-        )}
-        {onDelete && (
-          <button
-            onClick={() => {
-              onDelete()
-              onClose()
-            }}
-            className="px-4 py-2 rounded-lg bg-red-500 text-white hover:opacity-70 text-sm"
-          >
-            🗑️ Видалити
-          </button>
-        )}
-        <button
-          onClick={onClose}
-          className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
-          Відмінити
-        </button>
-      </div>
-    </div>
-  )
-}
 // ── Основний компонент ─────────────────────────────────────────────────────
 export default function TableView({
   data,
@@ -347,12 +278,6 @@ export default function TableView({
   onAdd,
   onEdit,
   onDelete,
-  onAddSection,
-  onEditSection,
-  onDeleteSections,
-  onAddTopic,
-  onEditTopic,
-  onDeleteTopics,
   onClickCsv,
   translate,
   onTranslate,
@@ -389,9 +314,6 @@ export default function TableView({
   const [openLevel1, setOpenLevel1] = useState([])
   const [viewModal, setViewModal] = useState(null)
   const [moveOffset, setMoveOffset] = useState(0)
-  const [menuModal, setMenuModal] = useState(null) // null | { type: "section"|"topic", item }
-
-    const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   // ── Effects ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -614,18 +536,6 @@ export default function TableView({
               className="flex text-tabTr1On dark:text-tabTr1OnD items-center gap-2"
               style={{ userSelect: "none", cursor: "pointer" }}
             >
-              {/* ☰ меню теми */}
-              <span
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setMenuModal({ type: "topic", item: topic })
-                }}
-                style={{ cursor: "pointer", fontSize: 16 }}
-                title="Дії з темами"
-              >
-                ☰
-              </span>
-
               <span
                 onClick={(e) => {
                   e.stopPropagation()
@@ -634,14 +544,14 @@ export default function TableView({
               >
                 {topicWords.length > 1 ? (
                   <>
-                    {checkbox} ({selectedCount}/{topicWords.length})
+                    {checkbox} [{selectedCount}]
                   </>
                 ) : (
                   "  "
                 )}
               </span>
               <span>
-                {level1Head}: {topic.name}
+                ({topicWords.length}) {level1Head}: {topic.name}
               </span>
               <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
             </div>
@@ -899,17 +809,6 @@ export default function TableView({
                         className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
                       >
                         <div className="flex items-center gap-2" style={{ userSelect: "none" }}>
-                          {/* ☰ меню секції */}
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setMenuModal({ type: "section", item: section })
-                            }}
-                            style={{ cursor: "pointer", fontSize: 16 }}
-                            title="Дії з секціями"
-                          >
-                            ☰
-                          </span>
                           <span
                             onClick={(e) => {
                               e.stopPropagation()
@@ -925,14 +824,16 @@ export default function TableView({
                                   : "🔲"
                               : "  "}
                           </span>
-                          <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
-                            {/* (✔️{countSelectedTopicsInSection(section.id)}/{sectionLevel1.length}) */}(
-                            {countSelectedTopicsInSection(section.id)}/{sectionLevel1.length})
-                          </span>
 
                           <span>
-                            {level2Head}: {section.name}
+                            {level2Head}: {section.name} ({sectionLevel1.length})
                           </span>
+
+                          {countSelectedTopicsInSection(section.id) > 0 && (
+                            <span style={{ fontSize: "0.75rem", color: "#f59e0b", fontWeight: 700 }}>
+                              ✔️{countSelectedTopicsInSection(section.id)} тем
+                            </span>
+                          )}
 
                           <span>
                             {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? "🔽" : " ▶️") : ""}
@@ -975,46 +876,6 @@ export default function TableView({
           </tbody>
         </table>
       </div>
-
-      <MenuModal
-        menuModal={menuModal}
-        onClose={() => setMenuModal(null)}
-        level1Head={level1Head}
-        level2Head={level2Head}
-        onAdd={
-          menuModal
-            ? menuModal.type === "section"
-              ? onAddTopic
-                ? () => onAddTopic({ section_id: menuModal.item.id })
-                : null
-              : onAdd
-                ? () => onAdd({ topic_id: menuModal.item.id })
-                : null
-            : null
-        }
-        onEdit={
-          menuModal && isOwnerOrAdmin(menuModal.item)
-            ? menuModal.type === "section"
-              ? onEditSection
-                ? () => onEditSection(menuModal.item)
-                : null
-              : onEditTopic
-                ? () => onEditTopic(menuModal.item)
-                : null
-            : null
-        }
-        onDelete={
-          menuModal && isOwnerOrAdmin(menuModal.item)
-            ? menuModal.type === "section"
-              ? onDeleteSections
-                ? () => onDeleteSections([menuModal.item])
-                : null
-              : onDeleteTopics
-                ? () => onDeleteTopics([menuModal.item])
-                : null
-            : null
-        }
-      />
 
       <MoveRowModal
         open={moveMode}

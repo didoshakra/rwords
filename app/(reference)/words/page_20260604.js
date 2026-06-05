@@ -13,20 +13,16 @@ import {
   translateWord,
   updateWordsPn,
 } from "@/app/actions/words/wordActions"
-import { getSections, createSection, updateSection, deleteSections } from "@/app/actions/words/sectionActions"
-import {
-  getTopics,
-  createTopic,
-  updateTopic,
-  deleteTopics,
-  checkTopicRelations,
-} from "@/app/actions/words/topicActions"
+import { getSections } from "@/app/actions/words/sectionActions"
+import { getTopics } from "@/app/actions/words/topicActions"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
 import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
 import ImportTextModal from "@/app/components/modals/ImportTextModal"
+
+
 
 // ExpandableField який рендерить textarea + кнопку ⛶ що відкриває ViewModal в режимі редагування.
 function ExpandableField({ id, label, value, onChange, placeholder, required }) {
@@ -205,28 +201,12 @@ export default function WordsPage() {
   const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogConfig, setDialogConfig] = useState({})
-  // ── Модалка СЕКЦІЇ ──
-  const [sectionModal, setSectionModal] = useState(null) // null | "add" | "edit"
-  const [sectionId_f, setSectionId_f] = useState("")
-  const [sectionName, setSectionName] = useState("")
-  const [sectionImg, setSectionImg] = useState("other")
-  const [sectionPn, setSectionPn] = useState(0)
-
-  // ── Модалка ТЕМИ ──
-  const [topicModal, setTopicModal] = useState(null) // null | "add" | "edit"
-  const [topicId_f, setTopicId_f] = useState(null)
-  const [topicName, setTopicName] = useState("")
-  const [topicImg, setTopicImg] = useState("other")
-  const [topicPn, setTopicPn] = useState(0)
-  const [topicSectionId, setTopicSectionId] = useState("")
   //
 
   //   З налаштування
   const fromLanguage = "uk"
   const toLanguage = "en"
   const reversImportCSV = true //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
-
-  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   useEffect(() => {
     loadWords()
@@ -249,155 +229,6 @@ export default function WordsPage() {
     getSections()
       .then(setSections)
       .catch(() => setSections([]))
-  }
-  // функції CRUD  для секцій і тем
-  // ── СЕКЦІЇ ──────────────────────────────────────────────────────────────────
-  const openAddSection = () => {
-    setSectionId_f(null)
-    setSectionName("")
-    setSectionImg("other")
-    setSectionPn(0)
-    setSectionModal("add")
-    setMessage("")
-  }
-
-  const openEditSection = (section) => {
-    setSectionId_f(section.id)
-    setSectionName(section.name)
-    setSectionImg(section.img || "other")
-    setSectionPn(section.pn || 0)
-    setSectionModal("edit")
-    setMessage("")
-  }
-
-  const closeSectionModal = () => {
-    setSectionModal(null)
-    setSectionId_f(null)
-    setSectionName("")
-    setSectionImg("other")
-    setSectionPn(0)
-    setMessage("")
-  }
-
-  const handleSectionSubmit = (e) => {
-    e.preventDefault()
-    if (!user) return setMessage("Потрібна авторизація")
-    if (!sectionName.trim()) return setMessage("Введіть назву секції")
-    const form = { name: sectionName.trim(), img: sectionImg || "other", pn: Number(sectionPn) || 0 }
-    startTransition(async () => {
-      try {
-        if (sectionModal === "edit") {
-          await updateSection(sectionId_f, form, user)
-          setMessage("Секцію оновлено")
-        } else {
-          await createSection(form, user.id)
-          setMessage("Секцію створено")
-        }
-        closeSectionModal()
-        loadSections()
-      } catch (err) {
-        setMessage("Помилка: " + err.message)
-      }
-    })
-  }
-
-  const handleDeleteSections = (sectionsToDelete) => {
-    if (!confirm(`Видалити ${sectionsToDelete.length} секцій? Усі теми і слова також будуть видалені!`)) return
-    startTransition(async () => {
-      try {
-        const ids = sectionsToDelete.filter((s) => user.role === "admin" || s.user_id === user.id).map((s) => s.id)
-        if (ids.length === 0) return setMessage("Нема власних секцій для видалення")
-        await deleteSections(ids, user?.id, user?.role)
-        setMessage(`🗑️ Видалено ${ids.length} секцій`)
-        setActionsOk(true)
-        loadSections()
-        loadTopics()
-        loadWords()
-      } catch (err) {
-        setMessage("Помилка: " + err.message)
-      }
-    })
-  }
-
-  // ── ТЕМИ ────────────────────────────────────────────────────────────────────
-  const openAddTopic = (defaults = {}) => {
-    setTopicId_f(null)
-    setTopicName("")
-    setTopicImg("other")
-    setTopicPn(0)
-    setTopicSectionId(defaults.section_id?.toString() || "")
-    setTopicModal("add")
-    setMessage("")
-  }
-
-  const openEditTopic = (topic) => {
-    setTopicId_f(topic.id)
-    setTopicName(topic.name)
-    setTopicImg(topic.img || "other")
-    setTopicPn(topic.pn || 0)
-    setTopicSectionId(topic.section_id?.toString() || "")
-    setTopicModal("edit")
-    setMessage("")
-  }
-
-  const closeTopicModal = () => {
-    setTopicModal(null)
-    setTopicId_f(null)
-    setTopicName("")
-    setTopicImg("other")
-    setTopicPn(0)
-    setTopicSectionId("")
-    setMessage("")
-  }
-
-  //   функції GRUDдля секцій і тем
-  const handleTopicSubmit = (e) => {
-    e.preventDefault()
-    if (!user) return setMessage("Потрібна авторизація")
-    if (!topicName.trim()) return setMessage("Введіть назву теми")
-    if (!topicSectionId) return setMessage("Оберіть секцію")
-    const form = {
-      name: topicName.trim(),
-      img: topicImg || "other",
-      pn: Number(topicPn) || 0,
-      section_id: Number(topicSectionId),
-    }
-    startTransition(async () => {
-      try {
-        if (topicModal === "edit") {
-          await updateTopic(topicId_f, form, user)
-          setMessage("Тему оновлено")
-        } else {
-          await createTopic(form, user.id)
-          setMessage("Тему створено")
-        }
-        closeTopicModal()
-        loadTopics()
-      } catch (err) {
-        setMessage("Помилка: " + err.message)
-      }
-    })
-  }
-
-  const handleDeleteTopics = async (topicsToDelete) => {
-    const ids = topicsToDelete.filter((t) => user.role === "admin" || t.user_id === user.id).map((t) => t.id)
-    if (ids.length === 0) return setMessage("Нема власних тем для видалення")
-
-    try {
-      const withWords = await checkTopicRelations(ids)
-      const msg =
-        withWords.length > 0
-          ? `Видалити ${ids.length} тем? У ${withWords.length} темах є слова — вони також будуть видалені!`
-          : `Видалити ${ids.length} тем?`
-      if (!confirm(msg)) return
-      await deleteTopics(ids, user?.id, user?.role)
-      setMessage(`🗑️ Видалено ${ids.length} тем`)
-      setActionsOk(true)
-      loadTopics()
-      loadWords()
-    } catch (err) {
-      setMessage("Помилка: " + err.message)
-    }
   }
 
   const openAddModal = () => {
@@ -516,6 +347,8 @@ export default function WordsPage() {
       console.error("Помилка збереження порядку:", e)
     }
   }
+
+  //   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   // Імпорт з csv
   const handleFileUpload = async (event) => {
@@ -834,14 +667,6 @@ export default function WordsPage() {
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        // Секції
-        onAddSection={openAddSection}
-        onEditSection={openEditSection}
-        onDeleteSections={handleDeleteSections}
-        // Теми
-        onAddTopic={openAddTopic}
-        onEditTopic={openEditTopic}
-        onDeleteTopics={handleDeleteTopics}
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
         onThemeDownload={isFromApp ? handleThemeDownload : undefined}
@@ -991,114 +816,7 @@ export default function WordsPage() {
           </div>
         </form>
       </Modal>
-
-      {/* ── Модалка СЕКЦІЇ ── */}
-      <Modal open={!!sectionModal} onClose={closeSectionModal}>
-        <h2 className="text-lg font-semibold mb-4">
-          {sectionModal === "edit" ? "Редагувати секцію" : "Додати секцію"}
-        </h2>
-        <form onSubmit={handleSectionSubmit} className="flex flex-col gap-3">
-          <div>
-            <label className="block font-medium mb-1">Назва секції</label>
-            <input
-              type="text"
-              placeholder="Назва"
-              value={sectionName}
-              onChange={(e) => setSectionName(e.target.value)}
-              required
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Зображення (img)</label>
-            <input
-              type="text"
-              placeholder="other"
-              value={sectionImg}
-              onChange={(e) => setSectionImg(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Порядок (pn)</label>
-            <input
-              type="number"
-              value={sectionPn}
-              onChange={(e) => setSectionPn(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div className="flex gap-4 mt-2">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {sectionModal === "edit" ? "Оновити" : "Додати"}
-            </button>
-            <button type="button" onClick={closeSectionModal} className="border px-4 py-2 rounded">
-              Відмінити
-            </button>
-          </div>
-        </form>
-      </Modal>
-
-      {/* ── Модалка ТЕМИ ── */}
-      <Modal open={!!topicModal} onClose={closeTopicModal}>
-        <h2 className="text-lg font-semibold mb-4">{topicModal === "edit" ? "Редагувати тему" : "Додати тему"}</h2>
-        <form onSubmit={handleTopicSubmit} className="flex flex-col gap-3">
-          <div>
-            <label className="block font-medium mb-1">Назва теми</label>
-            <input
-              type="text"
-              placeholder="Назва"
-              value={topicName}
-              onChange={(e) => setTopicName(e.target.value)}
-              required
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Секція</label>
-            <select
-              value={topicSectionId}
-              onChange={(e) => setTopicSectionId(e.target.value)}
-              required
-              className="border p-2 rounded w-full"
-            >
-              <option value="">Оберіть секцію</option>
-              {sections.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Зображення (img)</label>
-            <input
-              type="text"
-              placeholder="other"
-              value={topicImg}
-              onChange={(e) => setTopicImg(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Порядок (pn)</label>
-            <input
-              type="number"
-              value={topicPn}
-              onChange={(e) => setTopicPn(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div className="flex gap-4 mt-2">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-              {topicModal === "edit" ? "Оновити" : "Додати"}
-            </button>
-            <button type="button" onClick={closeTopicModal} className="border px-4 py-2 rounded">
-              Відмінити
-            </button>
-          </div>
-        </form>
-      </Modal>
+      
       <CustomDialog
         open={dialogOpen}
         title={dialogConfig.title}
