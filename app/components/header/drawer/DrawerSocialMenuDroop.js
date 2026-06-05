@@ -78,6 +78,72 @@ const DrawerSocialMenuDroop = () => {
           </a>
         </li>
         <li>
+          {/* YouTube */}
+          <a
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
+            href="https://www.youtube.com/@RA-Animations/"
+            title="YouTube"
+          >
+            <svg
+              className="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 1.96C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+              <polygon points="10 15 15 12 10 9 10 15" />
+            </svg>
+            {/* <p>YouTube</p> */}
+          </a>
+        </li>
+        <li>
+          {/* Telegram */}
+          <a
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
+            href="https://web.telegram.org/a/#-1003658046778"
+            title="Telegram"
+          >
+            <svg
+              className="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 2L11 13" />
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+            </svg>
+            {/* <p>Telegram</p> */}
+          </a>
+        </li>
+        <li>
+          {/* TikTok */}
+          <a
+            className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
+            href="https://www.youtube.com/@RA-Animations/"
+            title="TikTok"
+          >
+            <svg
+              className="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 17a3 3 0 1 0 3 3V4" />
+              <path d="M12 4c1 2 3 4 6 4" />
+            </svg>
+            {/* <p>TikTok</p> */}
+          </a>
+        </li>
+        <li>
           <a
             className="m-1 space-x-2 flex list-none flex-nowrap  items-center text-base font-normal text-hOn  hover:bg-hBgHov  hover:text-hOnHov dark:text-hOnD dark:hover:bg-hBgHovD dark:hover:text-hOnHovD"
             href="https://x.com/RDidosak"
