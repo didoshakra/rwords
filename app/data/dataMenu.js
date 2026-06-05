@@ -1,38 +1,38 @@
 //dataMultilevelMenu.js
 //роюоча стара+нова версія меню з ролями
 
-export const headMenu0 = [
-  {
-    a: "Домашня",
-    link: "/",
-  },
-  {
-    a: "Слова",
-    link: "/words",
-    roles: ["admin", "manager", "user"], // ❗️ admin і manager
-  },
-  {
-    a: "RWords",
-    link: "/about_rwords",
-  },
+// export const headMenu0 = [
+//   {
+//     a: "Домашня",
+//     link: "/",
+//   },
+//   {
+//     a: "Слова",
+//     link: "/words",
+//     roles: ["admin", "manager", "user"], // ❗️ admin і manager
+//   },
+//   {
+//     a: "RWords",
+//     link: "/about_rwords",
+//   },
 
-  {
-    a: "Bідгуки",
-    link: "/feedback",
-  },
-  {
-    a: "Блог",
-    link: "/blog",
-  },
-  {
-    a: "Про мене1",
-    link: "/about",
-  },
-  {
-    a: "Shorts",
-    link: "/shorts",
-  },
-]
+//   {
+//     a: "Bідгуки",
+//     link: "/feedback",
+//   },
+//   {
+//     a: "Блог",
+//     link: "/blog",
+//   },
+//   {
+//     a: "Про мене1",
+//     link: "/about",
+//   },
+//   {
+//     a: "Shorts",
+//     link: "/shorts",
+//   },
+// ]
 export const headMenu = [
   {
     id: 1,
@@ -50,14 +50,15 @@ export const headMenu = [
       },
       {
         id: 2,
-        title: "Теми і слова",
+        title: "Слова/Теми/Групи",
         // roles: ["admin", "manager", "user"], // ❗️ admin і manager
         submenu: [
           {
             id: 1,
-            title: "Групи тем",
-            url: "/words/sections",
+            title: "Слова по темах і групах",
+            url: "/words",
           },
+
           {
             id: 2,
             title: "Теми",
@@ -65,8 +66,8 @@ export const headMenu = [
           },
           {
             id: 3,
-            title: "Слова",
-            url: "/words",
+            title: "Групи тем",
+            url: "/words/sections",
           },
         ],
       },
@@ -93,12 +94,12 @@ export const headMenu = [
           },
           {
             id: 2,
-            title: "Теми",
+            title: "Теми медіа",
             url: "/pictures/pictures_topics",
           },
           {
             id: 3,
-            title: "Каталог медіа",
+            title: "Медіа",
             url: "/pictures",
           },
         ],
@@ -291,28 +292,6 @@ export const menuAdmin = [
   },
   {
     id: 2,
-    title: "Теми і слова",
-    roles: ["admin", "manager", "user"], // ❗️ admin і manager
-    submenu: [
-      {
-        id: 1,
-        title: "Групи тем",
-        url: "/sections",
-      },
-      {
-        id: 2,
-        title: "Теми",
-        url: "/topics",
-      },
-      {
-        id: 3,
-        title: "Слова",
-        url: "/words",
-      },
-    ],
-  },
-  {
-    id: 3,
     title: "Завантаження",
     roles: ["admin", "manager", "user"], // ❗️ admin і manager
     submenu: [
