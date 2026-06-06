@@ -594,6 +594,7 @@ export default function TableView({
   const renderTopic = (topic, topicWords) => {
     const topicWordIds = topicWords.map((w) => w.id)
     const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
+    const translatedCount = topicWords.filter((w) => w.word?.trim() || w.translate?.trim()).length
     let checkbox =
       topicWords.length < 1
         ? "  "
@@ -634,7 +635,8 @@ export default function TableView({
               >
                 {topicWords.length > 1 ? (
                   <>
-                    {checkbox} ({selectedCount}/{topicWords.length})
+                    {/* {checkbox} ({selectedCount}/{topicWords.length}) */}
+                    {checkbox} (✔️{selectedCount} 🌐{translatedCount} 📋{topicWords.length})
                   </>
                 ) : (
                   "  "
@@ -929,7 +931,16 @@ export default function TableView({
                             {/* (✔️{countSelectedTopicsInSection(section.id)}/{sectionLevel1.length}) */}(
                             {countSelectedTopicsInSection(section.id)}/{sectionLevel1.length})
                           </span>
-
+                          <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
+                            {(() => {
+                              const sectionWords = tData.filter((w) => sectionLevel1.some((t) => t.id === w[level1Id]))
+                              const filledCount = sectionWords.filter(
+                                (w) => w.word?.trim() || w.translate?.trim(),
+                              ).length
+                              const selectedCount = sectionWords.filter((w) => selectedIds.includes(w.id)).length
+                              return `(✔️${selectedCount} 🌐${filledCount} 📋${sectionWords.length})`
+                            })()}
+                          </span>
                           <span>
                             {level2Head}: {section.name}
                           </span>
