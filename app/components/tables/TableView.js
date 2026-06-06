@@ -145,21 +145,11 @@ function ItemRow({
   return (
     <tr
       data-id={item.id}
-      //   className={
-      //     isSelected(item.id)
-      //       ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD"
-      //       : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
-      //   }
       className={
         isSelected(item.id)
-          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov hover:bg:opacity-70 dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400"
-          : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
+          ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov hover:bg:opacity-70 dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400 text-tabTrOn dark:text-tabTrOnD hover:text-tabTrOnHov "
+          : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov text-tabTrOn dark:text-tabTrOnD hover:text-tabTrOnHov"
       }
-      //   className={
-      //     isSelected(item.id)
-      //       ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD outline outline-2 outline-amber-400"
-      //       : "bg-tabTrBg dark:bg-tabTrBgD dark:hover:bg-tabTrBgHovD hover:bg-tabTrBgHov"
-      //   }
     >
       {/* Чекбокс */}
       <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
@@ -255,7 +245,7 @@ function ItemRow({
           >
             <span
               style={{
-                ...col.styleCellText,
+                // ...col.styleCellText,
                 display: "block",
                 // width: "100%",
                 overflow: "hidden",
@@ -607,11 +597,11 @@ export default function TableView({
       <React.Fragment key={topic.id}>
         <tr
           onClick={() => toggleLevel1(topic.id)}
-          className="bg-tabTr1Bg dark:bg-tabTr1BgD cursor-pointer hover:bg-tabTr1BgHov dark:hover:bg-tabTr1BgHovD"
+          className="bg-tabTr1Bg dark:bg-tabTr1BgD cursor-pointer hover:bg-tabTr1BgHov"
         >
           <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
             <div
-              className="flex text-tabTr1On dark:text-tabTr1OnD items-center gap-2"
+              className="flex text-tabTr1On dark:text-tabTr1OnD hover:text-tabTr1OnHov items-center gap-2"
               style={{ userSelect: "none", cursor: "pointer" }}
             >
               {/* ☰ меню теми */}
@@ -887,18 +877,11 @@ export default function TableView({
                   <React.Fragment key={section.id}>
                     <tr
                       onClick={() => toggleLevel2(section.id)}
-                      className="bg-tabTr2Bg dark:bg-tabTr2BgD cursor-pointer hover:bg-tabTr2BgHov dark:hover:bg-tabTr2BgHovD"
+                      className="bg-tabTr2Bg dark:bg-tabTr2BgD cursor-pointer hover:bg-tabTr2BgHov "
                     >
-                      {/* <td
-                        colSpan={showOwnerMark ? columns.length + 2 : columns.length}
-                        className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
-                      >
-                        {level2Head}: {section.name} ({sectionLevel1.length})
-                        {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? " 🔽" : " ▶️") : ""}
-                      </td> */}
                       <td
                         colSpan={showOwnerMark ? columns.length + 2 : columns.length}
-                        className="text-tabTr2On dark:text-tabTr2OnD p-2 font-bold"
+                        className="text-tabTr2On dark:text-tabTr2OnD hover:text-tabTr2OnHov p-2 font-bold"
                       >
                         <div className="flex items-center gap-2" style={{ userSelect: "none" }}>
                           {/* ☰ меню секції */}
@@ -929,9 +912,10 @@ export default function TableView({
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
                             ({sectionLevel1.length}
-                            {countSelectedTopicsInSection(section.id) > 0
-                              ? ` ✔️${countSelectedTopicsInSection(section.id)}`
-                              : ""}
+                            {(() => {
+                              const sel = countSelectedTopicsInSection(section.id)
+                              return `(${sectionLevel1.length}${sel > 0 ? ` ✔️${sel}` : ""})`
+                            })()}
                             )
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>

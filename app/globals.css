@@ -10,9 +10,9 @@
 /* =================== */
 @layer base {
   /* html {  */
-  :root{
+  :root {
     --color-pCol0: #ecfdf5;
-    --color-pCol1: #d1fae5;
+    /* --color-pCol1: #d1fae5;
     --color-pCol2: #a7f3d0;
     --color-pCol3: #6ee7b7;
     --color-pCol4: #34d399;
@@ -24,6 +24,20 @@
     --color-pCol10: #e11d48;
     --color-pCol11: #c026d3;
     --color-pCol12: #ccfbf1;
+     --color-pCol0: #ecfeff; */
+    --color-pCol0: #f0fdfa;
+    --color-pCol1: #ccfbf1;
+    --color-pCol2: #99f6e4;
+    --color-pCol3: #5eead4;
+    --color-pCol4: #2dd4bf;
+    --color-pCol5: #0d9488;
+    --color-pCol6: #0f766e;
+    --color-pCol7: #0f766e;
+    --color-pCol8: #115e59;
+    --color-pCol9: #134e4a;
+    --color-pCol10: #dc2626; /* red-600 */
+    --color-pCol11: #d97706; /* amber-600 */
+    --color-pCol12: #a5f3fc; /* cyan-200 — легкий споріднений фон */
   }
 
   /* Можна додати глобальні базові стилі тут */
