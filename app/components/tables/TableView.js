@@ -119,7 +119,6 @@ function ViewModal({ viewModal, onClose }) {
   )
 }
 
-
 // ── Рядок таблиці (окремий компонент щоб хуки працювали коректно) ──────────
 function ItemRow({
   item,
@@ -391,7 +390,7 @@ export default function TableView({
   const [moveOffset, setMoveOffset] = useState(0)
   const [menuModal, setMenuModal] = useState(null) // null | { type: "section"|"topic", item }
 
-    const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
+  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   // ── Effects ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -594,7 +593,7 @@ export default function TableView({
   const renderTopic = (topic, topicWords) => {
     const topicWordIds = topicWords.map((w) => w.id)
     const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
-    const translatedCount = topicWords.filter((w) => w.word?.trim() || w.translate?.trim()).length
+    const notTranslatedCount = topicWords.filter((w) => !w.word?.trim() && !w.translate?.trim()).length
     let checkbox =
       topicWords.length < 1
         ? "  "
@@ -635,8 +634,9 @@ export default function TableView({
               >
                 {topicWords.length > 1 ? (
                   <>
-                    {/* {checkbox} ({selectedCount}/{topicWords.length}) */}
-                    {checkbox} (✔️{selectedCount} 🌐{translatedCount} 📋{topicWords.length})
+                    {checkbox} (📋{topicWords.length}
+                    {selectedCount > 0 ? ` ✔️${selectedCount}` : ""}
+                    {notTranslatedCount > 0 ? ` ❗${notTranslatedCount}` : ""})
                   </>
                 ) : (
                   "  "
@@ -928,17 +928,20 @@ export default function TableView({
                               : "  "}
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
-                            {/* (✔️{countSelectedTopicsInSection(section.id)}/{sectionLevel1.length}) */}(
-                            {countSelectedTopicsInSection(section.id)}/{sectionLevel1.length})
+                            ({sectionLevel1.length}
+                            {countSelectedTopicsInSection(section.id) > 0
+                              ? ` ✔️${countSelectedTopicsInSection(section.id)}`
+                              : ""}
+                            )
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
                             {(() => {
                               const sectionWords = tData.filter((w) => sectionLevel1.some((t) => t.id === w[level1Id]))
-                              const filledCount = sectionWords.filter(
-                                (w) => w.word?.trim() || w.translate?.trim(),
+                              const notFilled = sectionWords.filter(
+                                (w) => !w.word?.trim() && !w.translate?.trim(),
                               ).length
-                              const selectedCount = sectionWords.filter((w) => selectedIds.includes(w.id)).length
-                              return `(✔️${selectedCount} 🌐${filledCount} 📋${sectionWords.length})`
+                              const selected = sectionWords.filter((w) => selectedIds.includes(w.id)).length
+                              return `(📋${sectionWords.length}${selected > 0 ? ` ✔️${selected}` : ""}${notFilled > 0 ? ` ❗${notFilled}` : ""})`
                             })()}
                           </span>
                           <span>
