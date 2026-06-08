@@ -145,23 +145,6 @@ function Modal({ open, onClose, children }) {
 
 //Для TableView
 const columns = [
-  //   {
-  //     label: "№п",
-  //     accessor: "pn",
-  //     type: "integer",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //     markIfOwner: true, // 🚀 нове поле
-  //   },
-  //   {
-  //     label: "Зн",
-  //     accessor: "know",
-  //     type: "boolean",
-  //     type: "know",
-  //     width: 50,
-  //     styleCell: { alignItems: "center" },
-  //     styleCellText: { color: "red" },
-  //   },
   {
     label: "Слова",
     accessor: "word",
@@ -189,7 +172,6 @@ export default function WordsPage() {
   const [word, setWord] = useState("")
   const [translation, setTranslation] = useState("")
   const [topic_id, setTopicId] = useState("")
-  const [pn, setPn] = useState("")
   const [know, setKnow] = useState(false)
   const [img, setImg] = useState("")
   const [group_key, setGroupKey] = useState("")
@@ -225,8 +207,6 @@ export default function WordsPage() {
   const fromLanguage = "uk"
   const toLanguage = "en"
   const reversImportCSV = true //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
-
-  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
 
   useEffect(() => {
     loadWords()
@@ -401,12 +381,12 @@ export default function WordsPage() {
   }
 
   const openAddModal = () => {
+    console.log("🟢 openAddModal з WORDS")
     setId(null)
     setSectionId("")
     setWord("")
     setTranslation("")
     setTopicId("")
-    setPn("0")
     setKnow(false)
     setImg("")
     setGroupKey("")
@@ -422,7 +402,6 @@ export default function WordsPage() {
     setWord(w.word)
     setTranslation(w.translation)
     setTopicId(w.topic_id.toString())
-    setPn(w.pn.toString())
     setKnow(w.know)
     setImg(w.img || "")
     setGroupKey(w.group_key || "")
@@ -438,7 +417,6 @@ export default function WordsPage() {
     setWord("")
     setTranslation("")
     setTopicId("")
-    setPn("")
     setKnow(false)
     setImg("")
     setGroupKey("")
@@ -496,15 +474,6 @@ export default function WordsPage() {
       wordsToDelete: words, // додатково, якщо треба передати дані
     })
     setDialogOpen(true)
-  }
-
-  const updatePNs = (updatedWords) => {
-    const newWords = updatedWords.map((w, i) => ({
-      ...w,
-      pn: i + 1, // оновлюємо pn
-    }))
-    setWords(newWords)
-    setIsOrderChanged(true) // ⚠️ встановлюємо прапорець змін
   }
 
   // Перерахунок pn після переміщення рядків
@@ -614,8 +583,6 @@ export default function WordsPage() {
     setMessage(`✅ Переклад завершено: ${translatedCountRef.current} із ${wordsToTranslate.length}`)
     loadWords?.()
   }
-
-  //   const translateSelectedWords = async (selectedWords) => {
 
   // Одна універсальна функція для перекладу
   const translateWords = async (words) => {
@@ -759,7 +726,7 @@ export default function WordsPage() {
 
     // console.log("words/deleteSelected2")
     try {
-    //   console.log("words/deleteSelected3/deleteWords")
+      //   console.log("words/deleteSelected3/deleteWords")
       await deleteWords(ownIds, user?.id, user?.role)
       setMessage(`🗑️ Видалено ${ownIds.length} слів`)
       //   clearSelection()
@@ -807,8 +774,6 @@ export default function WordsPage() {
         startTransition(async () => {
           try {
             await deleteSelected(dialogConfig.wordsToDelete)
-            setMessage(`🗑️ Видалено ${dialogConfig.wordsToDelete.length} слів`)
-            loadWords()
           } catch (err) {
             setMessage("Помилка: " + err.message)
           }
@@ -918,19 +883,6 @@ export default function WordsPage() {
             onChange={setTranslation}
             placeholder="Переклад"
           />
-          {/* <div>
-            <label htmlFor="pn" className="block font-medium mb-1">
-              Порядок (PN)
-            </label>
-            <input
-              id="pn"
-              type="number"
-              placeholder="Порядок"
-              value={pn}
-              onChange={(e) => setPn(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div> */}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
               Секція

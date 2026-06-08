@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState, useRef } from "react"
 import { useSession } from "next-auth/react"
+// import { useAuth } from "@/app/context/AuthContext"
 import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
 // ── Хук для long press (поза компонентом) ──────────────────────────────────
@@ -267,9 +268,13 @@ function ItemRow({
 }
 
 // компонент модалки меню CRUD для секцій і тем
-function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, level2Head }) {
+function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, level2Head, user }) {
   if (!menuModal) return null
+  console.log("MenuModal/user=",user) // в TableView, не в MenuModal
+  console.log("MenuModal/user?.role=", user?.role)
   const isSection = menuModal.type === "section"
+  const canEdit = user && (user.role === "admin" || String(user.id) === String(menuModal.item.user_id))
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div
@@ -293,10 +298,14 @@ function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, le
         {onEdit && (
           <button
             onClick={() => {
-              onEdit()
-              onClose()
+              if (canEdit) {
+                onEdit()
+                onClose()
+              }
             }}
-            className="px-4 py-2 rounded-lg bg-btBg text-white hover:opacity-70 text-sm"
+            disabled={!canEdit}
+            title={!canEdit ? "Тільки власник може редагувати" : ""}
+            className="px-4 py-2 rounded-lg bg-btBg text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
           >
             ✏️ Редагувати
           </button>
@@ -304,10 +313,14 @@ function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, le
         {onDelete && (
           <button
             onClick={() => {
-              onDelete()
-              onClose()
+              if (canEdit) {
+                onDelete()
+                onClose()
+              }
             }}
-            className="px-4 py-2 rounded-lg bg-red-500 text-white hover:opacity-70 text-sm"
+            disabled={!canEdit}
+            title={!canEdit ? "Тільки власник може видалити" : ""}
+            className="px-4 py-2 rounded-lg bg-red-500 text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
           >
             🗑️ Видалити
           </button>
@@ -357,8 +370,9 @@ export default function TableView({
   setActionsOk,
 }) {
   const showOwnerMark = true
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const user = session?.user
+  console.log("TableView/session=", session, "user=", user, "status=", status)
 
   const [tData, setTData] = useState(data || [])
   const [level1, setLevel1] = useState(dataLevel1 || [])
@@ -380,9 +394,13 @@ export default function TableView({
   const [moveOffset, setMoveOffset] = useState(0)
   const [menuModal, setMenuModal] = useState(null) // null | { type: "section"|"topic", item }
 
-  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || user.id === w.user_id)
+  const isOwnerOrAdmin = (w) => user && (user.role === "admin" || String(user.id) === String(w.user_id))
 
   // ── Effects ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (tData.length > 0) console.log(tData[0])
+  }, [tData])
+  //
   useEffect(() => {
     setTData(data || [])
     setLevel1(dataLevel1 || [])
@@ -583,7 +601,7 @@ export default function TableView({
   const renderTopic = (topic, topicWords) => {
     const topicWordIds = topicWords.map((w) => w.id)
     const selectedCount = topicWordIds.filter((id) => selectedIds.includes(id)).length
-    const notTranslatedCount = topicWords.filter((w) => !w.word?.trim() && !w.translate?.trim()).length
+    const notTranslatedCount = topicWords.filter((w) => !w.word?.trim() || !w.translation?.trim()).length
     let checkbox =
       topicWords.length < 1
         ? "  "
@@ -679,7 +697,7 @@ export default function TableView({
                 onClick={onAdd}
                 className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
               >
-                ➕Додати
+                ➕Додати слово
               </button>
             )}
             {onClickCsv && (
@@ -706,8 +724,9 @@ export default function TableView({
         {selectedIds.length === 1 &&
           (() => {
             const selectedWord = tData.find((w) => w.id === selectedIds[0])
-            const isOwner =
-              user && selectedWord && (String(selectedWord.user_id) === String(user.id) || user.role === "admin")
+            // const isOwner =
+            //   user && selectedWord && (String(selectedWord.user_id) === String(user.id) || user.role === "admin")
+            const isOwner = isOwnerOrAdmin(selectedWord)
             return (
               <>
                 {isOwner && onEdit && (
@@ -746,9 +765,10 @@ export default function TableView({
         {onDelete &&
           selectedIds.length > 1 &&
           (() => {
-            const deletable = tData.filter(
-              (w) => selectedIds.includes(w.id) && (String(w.user_id) === String(user?.id) || user?.role === "admin"),
-            )
+            // const deletable = tData.filter(
+            //   (w) => selectedIds.includes(w.id) && (String(w.user_id) === String(user?.id) || user?.role === "admin"),
+            // )
+            const deletable = tData.filter((w) => selectedIds.includes(w.id) && isOwnerOrAdmin(w))
             if (deletable.length === 0) return null
             return (
               <button
@@ -911,12 +931,10 @@ export default function TableView({
                               : "  "}
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
-                            ({sectionLevel1.length}
                             {(() => {
                               const sel = countSelectedTopicsInSection(section.id)
                               return `(${sectionLevel1.length}${sel > 0 ? ` ✔️${sel}` : ""})`
                             })()}
-                            )
                           </span>
                           <span style={{ fontSize: "0.75rem", fontWeight: 700 }}>
                             {(() => {
@@ -979,21 +997,20 @@ export default function TableView({
         onClose={() => setMenuModal(null)}
         level1Head={level1Head}
         level2Head={level2Head}
+        user={user}
         onAdd={
           menuModal
             ? menuModal.type === "section"
               ? onAddSection
-                ? // ? () => onAddTopic({ section_id: menuModal.item.id })
-                  () => onAddSection()
+                ? () => onAddSection()
                 : null
-              : onAdd
-                ? // ? () => onAdd({ topic_id: menuModal.item.id })
-                  () => onAddTopic({ section_id: menuModal.item.id })
+              : onAddTopic // 👈 для теми — додати тему в секцію
+                ? () => onAddTopic({ section_id: menuModal.item.id })
                 : null
             : null
         }
         onEdit={
-          menuModal && isOwnerOrAdmin(menuModal.item)
+          menuModal
             ? menuModal.type === "section"
               ? onEditSection
                 ? () => onEditSection(menuModal.item)
@@ -1004,7 +1021,7 @@ export default function TableView({
             : null
         }
         onDelete={
-          menuModal && isOwnerOrAdmin(menuModal.item)
+          menuModal
             ? menuModal.type === "section"
               ? onDeleteSections
                 ? () => onDeleteSections([menuModal.item])

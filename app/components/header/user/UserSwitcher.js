@@ -113,8 +113,28 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
             </Link>
           ) : (
             <>
-              <div className="block px-4 py-2  border-b border-gray-200 text-sm sm:text-base">
+              {/* <div className="block px-4 py-2  border-b border-gray-200 text-sm sm:text-base">
                 {user.name || user.email}
+              </div> */}
+              <div className="block px-4 py-2 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">{user.name || user.email}</span>
+                  console.log('***********=',user?.role)
+                  {user?.role && (
+                    <span
+                      //   className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      //     user.role === "admin"
+                      //       ? "bg-purple-100 text-purple-800"
+                      //       : user.role === "moderator"
+                      //         ? "bg-amber-100 text-amber-800"
+                      //         : "bg-green-100 text-green-800"
+                      //   }`}
+                      className={`text-xs px-2 py-0.5 rounded-full font-medium`}
+                    >
+                      {user.role}
+                    </span>
+                  )}
+                </div>
               </div>
               <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100" onClick={() => setOpen(false)}>
                 Профіль

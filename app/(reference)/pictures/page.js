@@ -213,7 +213,7 @@ export default function PicturesPage() {
   }
 
   const openAddModal = () => {
-    console.log("pictures/openAddModal")
+    console.log("🔴 openAddModal з PICTURES")
     setId(null)
     setSectionId("")
     setTopicId("")

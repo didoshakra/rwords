@@ -9,7 +9,7 @@
 //   {
 //     a: "Слова",
 //     link: "/words",
-//     roles: ["admin", "manager", "user"], // ❗️ admin і manager
+//     roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
 //   },
 //   {
 //     a: "RWords",
@@ -51,7 +51,7 @@ export const headMenu = [
       {
         id: 2,
         title: "Слова/Теми/Групи",
-        // roles: ["admin", "manager", "user"], // ❗️ admin і manager
+        // roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
         submenu: [
           {
             id: 1,
@@ -85,7 +85,7 @@ export const headMenu = [
       {
         id: 2,
         title: "Каталог",
-        roles: ["admin", "manager", "user"], // ❗️ admin і manager
+        roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
         submenu: [
           {
             id: 1,
@@ -189,13 +189,13 @@ export const headMenu = [
       //       {
       //         id: 1,
       //         title: "2024р",
-      //         roles: ["admin", "manager", "user"], // ❗️ admin і manager
+      //         roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
       //         url: "/manyunya2024",
       //       },
       //       {
       //         id: 2,
       //         title: "2025р",
-      //         roles: ["admin", "manager", "user"], // ❗️ admin і manager
+      //         roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
       //         url: "/manyunya2025",
       //       },
       //     ],
@@ -221,7 +221,7 @@ export const headMenu = [
     id: 6,
     title: "Shorts",
     url: "/shorts",
-    roles: ["admin", "manager"], // ❗️ admin і manager
+    roles: ["admin", "moderator"], // ❗️ admin і moderator
   },
 ]
 export const menuAdmin = [
@@ -256,7 +256,7 @@ export const menuAdmin = [
           {
             id: 1,
             title: "Користувачі",
-            roles: ["admin", "manager"], // ❗️ admin і manager
+            roles: ["admin", "moderator"], // ❗️ admin і moderator
             url: "/users",
           },
           {
@@ -293,7 +293,7 @@ export const menuAdmin = [
   {
     id: 2,
     title: "Завантаження",
-    roles: ["admin", "manager", "user"], // ❗️ admin і manager
+    roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
     submenu: [
       {
         id: 1,
