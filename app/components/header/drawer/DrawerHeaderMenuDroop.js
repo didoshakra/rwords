@@ -5,7 +5,13 @@
 import { useState } from "react"
 // import Link from "next/link"
 import MultiLevelMenu from "@/app/components/MultiLevelMenu"
-import {  headMenu } from "@/app/data/dataMenu"
+import { headMenu } from "@/app/data/dataMenu"
+const drawerMenuStyle = {
+  top: {
+    item: " text-hOn dark:text-hOnD px-3 py-1 font-semibold hover:font-bold", // верхні пункти в хедері
+    itemHover: "hover:text-hOnHov hover:bg-hBgHov dark:hover:bg-hBgHovD dark:hover:text-hOnHovD",
+  },
+}
 
 const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
   const [drawerHeaderMenuDroopOpen, setDrawerHeaderMenuDroopOpen] = useState(false)
@@ -18,7 +24,7 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
         title="меню"
       >
         {/* іконка мобільного меню */}
-        <p className="pl-2 text-lg font-medium italic  text-hOn dark:textD ">Головне меню</p>
+        <p className="pl-2 text-lg font-semibold italic  text-hOn dark:text-hOnD hover:font-bold">Головне меню</p>
         {drawerHeaderMenuDroopOpen ? (
           // стрілка вверх
           <svg
@@ -58,10 +64,10 @@ const DrawerHeaderMenuDroop = ({ setDrawerOpen }) => {
       {/* список головного меню */}
       <div className={`${drawerHeaderMenuDroopOpen ? "relative" : "hidden"} pl-4 `}>
         {/* <ul>{renderMenu()}</ul>//Старе меню */}
-        <MultiLevelMenu setDrawerOpen={setDrawerOpen} items={headMenu} isRowFirst={false} />
+        <MultiLevelMenu setDrawerOpen={setDrawerOpen} items={headMenu} isRowFirst={false} menuStyle={drawerMenuStyle} />
       </div>
     </div>
-  ) 
+  )
 }
 
 export default DrawerHeaderMenuDroop

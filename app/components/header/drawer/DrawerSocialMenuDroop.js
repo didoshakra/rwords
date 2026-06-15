@@ -20,7 +20,7 @@ const DrawerSocialMenuDroop = () => {
         title="меню"
       >
         {/* іконка мобільного меню */}
-        <p className="pl-2 text-lg font-medium italic  text-hOn">Контакти</p>
+        <p className="pl-2 text-lg font-semibold italic  text-hOn dark:text-hOnD hover:font-bold">Контакти</p>
         {drawerSocialMenuDroop ? (
           // стрілка вверх
           <svg

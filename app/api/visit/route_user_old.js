@@ -1,5 +1,4 @@
-// app/api/с/route.js
-// user
+//app/api/visit/route.js
 import { incrementVisits } from "@/app/actions/statsActions"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route" // тут бере authOptions

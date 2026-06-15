@@ -4,6 +4,12 @@
 import { useState } from "react"
 import MultiLevelMenu from "@/app/components/MultiLevelMenu"
 import { menuAdmin } from "@/app/data/dataMenu"
+const drawerMenuStyle = {
+  top: {
+    item: " text-hOn dark:text-hOnD px-3 py-1 font-semibold hover:font-bold", // верхні пункти в хедері
+    itemHover: "hover:text-hOnHov hover:bg-hBgHov dark:hover:bg-hBgHovD dark:hover:text-hOnHovD",
+  },
+}
 
 const DrawerExtendedMenuDroop = ({ setDrawerOpen }) => {
   const [drawerExtendedMenuDroopOpen, setDrawerExtendedMenuDroopOpen] = useState(false)
@@ -15,7 +21,7 @@ const DrawerExtendedMenuDroop = ({ setDrawerOpen }) => {
         onClick={() => setDrawerExtendedMenuDroopOpen(!drawerExtendedMenuDroopOpen)}
         title="меню"
       >
-        <p className="pl-2 text-lg font-medium italic text-hOn dark:text-hOnD">Розширене меню</p>
+        <p className="pl-2 text-lg font-semibold italic text-hOn dark:text-hOnD hover:font-bold">Розширене меню</p>
         {drawerExtendedMenuDroopOpen ? (
           <svg className="h-6 w-6" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none">
             <polyline points="6 15 12 9 18 15" />
@@ -30,7 +36,12 @@ const DrawerExtendedMenuDroop = ({ setDrawerOpen }) => {
       {drawerExtendedMenuDroopOpen && (
         <div className="relative pl-4">
           {/* <MultiLevelMenu items={menuAdmin} setDrawerOpen={setDrawerOpen} /> */}
-          <MultiLevelMenu items={menuAdmin} setDrawerOpen={setDrawerOpen} isRowFirst={false} />
+          <MultiLevelMenu
+            items={menuAdmin}
+            setDrawerOpen={setDrawerOpen}
+            isRowFirst={false}
+            menuStyle={drawerMenuStyle}
+          />
         </div>
       )}
     </div>
