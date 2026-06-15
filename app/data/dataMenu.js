@@ -50,6 +50,11 @@ export const headMenu = [
       },
       {
         id: 2,
+        title: "Читач текстів",
+        url: "/words/reader",
+      },
+      {
+        id: 3,
         title: "Слова/Теми/Групи",
         // roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
         submenu: [

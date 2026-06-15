@@ -364,6 +364,22 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
   return cleaned
 }
 
+
+
+// Перерахунок pn після переміщення рядків
+export async function updateWordsPn(words) {
+  if (!words || words.length === 0) return
+
+  const ids = words.map((w) => w.id)
+  const pns = words.map((w) => w.pn)
+
+  await sql`
+    UPDATE words AS w
+    SET pn = v.pn
+    FROM unnest(${ids}::int[], ${pns}::int[]) AS v(id, pn)
+    WHERE w.id = v.id
+  `
+}
 // функція перекладу для читача (без запису в БД):
 export async function translateText(text, fromLanguage, toLanguage) {
   const res = await fetch("https://api-free.deepl.com/v2/translate", {
@@ -385,17 +401,42 @@ export async function translateText(text, fromLanguage, toLanguage) {
   return data?.translations?.[0]?.text ?? ""
 }
 
-// Перерахунок pn після переміщення рядків
-export async function updateWordsPn(words) {
-  if (!words || words.length === 0) return
+// Додавання слова з читача з перевіркою дублікатів
+export async function addWordFromReader(word, translation, topicId, userId, force = false) {
+  if (!userId) throw new Error("Користувач не авторизований")
 
-  const ids = words.map((w) => w.id)
-  const pns = words.map((w) => w.pn)
+  const wordNorm = word.trim().toLowerCase()
 
-  await sql`
-    UPDATE words AS w
-    SET pn = v.pn
-    FROM unnest(${ids}::int[], ${pns}::int[]) AS v(id, pn)
-    WHERE w.id = v.id
+  if (!force) {
+    // Перевірка дубліката по ВСІХ темах юзера
+    const existing = await sql`
+      SELECT words.id, topics.name AS topic_name, sections.name AS section_name
+      FROM words
+      JOIN topics ON words.topic_id = topics.id
+      JOIN sections ON topics.section_id = sections.id
+      WHERE LOWER(words.word) = ${wordNorm}
+        AND words.user_id = ${userId}
+      LIMIT 1
+    `
+
+    if (existing.length > 0) {
+      return {
+        status: "duplicate",
+        existingIn: `${existing[0].section_name} → ${existing[0].topic_name}`,
+      }
+    }
+  }
+
+  const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM words WHERE topic_id = ${topicId}`
+  const pn = (maxPnRes[0].maxpn || 0) + 1
+
+  const wordCount = word.trim().split(/\s+/).length
+  const type = wordCount === 1 ? "word" : /[.?!]$/.test(word) ? "sentence" : "phrase"
+
+  const result = await sql`
+    INSERT INTO words (word, translation, topic_id, pn, know, img, group_key, type, user_id)
+    VALUES (${word.trim()}, ${translation}, ${topicId}, ${pn}, false, '', ${wordNorm}, ${type}, ${userId})
+    RETURNING *
   `
+  return { status: "added", word: result[0] }
 }

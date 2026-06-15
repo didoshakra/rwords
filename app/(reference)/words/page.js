@@ -1,4 +1,4 @@
-// words/page.js
+// words/reader/page.js//Читач текстів
 //
 "use client"
 
