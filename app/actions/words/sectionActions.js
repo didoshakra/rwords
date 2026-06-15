@@ -4,28 +4,31 @@
 import { sql } from "@/lib/dbConfig"
 
 // Отримати всі секції (усі бачать)
-export async function getSections() {
+export async function getSections(user_id = null, role = null) {
   const result = await sql`
     SELECT sections.*, users.name AS user_name
     FROM sections
     LEFT JOIN users ON sections.user_id = users.id
+    WHERE sections.is_private = false
+       OR sections.user_id = ${user_id}
+       OR ${role} = 'admin'
     ORDER BY sections.pn, sections.id
   `
-  return result // повертаємо масив рядків напряму
+  return result
 }
 
 // Створити секцію (тільки зареєстровані користувачі)
 export async function createSection(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")
 
-  const { name, img = "other", pn = 0 } = form
+  const { name, img = "other", pn = 0, is_private = false } = form
 
   const result = await sql`
-    INSERT INTO sections (name, img, pn, user_id)
-    VALUES (${name}, ${img}, ${pn}, ${user_id})
+    INSERT INTO sections (name, img, pn, user_id, is_private)
+    VALUES (${name}, ${img}, ${pn}, ${user_id}, ${is_private})
     RETURNING *
   `
-  return result[0] // повертаємо вставлену секцію
+  return result[0]
 }
 
 // Оновити секцію (тільки власник або адмін)
@@ -40,12 +43,12 @@ export async function updateSection(id, form, user) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const { name, img = "other", pn = 0 } = form
+  const { name, img = "other", pn = 0, is_private = false } = form
 
   await sql`
-    UPDATE sections
-    SET name = ${name}, img = ${img}, pn = ${pn}
-    WHERE id = ${id}
+  UPDATE sections
+  SET name = ${name}, img = ${img}, pn = ${pn}, is_private = ${is_private}
+  WHERE id = ${id}
   `
 }
 

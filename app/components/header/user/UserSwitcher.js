@@ -119,7 +119,7 @@ export default function UserSwitcher({ setMobileDroopMenu }) {
               <div className="block px-4 py-2 border-b border-gray-200">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">{user.name || user.email}</span>
-                  console.log('***********=',user?.role)
+                  {/* console.log('***********=',user?.role) */}
                   {user?.role && (
                     <span
                       //   className={`text-xs px-2 py-0.5 rounded-full font-medium ${

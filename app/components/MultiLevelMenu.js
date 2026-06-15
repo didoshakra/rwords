@@ -39,6 +39,7 @@ const MenuItem = ({ item, depth = 0, setDrawerOpen, isRowFirst, menuStyle, onClo
   return (
     <li ref={ref} className={`${layoutClass} relative px-2`}>
       <div
+       
         className={`flex items-center cursor-pointer font-semibold hover:text-levelHover text-level${depth % 6} dark:text-hOnD`}
         onClick={() => {
           if (hasSubmenu) setOpen((p) => !p)

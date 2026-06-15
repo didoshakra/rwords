@@ -312,16 +312,47 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
   }
 }
 
-export async function translateWord(id, textToTranslate, fromLanguage, toLanguage, reversTranslate = false) {
-  const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-    textToTranslate,
-  )}&langpair=${fromLanguage}|${toLanguage}`
+// Переклад api.mymemory
+// export async function translateWord(id, textToTranslate, fromLanguage, toLanguage, reversTranslate = false) {
+//   const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+//     textToTranslate,
+//   )}&langpair=${fromLanguage}|${toLanguage}`
 
-  const res = await fetch(apiUrl)
+//   const res = await fetch(apiUrl)
+//   if (!res.ok) throw new Error("Не вдалося перекласти слово")
+
+//   const data = await res.json()
+//   const translated = data?.responseData?.translatedText ?? ""
+//   const cleaned = translated.replace(/(^-+)|(-+$)/g, "").trim()
+
+//   if (reversTranslate) {
+//     await sql`UPDATE words SET word = ${cleaned} WHERE id = ${id}`
+//   } else {
+//     await sql`UPDATE words SET translation = ${cleaned} WHERE id = ${id}`
+//   }
+
+//   return cleaned
+// }
+
+// Переклад deepl.com
+export async function translateWord(id, textToTranslate, fromLanguage, toLanguage, reversTranslate = false) {
+  const res = await fetch("https://api-free.deepl.com/v2/translate", {
+    method: "POST",
+    headers: {
+      Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      text: [textToTranslate],
+      source_lang: fromLanguage.toUpperCase(),
+      target_lang: toLanguage.toUpperCase(),
+    }),
+  })
+
   if (!res.ok) throw new Error("Не вдалося перекласти слово")
 
   const data = await res.json()
-  const translated = data?.responseData?.translatedText ?? ""
+  const translated = data?.translations?.[0]?.text ?? ""
   const cleaned = translated.replace(/(^-+)|(-+$)/g, "").trim()
 
   if (reversTranslate) {
@@ -332,6 +363,28 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
 
   return cleaned
 }
+
+// функція перекладу для читача (без запису в БД):
+export async function translateText(text, fromLanguage, toLanguage) {
+  const res = await fetch("https://api-free.deepl.com/v2/translate", {
+    method: "POST",
+    headers: {
+      Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      text: [text],
+      source_lang: fromLanguage.toUpperCase(),
+      target_lang: toLanguage.toUpperCase(),
+    }),
+  })
+
+  if (!res.ok) throw new Error("Не вдалося перекласти")
+
+  const data = await res.json()
+  return data?.translations?.[0]?.text ?? ""
+}
+
 // Перерахунок pn після переміщення рядків
 export async function updateWordsPn(words) {
   if (!words || words.length === 0) return
