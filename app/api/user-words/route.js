@@ -1,7 +1,8 @@
 // app/api/user-words/route.js
 
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/auth/authOptions"
+// import { authOptions } from "@/app/auth/authOptions"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route" // тут бере authOptions
 import { sql } from "@/lib/dbConfig"
 
 export async function GET() {
