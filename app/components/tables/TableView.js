@@ -114,6 +114,7 @@ function ViewModal({ viewModal, onClose }) {
             background: "#f9f9f9",
             color: "#222",
           }}
+
         />
       </div>
     </div>
@@ -153,7 +154,7 @@ function ItemRow({
       }
     >
       {/* Чекбокс */}
-      <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+      <td className="w-[30px] border-b border-tabThBorder dark:border-tabThBorderD p-1 text-center">
         {moveMode && moveInfo ? (
           (() => {
             const { idx, groups, topicWords, word } = moveInfo
@@ -202,7 +203,7 @@ function ItemRow({
 
       {/* Власник */}
       {showOwnerMark && (
-        <td style={{ width: 30, borderBottom: "1px solid #ccc", padding: "4px", textAlign: "center" }}>
+        <td className="w-[30px] border-l border-b border-tabThBorder dark:border-tabThBorderD p-1 text-left">
           {item.user_id === user?.id && "🧑‍💻"}
         </td>
       )}
@@ -224,6 +225,7 @@ function ItemRow({
             break
           default:
             content = value ?? ""
+            // content = value ?? "\u00A0"
         }
 
         const isTextCol = !col.type || col.type === "text"
@@ -234,13 +236,8 @@ function ItemRow({
         return (
           <td
             key={col.accessor}
-            style={{
-              minWidth: col.width,
-              borderBottom: "1px solid #ccc",
-              padding: "4px",
-              overflow: "hidden", // 👈 ДОДАЙ
-              ...(col.styleCell || {}),
-            }}
+            className="border-l border-b border-tabThBorder dark:border-tabThBorderD p-1 overflow-hidden"
+            style={{ minWidth: col.width, ...col.styleCell }}
             onDoubleClick={handleOpen}
             {...handlers[colIdx]}
           >
@@ -682,7 +679,8 @@ export default function TableView({
 
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
-    <main className="p-1 max-w-4xl mx-auto">
+    // <main className="p-1 max-w-4xl mx-auto">
+    <main className="p-1 max-w-7xl mx-auto">
       <h1 className="text-h1On dark:text-h1OnD font-heading text-lg sm:text-xl lg:text-2xl font-bold mb-4 mx-auto w-fit">
         {title}
       </h1>
@@ -873,15 +871,17 @@ export default function TableView({
         <table
           style={{ minWidth: totalWidth, width: "100%", tableLayout: "fixed" }}
           className="border-collapse text-xs sm:text-sm lg:text-sm font-body"
+          //   className=" text-xs sm:text-sm lg:text-sm font-body"
         >
           <thead className="bg-tabThBg dark:bg-tabThBgD text-tabThOn dark:text-tabThOnD sticky top-0 z-10">
             <tr>
-              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>✔️</th>}
-              {showOwnerMark && <th style={{ width: 30, border: "1px solid #ccc", padding: "4px" }}>👤</th>}
+              {showOwnerMark && <th className="w-[30px] border border-tabThBorder dark:border-tabThBorderD p-1">☑️</th>}
+              {showOwnerMark && <th className="w-[30px] border border-tabThBorder dark:border-tabThBorderD p-1">👤</th>}
               {columns.map((col) => (
                 <th
                   key={col.accessor}
-                  style={{ minWidth: col.width, border: "1px solid #ccc", padding: "4px", overflowWrap: "break-word" }}
+                  style={{ width: col.width }}
+                  className="border border-tabThBorder dark:border-tabThBorderD p-1"
                 >
                   {col.label}
                 </th>

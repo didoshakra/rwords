@@ -32,23 +32,23 @@ function Modal({ open, onClose, children }) {
 //Для TableView
 const columns = [
   { label: "Тема", accessor: "name", type: "text", width: 400 },
-  {
-    label: "№п",
-    accessor: "pn",
-    type: "integer",
-    width: 50,
-    styleCell: { alignItems: "center" },
-    //   styleCellText: {color: 'green'},
-    markIfOwner: true, // 🚀 нове поле
-  },
+//   {
+//     label: "№п",
+//     accessor: "pn",
+//     type: "integer",
+//     width: 50,
+//     styleCell: { alignItems: "center" },
+//     //   styleCellText: {color: 'green'},
+//     markIfOwner: true, // 🚀 нове поле
+//   },
 
-  {
-    label: "Tid",
-    accessor: "id",
-    type: "integer",
-    width: 40,
-    styleCell: { alignItems: "center" },
-  },
+//   {
+//     label: "Tid",
+//     accessor: "id",
+//     type: "integer",
+//     width: 40,
+//     styleCell: { alignItems: "center" },
+//   },
 ]
 
 export default function TopicsPage() {

@@ -153,9 +153,9 @@ const columns = [
     // styleCellText: { fontWeight: 600 },
   },
   { label: "Переклад", accessor: "translation", type: "text", width: 550 },
-  { label: "img", accessor: "img", type: "text", width: 50 },
   { label: "Група", accessor: "group_key", type: "text", width: 100 },
   { label: "Тип", accessor: "type", type: "text", width: 100 },
+  { label: "img", accessor: "img", type: "text", width: 50 },
 ]
 
 export default function WordsPage() {
@@ -786,7 +786,7 @@ export default function WordsPage() {
     // Додавай інші типи діалогів за потреби
   }
   return (
-    <main className="p-1 max-w-4xl mx-auto">
+    <main className="p-1 max-w-7xl mx-auto">
       {/* {topics.length > 0 && sections.length > 0 && ( */}
       <TableView
         data={words}

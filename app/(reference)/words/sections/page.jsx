@@ -137,14 +137,14 @@ export default function SectionsPage() {
       markIfOwner: true, // 🚀 нове поле
     },
     { label: "Група тем", accessor: "name", type: "text", width: 250 },
-    { label: "Папка картинки", accessor: "img", type: "text", width: 250 },
-    {
-      label: "Sid",
-      accessor: "id",
-      type: "integer",
-      width: 40,
-      styleCell: { alignItems: "center" },
-    },
+    // { label: "Папка картинки", accessor: "img", type: "text", width: 250 },
+    // {
+    //   label: "Sid",
+    //   accessor: "id",
+    //   type: "integer",
+    //   width: 40,
+    //   styleCell: { alignItems: "center" },
+    // },
   ]
   return (
     <main className="p-6 max-w-4xl mx-auto">

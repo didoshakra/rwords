@@ -422,7 +422,7 @@ export async function getOrCreateInboxTopic(userId, userName, textTitle) {
     sectionId = sectionRes[0].id
     sectionName = sectionRes[0].name
   } else {
-    sectionName = `${userName || "Користувач"} (${userId})`
+    sectionName = `${userName || "Користувач"}_${userId}`
     const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM sections`
     const pn = (maxPnRes[0].maxpn || 0) + 1
     const inserted = await sql`
@@ -459,22 +459,21 @@ export async function getOrCreateInboxTopic(userId, userName, textTitle) {
   return { topicId, sectionName, topicName }
 }
 
-// Перевірка чи слово вже видиме юзеру (своє в будь-якій секції, або чуже в публічній)
 // Додавання слова з читача з перевіркою дублікатів
-export async function addWordFromReader(word, translation, topicId, userId, force = false) {
+// word = переклад рідною (як у решті додатку), translation = іноземний текст з читача
+export async function addWordFromReader(foreignText, nativeTranslation, topicId, userId, force = false) {
   if (!userId) throw new Error("Користувач не авторизований")
 
-  const wordNorm = word.trim().toLowerCase()
+  const foreignNorm = foreignText.trim().toLowerCase()
 
   if (!force) {
-    // Дублікат = слово видиме юзеру: його власне (будь-яка секція)
-    // АБО чуже, але в публічній секції (is_private = false)
+    // Дублікат шукаємо по іноземному тексту — він тепер у колонці translation
     const existing = await sql`
       SELECT words.id, words.user_id, topics.name AS topic_name, sections.name AS section_name
       FROM words
       JOIN topics ON words.topic_id = topics.id
       JOIN sections ON topics.section_id = sections.id
-      WHERE LOWER(words.word) = ${wordNorm}
+      WHERE LOWER(words.translation) = ${foreignNorm}
         AND (sections.is_private = false OR words.user_id = ${userId})
       LIMIT 1
     `
@@ -492,22 +491,23 @@ export async function addWordFromReader(word, translation, topicId, userId, forc
   const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM words WHERE topic_id = ${topicId}`
   const pn = (maxPnRes[0].maxpn || 0) + 1
 
-  const wordCount = word.trim().split(/\s+/).length
-  const type = wordCount === 1 ? "word" : /[.?!]$/.test(word) ? "sentence" : "phrase"
+  const wordCount = foreignText.trim().split(/\s+/).length
+  const type = wordCount === 1 ? "word" : /[.?!]$/.test(foreignText) ? "sentence" : "phrase"
 
   const result = await sql`
     INSERT INTO words (word, translation, topic_id, pn, know, img, group_key, type, user_id)
-    VALUES (${word.trim()}, ${translation}, ${topicId}, ${pn}, false, '', ${wordNorm}, ${type}, ${userId})
+    VALUES (${nativeTranslation.trim()}, ${foreignText.trim()}, ${topicId}, ${pn}, false, '', ${foreignNorm}, ${type}, ${userId})
     RETURNING *
   `
   return { status: "added", word: result[0] }
 }
 
-// Отримати всі видимі юзеру слова для підсвічування в читачі (свої + публічні)
+// Отримати всі видимі юзеру іноземні слова для підсвічування в читачі (свої + публічні)
+// Іноземний текст тепер лежить у колонці translation
 export async function getUserWordsSet(userId) {
   if (!userId) return []
   const result = await sql`
-    SELECT DISTINCT LOWER(words.word) AS word
+    SELECT DISTINCT LOWER(words.translation) AS word
     FROM words
     JOIN topics ON words.topic_id = topics.id
     JOIN sections ON topics.section_id = sections.id
