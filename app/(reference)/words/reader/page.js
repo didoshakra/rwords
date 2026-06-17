@@ -1,6 +1,7 @@
+// app/words/reader/page.js
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react"
 import { useSession } from "next-auth/react"
 import {
   translateText,
@@ -11,12 +12,18 @@ import {
 
 // ─── Попап ──────────────────────────────────────────────────────────────────
 
-function WordPopup({ selectedText, position, topicId, topicName, userId, knownWords, onClose, onAdded }) {
+function WordPopup({ selectedText, anchor = { top: 0, left: 0 }, topicId, pageTitle, onEnsureTopic, userId, knownWords, onClose, onAdded }) {
   const [translation, setTranslation] = useState("")
   const [loadingTranslation, setLoadingTranslation] = useState(true)
-  const [step, setStep] = useState("idle") // idle | adding | duplicate | added | error
+  const [step, setStep] = useState("idle") // idle | needTitle | adding | duplicate | added | error
   const [dupInfo, setDupInfo] = useState("")
+  const [localTitle, setLocalTitle] = useState("")
+  const [coords, setCoords] = useState({ top: anchor.top + 10, left: anchor.left })
   const popupRef = useRef(null)
+  const textareaRef = useRef(null)
+
+  const POPUP_WIDTH = 700
+  const MAX_TEXTAREA_HEIGHT = 160
 
   // Переклад при відкритті
   useEffect(() => {
@@ -41,11 +48,40 @@ function WordPopup({ selectedText, position, topicId, topicName, userId, knownWo
     }
   }, [onClose])
 
+  // Авторозмір textarea під довжину перекладу, з межею висоти
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"
+      const next = Math.min(textareaRef.current.scrollHeight, MAX_TEXTAREA_HEIGHT)
+      textareaRef.current.style.height = next + "px"
+    }
+  }, [translation, loadingTranslation])
+
+  // Позиціонування: зліва під останнім рядком виділення, з межами екрану
+  useLayoutEffect(() => {
+    if (!popupRef.current) return
+    const popupHeight = popupRef.current.offsetHeight
+    const left = Math.min(Math.max(anchor.left, 8), window.innerWidth - POPUP_WIDTH - 8)
+    const top =
+      anchor.top + 10 + popupHeight > window.innerHeight ? Math.max(anchor.top - popupHeight - 10, 8) : anchor.top + 10
+    setCoords({ top, left })
+  }, [translation, loadingTranslation, step, dupInfo, anchor])
+
   const handleAdd = async (force = false) => {
-    if (!topicId) return
+    if (!userId) return
     setStep("adding")
     try {
-      const result = await addWordFromReader(selectedText, translation, topicId, userId, force)
+      let activeTopicId = topicId
+      if (!activeTopicId) {
+        const title = (pageTitle || localTitle).trim()
+        if (!title) {
+          setStep("needTitle")
+          return
+        }
+        const result = await onEnsureTopic(title)
+        activeTopicId = result.topicId
+      }
+      const result = await addWordFromReader(selectedText, translation, activeTopicId, userId, force)
       if (result.status === "duplicate") {
         setStep("duplicate")
         setDupInfo(result.existingIn)
@@ -59,64 +95,61 @@ function WordPopup({ selectedText, position, topicId, topicName, userId, knownWo
     }
   }
 
-  // Позиціонування
-  const popupWidth = 280
-  const popupHeight = 240
-  const left = Math.min(Math.max(position.x - popupWidth / 2, 8), window.innerWidth - popupWidth - 8)
-  const top = position.y + 10 + popupHeight > window.innerHeight
-    ? position.y - popupHeight - 10
-    : position.y + 10
-
   return (
     <div
       ref={popupRef}
-      style={{ position: "fixed", top, left, width: popupWidth, zIndex: 1000 }}
-      className="bg-white border border-gray-200 rounded-xl shadow-2xl p-4 flex flex-col gap-3"
+      style={{
+        position: "fixed",
+        top: coords.top,
+        left: coords.left,
+        width: POPUP_WIDTH,
+        maxHeight: "70vh",
+        overflowY: "auto",
+        zIndex: 1000,
+      }}
+      className="relative bg-white border border-gray-200 rounded-xl shadow-2xl p-4 flex flex-col gap-3"
     >
-      {/* Слово/фраза */}
-      <div className="flex items-start justify-between gap-2">
-        <span className="font-semibold text-gray-900 text-base leading-snug break-words flex-1">
-          {selectedText}
-        </span>
-        <button onClick={onClose} className="text-gray-300 hover:text-gray-500 text-xl leading-none flex-shrink-0">
-          ×
-        </button>
-      </div>
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-gray-300 hover:text-gray-500 text-xl leading-none"
+      >
+        ×
+      </button>
 
       {/* Переклад */}
       {loadingTranslation ? (
-        <div className="text-sm text-gray-400 animate-pulse">Перекладаємо...</div>
+        <div className="text-sm text-gray-400 animate-pulse py-1 pr-5">Перекладаємо...</div>
       ) : (
-        <input
-          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-200"
+        <textarea
+          ref={textareaRef}
+          style={{ maxHeight: MAX_TEXTAREA_HEIGHT, overflowY: "auto" }}
+          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full resize-none focus:outline-none focus:ring-2 focus:ring-blue-200 pr-5"
           value={translation}
           onChange={(e) => setTranslation(e.target.value)}
           placeholder="Переклад"
+          rows={1}
         />
-      )}
-
-      {/* Куди додається */}
-      {topicName && step !== "added" && (
-        <div className="text-xs text-gray-400">
-          📥 Нові слова → <span className="text-gray-600 font-medium">{topicName}</span>
-        </div>
       )}
 
       {/* Вже є у словнику */}
       {knownWords.has(selectedText.toLowerCase()) && step === "idle" && (
-        <div className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-2 py-1.5">
-          ✓ Вже є у вашому словнику
+        <div className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-2 py-1.5">✓ Вже є у вашому словнику</div>
+      )}
+
+      {/* Не залогінений */}
+      {!userId && (
+        <div className="text-xs text-amber-600 bg-amber-50 rounded-lg px-2 py-1.5">
+          Увійдіть, щоб додавати слова в словник
         </div>
       )}
 
       {/* Статуси */}
-      {step === "added" && (
+      {userId && step === "added" && (
         <div className="text-sm text-emerald-600 font-medium text-center py-1">✓ Додано!</div>
       )}
-      {step === "error" && (
-        <div className="text-sm text-red-500 text-center">Помилка, спробуйте ще раз</div>
-      )}
-      {step === "duplicate" && (
+      {userId && step === "error" && <div className="text-sm text-red-500 text-center">Помилка, спробуйте ще раз</div>}
+
+      {userId && step === "duplicate" && (
         <div className="flex flex-col gap-2">
           <div className="text-xs text-amber-700 bg-amber-50 rounded-lg px-2 py-1.5">
             Вже є в: <span className="font-medium">{dupInfo}</span>
@@ -138,11 +171,35 @@ function WordPopup({ selectedText, position, topicId, topicName, userId, knownWo
         </div>
       )}
 
+      {/* Запит назви тексту — лише якщо тема ще не створена і назва ніде не вказана */}
+      {userId && step === "needTitle" && (
+        <div className="flex flex-col gap-2">
+          <div className="text-xs text-amber-700 bg-amber-50 rounded-lg px-2 py-1.5">
+            Вкажіть назву тексту — вона стане назвою теми
+          </div>
+          <input
+            autoFocus
+            type="text"
+            value={localTitle}
+            onChange={(e) => setLocalTitle(e.target.value)}
+            placeholder="Наприклад: Harry Potter ch.1"
+            className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+          <button
+            onClick={() => handleAdd(false)}
+            disabled={!localTitle.trim()}
+            className="w-full bg-blue-600 text-white text-sm rounded-lg px-3 py-2 hover:bg-blue-700 disabled:opacity-40 transition-colors font-medium"
+          >
+            Зберегти і додати
+          </button>
+        </div>
+      )}
+
       {/* Кнопка додати */}
-      {(step === "idle" || step === "adding") && (
+      {userId && (step === "idle" || step === "adding") && (
         <button
           onClick={() => handleAdd(false)}
-          disabled={step === "adding" || loadingTranslation || !topicId}
+          disabled={step === "adding" || loadingTranslation}
           className="w-full bg-blue-600 text-white text-sm rounded-lg px-3 py-2 hover:bg-blue-700 disabled:opacity-40 transition-colors font-medium"
         >
           {step === "adding" ? "Додаємо..." : "Додати в словник"}
@@ -160,10 +217,18 @@ function renderHighlightedText(text, knownWords, addedInSession) {
     const clean = token.replace(/[^a-zA-ZÀ-öø-ÿА-яҐєіїЄІЇ]/g, "").toLowerCase()
     if (!clean) return <span key={i}>{token}</span>
     if (addedInSession.has(clean)) {
-      return <span key={i} className="bg-blue-100 rounded px-0.5">{token}</span>
+      return (
+        <span key={i} className="bg-blue-100 rounded px-0.5">
+          {token}
+        </span>
+      )
     }
     if (knownWords.has(clean)) {
-      return <span key={i} className="bg-emerald-50 rounded px-0.5">{token}</span>
+      return (
+        <span key={i} className="bg-emerald-50 rounded px-0.5">
+          {token}
+        </span>
+      )
     }
     return <span key={i}>{token}</span>
   })
@@ -181,6 +246,7 @@ export default function ReaderPage() {
 
   const [topicId, setTopicId] = useState(null)
   const [topicName, setTopicName] = useState("")
+  const [sectionName, setSectionName] = useState("")
 
   const [knownWords, setKnownWords] = useState(new Set())
   const [addedInSession, setAddedInSession] = useState(new Set())
@@ -194,31 +260,45 @@ export default function ReaderPage() {
     getUserWordsSet(user.id).then((words) => setKnownWords(new Set(words)))
   }, [user])
 
-  // Перехід в режим читання — створюємо/знаходимо inbox тему
-  const handleStartReading = async () => {
+  // Перехід в режим читання — тема НЕ створюється тут, лише при першому додаванні слова
+  const handleStartReading = () => {
     if (!text.trim()) return
-    if (user?.id) {
-      try {
-        const result = await getOrCreateInboxTopic(user.id, textTitle || null)
-        setTopicId(result.topicId)
-        setTopicName(result.topicName)
-      } catch (e) {
-        console.error(e)
-      }
-    }
     setReadMode(true)
   }
 
-  // mouseup — відкриваємо попап після виділення
+  // Створює тему лише в момент, коли вона реально потрібна (перше додавання слова)
+  const ensureTopic = useCallback(
+    async (title) => {
+      const result = await getOrCreateInboxTopic(user.id, user.name, title)
+      setTopicId(result.topicId)
+      setTopicName(result.topicName)
+      setSectionName(result.sectionName)
+      return result
+    },
+    [user],
+  )
+
+  // mouseup — відкриваємо попап після виділення, прив'язуючи його до лівого краю
+  // контейнера читача й до останнього рядка виділення (а не до точки кліку)
   useEffect(() => {
     if (!readMode) return
-    const handleMouseUp = (e) => {
+    const handleMouseUp = () => {
       setTimeout(() => {
         const selection = window.getSelection()
         const selected = selection?.toString().trim()
         if (!selected || selected.length < 2) return
+        if (!selection.rangeCount) return
         if (readerRef.current && !readerRef.current.contains(selection.anchorNode)) return
-        setPopup({ text: selected, position: { x: e.clientX, y: e.clientY } })
+
+        const range = selection.getRangeAt(0)
+        const rects = range.getClientRects()
+        const lastRect = rects.length > 0 ? rects[rects.length - 1] : range.getBoundingClientRect()
+        const containerRect = readerRef.current.getBoundingClientRect()
+
+        setPopup({
+          text: selected,
+          anchor: { left: containerRect.left, top: lastRect.bottom },
+        })
       }, 10)
     }
     document.addEventListener("mouseup", handleMouseUp)
@@ -238,7 +318,6 @@ export default function ReaderPage() {
 
   return (
     <main className="max-w-3xl mx-auto p-4 min-h-screen">
-
       {/* Заголовок */}
       <div className="flex items-center justify-between mb-5">
         <h1 className="text-xl font-semibold text-gray-800">Читач</h1>
@@ -250,7 +329,10 @@ export default function ReaderPage() {
           )}
           {readMode && (
             <button
-              onClick={() => { setReadMode(false); setPopup(null) }}
+              onClick={() => {
+                setReadMode(false)
+                setPopup(null)
+              }}
               className="text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
             >
               ← Змінити текст
@@ -265,7 +347,7 @@ export default function ReaderPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Назва тексту{" "}
-              <span className="text-gray-400 font-normal">(стане темою у "Нові слова")</span>
+              <span className="text-gray-400 font-normal">(стане темою у вашій секції; можна вказати пізніше)</span>
             </label>
             <input
               type="text"
@@ -299,7 +381,13 @@ export default function ReaderPage() {
       {/* Режим читання */}
       {readMode && (
         <>
-          <div className="flex items-center gap-4 mb-4 text-xs text-gray-400">
+          <div className="flex items-center gap-4 mb-4 text-xs text-gray-400 flex-wrap">
+            {sectionName && topicName && (
+              <span className="text-gray-500">
+                📥 <span className="font-medium text-gray-700">{sectionName}</span> →{" "}
+                <span className="font-medium text-gray-700">{topicName}</span>
+              </span>
+            )}
             <span className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-200 inline-block" />
               Вже у словнику
@@ -331,9 +419,10 @@ export default function ReaderPage() {
       {popup && (
         <WordPopup
           selectedText={popup.text}
-          position={popup.position}
+          anchor={popup.anchor}
           topicId={topicId}
-          topicName={topicName}
+          pageTitle={textTitle}
+          onEnsureTopic={ensureTopic}
           userId={user?.id}
           knownWords={knownWords}
           onClose={handleClosePopup}

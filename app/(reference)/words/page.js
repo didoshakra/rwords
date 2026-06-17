@@ -212,7 +212,7 @@ export default function WordsPage() {
     loadWords()
     loadTopics()
     loadSections()
-  }, [])
+  }, [user?.id])
 
   const loadWords = () => {
     getWords()
@@ -226,7 +226,7 @@ export default function WordsPage() {
       .catch(() => setTopics([]))
   }
   const loadSections = () => {
-    getSections()
+    getSections(user?.id, user?.role)
       .then(setSections)
       .catch(() => setSections([]))
   }
