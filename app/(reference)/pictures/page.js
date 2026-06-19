@@ -406,7 +406,7 @@ const handleSubmit = async (e) => {
     // Додавай інші типи діалогів за потреби
   }
   return (
-    <main className="p-1 max-w-4xl mx-auto">
+    <main className="p-1 max-w-7xl mx-auto">
       {/* {topics.length > 0 && sections.length > 0 && ( */}
       <TableView
         data={pictures}
@@ -415,11 +415,11 @@ const handleSubmit = async (e) => {
         level1Id="topic_id"
         level2Id="pictures_sections_id"
         columns={columns}
-        title={"Каталог медіа"}
+        title={"Медіа каталог"}
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        level0Head="Каталог медіа"
+        level0Head="Медіа каталог"
         level1Head="Тема"
         level2Head="Автор"
         sortField={"pn"} //поле для порядку

@@ -84,28 +84,28 @@ export const headMenu = [
     submenu: [
       {
         id: 1,
-        title: "Галерея медіа",
+        title: "Медіа галерея",
         url: "/gallery",
       },
       {
         id: 2,
-        title: "Каталог",
+        title: "Каталог/Теми/Автори",
         roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
         submenu: [
           {
             id: 1,
+            title: "Каталог",
+            url: "/pictures",
+          },
+          {
+            id: 2,
             title: "Автори",
             url: "/pictures/pictures_sections",
           },
           {
-            id: 2,
-            title: "Теми медіа",
-            url: "/pictures/pictures_topics",
-          },
-          {
             id: 3,
-            title: "Медіа",
-            url: "/pictures",
+            title: "Теми ",
+            url: "/pictures/pictures_topics",
           },
         ],
       },

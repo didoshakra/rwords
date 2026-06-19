@@ -217,15 +217,39 @@ export async function initTables() {
   // feedback
   await sql`
     CREATE TABLE IF NOT EXISTS feedback (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id) ON DELETE SET NULL,
-    type VARCHAR(50) NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`
+        id SERIAL PRIMARY KEY,
+        user_id INT REFERENCES users(id) ON DELETE SET NULL,
+        type VARCHAR(50) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`
   console.log("✅ dbActions: Всі таблиці ініціалізовані.")
+  //   -----------
+  // Користувацькі налаштування
+  await sql`
+    CREATE TABLE IF NOT EXISTS users_settings (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    from_lang TEXT NOT NULL DEFAULT 'EN',
+    to_lang TEXT NOT NULL DEFAULT 'UK',
+    updated_at TIMESTAMP DEFAULT NOW()
+    );
+    `
+  // Для розширення до Chrom яке дозволить читання з сайтів у Chrom з занесенням невідомих слів у БД (логін + видача токена, перевірка токена, додавання слова).
+  await sql`
+    CREATE TABLE IF NOT EXISTS api_tokens (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        token_hash TEXT NOT NULL UNIQUE,
+        name TEXT DEFAULT 'Browser Extension',
+        created_at TIMESTAMP DEFAULT NOW(),
+        last_used_at TIMESTAMP
+    );
+    `
+  await sql`
+    CREATE INDEX IF NOT EXISTS idx_api_tokens_hash ON api_tokens(token_hash);
+    `
 }
-
+// ============================================================================
 export async function resetTables() {
   // Потрібно видаляти таблиці у зворотньому порядку через FK залежності
   await sql`DROP TABLE IF EXISTS site_stats;` // Спочатку нову статистику (якщо є)
