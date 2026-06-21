@@ -151,11 +151,11 @@ module.exports = {
         // iconInfoD: "#13ff11",
 
         // table (th) ------------------------------------------
-        tabThOn: "var(--color-pCol11)",
+        tabThOn: "var(--color-pCol10)",
         tabThOnD: "var(--color-pCol10)",
-        tabThBg: "var(--color-pCol5)",
+        tabThBg: "var(--color-pCol4)",
         tabThBgD: "#1e293b", //--color-pCol8: #1e293b;
-        tabThBorder: "var(--color-pCol3)",
+        tabThBorder: "var(--color-pCol5)",
         tabThBorderD: "#64748b", //--color-pCol5:#64748b;
 
         // table/tr Рядки
