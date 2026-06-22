@@ -1,5 +1,4 @@
 // app/api/translator/stt/route.js.//проксі-роут для ключа Grok
-// app/api/translator/stt/route.js
 
 export async function POST(req) {
   try {
