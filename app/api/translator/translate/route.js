@@ -1,16 +1,11 @@
 // app / api / translator / translate / route.js//приймає { text }, відправляє на DeepL (DEEPL_API_KEY з вашого .env), повертає { translation }. Все через вашу існуючу авторизацію.
 
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+// app/api/translator/translate/route.js
 
 export async function POST(req) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.id) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const { text } = await req.json()
+
     if (!text?.trim()) {
       return Response.json({ error: "Текст відсутній" }, { status: 400 })
     }
@@ -36,7 +31,6 @@ export async function POST(req) {
 
     const data = await res.json()
     const translation = data.translations?.[0]?.text
-
     if (!translation) throw new Error("DeepL не повернув переклад")
 
     return Response.json({ translation })
