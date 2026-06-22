@@ -1,11 +1,13 @@
 // app / api / translator / translate / route.js//приймає { text }, відправляє на DeepL (DEEPL_API_KEY з вашого .env), повертає { translation }. Все через вашу існуючу авторизацію.
 
-// app/api/translator/translate/route.js
-
 export async function POST(req) {
   try {
-    const { text } = await req.json()
+    const secret = req.headers.get("x-translator-secret")
+    if (secret !== process.env.TRANSLATOR_SECRET) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
+    const { text } = await req.json()
     if (!text?.trim()) {
       return Response.json({ error: "Текст відсутній" }, { status: 400 })
     }
@@ -25,8 +27,7 @@ export async function POST(req) {
 
     if (!res.ok) {
       const err = await res.text()
-      console.error("DeepL error:", err)
-      throw new Error(`DeepL помилка: ${res.status}`)
+      throw new Error(`DeepL помилка: ${res.status} ${err}`)
     }
 
     const data = await res.json()

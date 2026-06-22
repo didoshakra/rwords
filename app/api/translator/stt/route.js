@@ -1,18 +1,15 @@
 // app/api/translator/stt/route.js.//проксі-роут для ключа Grok
-
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+// Захист через TRANSLATOR_SECRET — відомий тільки додатку і серверу
 
 export async function POST(req) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.id) {
+    const secret = req.headers.get("x-translator-secret")
+    if (secret !== process.env.TRANSLATOR_SECRET) {
       return Response.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const formData = await req.formData()
     const audioFile = formData.get("audio")
-
     if (!audioFile) {
       return Response.json({ error: "Аудіофайл відсутній" }, { status: 400 })
     }
@@ -25,16 +22,13 @@ export async function POST(req) {
 
     const res = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
-      },
+      headers: { "Authorization": `Bearer ${process.env.GROQ_API_KEY}` },
       body: groqForm,
     })
 
     if (!res.ok) {
       const err = await res.text()
-      console.error("Groq STT error:", err)
-      throw new Error(`Groq помилка: ${res.status}`)
+      throw new Error(`Groq помилка: ${res.status} ${err}`)
     }
 
     const data = await res.json()
