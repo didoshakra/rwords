@@ -1,7 +1,15 @@
 // app/api/translator/stt/route.js.//проксі-роут для ключа Grok
 
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+
 export async function POST(req) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const formData = await req.formData()
     const audioFile = formData.get("audio")
 
