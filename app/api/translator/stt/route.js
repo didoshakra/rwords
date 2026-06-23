@@ -3,13 +3,9 @@
 
 export async function POST(req) {
   try {
-    const secret = req.headers.get("x-translator-secret")
-    if (secret !== process.env.TRANSLATOR_SECRET) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const formData = await req.formData()
     const audioFile = formData.get("audio")
+
     if (!audioFile) {
       return Response.json({ error: "Аудіофайл відсутній" }, { status: 400 })
     }

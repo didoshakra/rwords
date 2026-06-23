@@ -2,12 +2,8 @@
 
 export async function POST(req) {
   try {
-    const secret = req.headers.get("x-translator-secret")
-    if (secret !== process.env.TRANSLATOR_SECRET) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const { text } = await req.json()
+
     if (!text?.trim()) {
       return Response.json({ error: "Текст відсутній" }, { status: 400 })
     }
