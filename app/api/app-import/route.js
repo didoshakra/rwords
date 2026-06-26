@@ -10,7 +10,7 @@ export async function POST(req) {
   }
 
   const userId = session.user.id
-  const { words } = await req.json() 
+  const { words } = await req.json()
 
   if (!Array.isArray(words) || words.length === 0) {
     return Response.json({ error: "No words" }, { status: 400 })
@@ -54,7 +54,7 @@ export async function POST(req) {
 
     return Response.json({ ok: true, count: words.length, topicId: topic.id })
   } catch (err) {
-    console.error("app-import error:", err)
+    console.error("app-import error:", err.message, err.stack)
     return Response.json({ error: "Server error" }, { status: 500 })
   }
 }
