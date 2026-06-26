@@ -34,8 +34,8 @@ export async function POST(req) {
     // 2. Створити нову тему з датою
     const topicName = `Імпорт ${new Date().toLocaleDateString("uk-UA")}`
     const [topic] = await sql`
-      INSERT INTO topics (name, user_id, section_id, is_private)
-      VALUES (${topicName}, ${userId}, ${section.id}, true)
+      INSERT INTO topics (name, user_id, section_id)
+      VALUES (${topicName}, ${userId}, ${section.id})
       RETURNING id
     `
 
