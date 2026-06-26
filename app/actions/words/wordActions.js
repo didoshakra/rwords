@@ -33,7 +33,7 @@ export async function createWord(form, userId) {
 }
 
 export async function updateWord(id, form, userId, role) {
-  if (!userId) throw new Error("Користувач не авторизований")
+  if (!userId) throw new Error("Користувач не авторизований") 
 
   const result = await sql`SELECT user_id, topic_id FROM words WHERE id = ${id}`
   const existing = result[0]

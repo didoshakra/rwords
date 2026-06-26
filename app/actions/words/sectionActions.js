@@ -16,7 +16,7 @@ export async function getSections(user_id = null, role = null) {
   `
   return result
 }
-
+ 
 // Створити секцію (тільки зареєстровані користувачі)
 export async function createSection(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")

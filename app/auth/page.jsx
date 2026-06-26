@@ -1,4 +1,4 @@
-//CL/(public)/auth/page.js
+//app/auth/page.js
 "use client"
 
 import React, { useState, useTransition } from "react"
