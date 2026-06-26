@@ -946,6 +946,7 @@ export default function TableView({
                               return `(📋${sectionWords.length}${selected > 0 ? ` ✔️${selected}` : ""}${notFilled > 0 ? ` ❗${notFilled}` : ""})`
                             })()}
                           </span>
+                          {section.is_private && <span title="Приватна">🔒</span>}
                           <span>
                             {level2Head}: {section.name}
                           </span>
