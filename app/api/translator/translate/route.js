@@ -10,14 +10,18 @@ export async function POST(req) {
       return Response.json({ error: "Текст відсутній" }, { status: 400 })
     }
 
-    // DeepL source_lang: тільки мова без регіону, верхній регістр ('uk-UA' → 'UK')
-    const sourceLang = from.split("-")[0].toUpperCase()
+    // Мови які DeepL підтримує з регіоном у target_lang
+    const DEEPL_REGIONAL = new Set(["EN-GB", "EN-US", "PT-BR", "PT-PT", "ZH-HANS", "ZH-HANT"])
 
-    // DeepL target_lang: з регіоном, верхній регістр ('en-GB' → 'EN-GB')
-    const targetLang = to.replace(
+    const sourceLang = from.split("-")[0].toUpperCase() // завжди коротко
+
+    const targetFull = to.replace(
       /^([a-zA-Z]+)-([a-zA-Z]+)$/,
       (_, lang, region) => `${lang.toUpperCase()}-${region.toUpperCase()}`,
     )
+    // Якщо DeepL не підтримує регіон — беремо тільки мову
+    const targetLang = DEEPL_REGIONAL.has(targetFull) ? targetFull : targetFull.split("-")[0]
+
     console.log("DeepL params:", { sourceLang, targetLang, text })
     const res = await fetch("https://api-free.deepl.com/v2/translate", {
       method: "POST",
