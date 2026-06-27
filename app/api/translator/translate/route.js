@@ -18,7 +18,7 @@ export async function POST(req) {
       /^([a-zA-Z]+)-([a-zA-Z]+)$/,
       (_, lang, region) => `${lang.toUpperCase()}-${region.toUpperCase()}`,
     )
-
+    console.log("DeepL params:", { sourceLang, targetLang, text })
     const res = await fetch("https://api-free.deepl.com/v2/translate", {
       method: "POST",
       headers: {
