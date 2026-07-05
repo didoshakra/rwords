@@ -1,53 +1,108 @@
-// app/api/translator/translate/route.js
-// Приймає { text, from?, to? } у форматі BCP-47 (напр. 'uk-UA', 'en-GB')
-// Повертає { translation }
+// app/api/translator/stt/route.js
+// Приймає formData: audio (файл), language? (BCP-47, напр. 'uk-UA', 'en-GB')
+// Повертає { text }
+
+// Типові фантомні фрази, які Whisper/Groq видає на тиші, шумі
+// або дуже коротких/нерозбірливих кліпах. Список не вичерпний —
+// доповнюйте його, коли помітите нові повторювані "галюцинації".
+const HALLUCINATION_PATTERNS = [
+  /дякую за перегляд/i,
+  /дякую за увагу/i,
+  /підписуйтесь на канал/i,
+  /підписуйтеся на канал/i,
+  /субтитри (створив|створено|зробив|зроблено)/i,
+  /продовження слідує/i,
+  /до зустрічі в наступному відео/i,
+  /thanks for watching/i,
+  /subscribe to the channel/i,
+]
+
+// Мінімальний розмір файлу (байти), нижче якого немає сенсу
+// навіть звертатись до Groq — це майже напевно порожній/шумовий кліп.
+const MIN_AUDIO_SIZE_BYTES = 3000
+
+// Якщо модель повернула текст, що складається з одного й того ж
+// слова/фрази, повтореної 3+ рази поспіль — це теж класична ознака
+// галюцинації Whisper на нечіткому вході.
+function isRepetitiveGarbage(text) {
+  const words = text.trim().split(/\s+/)
+  if (words.length < 3) return false
+  const uniqueRatio = new Set(words.map((w) => w.toLowerCase())).size / words.length
+  return uniqueRatio < 0.34 // напр. одне слово повторюється >2/3 всього тексту
+}
+
+function isHallucination(text) {
+  const trimmed = text.trim()
+  if (!trimmed) return false
+  if (HALLUCINATION_PATTERNS.some((p) => p.test(trimmed))) return true
+  if (isRepetitiveGarbage(trimmed)) return true
+  return false
+}
 
 export async function POST(req) {
   try {
-    const { text, from = "uk-UA", to = "en-GB" } = await req.json()
+    const formData = await req.formData()
+    const audioFile = formData.get("audio")
+    const language = formData.get("language") ?? "uk-UA"
 
-    if (!text?.trim()) {
-      return Response.json({ error: "Текст відсутній" }, { status: 400 })
+    if (!audioFile) {
+      return Response.json({ error: "Аудіофайл відсутній" }, { status: 400 })
     }
 
-    // Мови які DeepL підтримує з регіоном у target_lang
-    const DEEPL_REGIONAL = new Set(["EN-GB", "EN-US", "PT-BR", "PT-PT", "ZH-HANS", "ZH-HANT"])
+    // Відсікаємо занадто короткі/порожні записи ще до виклику Groq —
+    // це майже завжди тиша або шум без мовлення.
+    if (audioFile.size < MIN_AUDIO_SIZE_BYTES) {
+      return Response.json({ text: "" })
+    }
 
-    const sourceLang = from.split("-")[0].toUpperCase() // завжди коротко
+    // Whisper хоче тільки мову без регіону ('uk-UA' → 'uk', 'en-GB' → 'en')
+    const whisperLang = language.split("-")[0].toLowerCase()
 
-    const targetFull = to.replace(
-      /^([a-zA-Z]+)-([a-zA-Z]+)$/,
-      (_, lang, region) => `${lang.toUpperCase()}-${region.toUpperCase()}`,
-    )
-    // Якщо DeepL не підтримує регіон — беремо тільки мову
-    const targetLang = DEEPL_REGIONAL.has(targetFull) ? targetFull : targetFull.split("-")[0]
+    // Дозволяємо клієнту явно попросити повну (не-turbo) модель для
+    // порівняльного тесту точності. Якщо не передано — лишаємо turbo
+    // як швидший/дешевший дефолт.
+    // Приклад з клієнта: formData.append('model', 'whisper-large-v3')
+    const requestedModel = formData.get("model")
+    const ALLOWED_MODELS = ["whisper-large-v3-turbo", "whisper-large-v3"]
+    const model = ALLOWED_MODELS.includes(requestedModel) ? requestedModel : "whisper-large-v3-turbo"
 
-    console.log("DeepL params:", { sourceLang, targetLang, text })
-    const res = await fetch("https://api-free.deepl.com/v2/translate", {
+    const groqForm = new FormData()
+    groqForm.append("file", audioFile)
+    groqForm.append("model", model)
+    groqForm.append("language", whisperLang)
+    groqForm.append("response_format", "json")
+    // temperature: 0 — детермінований декодинг, без "творчих" здогадок
+    // на неоднозначних/тихих ділянках.
+    groqForm.append("temperature", "0")
+    // NOTE: свідомо НЕ додаємо тут "prompt". Дослідження показує, що
+    // початковий prompt часто провокує Whisper додавати слова/фрази,
+    // яких не було в аудіо — тобто підвищує ризик галюцинацій, а не
+    // знижує. Якщо колись захочете спробувати prompt знову —
+    // тестуйте окремо і порівнюйте результати до/після, не додавайте
+    // "про всяк випадок".
+
+    const res = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", {
       method: "POST",
-      headers: {
-        Authorization: `DeepL-Auth-Key ${process.env.DEEPL_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        text: [text],
-        source_lang: sourceLang, // 'UK'
-        target_lang: targetLang, // 'EN-GB'
-      }),
+      headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+      body: groqForm,
     })
 
     if (!res.ok) {
       const err = await res.text()
-      throw new Error(`DeepL помилка: ${res.status} ${err}`)
+      throw new Error(`Groq помилка: ${res.status} ${err}`)
     }
 
     const data = await res.json()
-    const translation = data.translations?.[0]?.text
-    if (!translation) throw new Error("DeepL не повернув переклад")
+    const rawText = data.text ?? ""
 
-    return Response.json({ translation })
+    if (isHallucination(rawText)) {
+      console.warn("STT: відфільтровано ймовірну галюцинацію:", rawText)
+      return Response.json({ text: "", model })
+    }
+
+    return Response.json({ text: rawText, model })
   } catch (err) {
-    console.error("translator/translate error:", err.message)
+    console.error("translator/stt error:", err.message)
     return Response.json({ error: err.message }, { status: 500 })
   }
 }
