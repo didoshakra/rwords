@@ -698,7 +698,7 @@ export default function WordsPage() {
   //функція для видалення вибраних слів
   const deleteSelected = async (selectedWords) => {
     // console.log("words/deleteSelected0/selectedWords=", selectedWords)
-    console.log("words/deleteSelected0/selectedWords=", JSON.stringify(selectedWords, null, 2))
+    // console.log("words/deleteSelected/selectedWords=", JSON.stringify(selectedWords, null, 2))
     if (!user) {
       alert("Потрібна авторизація, щоб видаляти слова")
       return

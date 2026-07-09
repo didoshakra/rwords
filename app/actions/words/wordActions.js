@@ -33,7 +33,7 @@ export async function createWord(form, userId) {
 }
 
 export async function updateWord(id, form, userId, role) {
-  if (!userId) throw new Error("Користувач не авторизований") 
+  if (!userId) throw new Error("Користувач не авторизований")
 
   const result = await sql`SELECT user_id, topic_id FROM words WHERE id = ${id}`
   const existing = result[0]
@@ -349,7 +349,11 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
     }),
   })
 
-  if (!res.ok) throw new Error("Не вдалося перекласти слово")
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => "");
+    console.error("DeepL API error:", res.status, errBody);
+    throw new Error(`DeepL ${res.status}: ${errBody || "Не вдалося перекласти слово"}`);
+  }
 
   const data = await res.json()
   const translated = data?.translations?.[0]?.text ?? ""
@@ -363,7 +367,6 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
 
   return cleaned
 }
-
 
 
 // Перерахунок pn після переміщення рядків
