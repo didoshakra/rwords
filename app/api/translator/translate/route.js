@@ -3,6 +3,10 @@
 import { NextResponse } from "next/server"
 import { translateText } from "@/app/actions/words/wordActions"
 
+// Прибирає регіон з мовного коду і робить верхній регістр:
+// 'en-GB' → 'EN', 'uk-UA' → 'UK'
+const baseLang = (code) => code.split("-")[0].toUpperCase()
+
 export async function POST(request) {
   try {
     const { text, from, to } = await request.json()
@@ -11,7 +15,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Потрібні text, from, to" }, { status: 400 })
     }
 
-    const translation = await translateText(text, from, to)
+    const translation = await translateText(text, baseLang(from), baseLang(to))
 
     return NextResponse.json({ translation })
   } catch (err) {
