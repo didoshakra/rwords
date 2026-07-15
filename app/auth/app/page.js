@@ -38,7 +38,7 @@ export default function AppAuthPage() {
     const handler = async (event) => {
       try {
         const data = JSON.parse(event.data)
-        if (data.type !== "rwords-export") return
+        if (data.type !== "rwords-app-to-site") return
 
         setAppState("importing")
 
