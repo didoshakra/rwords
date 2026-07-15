@@ -1,4 +1,6 @@
-// app/auth/app/page.js//Авторизація тільки при Експорті даних з додатку на сайт
+// app/auth/app/page.js
+//Авторизація тільки при Експорті даних з додатку на сайт
+//не працює експорт з додатку
 "use client"
 
 import React, { useState, useTransition, useEffect } from "react"
@@ -147,14 +149,14 @@ export default function AppAuthPage() {
 
   // НОВЕ: якщо це import-потік (звичайний перегляд/імпорт з сайту) — авторизація не потрібна.
   // Показуємо робочий екран очікування замість форми логіну.
-  //   if (flow !== "export") {
-  //     return (
-  //       <Screen>
-  //         <Spinner small />
-  //         <p className="text-gray-400 mt-3">Готово до обміну даними...</p>
-  //       </Screen>
-  //     )
-  //   }
+  if (flow !== "export") {
+    return (
+      <Screen>
+        <Spinner small />
+        <p className="text-gray-400 mt-3">Готово до обміну даними...</p>
+      </Screen>
+    )
+  }
 
   // Форма логіну — показується ТІЛЬКИ коли flow === "export" і юзер не авторизований
   return (
