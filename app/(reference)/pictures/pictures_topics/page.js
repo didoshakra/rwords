@@ -53,7 +53,6 @@ const columns = [
 ]
 
 export default function TopicsPage() {
-  //   const { isFromApp } = useAuth()
   const { data: session, status } = useSession()
   const user = session?.user
   const [picturesTopics, setPicturesTopics] = useState([])

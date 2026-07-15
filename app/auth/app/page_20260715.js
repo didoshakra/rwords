@@ -1,37 +1,23 @@
-// app/auth/app/page.js//Авторизація тільки при Експорті даних з додатку на сайт
+// app/auth/app/page.js//Завжди показує авторизацію
 "use client"
 
 import React, { useState, useTransition, useEffect } from "react"
 import { signIn, useSession } from "next-auth/react"
-import { useSearchParams } from "next/navigation"
 
 export default function AppAuthPage() {
   const { data: session, status } = useSession()
-  const searchParams = useSearchParams()
-  // flow = "export" -> потрібна авторизація (додаток -> сайт, треба author_id)
-  // flow = "import" (або відсутній) -> авторизація НЕ потрібна (сайт -> додаток)
-  const flow = searchParams.get("flow") || "import"
-
   const [form, setForm] = useState({ email: "", password: "" })
   const [showPassword, setShowPassword] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState("")
   const [appState, setAppState] = useState("idle") // idle | importing | done | error
 
-  // Сигналізуємо додатку, коли можна надсилати/приймати дані
+  // Після логіну — повідомляємо додаток
   useEffect(() => {
-    if (status === "loading") return
-
-    if (flow === "export") {
-      // Для експорту сигналізуємо тільки коли реально авторизовані
-      if (status === "authenticated" && session?.user?.id) {
-        window.ReactNativeWebView?.postMessage(JSON.stringify({ type: "rwords-auth-ok", userId: session.user.id }))
-      }
-    } else {
-      // Для import-потоку авторизація не потрібна — одразу готові приймати/віддавати дані
-      window.ReactNativeWebView?.postMessage(JSON.stringify({ type: "rwords-auth-ok" }))
+    if (status === "authenticated" && session?.user?.id) {
+      window.ReactNativeWebView?.postMessage(JSON.stringify({ type: "rwords-auth-ok", userId: session.user.id }))
     }
-  }, [status, session, flow])
+  }, [status, session])
 
   // Слухаємо postMessage від додатку з даними для імпорту
   useEffect(() => {
@@ -47,7 +33,7 @@ export default function AppAuthPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             words: data.payload.words,
-            topicName: data.payload.topicName,
+            topicName: data.payload.topicName, // назва теми з додатку
           }),
         })
         const result = await res.json()
@@ -145,18 +131,7 @@ export default function AppAuthPage() {
     )
   }
 
-  // НОВЕ: якщо це import-потік (звичайний перегляд/імпорт з сайту) — авторизація не потрібна.
-  // Показуємо робочий екран очікування замість форми логіну.
-  if (flow !== "export") {
-    return (
-      <Screen>
-        <Spinner small />
-        <p className="text-gray-400 mt-3">Готово до обміну даними...</p>
-      </Screen>
-    )
-  }
-
-  // Форма логіну — показується ТІЛЬКИ коли flow === "export" і юзер не авторизований
+  // Форма логіну
   return (
     <Screen>
       <h1 className="text-2xl font-bold text-white mb-6 text-center">Вхід до RWords</h1>
