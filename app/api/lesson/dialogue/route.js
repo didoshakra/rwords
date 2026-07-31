@@ -63,7 +63,7 @@ Where do you live?`
 
 export async function POST(req) {
   try {
-    const {rule, words, history, userMessage} = await req.json()
+    const { rule, words, level, history, userMessage } = await req.json()
 
     const systemPrompt = buildSystemPrompt(rule, words, level)
 
