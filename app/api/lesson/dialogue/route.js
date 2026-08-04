@@ -59,7 +59,7 @@ What is your favorite color?
 Приклад, якщо є помилка:
 Помилка: ти написав "I is student", а треба "I am a student" — з дієсловом "to be" займенник "I" вимагає форми "am".
 Where do you live?`
-}
+}   
 
 export async function POST(req) {
   try {
