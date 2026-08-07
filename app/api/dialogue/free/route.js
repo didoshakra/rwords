@@ -33,7 +33,7 @@ export async function POST(req) {
         role: "user",
         content: userMessage?.trim()
           ? userMessage
-          : "(Почни розмову. Привітайся і постав легке питання для знайомства.)",
+          : "(Start the conversation. Greet me and ask a simple question to get to know me.)",
       },
     ]
 
