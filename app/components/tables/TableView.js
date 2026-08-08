@@ -833,7 +833,8 @@ export default function TableView({
         <div
           className="mb-3 px-4 py-2 rounded-lg text-sm font-medium text-center shadow"
           style={{
-            background: message.includes("Помилка") ? "#fee2e2" : "#dcfce7",
+            // background: message.includes("Помилка") ? "#fee2e2" : "#dcfce7",
+            background: message.includes("Помилка") ? "#fee2e2" : "#f59e0b",
             color: message.includes("Помилка") ? "#b91c1c" : "#15803d",
             border: message.includes("Помилка") ? "1px solid #fca5a5" : "1px solid #86efac",
           }}
