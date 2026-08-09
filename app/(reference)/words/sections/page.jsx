@@ -34,7 +34,6 @@ export default function SectionsPage() {
   const [message, setMessage] = useState("")
   const [modal, setModal] = useState(null) // null | 'add' | { type: 'edit', section }
   const [name, setName] = useState("")
-  const [img, setImg] = useState("")
   const [pn, setPn] = useState(0)
   const [isPending, startTransition] = useTransition()
   const [actionsOk, setActionsOk] = useState(false) //Для успішноговиконання акцій(delete)
@@ -51,7 +50,6 @@ export default function SectionsPage() {
 
   const openAddModal = () => {
     setName("")
-    setImg("")
     setPn(0)
     setModal("add")
     setMessage("")
@@ -59,7 +57,6 @@ export default function SectionsPage() {
 
   const openEditModal = (section) => {
     setName(section.name)
-    setImg(section.img)
     setPn(section.pn)
     setModal({ type: "edit", section })
     setMessage("")
@@ -68,7 +65,6 @@ export default function SectionsPage() {
   const closeModal = () => {
     setModal(null)
     setName("")
-    setImg("")
     setPn(0)
     setMessage("")
   }
@@ -80,10 +76,10 @@ export default function SectionsPage() {
       try {
         if (!user) throw new Error("Потрібна авторизація")
         if (modal?.type === "edit") {
-          await updateSection(modal.section.id, { name, img, pn }, user)
+          await updateSection(modal.section.id, { name,  pn }, user)
           setMessage("Секцію оновлено")
         } else {
-          await createSection({ name, img, pn }, user.id)
+          await createSection({ name, pn }, user.id)
           setMessage("Секцію додано")
         }
         closeModal()
@@ -137,14 +133,7 @@ export default function SectionsPage() {
       markIfOwner: true, // 🚀 нове поле
     },
     { label: "Група тем", accessor: "name", type: "text", width: 250 },
-    // { label: "Папка картинки", accessor: "img", type: "text", width: 250 },
-    // {
-    //   label: "Sid",
-    //   accessor: "id",
-    //   type: "integer",
-    //   width: 40,
-    //   styleCell: { alignItems: "center" },
-    // },
+
   ]
   return (
     <main className="p-6 max-w-4xl mx-auto">
@@ -174,13 +163,7 @@ export default function SectionsPage() {
             onChange={(e) => setName(e.target.value)}
             className="border p-2 rounded"
           />
-          <input
-            type="text"
-            placeholder="Зображення"
-            value={img}
-            onChange={(e) => setImg(e.target.value)}
-            className="border p-2 rounded"
-          />
+
           <input
             type="number"
             placeholder="Порядок"

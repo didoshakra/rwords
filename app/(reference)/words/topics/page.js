@@ -32,23 +32,24 @@ function Modal({ open, onClose, children }) {
 //Для TableView
 const columns = [
   { label: "Тема", accessor: "name", type: "text", width: 400 },
-//   {
-//     label: "№п",
-//     accessor: "pn",
-//     type: "integer",
-//     width: 50,
-//     styleCell: { alignItems: "center" },
-//     //   styleCellText: {color: 'green'},
-//     markIfOwner: true, // 🚀 нове поле
-//   },
+  { label: "Посилання", accessor: "link", type: "text", width: 250 },
+  //   {
+  //     label: "№п",
+  //     accessor: "pn",
+  //     type: "integer",
+  //     width: 50,
+  //     styleCell: { alignItems: "center" },
+  //     //   styleCellText: {color: 'green'},
+  //     markIfOwner: true, // 🚀 нове поле
+  //   },
 
-//   {
-//     label: "Tid",
-//     accessor: "id",
-//     type: "integer",
-//     width: 40,
-//     styleCell: { alignItems: "center" },
-//   },
+  //   {
+  //     label: "Tid",
+  //     accessor: "id",
+  //     type: "integer",
+  //     width: 40,
+  //     styleCell: { alignItems: "center" },
+  //   },
 ]
 
 export default function TopicsPage() {
@@ -60,6 +61,7 @@ export default function TopicsPage() {
   const [modal, setModal] = useState(null) // null | {type, topic}
   const [id, setId] = useState(null)
   const [name, setName] = useState("")
+  const [link, setLink] = useState("")
   const [section_id, setSectionId] = useState("")
   const [pn, setPn] = useState("")
   const [message, setMessage] = useState("")
@@ -88,6 +90,7 @@ export default function TopicsPage() {
   const openAddModal = () => {
     setId(null)
     setName("")
+    setLink(t.link || "")
     setPn("")
     setSectionId("")
     setModal({ type: "add" })
@@ -107,6 +110,7 @@ export default function TopicsPage() {
     setModal(null)
     setId(null)
     setName("")
+    setLink("")
     setPn("")
     setSectionId("")
     setMessage("")
@@ -121,6 +125,7 @@ export default function TopicsPage() {
 
     const data = {
       name: name.trim(),
+      link: link.trim(),
       pn: Number(pn),
       section_id: Number(section_id),
     }
@@ -161,16 +166,6 @@ export default function TopicsPage() {
     console.log("topics/handleDelete/t=", t)
     if (!confirm(`Ви впевнені, що хочете завантажити ${t.length} тем?`)) return
 
-    // startTransition(async () => {
-    //   try {
-    //     // await deleteTopic(t.id, user)
-    //     await deleteSelectedTopics(t) // ✅ вже масив
-    //     setMessage("Видалено")
-    //     loadTopics()
-    //   } catch (err) {
-    //     setMessage("Помилка: " + err.message)
-    //   }
-    // })
   }
 
   const deleteSelectedTopics = async (selectedTopics) => {
@@ -289,6 +284,19 @@ export default function TopicsPage() {
               onChange={(e) => setName(e.target.value)}
               className="border p-2 rounded"
               required
+            />
+          </div>
+          <div>
+            <label htmlFor="link" className="block font-medium mb-1">
+              Посилання (URL)
+            </label>
+            <input
+              id="link"
+              type="text"
+              placeholder="https://..."
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              className="border p-2 rounded"
             />
           </div>
           <div>

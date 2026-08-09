@@ -121,10 +121,10 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
       const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
       const maxPn = maxPnRes[0].maxPn || 0
       const insertSectionRes = await sql`
-        INSERT INTO sections (name, img, pn, user_id)
-        VALUES (${section.name}, ${section.img || "other"}, ${maxPn + 1}, ${userId})
+        INSERT INTO sections (name, pn, user_id)
+        VALUES (${section.name}, ${maxPn + 1}, ${userId})
         RETURNING id
-      `
+        `
       sectionId = insertSectionRes[0].id
       importedSectionsCount++
     }
@@ -144,9 +144,9 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
         `
         const maxPnTopic = maxPnTopicRes[0].maxPn || 0
         const insertTopicRes = await sql`
-          INSERT INTO topics (name, img, section_id, pn, user_id)
-          VALUES (${topic.name}, ${topic.img || "other"}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
-          RETURNING id
+            INSERT INTO topics (name, link, section_id, pn, user_id)
+            VALUES (${topic.name}, ${topic.link || ""}, ${sectionId}, ${maxPnTopic + 1}, ${userId})
+            RETURNING id
         `
         topicId = insertTopicRes[0].id
         importedTopicsCount++
@@ -189,9 +189,6 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
 
 export async function importCSV(fileContent, reversImportCSV, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
-
-  const isUrl = (img) => img.startsWith("http://") || img.startsWith("https://")
-
   try {
     const lines = fileContent
       .split("\n")
@@ -212,9 +209,7 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
 
     // --- 2. Парсимо першу секцію ---
     const firstSectionLine = lines[sectionLineIdx].substring(2).trim()
-    let [currentSectionName, currentSectionImgRaw = "other"] = firstSectionLine.split(";").map((s) => s.trim())
-    const firstSectionImg = isUrl(currentSectionImgRaw) ? null : currentSectionImgRaw
-
+    const [currentSectionName] = firstSectionLine.split(";").map((s) => s.trim())
     // --- 3. Знаходимо першу тему ---
     let topicLineIdx = sectionLineIdx + 1
     while (topicLineIdx < lines.length && lines[topicLineIdx].startsWith("//")) {
@@ -228,15 +223,13 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
     const firstTopicLine = lines[topicLineIdx].startsWith("*")
       ? lines[topicLineIdx].substring(1).trim()
       : lines[topicLineIdx]
-    const [firstTopicName, firstTopicImgRaw = "other"] = firstTopicLine.split(";").map((s) => s.trim())
-    const firstTopicImg = isUrl(firstTopicImgRaw) ? null : firstTopicImgRaw
+    const [firstTopicName, firstTopicLink] = firstTopicLine.split(";").map((s) => s.trim())
 
     // --- 4. Будуємо структуру секцій ---
     let sections = [
       {
         name: currentSectionName,
-        img: firstSectionImg,
-        topics: [{ name: firstTopicName, img: firstTopicImg, words: [] }],
+        topics: [{ name: firstTopicName, link: firstTopicLink || "", words: [] }],
       },
     ]
     let currentSection = sections[0]
@@ -249,24 +242,21 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
 
       if (line.startsWith("**")) {
         // Нова секція
-        const [secName, secImgRaw = "other"] = line
+        const [secName] = line
           .substring(2)
           .trim()
           .split(";")
           .map((s) => s.trim())
-        const secImg = isUrl(secImgRaw) ? null : secImgRaw
-        currentSection = { name: secName, img: secImg, topics: [] }
+        currentSection = { name: secName, topics: [] }
         sections.push(currentSection)
         currentTopic = null
       } else if (line.startsWith("*")) {
-        // Нова тема
-        const [topicName, topicImgRaw = "other"] = line
+        const [topicName, topicLink] = line
           .substring(1)
           .trim()
           .split(";")
           .map((s) => s.trim())
-        const topicImg = isUrl(topicImgRaw) ? null : topicImgRaw
-        currentTopic = { name: topicName, img: topicImg, words: [] }
+        currentTopic = { name: topicName, link: topicLink || "", words: [] }
         currentSection.topics.push(currentTopic)
       } else {
         // Слово: word;group_key;type;translation;img
@@ -278,16 +268,8 @@ export async function importCSV(fileContent, reversImportCSV, userId) {
         const translation = reversImportCSV ? rawWord : parts[3] || ""
         const wordCount = rawWord.trim().split(/\s+/).length
         const group_key = parts[1] !== undefined && parts[1] !== "" ? parts[1] : wordCount === 1 ? rawWord : ""
-        const type =
-          parts[2] !== undefined && parts[2] !== ""
-            ? parts[2]
-            : wordCount === 1
-              ? "word"
-              : /[.?!]$/.test(rawWord)
-                ? "sentence"
-                : "phrase"
+        const type = parts[2] !== undefined && parts[2] !== "" ? parts[2] : wordCount === 1 ? "word" : "phrase"
         const img = parts[4] || ""
-
         currentTopic.words.push({ word, group_key, type, translation, img })
       }
     }
@@ -350,9 +332,9 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
   })
 
   if (!res.ok) {
-    const errBody = await res.text().catch(() => "");
-    console.error("DeepL API error:", res.status, errBody);
-    throw new Error(`DeepL ${res.status}: ${errBody || "Не вдалося перекласти слово"}`);
+    const errBody = await res.text().catch(() => "")
+    console.error("DeepL API error:", res.status, errBody)
+    throw new Error(`DeepL ${res.status}: ${errBody || "Не вдалося перекласти слово"}`)
   }
 
   const data = await res.json()
@@ -367,7 +349,6 @@ export async function translateWord(id, textToTranslate, fromLanguage, toLanguag
 
   return cleaned
 }
-
 
 // Перерахунок pn після переміщення рядків
 export async function updateWordsPn(words) {
@@ -404,7 +385,7 @@ export async function translateText(text, fromLanguage, toLanguage) {
   return data?.translations?.[0]?.text ?? ""
 }
 
-        // **********
+// **********
 // Знаходить або створює персональну секцію юзера + тему по назві тексту
 export async function getOrCreateInboxTopic(userId, userName, textTitle) {
   if (!userId) throw new Error("Користувач не авторизований")
@@ -429,9 +410,9 @@ export async function getOrCreateInboxTopic(userId, userName, textTitle) {
     const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM sections`
     const pn = (maxPnRes[0].maxpn || 0) + 1
     const inserted = await sql`
-      INSERT INTO sections (name, img, pn, user_id, is_private)
-      VALUES (${sectionName}, 'inbox', ${pn}, ${userId}, true)
-      RETURNING id, name
+        INSERT INTO sections (name, pn, user_id, is_private)
+        VALUES (${sectionName}, ${pn}, ${userId}, true)
+        RETURNING id, name
     `
     sectionId = inserted[0].id
     sectionName = inserted[0].name
@@ -452,9 +433,9 @@ export async function getOrCreateInboxTopic(userId, userName, textTitle) {
     const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM topics WHERE section_id = ${sectionId}`
     const pn = (maxPnRes[0].maxpn || 0) + 1
     const inserted = await sql`
-      INSERT INTO topics (name, img, section_id, pn, user_id)
-      VALUES (${topicName}, 'other', ${sectionId}, ${pn}, ${userId})
-      RETURNING id
+        INSERT INTO topics (name, section_id, pn, user_id)
+        VALUES (${topicName}, ${sectionId}, ${pn}, ${userId})
+        RETURNING id
     `
     topicId = inserted[0].id
   }
@@ -495,7 +476,7 @@ export async function addWordFromReader(foreignText, nativeTranslation, topicId,
   const pn = (maxPnRes[0].maxpn || 0) + 1
 
   const wordCount = foreignText.trim().split(/\s+/).length
-  const type = wordCount === 1 ? "word" : /[.?!]$/.test(foreignText) ? "sentence" : "phrase"
+  const type = wordCount === 1 ? "word" : "phrase"
 
   const result = await sql`
     INSERT INTO words (word, translation, topic_id, pn, know, img, group_key, type, user_id)

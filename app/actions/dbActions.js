@@ -65,7 +65,6 @@ export async function initTables() {
       id SERIAL PRIMARY KEY,
       pn INTEGER DEFAULT 0,
       name TEXT NOT NULL,
-      img TEXT DEFAULT 'other',
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_user_section FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );`
@@ -78,8 +77,8 @@ export async function initTables() {
   if (sectionsExist.length === 0) {
     // додати запис "інше" у sections
     await sql`
-    INSERT INTO sections (pn, name, img, user_id)
-    VALUES (0, 'інше', 'other', ${userId})`
+    INSERT INTO sections (pn, name,  user_id)
+    VALUES (0, 'інше',  ${userId})`
   }
 
   // topics
@@ -88,7 +87,7 @@ export async function initTables() {
       id SERIAL PRIMARY KEY,
       pn INTEGER DEFAULT 0,
       name TEXT NOT NULL,
-      img TEXT DEFAULT 'other',
+      link TEXT DEFAULT '',
       section_id INTEGER DEFAULT 1,
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_section FOREIGN KEY(section_id) REFERENCES sections(id) ON DELETE CASCADE,

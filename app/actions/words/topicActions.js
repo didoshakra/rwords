@@ -16,10 +16,10 @@ export async function getTopics() {
 export async function createTopic(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")
 
-  const { name, img = "other", pn = 0, section_id = 1 } = form
+  const { name, link = "", pn = 0, section_id = 1 } = form
 
   const result = await sql`
-    INSERT INTO topics (name, img, pn, section_id, user_id)
+    INSERT INTO topics (name, link, pn, section_id, user_id)
     VALUES (${name}, ${img}, ${pn}, ${section_id}, ${user_id})
     RETURNING *
   `
@@ -37,11 +37,11 @@ export async function updateTopic(id, form, user) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const { name, img = "other", pn = 0, section_id = 1 } = form
+  const { name, link = "", pn = 0, section_id = 1 } = form
 
   await sql`
     UPDATE topics
-    SET name = ${name}, img = ${img}, pn = ${pn}, section_id = ${section_id}
+    SET name = ${name}, link = ${link}, pn = ${pn}, section_id = ${section_id}
     WHERE id = ${id}
   `
 }

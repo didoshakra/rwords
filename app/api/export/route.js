@@ -15,19 +15,19 @@ export async function GET(req) {
 
     // 1) Теми
     const topics = await sql`
-      SELECT id, section_id, name, img, pn
-      FROM topics
-      WHERE id = ANY(${ids}::int[])
-    `
+  SELECT id, section_id, name, link, pn
+  FROM topics
+  WHERE id = ANY(${ids}::int[])
+`
 
     // 2) Відповідні секції
     const sectionIds = Array.from(new Set(topics.map((t) => t.section_id)))
     const sections = sectionIds.length
       ? await sql`
-          SELECT id, name, img, pn
-          FROM sections
-          WHERE id = ANY(${sectionIds}::int[])
-        `
+      SELECT id, name, pn
+      FROM sections
+      WHERE id = ANY(${sectionIds}::int[])
+    `
       : []
 
     // 3) Слова обраних тем
