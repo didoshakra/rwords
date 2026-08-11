@@ -25,13 +25,13 @@ export default function HowItWorks() {
       {/* Секція завантаження застосунку */}
       <section className="bg-kBg text-sm sm:text-base lg:text-lg mb-6 text-center py-4 px-4 rounded">
         {/* {user ? ( */}
-          <Link
-            href="/download"
-            className="flex items-center justify-center gap-2 bg-btBg text-btOn dark:text-btOnD px-6 py-3 rounded hover:bg-btBgHov transition "
-          >
-            <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
-            До завантаження застосунку ⬇️
-          </Link>
+        <Link
+          href="/download"
+          className="flex items-center justify-center gap-2 bg-btBg text-btOn dark:text-btOnD px-6 py-3 rounded hover:bg-btBgHov transition "
+        >
+          <Image src="/images/home/RW_know_64.png" alt="RWords" width={24} height={24} priority />
+          До завантаження застосунку ⬇️
+        </Link>
         {/* ) : (
           <>
             <p className="mb-6  text-pOn  dark:text-pOnD font-semibold">
@@ -178,6 +178,12 @@ export default function HowItWorks() {
             📋
             <Link href="#wwwWordsImport" className="text-linkOn underline ml-1">
               Завантаження списку слів з сайту
+            </Link>
+          </li>
+          <li className="h4Text text-h3On mb-1">
+            🧩
+            <Link href="#chromeExtension" className="text-blue-600 underline ml-1">
+              Розширення для Chrome — читайте і додавайте слова прямо з будь-якого сайту
             </Link>
           </li>
         </ul>
@@ -477,6 +483,35 @@ export default function HowItWorks() {
             🔄 Обновлюйте словниковий запас імпортуючи нові списки з сайту в застосунок
           </h4>
           {/*  */}
+        </ScreenBlock>
+        <ScreenBlock
+          id="chromeExtension"
+          title="🧩 Розширення для Chrome"
+          img="/rwords_screens/scr_chromeExtension.jpg"
+        >
+          <h4 className="font-bold mb-1">Що це дає</h4>
+          <p className="pOn text-Text mb-2 indent-8">
+            Розширення дозволяє виділяти слова чи фрази просто під час читання англійських текстів на будь-якому сайті —
+            переклад і додавання у свій словник відбувається без переходу на RWords.
+          </p>
+          <h4 className="font-bold mb-1">Як користуватись</h4>
+          <ul className="list-disc pl-4 mb-4">
+            <li>
+              🧩 Встановіть розширення в Chrome (при першому запуску попросить увійти зареєстрованим користувачем
+              RWords)
+            </li>
+            <li>✍️ Виділіть текст на сторінці — під фрагментом з'явиться кнопка «+»</li>
+            <li>➕ Натисніть «+» — з'явиться переклад і дві кнопки: «Додати» та «✕»</li>
+            <li>
+              ✅ «Додати» — зберігає слово у ваш словник, у розділ «Слова», тема — за назвою статті, яку ви читаєте
+            </li>
+          </ul>
+          <h4 className="font-bold mb-1">
+            📥 Завантажити розширення можна
+            <a href="/PATH_TO_ZIP" className="text-blue-600 underline ml-1">
+              тут
+            </a>
+          </h4>
         </ScreenBlock>
       </ScreenBlock>
 
