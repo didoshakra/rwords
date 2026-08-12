@@ -508,7 +508,7 @@ export default function HowItWorks() {
           </ul>
           <h4 className="font-bold mb-1">
             📥 Завантажити розширення можна
-            <a href="/PATH_TO_ZIP" className="text-blue-600 underline ml-1">
+            <a href="/extension/rwords-extension.zip" className="text-blue-600 underline ml-1">
               тут
             </a>
           </h4>
