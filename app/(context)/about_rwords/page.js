@@ -205,8 +205,7 @@ export default function HowItWorks() {
           . Доступний імпорт CSV та автоматичний переклад.
         </p> */}
       </ScreenBlock>
-
-      <ScreenBlock title="🧭 Застосунок має 4-й основні екрани.">
+      <ScreenBlock title="🧭  Застосунок має 4-й основні екрани.">
         {/* <h4 className="h4Text text-h3On text-center mb-1">
           Вони відкриваються по натисканню кнопок в нижній навігаційній панелі.
         </h4> */}
