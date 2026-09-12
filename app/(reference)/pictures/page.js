@@ -271,7 +271,7 @@ export default function PicturesPage() {
 const handleSubmit = async (e) => {
   e.preventDefault()
   if (!user) return setMessage("Потрібна авторизація")
-  if (!section_id) return setMessage("Оберіть автора")
+  if (!section_id) return setMessage("Оберіть групу")
   if (!topic_id) return setMessage("Оберіть тему")
 
   setIsUploading(true)
@@ -421,7 +421,7 @@ const handleSubmit = async (e) => {
         onDelete={handleDelete} // передаємо лише id
         level0Head="Медіа каталог"
         level1Head="Тема"
-        level2Head="Автор"
+        level2Head="Група"
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки
         message={message} //Для повідомлення
@@ -450,7 +450,7 @@ const handleSubmit = async (e) => {
           )}
           <div>
             <label htmlFor="section_id" className="block font-medium mb-1">
-              Автор
+              Група
             </label>
             <select
               id="section_id"

@@ -119,7 +119,7 @@ export default function BlogPostPage() {
   return (
     <main className="max-w-3xl mx-auto p-6 text-pOn dark:text-pOnD">
       <h1 className="text-h1On text-xl sm:text-2xl lg:text-3xl  font-bold mb-2">{post.title}</h1>
-      <p className="mb-4 text-h2On">Автор: {post.user_name || "Невідомо"}</p>
+      <p className="mb-4 text-h2On">Група: {post.user_name || "Невідомо"}</p>
       <article className=" mb-8 whitespace-pre-wrap">{post.content}</article>
 
       <section>

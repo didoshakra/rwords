@@ -340,7 +340,7 @@ export default function TableView({
   level1Id,
   level2Id,
   level1Head = "Тема",
-  level2Head = "Автор",
+  level2Head = "Група",
   columns,
   title,
   onAdd,
@@ -695,7 +695,7 @@ export default function TableView({
                 onClick={onAdd}
                 className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
               >
-                ➕Додати слово
+                ➕Додати 
               </button>
             )}
             {onClickCsv && (

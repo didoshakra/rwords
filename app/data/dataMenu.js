@@ -89,7 +89,7 @@ export const headMenu = [
       },
       {
         id: 2,
-        title: "Каталог/Теми/Автори",
+        title: "Каталог(Теми/Групи)",
         roles: ["admin", "moderator", "user"], // ❗️ admin і moderator
         submenu: [
           {
@@ -99,7 +99,7 @@ export const headMenu = [
           },
           {
             id: 2,
-            title: "Автори",
+            title: "Групи",
             url: "/pictures/pictures_sections",
           },
           {
