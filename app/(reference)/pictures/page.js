@@ -415,11 +415,11 @@ const handleSubmit = async (e) => {
         level1Id="topic_id"
         level2Id="pictures_sections_id"
         columns={columns}
-        title={"Медіа каталог"}
+        title={"Зображень і відео"}
         onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
-        level0Head="Медіа каталог"
+        level0Head="Зображень і відео       "
         level1Head="Тема"
         level2Head="Група"
         sortField={"pn"} //поле для порядку
@@ -462,7 +462,7 @@ const handleSubmit = async (e) => {
               className="border p-2 rounded"
               required
             >
-              <option value="">Оберіть автора</option>
+              <option value="">Оберіть групу</option>
               {sections.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
