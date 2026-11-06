@@ -16,16 +16,16 @@ export async function getSections(user_id = null, role = null) {
   `
   return result
 }
- 
+
 // Створити секцію (тільки зареєстровані користувачі)
 export async function createSection(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")
 
-  const { name, img = "other", pn = 0, is_private = false } = form
+  const { name, link = "", pn = 0, is_private = false } = form
 
   const result = await sql`
-    INSERT INTO sections (name, img, pn, user_id, is_private)
-    VALUES (${name}, ${img}, ${pn}, ${user_id}, ${is_private})
+    INSERT INTO sections (name, link, pn, user_id, is_private)
+    VALUES (${name}, ${link}, ${pn}, ${user_id}, ${is_private})
     RETURNING *
   `
   return result[0]
@@ -43,11 +43,11 @@ export async function updateSection(id, form, user) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const { name, img = "other", pn = 0, is_private = false } = form
+  const { name, link = "other", pn = 0, is_private = false } = form
 
   await sql`
   UPDATE sections
-  SET name = ${name}, img = ${img}, pn = ${pn}, is_private = ${is_private}
+  SET name = ${name}, link = ${link}, pn = ${pn}, is_private = ${is_private}
   WHERE id = ${id}
   `
 }

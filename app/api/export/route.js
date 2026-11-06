@@ -24,7 +24,7 @@ export async function GET(req) {
     const sectionIds = Array.from(new Set(topics.map((t) => t.section_id)))
     const sections = sectionIds.length
       ? await sql`
-      SELECT id, name, pn
+      SELECT id, name, pn, link
       FROM sections
       WHERE id = ANY(${sectionIds}::int[])
     `

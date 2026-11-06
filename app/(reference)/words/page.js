@@ -191,7 +191,7 @@ export default function WordsPage() {
   const [sectionModal, setSectionModal] = useState(null) // null | "add" | "edit"
   const [sectionId_f, setSectionId_f] = useState("")
   const [sectionName, setSectionName] = useState("")
-  const [sectionImg, setSectionImg] = useState("other")
+  const [sectionLnk, setSectionLnk] = useState("other")
   const [sectionPn, setSectionPn] = useState(0)
 
   // ── Модалка ТЕМИ ──
@@ -235,7 +235,7 @@ export default function WordsPage() {
   const openAddSection = () => {
     setSectionId_f(null)
     setSectionName("")
-    setSectionImg("other")
+    setSectionLnk("other")
     setSectionPn(0)
     setSectionModal("add")
     setMessage("")
@@ -244,7 +244,7 @@ export default function WordsPage() {
   const openEditSection = (section) => {
     setSectionId_f(section.id)
     setSectionName(section.name)
-    setSectionImg(section.img || "other")
+    setSectionLnk(section.img || "other")
     setSectionPn(section.pn || 0)
     setSectionModal("edit")
     setMessage("")
@@ -254,7 +254,7 @@ export default function WordsPage() {
     setSectionModal(null)
     setSectionId_f(null)
     setSectionName("")
-    setSectionImg("other")
+    setSectionLnk("other")
     setSectionPn(0)
     setMessage("")
   }
@@ -263,7 +263,7 @@ export default function WordsPage() {
     e.preventDefault()
     if (!user) return setMessage("Потрібна авторизація")
     if (!sectionName.trim()) return setMessage("Введіть назву секції")
-    const form = { name: sectionName.trim(), img: sectionImg || "other", pn: Number(sectionPn) || 0 }
+    const form = { name: sectionName.trim(), img: sectionLnk || "other", pn: Number(sectionPn) || 0 }
     startTransition(async () => {
       try {
         if (sectionModal === "edit") {
@@ -962,12 +962,12 @@ export default function WordsPage() {
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">Зображення (img)</label>
+            <label className="block font-medium mb-1">Посилання (lnk)</label>
             <input
               type="text"
               placeholder="other"
-              value={sectionImg}
-              onChange={(e) => setSectionImg(e.target.value)}
+              value={sectionLnk}
+              onChange={(e) => setSectionLnk(e.target.value)}
               className="border p-2 rounded w-full"
             />
           </div>

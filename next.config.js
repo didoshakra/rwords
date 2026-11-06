@@ -9,7 +9,7 @@ const nextConfig = {
         pathname: "/**", // дозволяє всі шляхи
       },
     ],
-  },
+  },        
   experimental: {
     serverActions: {
       bodySizeLimit: "30mb",

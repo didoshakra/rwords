@@ -20,7 +20,7 @@ export async function createTopic(form, user_id) {
 
   const result = await sql`
     INSERT INTO topics (name, link, pn, section_id, user_id)
-    VALUES (${name}, ${img}, ${pn}, ${section_id}, ${user_id})
+    VALUES (${name}, ${link}, ${pn}, ${section_id}, ${user_id})
     RETURNING *
   `
   return result[0]

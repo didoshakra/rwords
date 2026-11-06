@@ -64,6 +64,7 @@ export async function initTables() {
     CREATE TABLE IF NOT EXISTS sections (
       id SERIAL PRIMARY KEY,
       pn INTEGER DEFAULT 0,
+      link TEXT DEFAULT '',
       name TEXT NOT NULL,
       user_id INTEGER NOT NULL,
       CONSTRAINT fk_user_section FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -71,8 +72,8 @@ export async function initTables() {
 
   // додати запис "інше" у sections
   const userId = 1 // для демо, бо ще нема авторизації
-  // Перевіряємо, чи є хоча б один рядок у topics
-  const sectionsExist = await sql`SELECT 1 FROM topics LIMIT 1;`
+  // Перевіряємо, чи є хоча б один рядок у sections
+  const sectionsExist = await sql`SELECT 1 FROM sections LIMIT 1;`
 
   if (sectionsExist.length === 0) {
     // додати запис "інше" у sections
@@ -100,8 +101,8 @@ export async function initTables() {
   if (topicsExist.length === 0) {
     // додати запис "інше" у topics
     await sql`
-    INSERT INTO topics (pn, name, img, section_id, user_id)
-    VALUES (0, 'інше', 'other', 1, ${userId})`
+    INSERT INTO topics (pn, name, link, section_id, user_id)
+    VALUES (0, 'інше', '', 1, ${userId})`
   }
 
   // words
@@ -175,7 +176,7 @@ export async function initTables() {
       title TEXT NOT NULL,
       file_name TEXT,
       url TEXT NOT NULL,
-      public_id  TEXT NOT NULL
+      public_id  TEXT NOT NULL,
       format TEXT,
       width INTEGER,
       height INTEGER,
