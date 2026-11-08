@@ -5,7 +5,6 @@
 "use client"
 
 import React, { useState, useTransition } from "react"
-import { initTables, resetTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
 import { clearCloudinaryAndDB } from "@/app/actions/cloudinary/clearCloudinaryAndDB"
 import { initTables, resetTables, resetAllTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
 
