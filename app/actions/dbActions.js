@@ -2,8 +2,14 @@
 "use server"
 
 import { sql } from "@/lib/dbConfig"
+import { requireAdmin, requireAdminOrBootstrap } from "@/lib/requireAdmin"
 
 export async function initTables() {
+  await requireAdminOrBootstrap()
+  await initTablesInternal()
+}
+
+async function initTablesInternal() {
   // --- НОВА таблиця статистики ---
   await sql`
       CREATE TABLE IF NOT EXISTS site_stats (
@@ -60,10 +66,11 @@ export async function initTables() {
 
   // додати запис "інше" у sections
   const userId = 1 // для демо, бо ще нема авторизації
+  const userExists = (await sql`SELECT 1 FROM users WHERE id = ${userId}`).length > 0
   // Перевіряємо, чи є хоча б один рядок у sections
   const sectionsExist = await sql`SELECT 1 FROM sections LIMIT 1;`
 
-  if (sectionsExist.length === 0) {
+  if (userExists && sectionsExist.length === 0) {
     // додати запис "інше" у sections
     await sql`
     INSERT INTO sections (pn, name,  user_id)
@@ -86,7 +93,7 @@ export async function initTables() {
   // Перевіряємо, чи є хоча б один рядок у topics
   const topicsExist = await sql`SELECT 1 FROM topics LIMIT 1;`
 
-  if (topicsExist.length === 0) {
+  if (userExists && topicsExist.length === 0) {
     // додати запис "інше" у topics
     await sql`
     INSERT INTO topics (pn, name, link, section_id, user_id)
@@ -125,7 +132,7 @@ export async function initTables() {
   // Перевіряємо, чи є хоча б один рядок у pictures_sections
   const picturesSectionsExist = await sql`SELECT 1 FROM pictures_sections LIMIT 1;`
 
-  if (picturesSectionsExist.length === 0) {
+  if (userExists && picturesSectionsExist.length === 0) {
     // додати запис "інше" у sections
     await sql`
     INSERT INTO pictures_sections (pn, name, user_id)
@@ -147,7 +154,7 @@ export async function initTables() {
   // Перевіряємо, чи є хоча б один рядок у pictures_topics
   const picturesTopicsExist = await sql`SELECT 1 FROM pictures_topics LIMIT 1;`
 
-  if (picturesTopicsExist.length === 0) {
+  if (userExists && picturesTopicsExist.length === 0) {
     // додати запис "інше" у pictures_topics
     await sql`
     INSERT INTO pictures_topics (pn, name, pictures_sections_id, user_id)
@@ -239,13 +246,15 @@ export async function initTables() {
 }
 // ============================================================================
 export async function resetTables() {
-  // Потрібно видаляти таблиці у зворотньому порядку через FK залежності
-  await sql`DROP TABLE IF EXISTS site_stats;` // Спочатку нову статистику (якщо є)
-  // pictures-related
+  await requireAdmin()
+  await sql`DROP TABLE IF EXISTS site_stats;`
+  await sql`DROP TABLE IF EXISTS api_tokens;`
+  await sql`DROP TABLE IF EXISTS users_settings;`
+  await sql`DROP TABLE IF EXISTS feedback;`
+  await sql`DROP TABLE IF EXISTS user_stats;`
   await sql`DROP TABLE IF EXISTS pictures;`
   await sql`DROP TABLE IF EXISTS pictures_topics;`
   await sql`DROP TABLE IF EXISTS pictures_sections;`
-  // blog and words
   await sql`DROP TABLE IF EXISTS comments;`
   await sql`DROP TABLE IF EXISTS posts;`
   await sql`DROP TABLE IF EXISTS words;`
@@ -253,7 +262,7 @@ export async function resetTables() {
   await sql`DROP TABLE IF EXISTS sections;`
   await sql`DROP TABLE IF EXISTS users;`
 
-  await initTables()
+  await initTablesInternal()
 }
 // Перевірка підключення
 export async function checkConnection() {
@@ -272,6 +281,7 @@ export async function checkConnection() {
 // UPDATE, DELETE — тільки власник (user_id = auth.uid()).
 export async function createRLSPolicies() {
   // Увімкнути RLS на таблицях
+  await requireAdmin()
   await sql`ALTER TABLE users ENABLE ROW LEVEL SECURITY;`
   await sql`ALTER TABLE sections ENABLE ROW LEVEL SECURITY;`
   await sql`ALTER TABLE topics ENABLE ROW LEVEL SECURITY;`
