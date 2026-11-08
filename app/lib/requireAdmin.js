@@ -1,7 +1,7 @@
 // lib/requireAdmin.js
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
-import { sql } from "@/lib/dbConfig"
+import { sql } from "@/app/lib/dbConfig"
 
 // Суворо: лише адмін
 export async function requireAdmin() {
