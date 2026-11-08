@@ -7,6 +7,7 @@
 import React, { useState, useTransition } from "react"
 import { initTables, resetTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
 import { clearCloudinaryAndDB } from "@/app/actions/cloudinary/clearCloudinaryAndDB"
+import { initTables, resetTables, resetAllTables, checkConnection, createRLSPolicies } from "@/app/actions/dbActions"
 
 
 export default function AdminPage() {
@@ -72,11 +73,37 @@ export default function AdminPage() {
 
         {/* Перестворити таблиці */}
         <button
-          onClick={() => handleAction(resetTables, "✅ Таблиці перестворено успішно!")}
+          onClick={() => {
+            if (
+              !confirm(
+                "⚠️ Буде видалено всі слова, теми, секції, картинки, пости й статистику. Користувачі й адмін залишаться. Продовжити?",
+              )
+            )
+              return
+            handleAction(resetTables, "✅ Таблиці перестворено успішно!")
+          }}
           disabled={isPending}
           className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
         >
           {isPending ? "⏳ Обробка..." : "Перестворити таблиці (вилученням всіх таблиць)"}
+        </button>
+
+        {/* Повне скидання разом з користувачами */}
+        <button
+          onClick={() => {
+            if (
+              !confirm(
+                "⚠️ УВАГА! Буде видалено ВСЕ, разом з користувачами й адміном. Потім адміна треба буде створити вручну. Продовжити?",
+              )
+            )
+              return
+            if (!confirm("Точно? Дію неможливо скасувати.")) return
+            handleAction(resetAllTables, "✅ Повне скидання виконано")
+          }}
+          disabled={isPending}
+          className="px-6 py-2 bg-red-800 text-white rounded hover:bg-red-900 disabled:opacity-50"
+        >
+          {isPending ? "⏳ Обробка..." : "Повне скидання (разом з користувачами)"}
         </button>
 
         {/* Створення політик доступу */}
@@ -109,7 +136,7 @@ export default function AdminPage() {
         </button>
       </div>
 
-      {message && <p className="text-green-700 font-medium">{message}</p>}
+      {message && <p className="text-green-700 font-medium whitespace-pre-line">{message}</p>}
       {error && <p className="text-red-600 font-medium">{error}</p>}
     </main>
   )

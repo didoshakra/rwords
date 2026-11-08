@@ -6,7 +6,7 @@ import { requireAdmin, requireAdminOrBootstrap } from "@/lib/requireAdmin"
 
 export async function initTables() {
   await requireAdminOrBootstrap()
-  await initTablesInternal()
+  return await initTablesInternal()
 }
 
 async function initTablesInternal() {
@@ -243,9 +243,41 @@ async function initTablesInternal() {
   await sql`
     CREATE INDEX IF NOT EXISTS idx_api_tokens_hash ON api_tokens(token_hash);
     `
+  // ── Нові колонки в уже існуючих таблицях (дописуй сюди по рядку, коли міняєш схему) ──
+  await sql`ALTER TABLE sections ADD COLUMN IF NOT EXISTS link TEXT DEFAULT ''`
+  await sql`ALTER TABLE topics ADD COLUMN IF NOT EXISTS link TEXT DEFAULT ''`
+
+  if (!userExists) {
+    return {
+      message:
+        "⚠️ Таблиці створено, але користувача з id = 1 немає, тому записи «інше» не додано. Що зробити:\n" +
+        "1. У папці сайту: $env:P='НОВИЙ_ПАРОЛЬ'  і далі  node -e \"require('bcrypt').hash(process.env.P,10).then(console.log)\"\n" +
+        "2. У консолі бази: INSERT INTO users (id, email, password_hash, name, role, provider, is_active, email_verified) VALUES (1, 'EMAIL', 'ХЕШ', 'Admin', 'admin', 'credentials', true, true);\n" +
+        "3. Там само: SELECT setval(pg_get_serial_sequence('users','id'), 1);\n" +
+        "4. Натисни «Створити таблиці» ще раз.",
+    }
+  }
+  return { message: "✅ Таблиці створено успішно!" }
 }
 // ============================================================================
 export async function resetTables() {
+  await requireAdmin()
+  await sql`DROP TABLE IF EXISTS site_stats;`
+  await sql`DROP TABLE IF EXISTS user_stats;`
+  await sql`DROP TABLE IF EXISTS pictures;`
+  await sql`DROP TABLE IF EXISTS pictures_topics;`
+  await sql`DROP TABLE IF EXISTS pictures_sections;`
+  await sql`DROP TABLE IF EXISTS comments;`
+  await sql`DROP TABLE IF EXISTS posts;`
+  await sql`DROP TABLE IF EXISTS words;`
+  await sql`DROP TABLE IF EXISTS topics;`
+  await sql`DROP TABLE IF EXISTS sections;`
+
+  return await initTablesInternal()
+}
+
+// повне скидання разом із користувачами
+export async function resetAllTables() {
   await requireAdmin()
   await sql`DROP TABLE IF EXISTS site_stats;`
   await sql`DROP TABLE IF EXISTS api_tokens;`
@@ -262,8 +294,9 @@ export async function resetTables() {
   await sql`DROP TABLE IF EXISTS sections;`
   await sql`DROP TABLE IF EXISTS users;`
 
-  await initTablesInternal()
+  return await initTablesInternal()
 }
+
 // Перевірка підключення
 export async function checkConnection() {
   try {
