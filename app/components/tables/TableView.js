@@ -358,6 +358,7 @@ export default function TableView({
   reversTranslate,
   onReversTranslate,
   onThemeDownload,
+  onPlay,
   onImportText,
   onSavePn,
   isPending,
@@ -677,6 +678,26 @@ export default function TableView({
 
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
 
+// функція, що збирає відмічені слова в порядку, як вони показані на екрані (секція → тема → pn)
+  const getSelectedOrdered = () => {
+    const sel = new Set(selectedIds)
+    const result = []
+    const pushTopic = (topic) => {
+      tData
+        .filter((w) => w[level1Id] === topic.id && sel.has(w.id))
+        .sort((a, b) => (a.pn ?? 0) - (b.pn ?? 0))
+        .forEach((w) => result.push(w))
+    }
+    if (level2?.length) {
+      level2.forEach((sec) => level1.filter((t) => t[level2Id] === sec.id).forEach(pushTopic))
+    } else if (level1?.length) {
+      level1.forEach(pushTopic)
+    } else {
+      tData.filter((w) => sel.has(w.id)).forEach((w) => result.push(w))
+    }
+    return result
+  }
+
   // ── JSX ───────────────────────────────────────────────────────────────────
   return (
     // <main className="p-1 max-w-4xl mx-auto">
@@ -695,7 +716,7 @@ export default function TableView({
                 onClick={onAdd}
                 className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
               >
-                ➕Додати 
+                ➕Додати
               </button>
             )}
             {onClickCsv && (
@@ -788,6 +809,15 @@ export default function TableView({
             className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
           >
             ⬇️ Завантажити
+          </button>
+        )}
+        {/* Кнопка Слухати*/}
+        {onPlay && selectedIds.length > 0 && (
+          <button
+            onClick={() => onPlay(getSelectedOrdered())}
+            className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
+          >
+            ▶️ Слухати
           </button>
         )}
 

@@ -2,7 +2,6 @@
 "use server"
 
 import { sql } from "@/lib/dbConfig"
-import bcrypt from "bcrypt" // ⬅⬅⬅ ось це додаємо
 
 export async function initTables() {
   // --- НОВА таблиця статистики ---
@@ -47,17 +46,6 @@ export async function initTables() {
   word_downloads INTEGER DEFAULT 0,
   updated_at TIMESTAMP DEFAULT NOW()
 );`
-
-  // 👇 Сід для створення адміна
-  const adminEmail = "admin@example.com"
-  const adminPass = "admin123"
-  const hash = await bcrypt.hash(adminPass, 10)
-  await sql`
-  INSERT INTO users (email, password_hash, name, role, provider, is_active, email_verified)
-  VALUES (${adminEmail}, ${hash}, 'Admin', 'admin', 'credentials', true, true)
-  ON CONFLICT (email) DO NOTHING;`
-
-  console.log(`✅ Admin user seeded: ${adminEmail} / ${adminPass}`)
   // =====================================================
   // sections
   await sql`

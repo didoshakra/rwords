@@ -27,6 +27,7 @@ import CustomDialog from "@/app/components/dialogs/CustomDialog"
 import { useAuth } from "@/app/context/AuthContext" //Чи вхід з додатку
 import { incrementWordDownloads } from "@/app/actions/statsActions"
 import ImportTextModal from "@/app/components/modals/ImportTextModal"
+import StudyPlayer from "@/app/components/study/StudyPlayer"
 
 // ExpandableField який рендерить textarea + кнопку ⛶ що відкриває ViewModal в режимі редагування.
 function ExpandableField({ id, label, value, onChange, placeholder, required }) {
@@ -202,6 +203,7 @@ export default function WordsPage() {
   const [topicPn, setTopicPn] = useState(0)
   const [topicSectionId, setTopicSectionId] = useState("")
   //
+  const [playList, setPlayList] = useState(null)
 
   //   З налаштування
   const fromLanguage = "uk"
@@ -812,6 +814,7 @@ export default function WordsPage() {
         onThemeDownload={isFromApp ? handleThemeDownload : undefined}
         onImportText={() => setImportTextOpen(true)}
         onSavePn={handleSavePn} // Перерахунок pn після переміщення рядків
+        onPlay={(ws) => (ws.length ? setPlayList(ws) : setMessage("Нічого не вибрано"))}
         translate={translate} //Чи перекладено для зміни кнопки
         reversTranslate={reversTranslate}
         onReversTranslate={() => setReversTranslate((prev) => !prev)}
@@ -825,6 +828,13 @@ export default function WordsPage() {
         actionsOk={actionsOk} //
         setActionsOk={setActionsOk}
       />
+      {playList && (
+        <StudyPlayer
+          words={playList}
+          topicNameById={Object.fromEntries(topics.map((t) => [t.id, t.name]))}
+          onClose={() => setPlayList(null)}
+        />
+      )}
       {/* )} */}
       <input type="file" id="csvInput" accept=".csv,text/csv" style={{ display: "none" }} onChange={handleFileUpload} />
       <Modal open={!!modal} onClose={closeModal}>
