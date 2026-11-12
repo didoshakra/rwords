@@ -2,6 +2,7 @@
 "use server"
 
 import { sql } from "@/lib/dbConfig"
+import { parseImportText } from "@/lib/importParser"
 
 export async function getWords() {
   const result = await sql`
@@ -100,7 +101,7 @@ export async function updateWordPn(id, pn, userId, role) {
 }
 
 // для розбивки на куски importCSV
-export async function importBatch(sections, userId, reversImportCSV = false) {
+export async function importBatch(sections, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
 
   let importedWordsCount = 0
@@ -121,8 +122,8 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
       const maxPnRes = await sql`SELECT MAX(pn) AS maxPn FROM sections`
       const maxPn = maxPnRes[0].maxPn || 0
       const insertSectionRes = await sql`
-        INSERT INTO sections (name, pn, user_id)
-        VALUES (${section.name}, ${maxPn + 1}, ${userId})
+        INSERT INTO sections (name, link, pn, user_id)
+        VALUES (${section.name}, ${section.link || ""}, ${maxPn + 1}, ${userId})
         RETURNING id
         `
       sectionId = insertSectionRes[0].id
@@ -158,10 +159,12 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
       let pn = maxPnWordRes[0].maxPn || 0
 
       for (const { word, group_key, type, translation, img } of topic.words) {
+        // Дублікат: збіг за всіма заповненими полями (слово і/або переклад) у цій темі
         const wordExistRes = await sql`
             SELECT id FROM words
-            WHERE ${reversImportCSV ? sql`translation = ${translation}` : sql`word = ${word}`}
-            AND topic_id = ${topicId}
+            WHERE topic_id = ${topicId}
+            ${word ? sql`AND word = ${word}` : sql``}
+            ${translation ? sql`AND translation = ${translation}` : sql``}
             `
         if (wordExistRes.length === 0) {
           pn++
@@ -187,107 +190,10 @@ export async function importBatch(sections, userId, reversImportCSV = false) {
   }
 }
 
-export async function importCSV(fileContent, reversImportCSV, userId) {
+export async function importCSV(fileContent, userId) {
   if (!userId) throw new Error("Користувач не авторизований")
   try {
-    const lines = fileContent
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean)
-
-    if (lines.length < 2) throw new Error("Файл має містити мінімум секцію і тему!")
-
-    // --- 1. Знаходимо першу секцію (пропускаємо коментарі //) ---
-    let sectionLineIdx = 0
-    while (sectionLineIdx < lines.length && lines[sectionLineIdx].startsWith("//")) {
-      sectionLineIdx++
-    }
-
-    if (!lines[sectionLineIdx]?.startsWith("**")) {
-      throw new Error("Перший рядок (не коментар) має бути секцією (**НазваСекції)")
-    }
-
-    // --- 2. Парсимо першу секцію ---
-    const firstSectionLine = lines[sectionLineIdx].substring(2).trim()
-    const [currentSectionName] = firstSectionLine.split(";").map((s) => s.trim())
-    // --- 3. Знаходимо першу тему ---
-    let topicLineIdx = sectionLineIdx + 1
-    while (topicLineIdx < lines.length && lines[topicLineIdx].startsWith("//")) {
-      topicLineIdx++
-    }
-
-    if (!lines[topicLineIdx] || lines[topicLineIdx].startsWith("**")) {
-      throw new Error("Після секції має йти тема (*НазваТеми)")
-    }
-
-    const firstTopicLine = lines[topicLineIdx].startsWith("*")
-      ? lines[topicLineIdx].substring(1).trim()
-      : lines[topicLineIdx]
-    const [firstTopicName, firstTopicLink] = firstTopicLine.split(";").map((s) => s.trim())
-
-    // --- 4. Будуємо структуру секцій ---
-    let sections = [
-      {
-        name: currentSectionName,
-        topics: [{ name: firstTopicName, link: firstTopicLink || "", words: [] }],
-      },
-    ]
-    let currentSection = sections[0]
-    let currentTopic = currentSection.topics[0]
-
-    // --- 5. Парсимо решту рядків ---
-    for (let i = topicLineIdx + 1; i < lines.length; i++) {
-      const line = lines[i]
-      if (!line || line.startsWith("//")) continue
-
-      if (line.startsWith("**")) {
-        // Нова секція
-        const [secName] = line
-          .substring(2)
-          .trim()
-          .split(";")
-          .map((s) => s.trim())
-        currentSection = { name: secName, topics: [] }
-        sections.push(currentSection)
-        currentTopic = null
-      } else if (line.startsWith("*")) {
-        const [topicName, topicLink] = line
-          .substring(1)
-          .trim()
-          .split(";")
-          .map((s) => s.trim())
-        currentTopic = { name: topicName, link: topicLink || "", words: [] }
-        currentSection.topics.push(currentTopic)
-      } else {
-        // Слово: word;group_key;type;translation;img
-        if (!currentTopic) continue
-        const parts = line.split(";").map((s) => s.trim())
-        const rawWord = parts[0]
-        if (!rawWord) continue
-        const word = reversImportCSV ? "" : rawWord
-        const translation = reversImportCSV ? rawWord : parts[3] || ""
-        const wordCount = rawWord.trim().split(/\s+/).length
-        const group_key = parts[1] !== undefined && parts[1] !== "" ? parts[1] : wordCount === 1 ? rawWord : ""
-        const type = parts[2] !== undefined && parts[2] !== "" ? parts[2] : wordCount === 1 ? "word" : "phrase"
-        const img = parts[4] || ""
-        currentTopic.words.push({ word, group_key, type, translation, img })
-      }
-    }
-
-    if (sections.every((s) => s.topics.length === 0)) {
-      throw new Error("Не знайдено жодної теми для імпорту!")
-    }
-
-    return sections
-
-    if (importedWordsCount === 0) {
-      return `Імпортовано 0 слів. Секцій пропущено: ${skippedSectionsCount}, тем пропущено: ${skippedTopicsCount}, слів пропущено: ${skippedWordsCount}.`
-    }
-
-    return (
-      `Імпортовано: ${importedSectionsCount} секцій, ${importedTopicsCount} тем, ${importedWordsCount} слів. ` +
-      `Пропущено дублікатів: ${skippedSectionsCount} секцій, ${skippedTopicsCount} тем, ${skippedWordsCount} слів.`
-    )
+    return parseImportText(fileContent)
   } catch (error) {
     console.error("Помилка в importCSV:", error)
     throw new Error("Серверна помилка імпорту: " + error.message)

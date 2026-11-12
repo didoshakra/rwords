@@ -1,4 +1,4 @@
-// words/reader/page.js//Читач текстів
+// words/page.js//Слова
 //
 "use client"
 
@@ -208,7 +208,6 @@ export default function WordsPage() {
   //   З налаштування
   const fromLanguage = "uk"
   const toLanguage = "en"
-  const reversImportCSV = true //РЕверсний імпорт(занесення перекладу(translation) в поле оригіналу(word) і навпаки)
 
   useEffect(() => {
     loadWords()
@@ -498,33 +497,24 @@ export default function WordsPage() {
     try {
       const text = await file.text()
 
-      // 1. Парсимо файл — отримуємо sections
-      const sections = await importCSV(text, reversImportCSV, user?.id)
-      // 2. Рахуємо загальну кількість слів
-      const allWords = sections.flatMap((s) => s.topics.flatMap((t) => t.words))
-      const totalWords = allWords.length
+      // 1. Парсимо файл: отримуємо секції → теми → слова
+      const parsed = await importCSV(text, user?.id)
+
+      // 2. Загальна кількість слів
+      const totalWords = parsed.reduce((n, s) => n + s.topics.reduce((m, t) => m + t.words.length, 0), 0)
       let importedTotal = 0
       let skippedTotal = 0
-
-      // 3. Розбиваємо на батчі по 50 слів
-      const BATCH_SIZE = 50
       let wordCount = 0
 
-      for (const section of sections) {
+      // 3. Відправляємо батчами по 50 слів
+      const BATCH_SIZE = 50
+      for (const section of parsed) {
         for (const topic of section.topics) {
-          const words = topic.words
-          for (let i = 0; i < words.length; i += BATCH_SIZE) {
-            const batchWords = words.slice(i, i + BATCH_SIZE)
+          for (let i = 0; i < topic.words.length; i += BATCH_SIZE) {
+            const batchWords = topic.words.slice(i, i + BATCH_SIZE)
+            const batchSection = [{ ...section, topics: [{ ...topic, words: batchWords }] }]
 
-            // Відправляємо батч як мінімальну структуру
-            const batchSection = [
-              {
-                ...section,
-                topics: [{ ...topic, words: batchWords }],
-              },
-            ]
-
-            const result = await importBatch(batchSection, user?.id, reversImportCSV)
+            const result = await importBatch(batchSection, user?.id)
             importedTotal += result.importedWordsCount
             skippedTotal += result.skippedWordsCount
             wordCount += batchWords.length

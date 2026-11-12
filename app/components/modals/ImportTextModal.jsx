@@ -1,25 +1,9 @@
 // components/modals/ImportTextModal.jsx
-// Використання в words/page.js:
-//
-// import ImportTextModal from "@/app/components/modals/ImportTextModal"
-//
-// Додати стан:
-//   const [importTextOpen, setImportTextOpen] = useState(false)
-//
-// Додати в JSX:
-//   <button onClick={() => setImportTextOpen(true)}>📋 Імпорт тексту</button>
-//   <ImportTextModal
-//     open={importTextOpen}
-//     onClose={() => setImportTextOpen(false)}
-//     sections={sections}
-//     userId={user?.id}
-//     onSuccess={() => { loadWords(); loadTopics(); loadSections(); }}
-//   />
 
 "use client"
 
 import { useState, useTransition } from "react"
-import { importCSV } from "@/app/actions/words/wordActions"
+import { importCSV, importBatch } from "@/app/actions/words/wordActions"
 
 function splitIntoSentences(text) {
   const protected_text = text
@@ -31,8 +15,11 @@ function splitIntoSentences(text) {
   return raw.map((s) => s.replace(/<DOT>/g, ".").trim()).filter((s) => s.length > 15)
 }
 
+// Формат імпорту: **Секція, *Тема, заголовок колонки, далі речення.
+// Усе в лапках, щоб ; і переноси всередині не ламали рядок. Речення йде в translation (як у читача).
 function buildCSVText(sectionName, topicName, sentences) {
-  return [sectionName.trim(), topicName.trim(), ...sentences.map((s) => `${s};`)].join("\n")
+  const q = (s) => `"${s.replace(/\s+/g, " ").trim().replace(/"/g, '""')}"`
+  return [`**${q(sectionName)}`, `*${q(topicName)}`, "#translation", ...sentences.map(q)].join("\n")
 }
 
 export default function ImportTextModal({ open, onClose, sections = [], userId, onSuccess }) {
@@ -76,26 +63,42 @@ export default function ImportTextModal({ open, onClose, sections = [], userId, 
     setSentences((prev) => prev.filter((_, i) => i !== idx))
   }
 
-  const handleImport = () => {
-    if (!sentences?.length) return
-    if (!selectedSection) return
+    const handleImport = () => {
+      if (!sentences?.length) return
+      if (!selectedSection) return
 
-    const csvText = buildCSVText(selectedSection.name, topicName, sentences)
+      const csvText = buildCSVText(selectedSection.name, topicName, sentences)
 
-    startTransition(async () => {
-      try {
-        const result = await importCSV(csvText, userId)
-        setMessage("✅ " + result)
-        onSuccess?.()
-        // Скидаємо форму після успіху
-        setTimeout(() => {
-          handleClose()
-        }, 1500)
-      } catch (err) {
-        setMessage("❌ " + (err.message || "Помилка імпорту"))
-      }
-    })
-  }
+      startTransition(async () => {
+        try {
+          const parsed = await importCSV(csvText, userId)
+          let imported = 0
+          let skipped = 0
+          const BATCH_SIZE = 50
+
+          for (const section of parsed) {
+            for (const topic of section.topics) {
+              for (let i = 0; i < topic.words.length; i += BATCH_SIZE) {
+                const batchWords = topic.words.slice(i, i + BATCH_SIZE)
+                const result = await importBatch([{ ...section, topics: [{ ...topic, words: batchWords }] }], userId)
+                imported += result.importedWordsCount
+                skipped += result.skippedWordsCount
+                setMessage(`⏳ Оброблено ${imported + skipped} з ${sentences.length}...`)
+              }
+            }
+          }
+
+          setMessage(`✅ Імпортовано: ${imported} речень, пропущено дублікатів: ${skipped}`)
+          onSuccess?.()
+          // Скидаємо форму після успіху
+          setTimeout(() => {
+            handleClose()
+          }, 1500)
+        } catch (err) {
+          setMessage("❌ " + (err.message || "Помилка імпорту"))
+        }
+      })
+    }
 
   const handleClose = () => {
     setSectionId("")

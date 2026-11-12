@@ -276,7 +276,7 @@ export async function resetTables() {
   return await initTablesInternal()
 }
 
-// повне скидання разом із користувачами
+// повне скидання разом із користувачами 
 export async function resetAllTables() {
   await requireAdmin()
   await sql`DROP TABLE IF EXISTS site_stats;`
