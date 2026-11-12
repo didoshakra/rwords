@@ -169,13 +169,14 @@ export function useWordPlayer(words, settings = {}) {
   }
 
   const runLoop = useCallback(
-    async (startIdx) => {
+    async (startIdx, fromSecond = false) => {
       if (!wordsRef.current.length) return
       cancelAll()
       const id = runIdRef.current
       setRunning(true)
       setFinished(false)
       let i = startIdx
+      let skipFirst = fromSecond // пропуск першої частини лише для поточного слова
       while (i < wordsRef.current.length) {
         if (id !== runIdRef.current) return
         indexRef.current = i
@@ -184,9 +185,12 @@ export function useWordPlayer(words, settings = {}) {
         const { first, second } = pairAt(i)
         const st = settingsRef.current
 
-        if (!(await say(first.text, first.lang, id, "first"))) return
-        await sleep(st.delayOriginal)
-        if (id !== runIdRef.current) return
+        if (!skipFirst) {
+          if (!(await say(first.text, first.lang, id, "first"))) return
+          await sleep(st.delayOriginal)
+          if (id !== runIdRef.current) return
+        }
+        skipFirst = false
 
         setShowSecond(true)
         if (!(await say(second.text, second.lang, id, "second"))) return
@@ -234,6 +238,7 @@ export function useWordPlayer(words, settings = {}) {
   const resume = useCallback(() => runLoop(indexRef.current), [runLoop])
   const toggle = useCallback(() => (runningRef.current ? pause() : resume()), [pause, resume])
   const repeat = useCallback(() => runLoop(indexRef.current), [runLoop])
+  const skipToSecond = useCallback(() => runLoop(indexRef.current, true), [runLoop])
   const next = useCallback(() => goTo(indexRef.current + 1), [goTo])
   const back = useCallback(() => goTo(indexRef.current - 1), [goTo])
 
@@ -290,6 +295,6 @@ export function useWordPlayer(words, settings = {}) {
     supported,
     missingLangs,
     active,
-    commands: { start, pause, resume, toggle, repeat, next, back, nextTopic, prevTopic, stop: pause },
+    commands: { start, pause, resume, toggle, repeat, skipToSecond, next, back, nextTopic, prevTopic, stop: pause },
   }
 }

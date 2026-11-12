@@ -95,6 +95,8 @@ function CtrlButton({ onClick, label, children, primary = false, disabled = fals
 export default function StudyPlayer({ words, topicNameById = {}, settings, onClose }) {
   const p = useWordPlayer(words, settings)
   const { commands: c } = p
+  const showSecondRef = useRef(false)
+  showSecondRef.current = p.showSecond
 
   // Автостарт. Якщо браузер заблокує озвучку, користувач натисне ▶
   useEffect(() => {
@@ -140,6 +142,12 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         case "к":
         case "К":
           c.repeat()
+          break
+        case "t":
+        case "T":
+        case "е":
+        case "Е":
+          if (!showSecondRef.current) c.skipToSecond()
           break
         case "Escape":
           c.stop()
@@ -248,6 +256,9 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         </CtrlButton>
         <CtrlButton onClick={c.toggle} label={p.isRunning ? "Пауза (пробіл)" : "Грати (пробіл)"} primary>
           {p.isRunning ? "⏸" : "▶"}
+        </CtrlButton>
+        <CtrlButton onClick={c.skipToSecond} label="До перекладу (T)" disabled={p.showSecond}>
+          🌐
         </CtrlButton>
         <CtrlButton onClick={c.next} label="Далі (→)" disabled={p.index >= p.total - 1}>
           ▶
