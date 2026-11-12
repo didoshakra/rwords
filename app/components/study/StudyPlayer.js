@@ -3,8 +3,8 @@
 // Повноекранна накладка відтворення слів. Широкий екран: дві колонки (оригінал | переклад),
 // вузький: один над одним. Кожен блок прокручується окремо, довгі тексти отримують дрібніший шрифт.
 
-import { useEffect } from "react"
-import { useWordPlayer } from "@/app/hooks/useWordPlayer"
+import { Fragment, useEffect, useRef } from "react"
+import { useWordPlayer, splitSentences } from "@/app/hooks/useWordPlayer"
 
 const fontSizeFor = (text) => {
   const n = (text || "").length
@@ -13,6 +13,51 @@ const fontSizeFor = (text) => {
   if (n <= 150) return "clamp(1.25rem, 2.8vw, 1.75rem)"
   if (n <= 400) return "1.125rem"
   return "1rem"
+}
+
+// Один блок тексту. Якщо речень більше одного, активне (те, що зараз звучить) підсвічується плашкою.
+function SentenceText({ text, activeIndex, fontSize }) {
+  const sentences = splitSentences(text)
+  const activeRef = useRef(null)
+
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" })
+  }, [activeIndex])
+
+  const style = { fontSize, lineHeight: 1.35 }
+
+  if (sentences.length <= 1) {
+    return (
+      <p className="whitespace-pre-line" style={style}>
+        {text}
+      </p>
+    )
+  }
+
+  return (
+    <p className="whitespace-pre-line" style={style}>
+      {sentences.map((s, i) => {
+        const core = s.trimEnd()
+        const tail = s.slice(core.length)
+        const on = i === activeIndex
+        return (
+          <Fragment key={i}>
+            <span
+              ref={on ? activeRef : null}
+              className={
+                "rounded px-1 transition-colors " +
+                (on ? "bg-amber-200 text-gray-900 dark:bg-amber-600 dark:text-white" : "")
+              }
+              style={{ boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}
+            >
+              {core}
+            </span>
+            {tail}
+          </Fragment>
+        )
+      })}
+    </p>
+  )
 }
 
 function Panel({ label, children }) {
@@ -158,17 +203,24 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
       )}
 
       {/* Картка */}
-      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 md:grid-cols-2" style={{ gridTemplateRows: "minmax(0,1fr)" }}>
+      <main
+        className="grid min-h-0 flex-1 grid-cols-1 gap-3 md:grid-cols-2"
+        style={{ gridTemplateRows: "minmax(0,1fr)" }}
+      >
         <Panel label="Спочатку">
-          <p className="whitespace-pre-line" style={{ fontSize: fontSizeFor(pair?.first.text), lineHeight: 1.35 }}>
-            {pair?.first.text}
-          </p>
+          <SentenceText
+            text={pair?.first.text}
+            activeIndex={p.active?.slot === "first" ? p.active.i : -1}
+            fontSize={fontSizeFor(pair?.first.text)}
+          />
         </Panel>
         <Panel label="Потім">
           {p.showSecond ? (
-            <p className="whitespace-pre-line" style={{ fontSize: fontSizeFor(pair?.first.text), lineHeight: 1.35 }}>
-              {pair?.second.text}
-            </p>
+            <SentenceText
+              text={pair?.second.text}
+              activeIndex={p.active?.slot === "second" ? p.active.i : -1}
+              fontSize={fontSizeFor(pair?.second.text)}
+            />
           ) : (
             <p className="opacity-40" style={{ fontSize: "2.25rem" }}>
               ?

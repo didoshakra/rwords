@@ -22,11 +22,7 @@ const norm = (l) => (l || "").toLowerCase().replace("_", "-")
 function pickVoice(lang) {
   const voices = window.speechSynthesis.getVoices()
   const l = norm(lang)
-  return (
-    voices.find((v) => norm(v.lang) === l) ||
-    voices.find((v) => norm(v.lang).startsWith(l.slice(0, 2))) ||
-    null
-  )
+  return voices.find((v) => norm(v.lang) === l) || voices.find((v) => norm(v.lang).startsWith(l.slice(0, 2))) || null
 }
 
 // Довгі тексти ріжемо за реченнями (Chrome обриває довге мовлення)
@@ -61,6 +57,13 @@ function chunkText(text, max = 180) {
   return out
 }
 
+// Речення для озвучки й підсвітки. StudyPlayer використовує цю ж функцію,
+// тому розбиття на екрані завжди збігається з тим, що звучить.
+export function splitSentences(text) {
+  const raw = text || ""
+  return (raw.match(/[^.!?…]+[.!?…]*\s*/g) || (raw.trim() ? [raw] : [])).filter((s) => s.trim())
+}
+
 /**
  * @param {object[]} words     масив слів { id, word, translation, topic_id }
  * @param {object}   settings  перевизначення DEFAULT_PLAYER_SETTINGS
@@ -74,6 +77,7 @@ export function useWordPlayer(words, settings = {}) {
   const [finished, setFinished] = useState(false)
   const [supported, setSupported] = useState(true)
   const [missingLangs, setMissingLangs] = useState([])
+  const [active, setActive] = useState(null) // { slot: "first" | "second", i: номер речення }
 
   const wordsRef = useRef(words)
   const settingsRef = useRef(s)
@@ -99,6 +103,7 @@ export function useWordPlayer(words, settings = {}) {
       sleepRef.current.res()
       sleepRef.current = null
     }
+    setActive(null)
   }, [])
 
   const sleep = (ms) =>
@@ -141,11 +146,16 @@ export function useWordPlayer(words, settings = {}) {
     })
 
   // true — договорили; false — цикл скасовано
-  const say = async (text, lang, id) => {
-    for (const chunk of chunkText(text)) {
-      if (id !== runIdRef.current) return false
-      await speakChunk(chunk, lang, settingsRef.current.rate)
+  const say = async (text, lang, id, slot) => {
+    const sentences = splitSentences(text)
+    for (let si = 0; si < sentences.length; si++) {
+      for (const part of chunkText(sentences[si])) {
+        if (id !== runIdRef.current) return false
+        setActive({ slot, i: si })
+        await speakChunk(part, lang, settingsRef.current.rate)
+      }
     }
+    if (id === runIdRef.current) setActive(null)
     return id === runIdRef.current
   }
 
@@ -174,17 +184,17 @@ export function useWordPlayer(words, settings = {}) {
         const { first, second } = pairAt(i)
         const st = settingsRef.current
 
-        if (!(await say(first.text, first.lang, id))) return
+        if (!(await say(first.text, first.lang, id, "first"))) return
         await sleep(st.delayOriginal)
         if (id !== runIdRef.current) return
 
         setShowSecond(true)
-        if (!(await say(second.text, second.lang, id))) return
+        if (!(await say(second.text, second.lang, id, "second"))) return
         await sleep(st.delayTranslation1)
         if (id !== runIdRef.current) return
 
         if (st.repeatTranslation) {
-          if (!(await say(second.text, second.lang, id))) return
+          if (!(await say(second.text, second.lang, id, "second"))) return
           await sleep(st.delayTranslation2)
           if (id !== runIdRef.current) return
         }
@@ -279,6 +289,7 @@ export function useWordPlayer(words, settings = {}) {
     finished,
     supported,
     missingLangs,
+    active,
     commands: { start, pause, resume, toggle, repeat, next, back, nextTopic, prevTopic, stop: pause },
   }
 }
