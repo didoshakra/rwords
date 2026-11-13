@@ -147,6 +147,14 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
     setKick(typesChanged ? "start" : wasRunningRef.current ? "repeat" : null)
   }
 
+  // Цикл можна вмикати без відкриття ⚙; діє одразу, без перезапуску слова
+  const toggleLoop = () =>
+    setCfg((prev) => {
+      const next = { ...prev, loop: !prev.loop }
+      saveSettings(next)
+      return next
+    })
+
   // Виконується після рендера, коли хук уже бачить нові слова й налаштування
   useEffect(() => {
     if (!kick) return
@@ -211,6 +219,12 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         case "Е":
           if (!showSecondRef.current) c.skipToSecond()
           break
+        case "l":
+        case "L":
+        case "д":
+        case "Д":
+          toggleLoop()
+          break
         case "Escape":
           c.stop()
           onClose()
@@ -252,6 +266,9 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
           {topicName && <div className="truncate text-xs opacity-80">{topicName}</div>}
         </div>
         <div className="flex gap-2">
+          <CtrlButton onClick={() => window.open("/help/player", "_blank", "noopener")} label="Довідка">
+            ?
+          </CtrlButton>
           <CtrlButton onClick={openPanel} label="Налаштування">
             ⚙
           </CtrlButton>
@@ -316,7 +333,8 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
           (p.finished ? "font-semibold text-amber-600 dark:text-amber-400" : "text-gray-700 dark:text-gray-200")
         }
       >
-        {p.notice || (p.finished ? "✔ Кінець списку слів" : p.isRunning ? "▶ Грає" : "⏸ Пауза")}
+        {p.notice ||
+          (p.finished ? "✔ Кінець списку слів" : p.isRunning ? (cfg.loop ? "🔁 Грає по колу" : "▶ Грає") : "⏸ Пауза")}
       </p>
 
       {/* Керування */}
@@ -353,6 +371,13 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
           disabledLabel="Це остання тема"
         >
           ⏭
+        </CtrlButton>
+        <CtrlButton
+          onClick={toggleLoop}
+          primary={cfg.loop}
+          label={cfg.loop ? "Цикл увімкнено (L)" : "Цикл вимкнено (L)"}
+        >
+          🔁
         </CtrlButton>
         <CtrlButton onClick={c.start} label="Спочатку">
           ⟲

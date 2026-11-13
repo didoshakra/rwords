@@ -17,6 +17,8 @@ export const DEFAULT_PLAYER_SETTINGS = {
   reverseOrder: false, // true: спочатку переклад, потім оригінал
   fromVoice: "", // ім'я голосу оригіналу ("" = авто)
   toVoice: "", // ім'я голосу перекладу ("" = авто)
+  repeatVoice: "", // голос повтору другої частини ("" = той самий, що й першого разу)
+  loop: false, // цикл: після останнього слова починати спочатку
 }
 
 const norm = (l) => (l || "").toLowerCase().replace("_", "-")
@@ -191,7 +193,9 @@ export function useWordPlayer(words, settings = {}) {
     if (!w) return null
     const orig = { text: w.word || "", lang: st.fromLang, voice: st.fromVoice }
     const tran = { text: w.translation || "", lang: st.toLang, voice: st.toVoice }
-    return st.reverseOrder ? { first: tran, second: orig } : { first: orig, second: tran }
+    return st.reverseOrder
+      ? { first: tran, second: { ...orig, repeatVoice: st.repeatVoice } }
+      : { first: orig, second: { ...tran, repeatVoice: st.repeatVoice } }
   }
 
   const runLoop = useCallback(
@@ -224,11 +228,12 @@ export function useWordPlayer(words, settings = {}) {
         if (id !== runIdRef.current) return
 
         if (st.repeatTranslation) {
-          if (!(await say(second.text, second.lang, id, "second", second.voice))) return
+          if (!(await say(second.text, second.lang, id, "second", second.repeatVoice || second.voice))) return
           await sleep(st.delayTranslation2)
           if (id !== runIdRef.current) return
         }
         i++
+        if (i >= wordsRef.current.length && settingsRef.current.loop) i = 0
       }
       if (id === runIdRef.current) {
         setRunning(false)
@@ -269,28 +274,28 @@ export function useWordPlayer(words, settings = {}) {
   const next = useCallback(() => goTo(indexRef.current + 1), [goTo])
   const back = useCallback(() => goTo(indexRef.current - 1), [goTo])
 
-    const nextTopic = useCallback(() => {
-      const ws = wordsRef.current
-      const cur = ws[indexRef.current]?.topic_id
-      if (cur == null) return flash("У цих слів немає теми")
-      for (let i = indexRef.current + 1; i < ws.length; i++) {
-        if (ws[i].topic_id !== cur) return goTo(i)
-      }
-      flash("Це остання тема")
-    }, [goTo, flash])
+  const nextTopic = useCallback(() => {
+    const ws = wordsRef.current
+    const cur = ws[indexRef.current]?.topic_id
+    if (cur == null) return flash("У цих слів немає теми")
+    for (let i = indexRef.current + 1; i < ws.length; i++) {
+      if (ws[i].topic_id !== cur) return goTo(i)
+    }
+    flash("Це остання тема")
+  }, [goTo, flash])
 
-    const prevTopic = useCallback(() => {
-      const ws = wordsRef.current
-      const cur = ws[indexRef.current]?.topic_id
-      if (cur == null) return flash("У цих слів немає теми")
-      for (let i = indexRef.current - 1; i >= 0; i--) {
-        if (ws[i].topic_id !== cur) {
-          const prevId = ws[i].topic_id
-          return goTo(ws.findIndex((w) => w.topic_id === prevId))
-        }
+  const prevTopic = useCallback(() => {
+    const ws = wordsRef.current
+    const cur = ws[indexRef.current]?.topic_id
+    if (cur == null) return flash("У цих слів немає теми")
+    for (let i = indexRef.current - 1; i >= 0; i--) {
+      if (ws[i].topic_id !== cur) {
+        const prevId = ws[i].topic_id
+        return goTo(ws.findIndex((w) => w.topic_id === prevId))
       }
-      flash("Це перша тема")
-    }, [goTo, flash])
+    }
+    flash("Це перша тема")
+  }, [goTo, flash])
 
   // ── Підтримка браузером і наявність голосів ───────────────────
   useEffect(() => {
@@ -311,13 +316,13 @@ export function useWordPlayer(words, settings = {}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [s.fromLang, s.toLang])
 
-    useEffect(
-      () => () => {
-        cancelAll()
-        clearTimeout(noticeTimerRef.current)
-      },
-      [cancelAll],
-    )
+  useEffect(
+    () => () => {
+      cancelAll()
+      clearTimeout(noticeTimerRef.current)
+    },
+    [cancelAll],
+  )
 
   return {
     index,

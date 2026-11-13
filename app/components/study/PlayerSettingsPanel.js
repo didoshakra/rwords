@@ -98,7 +98,7 @@ function Stepper({ label, value, step, min = 0, max = Infinity, format = (v) => 
   )
 }
 
-function VoiceField({ label, lang, voiceName, voices, rate, onVoice }) {
+function VoiceField({ label, lang, voiceName, voices, rate, onVoice, autoLabel = "Авто (кращий доступний)" }) {
   const list = voices.filter((v) => norm(v.lang).startsWith(norm(lang).slice(0, 2)))
 
   const test = () => {
@@ -119,7 +119,7 @@ function VoiceField({ label, lang, voiceName, voices, rate, onVoice }) {
         <p className="text-xs opacity-70">Голосів для цієї мови немає. Буде використано системний.</p>
       ) : (
         <select className={field} value={voiceName} onChange={(e) => onVoice(e.target.value)}>
-          <option value="">Авто (кращий доступний)</option>
+          <option value="">{autoLabel}</option>
           {list.map((v) => (
             <option key={v.voiceURI} value={v.name}>
               {v.name}
@@ -201,8 +201,16 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             Повторювати переклад
           </label>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={d.reverseOrder} onChange={(e) => set({ reverseOrder: e.target.checked })} />
+            <input
+              type="checkbox"
+              checked={d.reverseOrder}
+              onChange={(e) => set({ reverseOrder: e.target.checked, repeatVoice: "" })}
+            />
             Спочатку переклад, потім оригінал
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={d.loop} onChange={(e) => set({ loop: e.target.checked })} />
+            Повторювати список циклічно
           </label>
         </section>
 
@@ -213,7 +221,7 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             <select
               className={field}
               value={d.fromLang}
-              onChange={(e) => set({ fromLang: e.target.value, fromVoice: "" })}
+              onChange={(e) => set({ fromLang: e.target.value, fromVoice: "", repeatVoice: "" })}
             >
               {LANGUAGES.map(([code, name]) => (
                 <option key={code} value={code}>
@@ -232,7 +240,11 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
           />
           <label className="flex flex-col gap-1 text-sm">
             Мова перекладу
-            <select className={field} value={d.toLang} onChange={(e) => set({ toLang: e.target.value, toVoice: "" })}>
+            <select
+              className={field}
+              value={d.toLang}
+              onChange={(e) => set({ toLang: e.target.value, toVoice: "", repeatVoice: "" })}
+            >
               {LANGUAGES.map(([code, name]) => (
                 <option key={code} value={code}>
                   {name}
@@ -247,6 +259,15 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             voices={voices}
             rate={d.rate}
             onVoice={(v) => set({ toVoice: v })}
+          />
+          <VoiceField
+            label="Голос повтору (другої частини)"
+            lang={d.reverseOrder ? d.fromLang : d.toLang}
+            voiceName={d.repeatVoice}
+            voices={voices}
+            rate={d.rate}
+            onVoice={(v) => set({ repeatVoice: v })}
+            autoLabel="Той самий, що й першого разу"
           />
         </section>
 
