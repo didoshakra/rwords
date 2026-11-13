@@ -65,7 +65,7 @@ export default function AuthPage() {
           })
 
           if (res?.error) {
-            setMessage("Помилка входу після реєстрації: " + res.error)
+            setMessage("Акаунт створено, але автоматичний вхід не вдався. Спробуйте увійти вручну.")
             return
           }
 
@@ -79,7 +79,7 @@ export default function AuthPage() {
           })
 
           if (res?.error) {
-            setMessage("Помилка входу: " + res.error)
+            setMessage("Невірний email або пароль")
           } else {
             router.push("/")
           }

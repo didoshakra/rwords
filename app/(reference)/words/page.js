@@ -1,5 +1,5 @@
 // words/page.js//Слова
-//
+
 "use client"
 
 import React, { useEffect, useState, useTransition, useRef } from "react"

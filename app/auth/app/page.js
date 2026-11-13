@@ -1,4 +1,6 @@
-// app/auth/app/page.js//Авторизація тільки при Експорті даних з додатку на сайт
+// app/auth/app/page.js
+// Авторизація потрібна тільки при експорті даних із застосунку на сайт (flow=export).
+// При імпорті з сайту в застосунок (flow=import) вхід не потрібен.
 "use client"
 
 import React, { useState, useTransition, useEffect } from "react"

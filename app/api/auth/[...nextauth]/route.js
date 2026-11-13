@@ -32,9 +32,11 @@ export const authOptions = {
         const { email, password } = credentials
         const users = await sql`SELECT * FROM users WHERE email = ${email}`
         const user = users[0]
-        if (!user) throw new Error("No user")
+        // Одна й та сама відповідь для всіх невдач (немає користувача, вхід через OAuth без пароля, неправильний пароль)
+        if (!user || !user.password_hash) return null
+        if (user.is_active === false) return null
         const valid = await bcryptjs.compare(password, user.password_hash)
-        if (!valid) throw new Error("Invalid password")
+        if (!valid) return null
 
         // повертаємо всі потрібні поля, включаючи role
         return {

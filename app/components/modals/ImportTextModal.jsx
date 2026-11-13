@@ -93,7 +93,7 @@ export default function ImportTextModal({ open, onClose, sections = [], userId, 
           // Скидаємо форму після успіху
           setTimeout(() => {
             handleClose()
-          }, 1500)
+          }, 1500) 
         } catch (err) {
           setMessage("❌ " + (err.message || "Помилка імпорту"))
         }

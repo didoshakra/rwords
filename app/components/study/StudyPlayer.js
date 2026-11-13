@@ -3,7 +3,8 @@
 // Повноекранна накладка відтворення слів. Широкий екран: дві колонки (оригінал | переклад),
 // вузький: один над одним. Кожен блок прокручується окремо, довгі тексти отримують дрібніший шрифт.
 
-import { Fragment, useEffect, useRef } from "react"
+import { Fragment, useEffect, useMemo, useRef, useState } from "react"
+import PlayerSettingsPanel, { ALL_TYPES, loadSavedSettings, saveSettings } from "./PlayerSettingsPanel"
 import { useWordPlayer, splitSentences } from "@/app/hooks/useWordPlayer"
 
 const fontSizeFor = (text) => {
@@ -93,10 +94,60 @@ function CtrlButton({ onClick, label, children, primary = false, disabled = fals
 }
 
 export default function StudyPlayer({ words, topicNameById = {}, settings, onClose }) {
-  const p = useWordPlayer(words, settings)
+  // Пріоритет: типові < передані сторінкою < збережені в браузері
+  const [cfg, setCfg] = useState(() => ({ types: ALL_TYPES, ...settings, ...loadSavedSettings() }))
+  const [panelOpen, setPanelOpen] = useState(false)
+  const [kick, setKick] = useState(null)
+  const panelOpenRef = useRef(false)
+  panelOpenRef.current = panelOpen
+  const wasRunningRef = useRef(false)
+
+  // Фільтр типів + групування за темою (теми за порядком першої появи, слова в темі в тому ж порядку).
+  // Інші (невідомі) типи завжди проходять.
+  const playlist = useMemo(() => {
+    const filtered = (words || []).filter((w) => {
+      const t = w.type || "word"
+      return !ALL_TYPES.includes(t) || cfg.types.includes(t)
+    })
+    const order = []
+    const byTopic = new Map()
+    for (const w of filtered) {
+      if (!byTopic.has(w.topic_id)) {
+        byTopic.set(w.topic_id, [])
+        order.push(w.topic_id)
+      }
+      byTopic.get(w.topic_id).push(w)
+    }
+    return order.flatMap((id) => byTopic.get(id))
+  }, [words, cfg.types])
+
+  const p = useWordPlayer(playlist, cfg)
   const { commands: c } = p
   const showSecondRef = useRef(false)
   showSecondRef.current = p.showSecond
+
+  const openPanel = () => {
+    wasRunningRef.current = p.isRunning
+    c.pause()
+    setPanelOpen(true)
+  }
+
+  const saveCfg = (next) => {
+    const typesChanged = next.types.join() !== cfg.types.join()
+    setCfg(next)
+    saveSettings(next)
+    setPanelOpen(false)
+    setKick(typesChanged ? "start" : wasRunningRef.current ? "repeat" : null)
+  }
+
+  // Виконується після рендера, коли хук уже бачить нові слова й налаштування
+  useEffect(() => {
+    if (!kick) return
+    if (kick === "start") c.start()
+    else c.repeat()
+    setKick(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kick])
 
   // Автостарт. Якщо браузер заблокує озвучку, користувач натисне ▶
   useEffect(() => {
@@ -118,6 +169,10 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
     const onKey = (e) => {
       const tag = e.target?.tagName
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return
+      if (panelOpenRef.current) {
+        if (e.key === "Escape") setPanelOpen(false) // Esc закриває панель, а не плеєр
+        return
+      }
       switch (e.key) {
         case " ":
           e.preventDefault()
@@ -189,9 +244,14 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
           </div>
           {topicName && <div className="truncate text-xs opacity-80">{topicName}</div>}
         </div>
-        <CtrlButton onClick={close} label="Закрити (Esc)">
-          ✕
-        </CtrlButton>
+        <div className="flex gap-2">
+          <CtrlButton onClick={openPanel} label="Налаштування">
+            ⚙
+          </CtrlButton>
+          <CtrlButton onClick={close} label="Закрити (Esc)">
+            ✕
+          </CtrlButton>
+        </div>
       </header>
 
       {/* Прогрес */}
@@ -207,6 +267,11 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
       {p.supported && p.missingLangs.length > 0 && (
         <p role="status" className="rounded-lg bg-amber-100 p-2 text-sm text-amber-900">
           У системі немає голосу для: {p.missingLangs.join(", ")}. Слова читатимуться іншим голосом.
+        </p>
+      )}
+      {p.supported && p.total === 0 && (
+        <p role="status" className="rounded-lg bg-amber-100 p-2 text-sm text-amber-900">
+          Немає слів обраних типів. Змініть фільтр у ⚙.
         </p>
       )}
 
@@ -236,15 +301,16 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
           )}
         </Panel>
       </main>
-
-      {p.finished && (
-        <div className="flex items-center justify-center gap-3 text-sm text-gray-800 dark:text-gray-100">
-          <span>Кінець списку слів</span>
-          <CtrlButton onClick={c.start} label="Почати спочатку" primary>
-            ↻ Спочатку
-          </CtrlButton>
-        </div>
-      )}
+      <p
+        role="status"
+        aria-live="polite"
+        className={
+          "min-h-[1.25rem] text-center text-sm " +
+          (p.finished ? "font-semibold text-amber-600 dark:text-amber-400" : "text-gray-700 dark:text-gray-200")
+        }
+      >
+        {p.notice || (p.finished ? "✔ Кінець списку слів" : p.isRunning ? "▶ Грає" : "⏸ Пауза")}
+      </p>
 
       {/* Керування */}
       <footer className="flex flex-wrap items-center justify-center gap-2">
@@ -266,10 +332,14 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         <CtrlButton onClick={c.nextTopic} label="Наступна тема (↓)">
           ⏭
         </CtrlButton>
+        <CtrlButton onClick={c.start} label="Спочатку">
+          ⟲
+        </CtrlButton>
         <CtrlButton onClick={c.repeat} label="Повторити слово (R)">
           ↻
         </CtrlButton>
       </footer>
+      {panelOpen && <PlayerSettingsPanel value={cfg} onSave={saveCfg} onClose={() => setPanelOpen(false)} />}
     </div>
   )
 }

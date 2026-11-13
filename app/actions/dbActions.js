@@ -246,6 +246,8 @@ async function initTablesInternal() {
   // ── Нові колонки в уже існуючих таблицях (дописуй сюди по рядку, коли міняєш схему) ──
   await sql`ALTER TABLE sections ADD COLUMN IF NOT EXISTS link TEXT DEFAULT ''`
   await sql`ALTER TABLE topics ADD COLUMN IF NOT EXISTS link TEXT DEFAULT ''`
+  await sql`ALTER TABLE sections ADD COLUMN IF NOT EXISTS is_private BOOLEAN DEFAULT false`
+
 
   if (!userExists) {
     return {
@@ -276,7 +278,7 @@ export async function resetTables() {
   return await initTablesInternal()
 }
 
-// повне скидання разом із користувачами 
+// повне скидання разом із користувачами
 export async function resetAllTables() {
   await requireAdmin()
   await sql`DROP TABLE IF EXISTS site_stats;`
