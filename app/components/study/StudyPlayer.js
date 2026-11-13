@@ -5,7 +5,7 @@
 
 import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 import PlayerSettingsPanel, { ALL_TYPES, loadSavedSettings, saveSettings } from "./PlayerSettingsPanel"
-import { useWordPlayer, splitSentences } from "@/app/hooks/useWordPlayer"
+import { useWordPlayer, splitSentences, DEFAULT_PLAYER_SETTINGS } from "@/app/hooks/useWordPlayer"
 
 const fontSizeFor = (text) => {
   const n = (text || "").length
@@ -73,29 +73,36 @@ function Panel({ label, children }) {
   )
 }
 
-function CtrlButton({ onClick, label, children, primary = false, disabled = false }) {
+function CtrlButton({ onClick, label, children, primary = false, disabled = false, disabledLabel }) {
+  const tip = disabled && disabledLabel ? disabledLabel : label
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      title={label}
-      aria-label={label}
-      className={
-        "min-h-[44px] min-w-[44px] rounded-full px-3 text-lg font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 disabled:opacity-40 " +
-        (primary
-          ? "bg-btBg text-white hover:opacity-70"
-          : "border border-gray-400 text-gray-800 hover:bg-gray-100 dark:border-gray-500 dark:text-gray-100 dark:hover:bg-gray-700")
-      }
-    >
-      {children}
-    </button>
+    <span title={tip} className="inline-flex">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled}
+        aria-label={tip}
+        className={
+          "min-h-[44px] min-w-[44px] rounded-full px-3 text-lg font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 disabled:cursor-not-allowed disabled:opacity-40 " +
+          (primary
+            ? "bg-btBg text-white hover:opacity-70"
+            : "border border-gray-400 text-gray-800 hover:bg-gray-100 dark:border-gray-500 dark:text-gray-100 dark:hover:bg-gray-700")
+        }
+      >
+        {children}
+      </button>
+    </span>
   )
 }
 
 export default function StudyPlayer({ words, topicNameById = {}, settings, onClose }) {
   // Пріоритет: типові < передані сторінкою < збережені в браузері
-  const [cfg, setCfg] = useState(() => ({ types: ALL_TYPES, ...settings, ...loadSavedSettings() }))
+  const [cfg, setCfg] = useState(() => ({
+    ...DEFAULT_PLAYER_SETTINGS,
+    types: ALL_TYPES,
+    ...settings,
+    ...loadSavedSettings(),
+  }))
   const [panelOpen, setPanelOpen] = useState(false)
   const [kick, setKick] = useState(null)
   const panelOpenRef = useRef(false)
@@ -314,10 +321,15 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
 
       {/* Керування */}
       <footer className="flex flex-wrap items-center justify-center gap-2">
-        <CtrlButton onClick={c.prevTopic} label="Попередня тема (↑)">
+        <CtrlButton
+          onClick={c.prevTopic}
+          label="Попередня тема (↑)"
+          disabled={!p.canPrevTopic}
+          disabledLabel="Це перша тема"
+        >
           ⏮
         </CtrlButton>
-        <CtrlButton onClick={c.back} label="Назад (←)" disabled={p.index === 0}>
+        <CtrlButton onClick={c.back} label="Назад (←)" disabled={p.index === 0} disabledLabel="Початок списку слів">
           ◀
         </CtrlButton>
         <CtrlButton onClick={c.toggle} label={p.isRunning ? "Пауза (пробіл)" : "Грати (пробіл)"} primary>
@@ -326,10 +338,20 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         <CtrlButton onClick={c.skipToSecond} label="До перекладу (T)" disabled={p.showSecond}>
           🌐
         </CtrlButton>
-        <CtrlButton onClick={c.next} label="Далі (→)" disabled={p.index >= p.total - 1}>
+        <CtrlButton
+          onClick={c.next}
+          label="Далі (→)"
+          disabled={p.index >= p.total - 1}
+          disabledLabel="Кінець списку слів"
+        >
           ▶
         </CtrlButton>
-        <CtrlButton onClick={c.nextTopic} label="Наступна тема (↓)">
+        <CtrlButton
+          onClick={c.nextTopic}
+          label="Наступна тема (↓)"
+          disabled={!p.canNextTopic}
+          disabledLabel="Це остання тема"
+        >
           ⏭
         </CtrlButton>
         <CtrlButton onClick={c.start} label="Спочатку">

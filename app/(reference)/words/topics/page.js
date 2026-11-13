@@ -243,7 +243,7 @@ export default function TopicsPage() {
         title={"Теми"}
         level0Head="Тема"
         level1Head="Група тем"
-        onAdd={openAddModal}
+        onAdd={openAddModal} 
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
         // onThemeDownload={isFromApp ? handleThemeDownload : undefined}

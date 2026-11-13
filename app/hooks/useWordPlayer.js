@@ -331,6 +331,10 @@ export function useWordPlayer(words, settings = {}) {
     missingLangs,
     active,
     notice,
+    // слова згруповані за темами, тож достатньо порівняти з першим і останнім
+    canPrevTopic: words.length > 0 && words[index]?.topic_id != null && words[0].topic_id !== words[index].topic_id,
+    canNextTopic:
+      words.length > 0 && words[index]?.topic_id != null && words[words.length - 1].topic_id !== words[index].topic_id,
     commands: { start, pause, resume, toggle, repeat, skipToSecond, next, back, nextTopic, prevTopic, stop: pause },
   }
 }

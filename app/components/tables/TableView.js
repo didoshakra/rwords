@@ -631,7 +631,7 @@ export default function TableView({
               >
                 ☰
               </span>
-
+              <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
               <span
                 onClick={(e) => {
                   e.stopPropagation()
@@ -651,7 +651,7 @@ export default function TableView({
               <span>
                 {level1Head}: {topic.name}
               </span>
-              <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
+              {/* <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span> */}
             </div>
           </td>
         </tr>
@@ -946,6 +946,9 @@ export default function TableView({
                           >
                             ☰
                           </span>
+                          <span>
+                            {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? "🔽" : " ▶️") : ""}
+                          </span>
                           <span
                             onClick={(e) => {
                               e.stopPropagation()
@@ -982,9 +985,9 @@ export default function TableView({
                             {level2Head}: {section.name}
                           </span>
 
-                          <span>
+                          {/* <span>
                             {sectionLevel1.length > 0 ? (openLevel2.includes(section.id) ? "🔽" : " ▶️") : ""}
-                          </span>
+                          </span> */}
                         </div>
                       </td>
                     </tr>

@@ -139,7 +139,7 @@ function VoiceField({ label, lang, voiceName, voices, rate, onVoice }) {
 }
 
 export default function PlayerSettingsPanel({ value, onSave, onClose }) {
-  const [d, setD] = useState(value)
+  const [d, setD] = useState(() => ({ ...DEFAULT_PLAYER_SETTINGS, types: ALL_TYPES, ...value }))
   const voices = useVoices()
   const set = (patch) => setD((prev) => ({ ...prev, ...patch }))
   const toggleType = (t) =>
