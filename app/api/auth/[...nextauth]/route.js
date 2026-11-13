@@ -53,6 +53,7 @@ export const authOptions = {
       if (!user.email) return false
       try {
         const [existingUser] = await sql`SELECT * FROM users WHERE email = ${user.email}`
+        if (existingUser && existingUser.is_active === false) return false
         if (!existingUser) {
           await sql`
             INSERT INTO users (email, name, avatar, email_verified, provider)
