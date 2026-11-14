@@ -138,7 +138,7 @@ function VoiceField({ label, lang, voiceName, voices, rate, onVoice, autoLabel =
   )
 }
 
-export default function PlayerSettingsPanel({ value, onSave, onClose }) {
+export default function PlayerSettingsPanel({ value, onSave, onClose, reader = false }) {
   const [d, setD] = useState(() => ({ ...DEFAULT_PLAYER_SETTINGS, types: ALL_TYPES, ...value }))
   const voices = useVoices()
   const set = (patch) => setD((prev) => ({ ...prev, ...patch }))
@@ -162,23 +162,25 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
         <section className="flex flex-col gap-2">
           <h3 className="text-sm font-semibold">Паузи і швидкість</h3>
           <Stepper
-            label="Пауза після першої частини (мс)"
+            label={reader ? "Пауза перед перекладом (мс)" : "Пауза після першої частини (мс)"}
             value={d.delayOriginal}
             step={250}
             onChange={(v) => set({ delayOriginal: v })}
           />
           <Stepper
-            label="Пауза після перекладу (мс)"
+            label={reader ? "Пауза після речення (мс)" : "Пауза після перекладу (мс)"}
             value={d.delayTranslation1}
             step={250}
             onChange={(v) => set({ delayTranslation1: v })}
           />
-          <Stepper
-            label="Пауза після повтору перекладу (мс)"
-            value={d.delayTranslation2}
-            step={250}
-            onChange={(v) => set({ delayTranslation2: v })}
-          />
+          {!reader && (
+            <Stepper
+              label="Пауза після повтору перекладу (мс)"
+              value={d.delayTranslation2}
+              step={250}
+              onChange={(v) => set({ delayTranslation2: v })}
+            />
+          )}
           <Stepper
             label="Швидкість озвучки"
             value={d.rate}
@@ -192,22 +194,35 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
 
         <section className="flex flex-col gap-2">
           <h3 className="text-sm font-semibold">Порядок</h3>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={d.repeatTranslation}
-              onChange={(e) => set({ repeatTranslation: e.target.checked })}
-            />
-            Повторювати переклад
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={d.reverseOrder}
-              onChange={(e) => set({ reverseOrder: e.target.checked, repeatVoice: "" })}
-            />
-            Спочатку переклад, потім оригінал
-          </label>
+          {reader ? (
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={!!d.speakTranslation}
+                onChange={(e) => set({ speakTranslation: e.target.checked })}
+              />
+              Озвучувати переклад (перекладаємо через DeepL)
+            </label>
+          ) : (
+            <>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={d.repeatTranslation}
+                  onChange={(e) => set({ repeatTranslation: e.target.checked })}
+                />
+                Повторювати переклад
+              </label>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={d.reverseOrder}
+                  onChange={(e) => set({ reverseOrder: e.target.checked, repeatVoice: "" })}
+                />
+                Спочатку переклад, потім оригінал
+              </label>
+            </>
+          )}
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" checked={d.loop} onChange={(e) => set({ loop: e.target.checked })} />
             Повторювати список циклічно
@@ -217,7 +232,7 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
         <section className="flex flex-col gap-3">
           <h3 className="text-sm font-semibold">Мови й голоси</h3>
           <label className="flex flex-col gap-1 text-sm">
-            Мова оригіналу
+            {reader ? "Мова перекладу" : "Мова оригіналу"}
             <select
               className={field}
               value={d.fromLang}
@@ -231,7 +246,7 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             </select>
           </label>
           <VoiceField
-            label="Голос оригіналу"
+            label={reader ? "Голос перекладу" : "Голос оригіналу"}
             lang={d.fromLang}
             voiceName={d.fromVoice}
             voices={voices}
@@ -239,7 +254,7 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             onVoice={(v) => set({ fromVoice: v })}
           />
           <label className="flex flex-col gap-1 text-sm">
-            Мова перекладу
+            {reader ? "Мова тексту" : "Мова перекладу"}
             <select
               className={field}
               value={d.toLang}
@@ -253,36 +268,40 @@ export default function PlayerSettingsPanel({ value, onSave, onClose }) {
             </select>
           </label>
           <VoiceField
-            label="Голос перекладу"
+            label={reader ? "Голос тексту" : "Голос перекладу"}
             lang={d.toLang}
             voiceName={d.toVoice}
             voices={voices}
             rate={d.rate}
             onVoice={(v) => set({ toVoice: v })}
           />
-          <VoiceField
-            label="Голос повтору (другої частини)"
-            lang={d.reverseOrder ? d.fromLang : d.toLang}
-            voiceName={d.repeatVoice}
-            voices={voices}
-            rate={d.rate}
-            onVoice={(v) => set({ repeatVoice: v })}
-            autoLabel="Той самий, що й першого разу"
-          />
+          {!reader && (
+            <VoiceField
+              label="Голос повтору (другої частини)"
+              lang={d.reverseOrder ? d.fromLang : d.toLang}
+              voiceName={d.repeatVoice}
+              voices={voices}
+              rate={d.rate}
+              onVoice={(v) => set({ repeatVoice: v })}
+              autoLabel="Той самий, що й першого разу"
+            />
+          )}
         </section>
 
-        <section className="flex flex-col gap-2">
-          <h3 className="text-sm font-semibold">Що вчити</h3>
-          <div className="flex flex-wrap gap-4">
-            {ALL_TYPES.map((t) => (
-              <label key={t} className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={d.types.includes(t)} onChange={() => toggleType(t)} />
-                {TYPE_LABELS[t]}
-              </label>
-            ))}
-          </div>
-          {d.types.length === 0 && <p className="text-xs text-red-600">Оберіть хоча б один тип.</p>}
-        </section>
+        {!reader && (
+          <section className="flex flex-col gap-2">
+            <h3 className="text-sm font-semibold">Що вчити</h3>
+            <div className="flex flex-wrap gap-4">
+              {ALL_TYPES.map((t) => (
+                <label key={t} className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={d.types.includes(t)} onChange={() => toggleType(t)} />
+                  {TYPE_LABELS[t]}
+                </label>
+              ))}
+            </div>
+            {d.types.length === 0 && <p className="text-xs text-red-600">Оберіть хоча б один тип.</p>}
+          </section>
+        )}
 
         <div className="flex flex-wrap gap-2">
           <button

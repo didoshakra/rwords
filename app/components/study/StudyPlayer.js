@@ -73,7 +73,7 @@ function Panel({ label, children }) {
   )
 }
 
-function CtrlButton({ onClick, label, children, primary = false, disabled = false, disabledLabel }) {
+export function CtrlButton({ onClick, label, children, primary = false, disabled = false, disabledLabel }) {
   const tip = disabled && disabledLabel ? disabledLabel : label
   return (
     <span title={tip} className="inline-flex">
@@ -105,6 +105,7 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
   }))
   const [panelOpen, setPanelOpen] = useState(false)
   const [kick, setKick] = useState(null)
+  const [sessionReverse, setSessionReverse] = useState(null) // null = як у налаштуваннях; лише на цей сеанс
   const panelOpenRef = useRef(false)
   panelOpenRef.current = panelOpen
   const wasRunningRef = useRef(false)
@@ -128,7 +129,10 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
     return order.flatMap((id) => byTopic.get(id))
   }, [words, cfg.types])
 
-  const p = useWordPlayer(playlist, cfg)
+  const effReverse = sessionReverse ?? cfg.reverseOrder
+  // Доки діє перемикач, голос повтору ігноруємо: він прив'язаний до мови другої частини
+  const effCfg = sessionReverse === null ? cfg : { ...cfg, reverseOrder: sessionReverse, repeatVoice: "" }
+  const p = useWordPlayer(playlist, effCfg)
   const { commands: c } = p
   const showSecondRef = useRef(false)
   showSecondRef.current = p.showSecond
@@ -142,6 +146,7 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
   const saveCfg = (next) => {
     const typesChanged = next.types.join() !== cfg.types.join()
     setCfg(next)
+    setSessionReverse(null)
     saveSettings(next)
     setPanelOpen(false)
     setKick(typesChanged ? "start" : wasRunningRef.current ? "repeat" : null)
@@ -154,6 +159,12 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
       saveSettings(next)
       return next
     })
+
+  const toggleReverse = () => {
+    const nxt = !effReverse
+    setSessionReverse(nxt === cfg.reverseOrder ? null : nxt)
+    if (p.isRunning) setKick("repeat")
+  }
 
   // Виконується після рендера, коли хук уже бачить нові слова й налаштування
   useEffect(() => {
@@ -268,6 +279,17 @@ export default function StudyPlayer({ words, topicNameById = {}, settings, onClo
         <div className="flex gap-2">
           <CtrlButton onClick={() => window.open("/help/player", "_blank", "noopener")} label="Довідка">
             ?
+          </CtrlButton>
+          <CtrlButton
+            onClick={toggleReverse}
+            primary={sessionReverse !== null}
+            label={
+              effReverse
+                ? "Зараз: спочатку переклад. Поміняти (лише цей сеанс)"
+                : "Зараз: спочатку оригінал. Поміняти (лише цей сеанс)"
+            }
+          >
+            ⇄
           </CtrlButton>
           <CtrlButton onClick={openPanel} label="Налаштування">
             ⚙

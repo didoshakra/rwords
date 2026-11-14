@@ -351,7 +351,14 @@ export async function getOrCreateInboxTopic(userId, userName, textTitle) {
 
 // Додавання слова з читача з перевіркою дублікатів
 // word = переклад рідною (як у решті додатку), translation = іноземний текст з читача
-export async function addWordFromReader(foreignText, nativeTranslation, topicId, userId, force = false) {
+export async function addWordFromReader(
+  foreignText,
+  nativeTranslation,
+  topicId,
+  userId,
+  force = false,
+  forcedType = null,
+) {
   if (!userId) throw new Error("Користувач не авторизований")
 
   const foreignNorm = foreignText.trim().toLowerCase()
@@ -381,8 +388,9 @@ export async function addWordFromReader(foreignText, nativeTranslation, topicId,
   const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM words WHERE topic_id = ${topicId}`
   const pn = (maxPnRes[0].maxpn || 0) + 1
 
-  const wordCount = foreignText.trim().split(/\s+/).length
-  const type = wordCount === 1 ? "word" : "phrase"
+    const wordCount = foreignText.trim().split(/\s+/).length
+    const autoType = wordCount === 1 ? "word" : "phrase"
+    const type = ["word", "phrase", "sentence"].includes(forcedType) ? forcedType : autoType
 
   const result = await sql`
     INSERT INTO words (word, translation, topic_id, pn, know, img, group_key, type, user_id)

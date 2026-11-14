@@ -631,7 +631,8 @@ export default function TableView({
               >
                 ☰
               </span>
-              <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span>
+              {/* <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " 🔽" : " ▶️") : ""}</span> */}
+              <span>{topicWords.length > 0 ? (openLevel1.includes(topic.id) ? " ▼" : " ⮞") : ""}</span>
               <span
                 onClick={(e) => {
                   e.stopPropagation()

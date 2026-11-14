@@ -5,6 +5,8 @@
 // Паузи рахуються від справжнього кінця мовлення (onend), а не від оцінки тривалості.
 
 import { useState, useRef, useCallback, useEffect } from "react"
+import { norm, pickVoice, chunkText } from "@/lib/speech"
+import { splitSentences as splitText } from "@/lib/splitSentences"
 
 export const DEFAULT_PLAYER_SETTINGS = {
   fromLang: "uk-UA",
@@ -21,60 +23,12 @@ export const DEFAULT_PLAYER_SETTINGS = {
   loop: false, // цикл: після останнього слова починати спочатку
 }
 
-const norm = (l) => (l || "").toLowerCase().replace("_", "-")
-
-const isNatural = (v) => /natural|online/i.test(v.name)
-
-function pickVoice(lang, name) {
-  const voices = window.speechSynthesis.getVoices()
-  if (name) {
-    const byName = voices.find((v) => v.name === name)
-    if (byName) return byName
-  }
-  const l = norm(lang)
-  const exact = voices.filter((v) => norm(v.lang) === l)
-  const loose = voices.filter((v) => norm(v.lang).startsWith(l.slice(0, 2)))
-  const pool = exact.length ? exact : loose
-  return pool.find(isNatural) || pool[0] || null
-}
-
-// Довгі тексти ріжемо за реченнями (Chrome обриває довге мовлення)
-function chunkText(text, max = 180) {
-  const clean = (text || "").replace(/\s+/g, " ").trim()
-  if (!clean) return []
-  const sentences = (clean.match(/[^.!?…]+[.!?…]*/g) || [clean]).map((s) => s.trim()).filter(Boolean)
-  const out = []
-  let buf = ""
-  for (const s of sentences) {
-    if ((buf + " " + s).trim().length <= max) {
-      buf = (buf + " " + s).trim()
-      continue
-    }
-    if (buf) out.push(buf)
-    if (s.length <= max) {
-      buf = s
-      continue
-    }
-    let part = ""
-    for (const w of s.split(" ")) {
-      if ((part + " " + w).trim().length > max) {
-        out.push(part)
-        part = w
-      } else {
-        part = (part + " " + w).trim()
-      }
-    }
-    buf = part
-  }
-  if (buf) out.push(buf)
-  return out
-}
-
 // Речення для озвучки й підсвітки. StudyPlayer використовує цю ж функцію,
 // тому розбиття на екрані завжди збігається з тим, що звучить.
+// Речення для озвучки й підсвітки. StudyPlayer і читалка використовують цю ж логіку,
+// тому розбиття на екрані завжди збігається з тим, що звучить.
 export function splitSentences(text) {
-  const raw = text || ""
-  return (raw.match(/[^.!?…]+[.!?…]*\s*/g) || (raw.trim() ? [raw] : [])).filter((s) => s.trim())
+  return splitText(text, { keepWhitespace: true })
 }
 
 /**
@@ -214,22 +168,32 @@ export function useWordPlayer(words, settings = {}) {
         setShowSecond(false)
         const { first, second } = pairAt(i)
         const st = settingsRef.current
+        const hasFirst = !!first.text.trim()
+        const hasSecond = !!second.text.trim()
 
-        if (!skipFirst) {
+        // Порожню частину (і її паузи) пропускаємо
+        if (!skipFirst && hasFirst) {
           if (!(await say(first.text, first.lang, id, "first", first.voice))) return
-          await sleep(st.delayOriginal)
+          await sleep(hasSecond ? st.delayOriginal : st.delayTranslation1)
           if (id !== runIdRef.current) return
         }
         skipFirst = false
 
         setShowSecond(true)
-        if (!(await say(second.text, second.lang, id, "second", second.voice))) return
-        await sleep(st.delayTranslation1)
-        if (id !== runIdRef.current) return
+        if (hasSecond) {
+          if (!(await say(second.text, second.lang, id, "second", second.voice))) return
+          await sleep(st.delayTranslation1)
+          if (id !== runIdRef.current) return
 
-        if (st.repeatTranslation) {
-          if (!(await say(second.text, second.lang, id, "second", second.repeatVoice || second.voice))) return
-          await sleep(st.delayTranslation2)
+          if (st.repeatTranslation) {
+            if (!(await say(second.text, second.lang, id, "second", second.repeatVoice || second.voice))) return
+            await sleep(st.delayTranslation2)
+            if (id !== runIdRef.current) return
+          }
+        }
+        // Страховка від безперервного циклу, якщо обидві частини порожні
+        if (!hasFirst && !hasSecond) {
+          await sleep(250)
           if (id !== runIdRef.current) return
         }
         i++
@@ -244,6 +208,12 @@ export function useWordPlayer(words, settings = {}) {
   )
 
   // ── Команди ───────────────────────────────────────────────────
+  const playFrom = useCallback(
+    (i) => {
+      if (i >= 0 && i < wordsRef.current.length) runLoop(i)
+    },
+    [runLoop],
+  )
   const goTo = useCallback(
     (i) => {
       const len = wordsRef.current.length
@@ -340,6 +310,19 @@ export function useWordPlayer(words, settings = {}) {
     canPrevTopic: words.length > 0 && words[index]?.topic_id != null && words[0].topic_id !== words[index].topic_id,
     canNextTopic:
       words.length > 0 && words[index]?.topic_id != null && words[words.length - 1].topic_id !== words[index].topic_id,
-    commands: { start, pause, resume, toggle, repeat, skipToSecond, next, back, nextTopic, prevTopic, stop: pause },
+    commands: {
+      start,
+      pause,
+      resume,
+      toggle,
+      repeat,
+      skipToSecond,
+      next,
+      back,
+      nextTopic,
+      prevTopic,
+      stop: pause,
+      playFrom,
+    },
   }
 }

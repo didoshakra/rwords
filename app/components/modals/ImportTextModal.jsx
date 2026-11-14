@@ -4,16 +4,17 @@
 
 import { useState, useTransition } from "react"
 import { importCSV, importBatch } from "@/app/actions/words/wordActions"
+import { splitSentences } from "@/lib/splitSentences"
 
-function splitIntoSentences(text) {
-  const protected_text = text
-    .replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|etc|i\.e|e\.g)\./gi, "$1<DOT>")
-    .replace(/\b([A-Z])\./g, "$1<DOT>")
+// function splitIntoSentences(text) {
+//   const protected_text = text
+//     .replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|etc|i\.e|e\.g)\./gi, "$1<DOT>")
+//     .replace(/\b([A-Z])\./g, "$1<DOT>")
 
-  const raw = protected_text.split(/(?<=[.!?…])\s+(?=\S)/)
+//   const raw = protected_text.split(/(?<=[.!?…])\s+(?=\S)/)
 
-  return raw.map((s) => s.replace(/<DOT>/g, ".").trim()).filter((s) => s.length > 15)
-}
+//   return raw.map((s) => s.replace(/<DOT>/g, ".").trim()).filter((s) => s.length > 15)
+// }
 
 // Формат імпорту: **Секція, *Тема, заголовок колонки, далі речення.
 // Усе в лапках, щоб ; і переноси всередині не ламали рядок. Речення йде в translation (як у читача).
@@ -49,7 +50,7 @@ export default function ImportTextModal({ open, onClose, sections = [], userId, 
       return
     }
 
-    const result = splitIntoSentences(text)
+        const result = splitSentences(text, { minLength: 16 })
     if (!result.length) {
       setMessage("❌ Не вдалося розбити на речення")
       return
@@ -93,7 +94,7 @@ export default function ImportTextModal({ open, onClose, sections = [], userId, 
           // Скидаємо форму після успіху
           setTimeout(() => {
             handleClose()
-          }, 1500) 
+          }, 1500)
         } catch (err) {
           setMessage("❌ " + (err.message || "Помилка імпорту"))
         }
