@@ -13,13 +13,20 @@ import {
   translateWord,
   updateWordsPn,
 } from "@/app/actions/words/wordActions"
-import { getSections, createSection, updateSection, deleteSections } from "@/app/actions/words/sectionActions"
+import {
+  getSections,
+  createSection,
+  updateSection,
+  deleteSections,
+  updateSectionsPn,
+} from "@/app/actions/words/sectionActions"
 import {
   getTopics,
   createTopic,
   updateTopic,
   deleteTopics,
   checkTopicRelations,
+  updateTopicsPn,
 } from "@/app/actions/words/topicActions"
 import { useSession } from "next-auth/react"
 import TableView from "@/app/components/tables/TableView"
@@ -245,7 +252,7 @@ export default function WordsPage() {
   const openEditSection = (section) => {
     setSectionId_f(section.id)
     setSectionName(section.name)
-    setSectionLnk(section.img || "other")
+    setSectionLnk(section.link || "other")
     setSectionPn(section.pn || 0)
     setSectionModal("edit")
     setMessage("")
@@ -264,7 +271,7 @@ export default function WordsPage() {
     e.preventDefault()
     if (!user) return setMessage("Потрібна авторизація")
     if (!sectionName.trim()) return setMessage("Введіть назву секції")
-    const form = { name: sectionName.trim(), img: sectionLnk || "other", pn: Number(sectionPn) || 0 }
+    const form = { name: sectionName.trim(), link: sectionLnk || "other" }
     startTransition(async () => {
       try {
         if (sectionModal === "edit") {
@@ -314,7 +321,7 @@ export default function WordsPage() {
   const openEditTopic = (topic) => {
     setTopicId_f(topic.id)
     setTopicName(topic.name)
-    setTopicImg(topic.img || "other")
+    setTopicImg(topic.link || "other")
     setTopicPn(topic.pn || 0)
     setTopicSectionId(topic.section_id?.toString() || "")
     setTopicModal("edit")
@@ -339,8 +346,7 @@ export default function WordsPage() {
     if (!topicSectionId) return setMessage("Оберіть секцію")
     const form = {
       name: topicName.trim(),
-      img: topicImg || "other",
-      pn: Number(topicPn) || 0,
+      link: topicImg || "other",
       section_id: Number(topicSectionId),
     }
     startTransition(async () => {
@@ -477,14 +483,21 @@ export default function WordsPage() {
     setDialogOpen(true)
   }
 
-  // Перерахунок pn після переміщення рядків
-  const handleSavePn = async (updatedWords) => {
-    try {
-      await updateWordsPn(updatedWords.map((w) => ({ id: w.id, pn: w.pn })))
-      loadWords() // ← ось сюди
-    } catch (e) {
-      console.error("Помилка збереження порядку:", e)
-    }
+  // Збереження порядку слів (лише змінені). Стан оновлює TableView у пам'яті, помилку показує він же
+  const handleSavePn = async (changed) => {
+    await updateWordsPn(changed.map((w) => ({ id: w.id, pn: w.pn })))
+  }
+
+  // Переміщення теми вгору/вниз у межах розділу (помилку показує меню)
+  const handleMoveTopic = async (reordered) => {
+    await updateTopicsPn(reordered, user?.id)
+    loadTopics()
+  }
+
+  // Переміщення секції вгору/вниз (помилку показує меню)
+  const handleMoveSection = async (reordered) => {
+    await updateSectionsPn(reordered, user?.id)
+    loadSections()
   }
 
   // Імпорт з csv
@@ -795,10 +808,12 @@ export default function WordsPage() {
         onAddSection={openAddSection}
         onEditSection={openEditSection}
         onDeleteSections={handleDeleteSections}
+        onMoveSection={handleMoveSection}
         // Теми
         onAddTopic={openAddTopic}
         onEditTopic={openEditTopic}
         onDeleteTopics={handleDeleteTopics}
+        onMoveTopic={handleMoveTopic}
         onClickCsv={() => document.getElementById("csvInput").click()}
         onTranslate={translateWords}
         onThemeDownload={isFromApp ? handleThemeDownload : undefined}
@@ -971,15 +986,6 @@ export default function WordsPage() {
               className="border p-2 rounded w-full"
             />
           </div>
-          {/* <div>
-            <label className="block font-medium mb-1">Порядок (pn)</label>
-            <input
-              type="number"
-              value={sectionPn}
-              onChange={(e) => setSectionPn(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div> */}
           <div className="flex gap-4 mt-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
               {sectionModal === "edit" ? "Зберегти" : "Додати"}
@@ -1023,7 +1029,7 @@ export default function WordsPage() {
             </select>
           </div>
           <div>
-            <label className="block font-medium mb-1">Зображення (img)</label>
+            <label className="block font-medium mb-1">Посилання (link)</label>
             <input
               type="text"
               placeholder="other"
@@ -1032,15 +1038,7 @@ export default function WordsPage() {
               className="border p-2 rounded w-full"
             />
           </div>
-          {/* <div>
-            <label className="block font-medium mb-1">Порядок (pn)</label>
-            <input
-              type="number"
-              value={topicPn}
-              onChange={(e) => setTopicPn(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div> */}
+
           <div className="flex gap-4 mt-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
               {topicModal === "edit" ? "Зберегти" : "Додати"}

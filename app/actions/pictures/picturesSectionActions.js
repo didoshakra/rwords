@@ -1,4 +1,4 @@
-// actions/pictures/sectionActions.js
+// actions/pictures/picturesSectionActions.js
 "use server"
 
 import { sql } from "@/lib/dbConfig"
@@ -18,7 +18,10 @@ export async function getSections() {
 export async function createSection(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")
 
-  const { name,  pn = 0 } = form
+  const { name } = form
+
+  const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM pictures_sections`
+  const pn = (maxPnRes[0].maxpn || 0) + 1
 
   const result = await sql`
     INSERT INTO pictures_sections (name,pn, user_id)
@@ -40,11 +43,11 @@ export async function updateSection(id, form, user) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const { name,  pn = 0 } = form
+  const { name } = form
 
   await sql`
     UPDATE pictures_sections
-    SET name = ${name}, pn = ${pn}
+    SET name = ${name}
     WHERE id = ${id}
   `
 }

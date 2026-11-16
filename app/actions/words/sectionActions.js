@@ -21,7 +21,10 @@ export async function getSections(user_id = null, role = null) {
 export async function createSection(form, user_id) {
   if (!user_id) throw new Error("Користувач не авторизований")
 
-  const { name, link = "", pn = 0, is_private = false } = form
+  const { name, link = "", is_private = false } = form
+
+  const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM sections`
+  const pn = (maxPnRes[0].maxpn || 0) + 1
 
   const result = await sql`
     INSERT INTO sections (name, link, pn, user_id, is_private)
@@ -43,11 +46,11 @@ export async function updateSection(id, form, user) {
     throw new Error("Недостатньо прав для редагування")
   }
 
-  const { name, link = "other", pn = 0, is_private = false } = form
+  const { name, link = "", is_private = false } = form
 
   await sql`
   UPDATE sections
-  SET name = ${name}, link = ${link}, pn = ${pn}, is_private = ${is_private}
+  SET name = ${name}, link = ${link}, is_private = ${is_private}
   WHERE id = ${id}
   `
 }
@@ -85,4 +88,20 @@ export async function deleteSections(ids, userId, role) {
       WHERE id = ANY(${ids})
     `
   }
+}
+
+// Перерахунок pn секцій після переміщення
+export async function updateSectionsPn(sections, userId) {
+  if (!userId) throw new Error("Користувач не авторизований")
+  if (!sections || sections.length === 0) return
+
+  const ids = sections.map((s) => s.id)
+  const pns = sections.map((s) => s.pn)
+
+  await sql`
+    UPDATE sections AS s
+    SET pn = v.pn
+    FROM unnest(${ids}::int[], ${pns}::int[]) AS v(id, pn)
+    WHERE s.id = v.id
+  `
 }

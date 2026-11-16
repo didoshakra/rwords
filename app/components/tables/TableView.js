@@ -1,11 +1,9 @@
-// components/TableView.js
+// components/tables/TableView.js
 // Оптимізовано// Працює для всіх рівнів
 // Недоробл селект секш
 
 import React, { useEffect, useState, useRef } from "react"
 import { useSession } from "next-auth/react"
-// import { useAuth } from "@/app/context/AuthContext"
-import MoveRowModal from "@/app/components/tables/MoveRowModal"
 
 // ── Хук для long press (поза компонентом) ──────────────────────────────────
 function useLongPress(callback, ms = 600) {
@@ -114,7 +112,6 @@ function ViewModal({ viewModal, onClose }) {
             background: "#f9f9f9",
             color: "#222",
           }}
-
         />
       </div>
     </div>
@@ -133,6 +130,7 @@ function ItemRow({
   moveMode,
   moveOffset,
   moveInfo,
+  isActive,
 }) {
   // Один масив long-press handlers — по одному на колонку
   // Хуки викликаються на верхньому рівні компонента (не в .map) ✅
@@ -147,6 +145,11 @@ function ItemRow({
   return (
     <tr
       data-id={item.id}
+      style={
+        isActive
+          ? { background: "rgba(245,158,11,0.55)", outline: "3px solid #f59e0b", outlineOffset: "-3px" }
+          : undefined
+      }
       className={
         isSelected(item.id)
           ? "bg-tabTrBgSel hover:bg-tabTrBgSelHov hover:bg:opacity-70 dark:bg-tabTrBgSelD dark:hover:bg-tabTrBgSelHovD border-b-2 border-amber-400 text-tabTrOn dark:text-tabTrOnD hover:text-tabTrOnHov "
@@ -225,7 +228,7 @@ function ItemRow({
             break
           default:
             content = value ?? ""
-            // content = value ?? "\u00A0"
+          // content = value ?? "\u00A0"
         }
 
         const isTextCol = !col.type || col.type === "text"
@@ -265,22 +268,54 @@ function ItemRow({
 }
 
 // компонент модалки меню CRUD для секцій і тем
-function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, level2Head, user }) {
+function MenuModal({
+  menuModal,
+  onClose,
+  onAdd,
+  onEdit,
+  onDelete,
+  onMoveUp,
+  onMoveDown,
+  canMoveUp,
+  canMoveDown,
+  level1Head,
+  level2Head,
+  user,
+  positionText,
+  moveError,
+}) {
   if (!menuModal) return null
-  console.log("MenuModal/user=",user) // в TableView, не в MenuModal
+  console.log("MenuModal/user=", user) // в TableView, не в MenuModal
   console.log("MenuModal/user?.role=", user?.role)
   const isSection = menuModal.type === "section"
   const canEdit = user && (user.role === "admin" || String(user.id) === String(menuModal.item.user_id))
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
-      <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-4 min-w-[220px] flex flex-col gap-2"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none">
+      <div className="pointer-events-auto bg-white dark:bg-gray-800 rounded-t-xl shadow-2xl border-t-2 border-amber-400 p-4 w-full max-w-md flex flex-col gap-2">
         <p className="font-semibold text-sm mb-2 text-center">
           {isSection ? level2Head : level1Head}: {menuModal.item.name}
         </p>
+        {positionText && <p className="text-center text-xs opacity-70">{positionText}</p>}
+        {moveError && <p className="text-center text-xs text-red-600">{moveError}</p>}
+        {onMoveUp && onMoveDown && (
+          <div className="flex gap-2">
+            <button
+              onClick={onMoveUp}
+              disabled={!canMoveUp}
+              className="flex-1 px-4 py-2 rounded-lg bg-btBg text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
+            >
+              ⬆️ Вище
+            </button>
+            <button
+              onClick={onMoveDown}
+              disabled={!canMoveDown}
+              className="flex-1 px-4 py-2 rounded-lg bg-btBg text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
+            >
+              ⬇️ Нижче
+            </button>
+          </div>
+        )}
         {onAdd && (
           <button
             onClick={() => {
@@ -326,7 +361,7 @@ function MenuModal({ menuModal, onClose, onAdd, onEdit, onDelete, level1Head, le
           onClick={onClose}
           className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
         >
-          Відмінити
+          Закрити
         </button>
       </div>
     </div>
@@ -352,6 +387,8 @@ export default function TableView({
   onAddTopic,
   onEditTopic,
   onDeleteTopics,
+  onMoveTopic,
+  onMoveSection,
   onClickCsv,
   translate,
   onTranslate,
@@ -370,7 +407,9 @@ export default function TableView({
   const showOwnerMark = true
   const { data: session, status } = useSession()
   const user = session?.user
+  console.log("onMoveTopic:", typeof onMoveTopic, "user:", !!user)
   console.log("TableView/session=", session, "user=", user, "status=", status)
+  console.log("onMoveTopic:", typeof onMoveTopic)
 
   const [tData, setTData] = useState(data || [])
   const [level1, setLevel1] = useState(dataLevel1 || [])
@@ -391,6 +430,15 @@ export default function TableView({
   const [viewModal, setViewModal] = useState(null)
   const [moveOffset, setMoveOffset] = useState(0)
   const [menuModal, setMenuModal] = useState(null) // null | { type: "section"|"topic", item }
+  const [activeTopicId, setActiveTopicId] = useState(null) // постійно підсвічена тема
+  const [activeSectionId, setActiveSectionId] = useState(null)
+  const [activeGroup, setActiveGroup] = useState(null) // { topicId, key } група слів, яку рухали
+  const scrollToWordRef = useRef(null)
+  const [wordMoveOpen, setWordMoveOpen] = useState(false)
+  const [wordMoveError, setWordMoveError] = useState("")
+  const scrollToActiveSectionRef = useRef(false)
+  const [moveError, setMoveError] = useState("")
+  const scrollToActiveRef = useRef(false)
 
   const isOwnerOrAdmin = (w) => user && (user.role === "admin" || String(user.id) === String(w.user_id))
 
@@ -398,6 +446,10 @@ export default function TableView({
   useEffect(() => {
     if (tData.length > 0) console.log(tData[0])
   }, [tData])
+  // Віконце переміщення працює лише коли виділено рівно одне слово
+  useEffect(() => {
+    if (wordMoveOpen && selectedIds.length !== 1) setWordMoveOpen(false)
+  }, [selectedIds, wordMoveOpen])
   //
   useEffect(() => {
     setTData(data || [])
@@ -406,6 +458,30 @@ export default function TableView({
     // setOpenLevel1([]) // ← закриті за замовчуванням
     // setOpenLevel2([]) // ← закриті за замовчуванням
   }, [data, dataLevel2, dataLevel1])
+
+  // Після переміщення і оновлення даних прокручуємо до активної теми
+  useEffect(() => {
+    if (!scrollToActiveRef.current || activeTopicId == null) return
+    scrollToActiveRef.current = false
+    const row = tableContainerRef.current?.querySelector(`tr[data-topic-id="${activeTopicId}"]`)
+    if (row) row.scrollIntoView({ behavior: "smooth", block: "center" })
+  }, [level1])
+
+  useEffect(() => {
+    if (!scrollToActiveSectionRef.current || activeSectionId == null) return
+    scrollToActiveSectionRef.current = false
+    const row = tableContainerRef.current?.querySelector(`tr[data-section-id="${activeSectionId}"]`)
+    if (row) row.scrollIntoView({ behavior: "smooth", block: "center" })
+  }, [level2])
+
+  // Прокрутка до слова, яке щойно перемістили
+  useEffect(() => {
+    if (scrollToWordRef.current == null) return
+    const id = scrollToWordRef.current
+    scrollToWordRef.current = null
+    const row = tableContainerRef.current?.querySelector(`tr[data-id="${id}"]`)
+    if (row) row.scrollIntoView({ behavior: "smooth", block: "center" })
+  }, [tData])
 
   useEffect(() => {
     if (actionsOk) {
@@ -434,8 +510,19 @@ export default function TableView({
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const isSelected = (id) => selectedIds.includes(id)
-  const toggleSelect = (id) =>
+  const toggleSelect = (id) => {
+    // Поки відкрите віконце переміщення, виділення перемикається на одне слово
+    if (wordMoveOpen) {
+      const w = tData.find((x) => x.id === id)
+      const wasSelected = selectedIds.includes(id)
+      setSelectedIds(wasSelected ? [] : [id])
+      setActiveGroup(w && !wasSelected ? { topicId: w[level1Id], key: keyOf(w) } : null)
+      setWordMoveError("")
+      return
+    }
+    setActiveGroup(null)
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+  }
   const selectAll = () => {
     setSelectedIds(tData.map((w) => w.id))
     setSelectedLevel1(level1.map((w) => w.id))
@@ -519,80 +606,109 @@ export default function TableView({
     else if (rowBottom > containerBottom) container.scrollTop = rowBottom - container.clientHeight
   }
 
-  const startMoveMode = () => {
-    if (selectedIds.length !== 1) return
-    const id = selectedIds[0]
-    const word = tData.find((w) => w.id === id)
+  // ── Переміщення слова (групи group_key) вгору/вниз у межах теми ──
+  const keyOf = (w) => w.group_key || String(w.id)
+
+  const getWordMoveInfo = (word) => {
+    const topicWords = tData
+      .filter((w) => w[level1Id] === word[level1Id])
+      .sort((a, b) => (a.pn ?? 0) - (b.pn ?? 0) || a.id - b.id)
+    const groups = [...new Set(topicWords.map(keyOf))]
+    const idx = groups.indexOf(keyOf(word))
+    return { topicWords, groups, idx }
+  }
+
+  const moveWord = async (dir) => {
+    if (!onSavePn || selectedIds.length !== 1) return
+    const word = tData.find((w) => w.id === selectedIds[0])
     if (!word) return
+    setWordMoveError("")
+    const { topicWords, groups, idx } = getWordMoveInfo(word)
+    const j = idx + dir
+    if (idx < 0 || j < 0 || j >= groups.length) return
 
-    const topicWords = tData.filter((w) => w.topic_id === word.topic_id).sort((a, b) => a.pn - b.pn)
+    const ng = [...groups]
+    ;[ng[idx], ng[j]] = [ng[j], ng[idx]]
 
-    const groups = [...new Set(topicWords.map((w) => w.group_key || String(w.id)))]
-    const idx = groups.indexOf(word.group_key || String(word.id))
-
-    console.log("word:", word)
-    console.log("groups:", groups)
-    console.log("idx:", idx) // якщо -1 — проблема тут
-
-    setMoveOffset(0)
-    setMoveInfo({ idx, total: groups.length, groups, topicWords, word })
-    setMoveMode(true)
-  }
-
-  const scrollToMarkerRow = (offset) => {
-    if (!moveInfo) return
-    const { idx, groups, topicWords } = moveInfo
-    const targetIdx = idx + offset
-    if (targetIdx < 0 || targetIdx >= groups.length) return
-
-    const targetGroupKey = groups[targetIdx]
-    const groupItems = topicWords.filter((w) => (w.group_key || String(w.id)) === targetGroupKey)
-    const targetItem = offset < 0 ? groupItems[0] : groupItems[groupItems.length - 1]
-    if (!targetItem) return
-
-    const container = tableContainerRef.current
-    if (!container) return
-    const row = container.querySelector(`tr[data-id="${targetItem.id}"]`)
-    if (!row) return
-    row.scrollIntoView({ behavior: "smooth", block: "center" })
-  }
-
-  const moveSelectedRow = (offset) => {
-    if (!moveInfo) return
-    const { idx, groups, topicWords } = moveInfo
-
-    const newIdx = idx + offset
-    if (newIdx < 0 || newIdx >= groups.length) return
-
-    const newGroups = [...groups]
-
-    // Послідовні свапи замість одного великого
-    if (offset > 0) {
-      for (let i = idx; i < newIdx; i++) {
-        ;[newGroups[i], newGroups[i + 1]] = [newGroups[i + 1], newGroups[i]]
-      }
-    } else {
-      for (let i = idx; i > newIdx; i--) {
-        ;[newGroups[i], newGroups[i - 1]] = [newGroups[i - 1], newGroups[i]]
-      }
+    const byKey = new Map()
+    for (const w of topicWords) {
+      const k = keyOf(w)
+      if (!byKey.has(k)) byKey.set(k, [])
+      byKey.get(k).push(w)
     }
 
     let pn = 1
-    const reindexed = []
-    for (const key of newGroups) {
-      const groupWords = topicWords.filter((w) => (w.group_key || String(w.id)) === key)
-      for (const w of groupWords) {
-        reindexed.push({ ...w, pn: pn++ })
+    const newPn = new Map()
+    const changed = []
+    for (const k of ng) {
+      for (const w of byKey.get(k)) {
+        newPn.set(w.id, pn)
+        if (w.pn !== pn) changed.push({ id: w.id, pn })
+        pn++
       }
     }
 
-    const newData = tData.map((w) => {
-      const updated = reindexed.find((u) => u.id === w.id)
-      return updated || w
-    })
+    const prev = tData
+    const next = tData
+      .map((w) => (newPn.has(w.id) ? { ...w, pn: newPn.get(w.id) } : w))
+      .sort((a, b) => (a.pn ?? 0) - (b.pn ?? 0) || a.id - b.id)
 
-    setTData(newData)
-    setIsOrderChanged(true)
+    setTData(next)
+    setActiveGroup({ topicId: word[level1Id], key: keyOf(word) })
+    scrollToWordRef.current = word.id
+    try {
+      await onSavePn(changed)
+    } catch (e) {
+      scrollToWordRef.current = null
+      setTData(prev)
+      setWordMoveError("Помилка збереження порядку: " + (e.message || ""))
+    }
+  }
+
+  // ── Переміщення теми вгору/вниз у межах свого розділу ──
+  const menuSiblings =
+    menuModal?.type === "topic"
+      ? level1.filter((t) => t[level2Id] === menuModal.item[level2Id])
+      : menuModal?.type === "section"
+        ? level2
+        : []
+  const menuIdx = menuSiblings.findIndex((t) => t.id === menuModal?.item.id)
+
+  const moveTopic = async (topic, dir) => {
+    if (!onMoveTopic) return
+    const siblings = level1.filter((t) => t[level2Id] === topic[level2Id])
+    const i = siblings.findIndex((t) => t.id === topic.id)
+    const j = i + dir
+    if (i < 0 || j < 0 || j >= siblings.length) return
+    const arr = [...siblings]
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    setMoveError("")
+    setActiveTopicId(topic.id)
+    scrollToActiveRef.current = true
+    try {
+      await onMoveTopic(arr.map((t, k) => ({ id: t.id, pn: k + 1 })))
+    } catch (e) {
+      scrollToActiveRef.current = false
+      setMoveError(e.message || "Помилка збереження порядку")
+    }
+  }
+
+  const moveSection = async (section, dir) => {
+    if (!onMoveSection) return
+    const i = level2.findIndex((s) => s.id === section.id)
+    const j = i + dir
+    if (i < 0 || j < 0 || j >= level2.length) return
+    const arr = [...level2]
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    setMoveError("")
+    setActiveSectionId(section.id)
+    scrollToActiveSectionRef.current = true
+    try {
+      await onMoveSection(arr.map((s, k) => ({ id: s.id, pn: k + 1 })))
+    } catch (e) {
+      scrollToActiveSectionRef.current = false
+      setMoveError(e.message || "Помилка збереження порядку")
+    }
   }
 
   // ── Рендер групи level1 ───────────────────────────────────────────────────
@@ -612,8 +728,14 @@ export default function TableView({
     return (
       <React.Fragment key={topic.id}>
         <tr
+          data-topic-id={topic.id}
           onClick={() => toggleLevel1(topic.id)}
           className="bg-tabTr1Bg dark:bg-tabTr1BgD cursor-pointer hover:bg-tabTr1BgHov"
+          style={
+            activeTopicId === topic.id
+              ? { background: "rgba(245,158,11,0.55)", outline: "3px solid #f59e0b", outlineOffset: "-3px" }
+              : undefined
+          }
         >
           <td colSpan={showOwnerMark ? columns.length + 2 : columns.length} className="p-2 font-semibold">
             <div
@@ -624,6 +746,9 @@ export default function TableView({
               <span
                 onClick={(e) => {
                   e.stopPropagation()
+                  setActiveTopicId(topic.id)
+                  setActiveSectionId(null)
+                  setMoveError("")
                   setMenuModal({ type: "topic", item: topic })
                 }}
                 style={{ cursor: "pointer", fontSize: 16 }}
@@ -671,6 +796,7 @@ export default function TableView({
               moveMode={moveMode}
               moveOffset={moveOffset}
               moveInfo={moveInfo}
+              isActive={!!activeGroup && activeGroup.topicId === item[level1Id] && activeGroup.key === keyOf(item)}
             />
           ))}
       </React.Fragment>
@@ -679,7 +805,7 @@ export default function TableView({
 
   const totalWidth = columns.reduce((sum, col) => sum + col.width, 0)
 
-// функція, що збирає відмічені слова в порядку, як вони показані на екрані (секція → тема → pn)
+  // функція, що збирає відмічені слова в порядку, як вони показані на екрані (секція → тема → pn)
   const getSelectedOrdered = () => {
     const sel = new Set(selectedIds)
     const result = []
@@ -771,12 +897,20 @@ export default function TableView({
                     🗑️ Видалити
                   </button>
                 )}
-                <button
-                  onClick={startMoveMode}
-                  className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
-                >
-                  🔀 Перемістити
-                </button>
+                {onSavePn && (
+                  <button
+                    onClick={() => {
+                      const w = tData.find((x) => x.id === selectedIds[0])
+                      if (!w) return
+                      setActiveGroup({ topicId: w[level1Id], key: keyOf(w) })
+                      setWordMoveError("")
+                      setWordMoveOpen(true)
+                    }}
+                    className="bg-btBg hover:opacity-70 text-white px-2 py-0.5 rounded-full font-medium"
+                  >
+                    🔀 Перемістити
+                  </button>
+                )}
               </>
             )
           })()}
@@ -928,8 +1062,14 @@ export default function TableView({
                 return (
                   <React.Fragment key={section.id}>
                     <tr
+                      data-section-id={section.id}
                       onClick={() => toggleLevel2(section.id)}
                       className="bg-tabTr2Bg dark:bg-tabTr2BgD cursor-pointer hover:bg-tabTr2BgHov "
+                      style={
+                        activeSectionId === section.id
+                          ? { background: "rgba(245,158,11,0.55)", outline: "3px solid #f59e0b", outlineOffset: "-3px" }
+                          : undefined
+                      }
                     >
                       <td
                         colSpan={showOwnerMark ? columns.length + 2 : columns.length}
@@ -940,6 +1080,9 @@ export default function TableView({
                           <span
                             onClick={(e) => {
                               e.stopPropagation()
+                              setActiveSectionId(section.id)
+                              setActiveTopicId(null)
+                              setMoveError("")
                               setMenuModal({ type: "section", item: section })
                             }}
                             style={{ cursor: "pointer", fontSize: 16 }}
@@ -1034,6 +1177,28 @@ export default function TableView({
         level1Head={level1Head}
         level2Head={level2Head}
         user={user}
+        onMoveUp={
+          !user || !menuModal
+            ? null
+            : menuModal.type === "topic" && onMoveTopic
+              ? () => moveTopic(menuModal.item, -1)
+              : menuModal.type === "section" && onMoveSection
+                ? () => moveSection(menuModal.item, -1)
+                : null
+        }
+        onMoveDown={
+          !user || !menuModal
+            ? null
+            : menuModal.type === "topic" && onMoveTopic
+              ? () => moveTopic(menuModal.item, 1)
+              : menuModal.type === "section" && onMoveSection
+                ? () => moveSection(menuModal.item, 1)
+                : null
+        }
+        positionText={menuModal && menuIdx >= 0 ? `Позиція ${menuIdx + 1} з ${menuSiblings.length}` : ""}
+        moveError={moveError}
+        canMoveUp={menuIdx > 0}
+        canMoveDown={menuIdx >= 0 && menuIdx < menuSiblings.length - 1}
         onAdd={
           menuModal
             ? menuModal.type === "section"
@@ -1068,63 +1233,45 @@ export default function TableView({
             : null
         }
       />
-
-      <MoveRowModal
-        open={moveMode}
-        onClose={() => {
-          setMoveMode(false)
-          setMoveOffset(0)
-        }}
-        onDone={() => {
-          if (moveOffset !== 0) {
-            const { idx, groups, topicWords } = moveInfo
-            const newIdx = idx + moveOffset
-            const newGroups = [...groups]
-
-            // Послідовні свапи
-            if (moveOffset > 0) {
-              for (let i = idx; i < newIdx; i++) {
-                ;[newGroups[i], newGroups[i + 1]] = [newGroups[i + 1], newGroups[i]]
-              }
-            } else {
-              for (let i = idx; i > newIdx; i--) {
-                ;[newGroups[i], newGroups[i - 1]] = [newGroups[i - 1], newGroups[i]]
-              }
-            }
-
-            let pn = 1
-            const reindexed = []
-            for (const key of newGroups) {
-              const groupWords = topicWords.filter((w) => (w.group_key || String(w.id)) === key)
-              for (const w of groupWords) {
-                reindexed.push({ ...w, pn: pn++ })
-              }
-            }
-
-            const newData = tData.map((w) => {
-              const updated = reindexed.find((u) => u.id === w.id)
-              return updated || w
-            })
-
-            setTData(newData)
-            setIsOrderChanged(true)
-            if (onSavePn) onSavePn(reindexed)
-          }
-          setMoveMode(false)
-          setMoveOffset(0)
-        }}
-        moveInfo={moveInfo}
-        moveOffset={moveOffset}
-        onUp={() => {
-          setMoveOffset((prev) => prev - 1)
-          scrollToMarkerRow(moveOffset - 1)
-        }}
-        onDown={() => {
-          setMoveOffset((prev) => prev + 1)
-          scrollToMarkerRow(moveOffset + 1)
-        }}
-      />
-
+      {wordMoveOpen &&
+        (() => {
+          const mw = selectedIds.length === 1 ? tData.find((w) => w.id === selectedIds[0]) : null
+          if (!mw) return null
+          const { groups, idx } = getWordMoveInfo(mw)
+          return (
+            <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none">
+              <div className="pointer-events-auto bg-white dark:bg-gray-800 rounded-t-xl shadow-2xl border-t-2 border-amber-400 p-4 w-full max-w-md flex flex-col gap-2">
+                <p className="font-semibold text-sm text-center truncate">{mw.word || mw.translation}</p>
+                <p className="text-center text-xs opacity-70">
+                  Позиція {idx + 1} з {groups.length}
+                </p>
+                {wordMoveError && <p className="text-center text-xs text-red-600">{wordMoveError}</p>}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => moveWord(-1)}
+                    disabled={idx <= 0}
+                    className="flex-1 px-4 py-2 rounded-lg bg-btBg text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
+                  >
+                    ⬆️ Вище
+                  </button>
+                  <button
+                    onClick={() => moveWord(1)}
+                    disabled={idx < 0 || idx >= groups.length - 1}
+                    className="flex-1 px-4 py-2 rounded-lg bg-btBg text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-70"
+                  >
+                    ⬇️ Нижче
+                  </button>
+                </div>
+                <button
+                  onClick={() => setWordMoveOpen(false)}
+                  className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Закрити
+                </button>
+              </div>
+            </div>
+          )
+        })()}
       <ViewModal viewModal={viewModal} onClose={() => setViewModal(null)} />
     </main>
   )

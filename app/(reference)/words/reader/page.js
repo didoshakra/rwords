@@ -230,21 +230,23 @@ function WordPopup({
 
 // ─── Підсвічування тексту ───────────────────────────────────────────────────
 
+const cleanWord = (s) => s.replace(/[^a-zA-ZÀ-öø-ÿА-яҐєіїЄІЇ]/g, "").toLowerCase()
+
 function renderHighlightedText(text, knownWords, addedInSession) {
   const tokens = text.split(/(\s+)/)
   return tokens.map((token, i) => {
-    const clean = token.replace(/[^a-zA-ZÀ-öø-ÿА-яҐєіїЄІЇ]/g, "").toLowerCase()
+    const clean = cleanWord(token)
     if (!clean) return <span key={i}>{token}</span>
     if (addedInSession.has(clean)) {
       return (
-        <span key={i} className="bg-blue-100 rounded px-0.5">
+        <span key={i} className="text-blue-600 underline decoration-dotted underline-offset-4">
           {token}
         </span>
       )
     }
     if (knownWords.has(clean)) {
       return (
-        <span key={i} className="bg-emerald-50 rounded px-0.5">
+        <span key={i} className="text-emerald-700 font-medium">
           {token}
         </span>
       )
@@ -269,6 +271,7 @@ export default function ReaderPage() {
 
   const [knownWords, setKnownWords] = useState(new Set())
   const [addedInSession, setAddedInSession] = useState(new Set())
+  const [addedCount, setAddedCount] = useState(0)
 
   const [popup, setPopup] = useState(null)
   const readerRef = useRef(null)
@@ -377,6 +380,13 @@ export default function ReaderPage() {
       return next
     })
 
+  const toggleSpeakTranslation = () =>
+    setCfg((prev) => {
+      const next = { ...prev, speakTranslation: !prev.speakTranslation }
+      saveSettings(next)
+      return next
+    })
+
   const openPanel = () => {
     wasRunningRef.current = p.isRunning
     c.pause()
@@ -465,7 +475,8 @@ export default function ReaderPage() {
     const handleMouseUp = () => {
       setTimeout(() => {
         const selection = window.getSelection()
-        const selected = selection?.toString().trim()
+        // Прибираємо пунктуацію по краях виділення ("word," → "word"), щоб у БД і в підсвітці було те саме
+        const selected = (selection?.toString() || "").trim().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "")
         if (!selected || selected.length < 2) return
         if (!selection.rangeCount) return
         if (readerRef.current && !readerRef.current.contains(selection.anchorNode)) return
@@ -485,11 +496,14 @@ export default function ReaderPage() {
     return () => document.removeEventListener("mouseup", handleMouseUp)
   }, [readMode])
 
-  const handleAdded = useCallback((word) => {
-    const lower = word.toLowerCase()
-    setAddedInSession((prev) => new Set([...prev, lower]))
-    setKnownWords((prev) => new Set([...prev, lower]))
-  }, [])
+   const handleAdded = useCallback((word) => {
+     setAddedCount((n) => n + 1)
+     const lower = word.trim().toLowerCase()
+     // Підсвітка по словах лише для одного слова; фрази й речення не підсвічуємо
+     const extra = /\s/.test(lower) ? [] : [cleanWord(lower)].filter(Boolean)
+     setKnownWords((prev) => new Set([...prev, lower, ...extra]))
+     setAddedInSession((prev) => new Set([...prev, ...extra]))
+   }, [])
 
   const handleClosePopup = useCallback(() => {
     setPopup(null)
@@ -502,10 +516,8 @@ export default function ReaderPage() {
       <div className="flex items-center justify-between mb-5">
         <h1 className="text-xl font-semibold text-gray-800">Читач</h1>
         <div className="flex items-center gap-2">
-          {readMode && addedInSession.size > 0 && (
-            <span className="text-sm text-emerald-600 bg-emerald-50 rounded-lg px-2 py-1">
-              +{addedInSession.size} додано
-            </span>
+          {readMode && addedCount > 0 && (
+            <span className="text-sm text-emerald-600 bg-emerald-50 rounded-lg px-2 py-1">+{addedCount} додано</span>
           )}
           {readMode && (
             <button
@@ -565,15 +577,18 @@ export default function ReaderPage() {
                 <span className="font-medium text-gray-700">{topicName}</span>
               </span>
             )}
+
             <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-200 inline-block" />
-              Вже у словнику
+              <span className="text-emerald-700 font-medium">слово</span> у словнику
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm bg-blue-100 border border-blue-200 inline-block" />
-              Додано зараз
+              <span className="text-blue-600 underline decoration-dotted underline-offset-4">слово</span> додано зараз
             </span>
-            <span>Виділіть слово мишкою або клікніть по реченню, щоб озвучити</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-sm bg-amber-200 inline-block" />
+              речення, що звучить
+            </span>
+
           </div>
 
           <div
@@ -609,7 +624,7 @@ export default function ReaderPage() {
         </>
       )}
 
-      {/* Плашка озвучки */}
+            {/* Плашка озвучки */}
       {readMode && (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 p-2 backdrop-blur">
           {!p.supported && <p className="text-center text-xs text-red-700">Цей браузер не підтримує озвучку.</p>}
@@ -623,6 +638,7 @@ export default function ReaderPage() {
               {started ? p.index + 1 : 0} з {p.total}
             </span>
             <CtrlButton
+              light
               onClick={() => {
                 setStarted(true)
                 c.back()
@@ -632,10 +648,11 @@ export default function ReaderPage() {
             >
               ◀
             </CtrlButton>
-            <CtrlButton onClick={handleToggle} label={p.isRunning ? "Пауза (пробіл)" : "Грати (пробіл)"} primary>
+            <CtrlButton light onClick={handleToggle} label={p.isRunning ? "Пауза (пробіл)" : "Грати (пробіл)"} primary>
               {p.isRunning ? "⏸" : "▶"}
             </CtrlButton>
             <CtrlButton
+              light
               onClick={() => {
                 setStarted(true)
                 c.next()
@@ -646,8 +663,19 @@ export default function ReaderPage() {
               ▶
             </CtrlButton>
             <CtrlButton
+              light
+              onClick={toggleSpeakTranslation}
+              primary={!!cfg.speakTranslation}
+              label={cfg.speakTranslation ? "Озвучка перекладу: увімкнено" : "Озвучка перекладу: вимкнено"}
+            >
+              🌐
+            </CtrlButton>
+            <CtrlButton
+              light
               onClick={toggleReverse}
               primary={!textFirst}
+              disabled={!cfg.speakTranslation}
+              disabledLabel="Спершу увімкніть озвучку перекладу (🌐)"
               label={
                 textFirst
                   ? "Зараз: спочатку текст, потім переклад. Поміняти (лише цей сеанс)"
@@ -657,6 +685,7 @@ export default function ReaderPage() {
               ⇄
             </CtrlButton>
             <CtrlButton
+              light
               onClick={handleAddSentence}
               label="Додати поточне речення в словник"
               disabled={!user || !started}
@@ -664,16 +693,25 @@ export default function ReaderPage() {
             >
               ➕
             </CtrlButton>
-            <CtrlButton onClick={toggleLoop} primary={cfg.loop} label={cfg.loop ? "Цикл увімкнено" : "Цикл вимкнено"}>
+            <CtrlButton
+              light
+              onClick={toggleLoop}
+              primary={cfg.loop}
+              label={cfg.loop ? "Цикл увімкнено" : "Цикл вимкнено"}
+            >
               🔁
             </CtrlButton>
-            <CtrlButton onClick={openPanel} label="Налаштування">
+            <CtrlButton light onClick={openPanel} label="Налаштування">
               ⚙
             </CtrlButton>
           </div>
           <p className="mt-1 text-center text-xs text-gray-500" role="status" aria-live="polite">
             {p.notice ||
-              (p.finished ? "✔ Кінець тексту" : p.isRunning ? (cfg.loop ? "🔁 Грає по колу" : "▶ Грає") : "⏸ Пауза")}
+              (p.finished
+                ? "✔ Кінець тексту"
+                : p.isRunning
+                  ? (cfg.loop ? "🔁 Грає по колу" : "▶ Грає") + (cfg.speakTranslation ? " + переклад" : "")
+                  : "⏸ Пауза")}
           </p>
         </div>
       )}

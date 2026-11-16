@@ -73,7 +73,15 @@ function Panel({ label, children }) {
   )
 }
 
-export function CtrlButton({ onClick, label, children, primary = false, disabled = false, disabledLabel }) {
+export function CtrlButton({
+  onClick,
+  label,
+  children,
+  primary = false,
+  disabled = false,
+  disabledLabel,
+  light = false,
+}) {
   const tip = disabled && disabledLabel ? disabledLabel : label
   return (
     <span title={tip} className="inline-flex">
@@ -85,8 +93,12 @@ export function CtrlButton({ onClick, label, children, primary = false, disabled
         className={
           "min-h-[44px] min-w-[44px] rounded-full px-3 text-lg font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 disabled:cursor-not-allowed disabled:opacity-40 " +
           (primary
-            ? "bg-btBg text-white hover:opacity-70"
-            : "border border-gray-400 text-gray-800 hover:bg-gray-100 dark:border-gray-500 dark:text-gray-100 dark:hover:bg-gray-700")
+            ? light
+              ? "bg-blue-600 text-white hover:opacity-70"
+              : "bg-btBg text-white hover:opacity-70"
+            : light
+              ? "border border-gray-400 bg-white text-gray-800 hover:bg-gray-100"
+              : "border border-gray-400 text-gray-800 hover:bg-gray-100 dark:border-gray-500 dark:text-gray-100 dark:hover:bg-gray-700")
         }
       >
         {children}

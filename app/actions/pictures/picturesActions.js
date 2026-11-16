@@ -18,8 +18,6 @@ export async function getPictureById(id) {
   return result[0] || null
 }
 
-
-
 export async function getPictures() {
   const result = await sql`
     SELECT pictures.*, users.name AS user_name
@@ -55,6 +53,10 @@ export async function createPictureFromFile({ file, pictures_name, title, topic_
       .end(buffer)
   })
 
+  const targetTopicId = topic_id || 1
+  const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM pictures WHERE topic_id = ${targetTopicId}`
+  const pn = (maxPnRes[0].maxpn || 0) + 1
+
   const result = await sql`
     INSERT INTO pictures
       (pictures_name, title, file_name, url, format, width, height, bytes, original_bytes, public_id, topic_id, user_id, pn, media_type)
@@ -70,9 +72,9 @@ export async function createPictureFromFile({ file, pictures_name, title, topic_
         ${uploadResult.bytes},
         ${originalBytes},
         ${uploadResult.public_id},
-        ${topic_id || 1},
+        ${targetTopicId},
         ${user_id},
-        0,
+        ${pn},
         ${media_type}
       )
     RETURNING *
@@ -80,7 +82,6 @@ export async function createPictureFromFile({ file, pictures_name, title, topic_
 
   return result[0]
 }
-
 
 export async function updatePicture(id, form, userId, role) {
   if (!userId) throw new Error("Користувач не авторизований")
@@ -99,15 +100,21 @@ export async function updatePicture(id, form, userId, role) {
   const pictures_name = form.pictures_name?.trim() ?? picture.pictures_name
   const title = form.title?.trim() ?? picture.title
   const topic_id = form.topic_id ?? picture.topic_id
-  const pn = form.pn ?? picture.pn
+
+  // pn міняємо лише якщо картинка перейшла в іншу тему
+  let pn = null
+  if (Number(topic_id) !== Number(picture.topic_id)) {
+    const maxPnRes = await sql`SELECT MAX(pn) AS maxpn FROM pictures WHERE topic_id = ${topic_id}`
+    pn = (maxPnRes[0].maxpn || 0) + 1
+  }
 
   // Оновлюємо лише ці поля
   await sql`
     UPDATE pictures
     SET pictures_name = ${pictures_name},
         title = ${title},
-        topic_id = ${topic_id},
-        pn = ${pn}
+        topic_id = ${topic_id}
+        ${pn !== null ? sql`, pn = ${pn}` : sql``}
     WHERE id = ${id}
   `
 }
@@ -141,7 +148,6 @@ export async function deletePictures(ids, userId, role) {
     WHERE id = ANY(${allowedIds})
   `
 }
-
 
 // export async function deletePictures(ids, userId, role) {
 //   console.log("picturesActions/deletePictures/ids=", ids)

@@ -19,12 +19,30 @@ export async function POST(request) {
 
     const topicTitle = pageTitle?.trim() || "Без назви"
 
+    // Речення: від 5 слів і закінчується на . ! ? … (можливо з лапкою). Решту вважаємо словом чи фразою.
+    const raw = word.trim()
+    const wordCount = raw.split(/\s+/).length
+    const looksLikeSentence = wordCount >= 5 && /[.!?…]["'”’)\]]*$/.test(raw)
+
+    // Для слів і фраз прибираємо пунктуацію по краях ("word," → "word"); для речень лишаємо як є
+    const foreign = looksLikeSentence ? raw : raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "")
+    if (!foreign) {
+      return NextResponse.json({ error: "Потрібні word і translation" }, { status: 400 })
+    }
+
     // getOrCreateInboxTopic повертає { topicId, sectionName, topicName }
     const { topicId } = await getOrCreateInboxTopic(auth.userId, auth.userName, topicTitle)
 
     // addWordFromReader(foreignText, nativeTranslation, topicId, userId, force)
     // тобто: word = іноземне слово (з виділення на сторінці), translation = переклад рідною
-    const result = await addWordFromReader(word, translation, topicId, auth.userId, force)
+    const result = await addWordFromReader(
+      foreign,
+      translation,
+      topicId,
+      auth.userId,
+      force,
+      looksLikeSentence ? "sentence" : null,
+    )
 
     return NextResponse.json(result)
   } catch (err) {
