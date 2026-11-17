@@ -132,7 +132,7 @@ export default function SectionsPage() {
       //   styleCellText: {color: 'green'},
       markIfOwner: true, // 🚀 нове поле
     },
-    { label: "Група тем", accessor: "name", type: "text", width: 250 },
+    { label: "Група", accessor: "name", type: "text", width: 250 },
 
   ]
   return (

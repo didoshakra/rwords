@@ -510,7 +510,13 @@ export default function TableView({
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const isSelected = (id) => selectedIds.includes(id)
+  const clearHighlights = () => {
+    setActiveTopicId(null)
+    setActiveSectionId(null)
+    setActiveGroup(null)
+  }
   const toggleSelect = (id) => {
+    clearHighlights()
     // Поки відкрите віконце переміщення, виділення перемикається на одне слово
     if (wordMoveOpen) {
       const w = tData.find((x) => x.id === id)
@@ -520,7 +526,6 @@ export default function TableView({
       setWordMoveError("")
       return
     }
-    setActiveGroup(null)
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
   }
   const selectAll = () => {
@@ -533,6 +538,7 @@ export default function TableView({
   }
 
   const toggleSelectTopic = (id) => {
+     clearHighlights()
     setSelectedLevel1((prev) => {
       if (prev.includes(id)) {
         const topicWordIds = tData.filter((w) => w[level1Id] === id).map((w) => w.id)
@@ -553,6 +559,7 @@ export default function TableView({
   }
 
   const toggleSelectSection = (sectionId) => {
+    clearHighlights()
     const sectionTopics = level1.filter((t) => t[level2Id] === sectionId)
     const sectionTopicIds = sectionTopics.map((t) => t.id)
     const sectionWordIds = tData.filter((w) => sectionTopicIds.includes(w[level1Id])).map((w) => w.id)

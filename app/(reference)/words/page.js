@@ -825,7 +825,7 @@ export default function WordsPage() {
         onReversTranslate={() => setReversTranslate((prev) => !prev)}
         level0Head="Слова"
         level1Head="Тема"
-        level2Head="Група тем"
+        level2Head="Група"
         sortField={"pn"} //поле для порядку
         isPending={isPending} //ДЛя блокування кнопки імпорт покийде імпорт
         message={message} //Для повідомлення

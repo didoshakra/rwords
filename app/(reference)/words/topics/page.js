@@ -242,8 +242,8 @@ export default function TopicsPage() {
         columns={columns}
         title={"Теми"}
         level0Head="Тема"
-        level1Head="Група тем"
-        onAdd={openAddModal} 
+        level1Head="Група"
+        onAdd={openAddModal}
         onEdit={openEditModal}
         onDelete={handleDelete} // передаємо лише id
         // onThemeDownload={isFromApp ? handleThemeDownload : undefined}
